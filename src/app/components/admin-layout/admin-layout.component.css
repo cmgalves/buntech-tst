@@ -1,0 +1,21 @@
+#navigation {
+    transition: 1s;
+    left: 0px;
+}
+
+#navigation_colapsed {
+    transition: 1s;
+    left: -300px;
+}
+
+#navigation ul {
+    display: inline;
+    list-style: none;
+}
+
+#menu {
+    left: 200pt;
+    top: 10pt;
+    position: relative;
+    margin: 0;
+}

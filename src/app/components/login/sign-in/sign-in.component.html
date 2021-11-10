@@ -1,0 +1,53 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 center1">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h3 class="card-title">Liberação de acesso ao sistema</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row center1">
+                            <div class="col-md-12">
+                                <div class="row" *ngIf="xlAcessa">
+                                    <div class="col-md-10">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Seu Email" [(ngModel)]="userName" required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <mat-form-field class="example-full-width">
+                                            <input type="password" matInput placeholder="Senha" [(ngModel)]="userPassword" required>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="xlTroca">
+                                    <div class="col-md-10">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Seu Email" [(ngModel)]="userNameTroca" required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <mat-form-field class="example-full-width">
+                                            <input type="password" matInput placeholder="Senha Antiga" [(ngModel)]="senhaAntiga" required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <mat-form-field class="example-full-width">
+                                            <input type="password" matInput placeholder="Nova Senha" [(ngModel)]="senhaNova" required>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <button mat-raised-button type="submit" class="btn btn-success" (click)="SignIn()" *ngIf="xlAcessa">Acessar</button>
+                                <button mat-raised-button class="btn btn-warning" (click)="trocaSenha()" *ngIf="xlAcessa">Mudar Senha</button>
+                                <button mat-raised-button class="btn btn-success" (click)="ConfirmaSenha()" *ngIf="xlTroca">Confirma</button>
+                                <button mat-raised-button class="btn btn-warning" (click)="voltaSenha()" *ngIf="xlTroca">Voltar Tela</button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

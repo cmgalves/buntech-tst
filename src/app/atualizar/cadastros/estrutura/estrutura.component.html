@@ -1,0 +1,93 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorAzul">
+                        <a>Engenharia - Estruturas dos Produtos Acabados<button (click)="exportExcel('Estruturas', 'Estrutura')"
+                            mat-raised-button type="button" matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                            <span class="material-icons">
+                                file_download
+                            </span>
+                        </button></a>
+                        <!-- <h4 class="card-title">RELAÇÃO DE ORDENS DE PRODUÇÃO</h4> -->
+                        <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
+                    </div>
+                    <div class="card-body table-responsive">
+                        <mat-form-field>
+                            <mat-label>Filtro</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="filtrando Produtos" #input>
+                        </mat-form-field>
+
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="dataSource" matSort>
+                                <ng-container matColumnDef="seq">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Seq </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.seq}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="filial">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Filial </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.filial}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="codPai">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cod Pai </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.codPai}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="descPai">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.descPai}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="tipoPai">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.tipoPai}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="codComp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Componente </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.codComp}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="descComp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.descComp}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="tipoComp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.tipoComp}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="unidadeComp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Unidade </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.unidadeComp}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="basePai">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Base </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.basePai}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtde">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtde}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="perda">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> perda </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.perda}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="nivel">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nível </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.nivel}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                                <!-- Row shown when there is no matching data. -->
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                </tr>
+                            </table>
+
+                            <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

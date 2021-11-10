@@ -1,0 +1,21 @@
+<div class="wrapper">
+    <button class="nav-link" id='menu' (click)='colapse_sidebar()'>
+        <i class="material-icons" *ngIf='!colapsed'>
+            navigate_before
+        </i>
+        <i class="material-icons" *ngIf='colapsed'>
+            keyboard_arrow_right
+        </i>
+    </button>
+    <div class="sidebar" data-color="buntech" id="{{id}}" data-background-color="white"
+        data-image="./assets/img/sidebar-1.jpg">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="main-panel" id="{{main}}">
+        <app-navbar></app-navbar>
+        <router-outlet></router-outlet>
+        <div *ngIf="isMaps('maps')">
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>
