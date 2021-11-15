@@ -1,0 +1,73 @@
+Bancos de dados de desenvolvimento
+
+Conexão                 DataBase        User        Senha           Tipo            Node        Status
+10.3.0.44\SQLPROTHEUS   TMPRD           sql_ppi     pcf             Produção        app785      Ativo
+10.6.0.30               PCF_Integ       sql_ppi     pcf             Produção        app786      Ativo
+10.3.0.44\SQLPROTHEUS   PCF_Integ       sql_ppi     pcf             Produção        app787      Ativo
+10.1.0.190              PCF_Integ       sql_ppi     pcf             Produção        app788      Ativo
+10.3.0.204              PCP             sql_ppi     pcf             Testes          app883      Ativo
+10.3.0.204              DESENVOLVIMENTO sql_ppi     pcf             Testes          app884      Ativo
+10.1.0.250\SQLEXPRESS   PCF_Integ       pcp         Dev!@PCP        Testes          app886      Ativo
+10.3.0.204\SQLEXPRESS   PCF_Integ       pcp         Dev!@PCP        Testes          app887      Ativo
+10.3.0.92               PCF_Integ       pcp         Dev!@PCP        Testes          app888      Ativo
+
+
+
+
+Ambiente Produção
+/var/www/html
+
+
+Ambiente Teste
+/var/www/buntech
+
+Servidor ubuntu de acesso
+IP: 10.3.0.48
+User: calves
+Senha: Dev!@PCP
+
+
+Conexões
+#!/bin/bash
+
+#arquivo para atualizaÃ§Ã£o de todos os serviÃ§os
+
+sudo systemctl stop app75.service
+sudo systemctl stop app76.service
+sudo systemctl stop app77.service
+sudo systemctl stop app78.service
+sudo systemctl stop app83.service
+sudo systemctl stop app84.service
+sudo systemctl stop app86.service
+sudo systemctl stop app87.service
+sudo systemctl stop app88.service
+
+sudo systemctl restart app75.service
+sudo systemctl restart app76.service
+sudo systemctl restart app77.service
+sudo systemctl restart app78.service
+sudo systemctl restart app83.service
+sudo systemctl restart app84.service
+sudo systemctl restart app86.service
+sudo systemctl restart app87.service
+sudo systemctl restart app88.service
+
+sudo systemctl start app75.service
+sudo systemctl start app76.service
+sudo systemctl start app77.service
+sudo systemctl start app78.service
+sudo systemctl start app83.service
+sudo systemctl start app84.service
+sudo systemctl start app86.service
+sudo systemctl start app87.service
+sudo systemctl start app88.service
+
+
+- Correção de duplo clique no envio PARCIAL; ok
+- Trava de envio total com quantidade igual a zero; ok
+- Resíduo no campo quantidade PCF/ Janela de apontamento;ok
+- Colocar ícone exporta OutInteg na  janela de OPS HML;ok
+- Redefinir cores nas linhas das tabelas; em andamento
+- Correção dos saldos empenhados, em envio de parciais da janela de apontamento; daniel
+- Tratativa de erros de integração Protheus/Janela de apontamento; daniel
+- Status quando ocorrer alteração no PCFactrory: em andamento

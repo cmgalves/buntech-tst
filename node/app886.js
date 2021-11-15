@@ -7,9 +7,8 @@ const sql = require('mssql');
 
 // Filiais:108 
 // 10.1.0.250\SQLEXPRESS
-// Usuário: pcp
-// Senha: Dev!@PCP
 
+// Banco de dados de desenvolvimento
 const conexaoStr = {
     "user": 'pcp',
     "password": 'Dev!@PCP',
@@ -83,6 +82,20 @@ rota.post('/ops', (req, res) => {
     console.log(xcSql)
     execSQL(xcSql, res);
 
+})
+
+// deixa sempre por último
+//excel dos status dos pedidos
+rota.post('/tblOutInteg', (req, res) => {
+    let xcSql = '';
+
+    xcSql += "SELECT "
+    xcSql += "	* "
+    xcSql += "FROM "
+    xcSql += "	PCF_Integ..View_tblOutInteg "
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
 })
 
 

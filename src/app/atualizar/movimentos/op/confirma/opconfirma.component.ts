@@ -28,7 +28,6 @@ export class OpconfirmaComponent implements OnInit {
   numOP = JSON.parse(localStorage.getItem('op'));
   opPcf = JSON.parse(localStorage.getItem('opPcf'));
   parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.numOP[0].SITUACAO) > -1;
-  // arrOpAnd = JSON.parse(localStorage.getItem('opAndamento'));
   arrOpAndA: any = [];
   arrOpAndB: any = [];
   a01: any = [];
@@ -216,7 +215,7 @@ export class OpconfirmaComponent implements OnInit {
 
     this.enableEdit = false;
     this.enableEditIndex = null;
-    console.log(qdt)
+    // console.log(qdt)
   }
 
   exportExcel(fileName, sheetName) {

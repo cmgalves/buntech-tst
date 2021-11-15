@@ -418,60 +418,7 @@ export class OpresumoComponent implements OnInit {
     this.funcJson.execProd('atualiza_OP', obj);
   }
 
-
-  // exporta os dados para o excel
-  exportExcel(fileName, sheetName) {
-    const fn = fileName + '.xlsx';
-    const sn = sheetName;
-    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
-    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, sn);
-    XLSX.writeFile(workBook, fn);
-  }
-
-
-  // habilita e desabilita os dados os botões na tela da OP
-  btnDisable(aRow, tp) {
-    let lRet = true
-
-    lRet = aRow.FINAL === ''
-    if (lRet) {
-      lRet = ("Baixada ").indexOf(aRow.SITUACAO) > -1;
-
-      if (tp === 'a') {
-        lRet = lRet === false ? lRet : (('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
-      }
-
-      if (tp === 'c') {
-        lRet = ("Produção | Interrompida ").indexOf(aRow.SITUACAO) > -1 || ("Baixada ").indexOf(aRow.SITUACAO) > -1;
-        lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
-      }
-    }
-    return lRet
-  }
-
-  // aplica o filtro na tabela de OPs
-  applyFilter() {
-    const filterValue = this.opFilter;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-
-    if (this.opFilter.length >= 10) {
-      this.opFilter = ''
-    }
-    localStorage.removeItem('op');
-
-  }
-
-
-  atuResumos() {
-    window.location.reload();
-  }
-
-
+// busca os dados das tabelas do pcf do ambiente teste
   buscatblOutInteg() {
     if (('Administrador') == this.arrUserLogado.perfil) {
       let arrTab = []
@@ -528,7 +475,7 @@ export class OpresumoComponent implements OnInit {
                     })
                   });
                   this.dataExcel = new MatTableDataSource(arrTab)
-                  this.expExcel('tblOutInteg', 'ops')
+                  this.exportExcel('tblOutInteg', 'ops')
                 });
               }
             });
@@ -550,7 +497,7 @@ export class OpresumoComponent implements OnInit {
                   })
                 });
                 this.dataExcel = new MatTableDataSource(arrTab)
-                this.expExcel('tblOutInteg', 'ops')
+                this.exportExcel('tblOutInteg', 'ops')
               });
             }
           }
@@ -591,7 +538,7 @@ export class OpresumoComponent implements OnInit {
                 })
               });
               this.dataExcel = new MatTableDataSource(arrTab)
-              this.expExcel('tblOutInteg', 'ops')
+              this.exportExcel('tblOutInteg', 'ops')
             });
           }
         }
@@ -601,14 +548,60 @@ export class OpresumoComponent implements OnInit {
     }
   }
 
+
+
   // exporta os dados para o excel
-  expExcel(fileName, sheetName) {
+  exportExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
     const sn = sheetName;
-    const workSheet = XLSX.utils.json_to_sheet(this.dataExcel.data, { header: [] });
+    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
     const workBook: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);
   }
+
+
+  // habilita e desabilita os dados os botões na tela da OP
+  btnDisable(aRow, tp) {
+    let lRet = true
+
+    lRet = aRow.FINAL === ''
+    if (lRet) {
+      lRet = ("Baixada ").indexOf(aRow.SITUACAO) > -1;
+
+      if (tp === 'a') {
+        lRet = lRet === false ? lRet : (('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
+      }
+
+      if (tp === 'c') {
+        lRet = ("Produção | Interrompida ").indexOf(aRow.SITUACAO) > -1 || ("Baixada ").indexOf(aRow.SITUACAO) > -1;
+        lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
+      }
+    }
+    return !lRet
+  }
+
+  // aplica o filtro na tabela de OPs
+  applyFilter() {
+    const filterValue = this.opFilter;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+
+    if (this.opFilter.length >= 10) {
+      this.opFilter = ''
+    }
+    localStorage.removeItem('op');
+
+  }
+
+
+  atuResumos() {
+    
+    window.location.reload();
+  }
+
 
 }

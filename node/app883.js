@@ -7,8 +7,8 @@ const sql = require('mssql');
 
 // Filiais:101,117,107
 // 10.3.0.92
-// Usuário: pcp
-// Senha: Dev!@PCP
+// Banco de dados de teste
+
 const conexaoStr = {
     "user": 'sql_ppi',
     "password": 'pcf',
