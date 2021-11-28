@@ -432,22 +432,23 @@ export class OpresumoComponent implements OnInit {
 
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
-    let lRet = true
-
-    lRet = aRow.FINAL === ''
-    if (lRet) {
-      lRet = ("Baixada ").indexOf(aRow.SITUACAO) > -1;
-
-      if (tp === 'a') {
-        lRet = lRet === false ? lRet : (('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
-      }
-
-      if (tp === 'c') {
-        lRet = ("Produção | Interrompida ").indexOf(aRow.SITUACAO) > -1 || ("Baixada ").indexOf(aRow.SITUACAO) > -1;
-        lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
+    
+    if (tp === 'a') {
+      if ((("Baixada ").indexOf(aRow.SITUACAO) > -1))  {
+        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
+          return false;
+        }
       }
     }
-    return lRet
+
+    if (tp === 'c') {
+      if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1))  {
+        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
+          return false;
+        }
+      }
+    }
+    return true
   }
 
   // aplica o filtro na tabela de OPs
@@ -596,7 +597,7 @@ export class OpresumoComponent implements OnInit {
           }
         }
       }
-    }else{
+    } else {
       alert('sem acesso')
     }
   }
