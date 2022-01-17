@@ -29,6 +29,7 @@ import { EstruturaComponent } from 'app/atualizar/cadastros/estrutura/estrutura.
 import { SaldoComponent } from 'app/atualizar/cadastros/saldo/saldo.component';
 import { RecursoComponent } from 'app/atualizar/cadastros/recurso/recurso.component';
 import { OpconfirmaComponent } from 'app/atualizar/movimentos/op/confirma/opconfirma.component';
+import { OpdocumentoComponent } from 'app/atualizar/movimentos/op/documento/opdocumento.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { OpconfirmaComponent } from 'app/atualizar/movimentos/op/confirma/opconf
     ForgotPasswordComponent,
     UsuarioComponent,
     OpresumoComponent,
+    OpdocumentoComponent,
     OpvisualizaComponent,
     OpajustaComponent,
     OpconfirmaComponent,

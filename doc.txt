@@ -12,7 +12,8 @@ Conexão                 DataBase        User        Senha           Tipo       
 10.3.0.92               PCF_Integ       pcp         Dev!@PCP        Testes          app888      Ativo
 
 
-
+senha do cisco: grupo Bun secure connection
+ca1971@#Buntech
 
 Ambiente Produção
 /var/www/html

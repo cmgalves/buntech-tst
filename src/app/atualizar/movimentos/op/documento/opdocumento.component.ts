@@ -9,7 +9,7 @@ import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 
 // tslint:disable-next-line:class-name
-export interface opResumo {
+export interface opDocumento {
   FILIAL: string;
   OP: string;
   CODPROD: string;
@@ -24,13 +24,13 @@ export interface opResumo {
 }
 
 @Component({
-  selector: 'app-opresumo',
-  templateUrl: './opresumo.component.html',
-  styleUrls: ['./opresumo.component.css']
+  selector: 'app-opdocumento',
+  templateUrl: './opdocumento.component.html',
+  styleUrls: ['./opdocumento.component.css']
 })
 
 
-export class OpresumoComponent implements OnInit {
+export class OpdocumentoComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   arrOpAnd: any = []; //JSON.parse(localStorage.getItem('user'))[0];
   arrOpPcf: any = []; //JSON.parse(localStorage.getItem('user'))[0];
@@ -44,10 +44,10 @@ export class OpresumoComponent implements OnInit {
   arrProdB: any = [];
   arrOpAndA: any = [];
   arrOpAndB: any = [];
-  arrOpresumo886: any = [];
-  arrOpresumo887: any = [];
-  arrOpresumo888: any = [];
-  arrOpresumoTab: any = [];
+  arrOpdocumento886: any = [];
+  arrOpdocumento887: any = [];
+  arrOpdocumento888: any = [];
+  arrOpdocumentoTab: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
 
   // Campina Grande - 888
@@ -64,10 +64,10 @@ export class OpresumoComponent implements OnInit {
   // Filiais:206
 
 
-  opresumos: Observable<any>;
+  opdocumentos: Observable<any>;
   displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'RECURSO', 'OPERACAO', 'EMISSAO', 'FINAL', 'CODPROD', 'QTDEPCF', 'QTDEPRT', 'ENTREGUE', 'RETRABALHO', 'HORAS', 'SITUACAO', 'EDICAO'];
-  dataSource: MatTableDataSource<opResumo>;
-  dataExcel: MatTableDataSource<opResumo>;
+  dataSource: MatTableDataSource<opDocumento>;
+  dataExcel: MatTableDataSource<opDocumento>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -131,7 +131,7 @@ export class OpresumoComponent implements OnInit {
         })
       });
       localStorage.setItem('opAndamento', JSON.stringify(this.arrOpAndB));
-      this.buscaOpresumos();
+      this.buscaOpdocumentos();
     });
   }
 
@@ -157,7 +157,7 @@ export class OpresumoComponent implements OnInit {
 
 
   // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
-  buscaOpresumos() {
+  buscaOpdocumentos() {
     this.arrOpAnd = JSON.parse(localStorage.getItem('opAndamento'));
 
     const obj = {
@@ -165,18 +165,18 @@ export class OpresumoComponent implements OnInit {
       'perfil': this.xcPerfil
     };
     let conta = 0
-    this.arrOpresumo886 = this.funcJson.busca886('ops', obj);
-    this.arrOpresumo887 = this.funcJson.busca887('ops', obj);
-    this.arrOpresumo888 = this.funcJson.busca888('ops', obj);
+    this.arrOpdocumento886 = this.funcJson.busca886('ops', obj);
+    this.arrOpdocumento887 = this.funcJson.busca887('ops', obj);
+    this.arrOpdocumento888 = this.funcJson.busca888('ops', obj);
 
-    if (this.arrOpresumo888 != null) {
-      this.arrOpresumo888.subscribe(cada => {
+    if (this.arrOpdocumento888 != null) {
+      this.arrOpdocumento888.subscribe(cada => {
         cada.forEach(xy => {
           const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
           if (filOP.length > 0) {
             let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
             conta++
-            this.arrOpresumoTab.push({
+            this.arrOpdocumentoTab.push({
               'SEQ': conta,
               'FILIAL': xy.filial,
               'OP': xy.op,
@@ -201,14 +201,14 @@ export class OpresumoComponent implements OnInit {
           }
 
         });
-        if (this.arrOpresumo886 != null) {
-          this.arrOpresumo886.subscribe(cada => {
+        if (this.arrOpdocumento886 != null) {
+          this.arrOpdocumento886.subscribe(cada => {
             cada.forEach(xy => {
               const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
-                this.arrOpresumoTab.push({
+                this.arrOpdocumentoTab.push({
                   'SEQ': conta,
                   'FILIAL': xy.filial,
                   'OP': xy.op,
@@ -232,14 +232,14 @@ export class OpresumoComponent implements OnInit {
                 })
               }
             });
-            if (this.arrOpresumo887 != null) {
-              this.arrOpresumo887.subscribe(cada => {
+            if (this.arrOpdocumento887 != null) {
+              this.arrOpdocumento887.subscribe(cada => {
                 cada.forEach(xy => {
                   const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
                   if (filOP.length > 0) {
                     let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                     conta++
-                    this.arrOpresumoTab.push({
+                    this.arrOpdocumentoTab.push({
                       'SEQ': conta,
                       'FILIAL': xy.filial,
                       'OP': xy.op,
@@ -264,7 +264,7 @@ export class OpresumoComponent implements OnInit {
                   }
                 });
                 localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-                this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
+                this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
                 this.applyFilter()
@@ -272,14 +272,14 @@ export class OpresumoComponent implements OnInit {
             }
           });
         } else {
-          if (this.arrOpresumo887 != null) {
-            this.arrOpresumo887.subscribe(cada => {
+          if (this.arrOpdocumento887 != null) {
+            this.arrOpdocumento887.subscribe(cada => {
               cada.forEach(xy => {
                 const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
                 if (filOP.length > 0) {
                   let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                   conta++
-                  this.arrOpresumoTab.push({
+                  this.arrOpdocumentoTab.push({
                     'SEQ': conta,
                     'FILIAL': xy.filial,
                     'OP': xy.op,
@@ -304,7 +304,7 @@ export class OpresumoComponent implements OnInit {
                 }
               });
               localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-              this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
+              this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
               this.applyFilter()
@@ -313,14 +313,14 @@ export class OpresumoComponent implements OnInit {
         }
       });
     } else {
-      if (this.arrOpresumo886 != null) {
-        this.arrOpresumo886.subscribe(cada => {
+      if (this.arrOpdocumento886 != null) {
+        this.arrOpdocumento886.subscribe(cada => {
           cada.forEach(xy => {
             const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
             if (filOP.length > 0) {
               let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
               conta++
-              this.arrOpresumoTab.push({
+              this.arrOpdocumentoTab.push({
                 'SEQ': conta,
                 'FILIAL': xy.filial,
                 'OP': xy.op,
@@ -346,14 +346,14 @@ export class OpresumoComponent implements OnInit {
           });
         });
       } else {
-        if (this.arrOpresumo887 != null) {
-          this.arrOpresumo887.subscribe(cada => {
+        if (this.arrOpdocumento887 != null) {
+          this.arrOpdocumento887.subscribe(cada => {
             cada.forEach(xy => {
               const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
-                this.arrOpresumoTab.push({
+                this.arrOpdocumentoTab.push({
                   'SEQ': conta,
                   'FILIAL': xy.filial,
                   'OP': xy.op,
@@ -378,7 +378,7 @@ export class OpresumoComponent implements OnInit {
               }
             });
             localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-            this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
+            this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
             this.applyFilter()
@@ -389,21 +389,21 @@ export class OpresumoComponent implements OnInit {
   }
 
   visuOp(xcRow) {
-    const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
+    const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);
     localStorage.setItem('op', JSON.stringify(filOP));
     this.atuOP(filOP[0].FILIAL, filOP[0].OP)
     this.router.navigate(['opVisualiza']);
   }
 
   ajustaOp(xcRow) {
-    const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
+    const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);
     localStorage.setItem('op', JSON.stringify(filOP));
     this.atuOP(filOP[0].FILIAL, filOP[0].OP)
     this.router.navigate(['opAjusta']);
   }
 
   confirmaOp(xcRow) {
-    const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
+    const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);
     localStorage.setItem('op', JSON.stringify(filOP));
     console.log(filOP);
     this.atuOP(filOP[0].FILIAL, filOP[0].OP)
@@ -418,7 +418,60 @@ export class OpresumoComponent implements OnInit {
     this.funcJson.execProd('atualiza_OP', obj);
   }
 
-// busca os dados das tabelas do pcf do ambiente teste
+
+  // exporta os dados para o excel
+  exportExcel(fileName, sheetName) {
+    const fn = fileName + '.xlsx';
+    const sn = sheetName;
+    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
+    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, sn);
+    XLSX.writeFile(workBook, fn);
+  }
+
+
+  // habilita e desabilita os dados os botões na tela da OP
+  btnDisable(aRow, tp) {
+    if (tp === 'a') {
+      if ((("Baixada ").indexOf(aRow.SITUACAO) > -1))  {
+        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
+          return false;
+        }
+      }
+    }
+
+    if (tp === 'c') {
+      if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1))  {
+        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
+          return false;
+        }
+      }
+    }
+    return true
+  }
+
+  // aplica o filtro na tabela de OPs
+  applyFilter() {
+    const filterValue = this.opFilter;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+
+    if (this.opFilter.length >= 10) {
+      this.opFilter = ''
+    }
+    localStorage.removeItem('op');
+
+  }
+
+
+  atuResumos() {
+    window.location.reload();
+  }
+
+
   buscatblOutInteg() {
     if (('Administrador') == this.arrUserLogado.perfil) {
       let arrTab = []
@@ -475,7 +528,7 @@ export class OpresumoComponent implements OnInit {
                     })
                   });
                   this.dataExcel = new MatTableDataSource(arrTab)
-                  this.exportExcel('tblOutInteg', 'ops')
+                  this.expExcel('tblOutInteg', 'ops')
                 });
               }
             });
@@ -497,7 +550,7 @@ export class OpresumoComponent implements OnInit {
                   })
                 });
                 this.dataExcel = new MatTableDataSource(arrTab)
-                this.exportExcel('tblOutInteg', 'ops')
+                this.expExcel('tblOutInteg', 'ops')
               });
             }
           }
@@ -538,70 +591,24 @@ export class OpresumoComponent implements OnInit {
                 })
               });
               this.dataExcel = new MatTableDataSource(arrTab)
-              this.exportExcel('tblOutInteg', 'ops')
+              this.expExcel('tblOutInteg', 'ops')
             });
           }
         }
       }
-    }else{
+    } else {
       alert('sem acesso')
     }
   }
 
-
-
   // exporta os dados para o excel
-  exportExcel(fileName, sheetName) {
+  expExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
     const sn = sheetName;
-    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
+    const workSheet = XLSX.utils.json_to_sheet(this.dataExcel.data, { header: [] });
     const workBook: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);
   }
-
-
-  // habilita e desabilita os dados os botões na tela da OP
-  btnDisable(aRow, tp) {
-    let lRet = true
-
-    lRet = aRow.FINAL === ''
-    if (lRet) {
-      lRet = ("Baixada ").indexOf(aRow.SITUACAO) > -1;
-
-      if (tp === 'a') {
-        lRet = lRet === false ? lRet : (('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
-      }
-
-      if (tp === 'c') {
-        lRet = ("Produção | Interrompida ").indexOf(aRow.SITUACAO) > -1 || ("Baixada ").indexOf(aRow.SITUACAO) > -1;
-        lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
-      }
-    }
-    return !lRet
-  }
-
-  // aplica o filtro na tabela de OPs
-  applyFilter() {
-    const filterValue = this.opFilter;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-
-    if (this.opFilter.length >= 10) {
-      this.opFilter = ''
-    }
-    localStorage.removeItem('op');
-
-  }
-
-
-  atuResumos() {
-    
-    window.location.reload();
-  }
-
 
 }

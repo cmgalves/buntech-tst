@@ -13,6 +13,7 @@ import { EstruturaComponent } from 'app/atualizar/cadastros/estrutura/estrutura.
 import { ProdutoComponent } from 'app/atualizar/cadastros/produto/produto.component';
 import { SaldoComponent } from 'app/atualizar/cadastros/saldo/saldo.component';
 import { RecursoComponent } from 'app/atualizar/cadastros/recurso/recurso.component';
+import { OpdocumentoComponent } from 'app/atualizar/movimentos/op/documento/opdocumento.component';
 
 export const AdminLayoutRoutes: Routes = [
 
@@ -21,6 +22,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
     { path: 'usuario', component: UsuarioComponent, canActivate: [AuthGuard] },
     { path: 'opResumo', component: OpresumoComponent, canActivate: [AuthGuard] },
+    { path: 'document', component: OpdocumentoComponent, canActivate: [AuthGuard] },
     { path: 'opVisualiza', component: OpvisualizaComponent, canActivate: [AuthGuard] },
     { path: 'opAjusta', component: OpajustaComponent, canActivate: [AuthGuard] },
     { path: 'opConfirma', component: OpconfirmaComponent, canActivate: [AuthGuard] },
