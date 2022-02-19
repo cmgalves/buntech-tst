@@ -2,18 +2,18 @@ express = require('express');
 fs = require('fs');
 bodyParser = require('body-parser');
 const app = express();
-const porta = 786; //porta padrão
+const porta = 788; //porta padrão
 const sql = require('mssql');
 
-// Filiais:108 
-// 10.6.0.30
+// Filiais:101,117,107
+// 10.1.0.190
 // Usuário: pcp
 // Senha: pcf
 
 const conexaoStr = {
     "user": 'sql_ppi',
     "password": 'pcf',
-    "server": '10.6.0.30',
+    "server": '10.1.0.190',
     "database": 'PCF_Integ',
     "port": 1433,
     "options": {
@@ -59,7 +59,70 @@ function execSQL(sql, res) {
 }
 
 
+//excel dos status dos pedidos
+rota.post('/incluiAlteraUsuario', (req, res) => {
+    let xcSql = '';
 
+    const codUser = req.body.codUser;
+    const empresa = req.body.empresa;
+    const nome = req.body.nome;
+    const email = req.body.email;
+    const senha = req.body.senha;
+    const perfil = req.body.perfil;
+    const depto = req.body.depto;
+    const telefone = req.body.telefone;
+
+    xcSql += "EXEC "
+    xcSql += "	sp_incluiAlteraUsuario "
+    xcSql += "  " + codUser + ",  "
+    xcSql += "  '" + empresa + "', "
+    xcSql += "  '" + nome + "', "
+    xcSql += "  '" + email + "', "
+    xcSql += "  '" + senha + "', "
+    xcSql += "  '" + perfil + "', "
+    xcSql += "  '" + depto + "', "
+    xcSql += "  '" + telefone + "' "
+
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
+
+})
+
+//Altera a Senha do usuário
+rota.post('/alteraSenhaUsuario', (req, res) => {
+    let xcSql = '';
+
+    const codUser = req.body.codUser;
+    const senhaNew = req.body.senhaNew;
+
+    xcSql += "EXEC "
+    xcSql += "	sp_alteraSenhaUsuario "
+    xcSql += "  " + codUser + ",  "
+    xcSql += "  '" + senhaNew + "' "
+
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
+
+})
+
+//excel dos status dos pedidos
+rota.post('/cadUsuarios', (req, res) => {
+    let xcSql = '';
+
+    const senPass = req.body.senPass;
+
+    xcSql += "SELECT "
+    xcSql += "	codigo, empresa, nome, senha,  "
+    xcSql += "	email, perfil, depto, telefone "
+    xcSql += "FROM "
+    xcSql += "	PCP..usuarios "
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
+
+})
 
 //excel dos status dos pedidos
 rota.post('/ops', (req, res) => {
@@ -85,6 +148,19 @@ rota.post('/ops', (req, res) => {
 
 })
 
+// deixa sempre por último
+//excel dos status dos pedidos
+rota.post('/tblOutInteg', (req, res) => {
+    let xcSql = '';
+
+    xcSql += "SELECT "
+    xcSql += "	* "
+    xcSql += "FROM "
+    xcSql += "	PCF_Integ..View_tblOutInteg "
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
+})
 
 //mantem sempre no final, n�o seu o que �
 rota.post('/salvaJSON', (req, res) => {

@@ -7,8 +7,8 @@ const sql = require('mssql');
 
 // Filiais:101,117,107
 // 10.3.0.92
-
-// Banco de dados de desenvolvimento
+// Usuário: pcp
+// Senha: Dev!@PCP
 const conexaoStr = {
     "user": 'pcp',
     "password": 'Dev!@PCP',
@@ -147,7 +147,8 @@ rota.post('/ops', (req, res) => {
 
 })
 
-// deixa sempre por último
+
+// deixa sempre por �ltimo
 //excel dos status dos pedidos
 rota.post('/tblOutInteg', (req, res) => {
     let xcSql = '';

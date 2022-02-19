@@ -5,8 +5,6 @@ const app = express();
 const porta = 884; //porta padrão
 const sql = require('mssql');
 // const conexaoStr = "Server=BRCG02PCF01;Database=PCP;User Id=pcp;Password=Dev!@PCP;";
-
-// banco de dados de desenvolvimento
 const conexaoStr = {
     "user": 'sql_ppi',
     "password": 'pcf',

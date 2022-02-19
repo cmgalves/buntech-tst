@@ -83,31 +83,6 @@ export class OpdocumentoComponent implements OnInit {
     }
 
     this.buscaOpsAndamentoProtheus();
-    this.buscaRecursos();
-    this.buscaProdutos();
-  }
-
-  // busca os produtos no cadastro para utilizar os dados necessários
-  buscaProdutos() {
-    const obj = {
-      'produto': ''
-    };
-    this.arrProdA = this.funcJson.busca884('cadastroProdutos', obj);
-
-    this.arrProdA.subscribe(cada => {
-      cada.forEach(xy => {
-        if (xy.situacao === 'Liberado' && ('MP, PP, ME, MI, HR, GG, MO, PA, IN, LB, MK, MR, MT, PN, SP').indexOf(xy.tipo) > -1) {
-          this.arrProdB.push({
-            'codigo': xy.codigo,
-            'descricao': xy.descricao,
-            'unidade': xy.unidade,
-            'retrabalho': xy.retrabalho,
-            'mdo': xy.mdo,
-          })
-        }
-      });
-      localStorage.setItem('cadProd', JSON.stringify(this.arrProdB));
-    });
   }
 
   // busca os produtos no cadastro para utilizar os dados necessários
@@ -135,26 +110,6 @@ export class OpdocumentoComponent implements OnInit {
     });
   }
 
-  // busca a relação de recursos que podem ser usados na produção da OP
-  buscaRecursos() {
-    const obj = {
-      'filial': '',
-      'codigo': '',
-    };
-    this.arrRecA = this.funcJson.busca884('cadRecursos', obj);
-
-    this.arrRecA.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrRecB.push({
-          'filial': xy.filial,
-          'codigo': xy.codigo,
-          'custo': xy.custo,
-        })
-      });
-      localStorage.setItem('recurso', JSON.stringify(this.arrRecB));
-    });
-  }
-
 
   // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
   buscaOpdocumentos() {
@@ -172,7 +127,8 @@ export class OpdocumentoComponent implements OnInit {
     if (this.arrOpdocumento888 != null) {
       this.arrOpdocumento888.subscribe(cada => {
         cada.forEach(xy => {
-          const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+          const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
+          // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
           if (filOP.length > 0) {
             let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
             conta++
@@ -204,7 +160,8 @@ export class OpdocumentoComponent implements OnInit {
         if (this.arrOpdocumento886 != null) {
           this.arrOpdocumento886.subscribe(cada => {
             cada.forEach(xy => {
-              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
+              // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
@@ -235,7 +192,8 @@ export class OpdocumentoComponent implements OnInit {
             if (this.arrOpdocumento887 != null) {
               this.arrOpdocumento887.subscribe(cada => {
                 cada.forEach(xy => {
-                  const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+                  const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
+                  // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
                   if (filOP.length > 0) {
                     let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                     conta++
@@ -275,7 +233,8 @@ export class OpdocumentoComponent implements OnInit {
           if (this.arrOpdocumento887 != null) {
             this.arrOpdocumento887.subscribe(cada => {
               cada.forEach(xy => {
-                const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+                const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
+                // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
                 if (filOP.length > 0) {
                   let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                   conta++
@@ -316,7 +275,8 @@ export class OpdocumentoComponent implements OnInit {
       if (this.arrOpdocumento886 != null) {
         this.arrOpdocumento886.subscribe(cada => {
           cada.forEach(xy => {
-            const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+            const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
+            // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
             if (filOP.length > 0) {
               let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
               conta++
@@ -349,7 +309,8 @@ export class OpdocumentoComponent implements OnInit {
         if (this.arrOpdocumento887 != null) {
           this.arrOpdocumento887.subscribe(cada => {
             cada.forEach(xy => {
-              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
+              // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
@@ -388,67 +349,6 @@ export class OpdocumentoComponent implements OnInit {
     }
   }
 
-  visuOp(xcRow) {
-    const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);
-    localStorage.setItem('op', JSON.stringify(filOP));
-    this.atuOP(filOP[0].FILIAL, filOP[0].OP)
-    this.router.navigate(['opVisualiza']);
-  }
-
-  ajustaOp(xcRow) {
-    const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);
-    localStorage.setItem('op', JSON.stringify(filOP));
-    this.atuOP(filOP[0].FILIAL, filOP[0].OP)
-    this.router.navigate(['opAjusta']);
-  }
-
-  confirmaOp(xcRow) {
-    const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);
-    localStorage.setItem('op', JSON.stringify(filOP));
-    console.log(filOP);
-    this.atuOP(filOP[0].FILIAL, filOP[0].OP)
-    this.router.navigate(['opConfirma']);
-  }
-
-  atuOP(xcFil, xcOp) {
-    let obj = {
-      'filial': xcFil,
-      'op': xcOp,
-    }
-    this.funcJson.execProd('atualiza_OP', obj);
-  }
-
-
-  // exporta os dados para o excel
-  exportExcel(fileName, sheetName) {
-    const fn = fileName + '.xlsx';
-    const sn = sheetName;
-    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
-    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, sn);
-    XLSX.writeFile(workBook, fn);
-  }
-
-
-  // habilita e desabilita os dados os botões na tela da OP
-  btnDisable(aRow, tp) {
-    if (tp === 'a') {
-      if ((("Baixada ").indexOf(aRow.SITUACAO) > -1))  {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
-          return false;
-        }
-      }
-    }
-
-    if (tp === 'c') {
-      if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1))  {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
-          return false;
-        }
-      }
-    }
-    return true
-  }
 
   // aplica o filtro na tabela de OPs
   applyFilter() {
@@ -467,145 +367,16 @@ export class OpdocumentoComponent implements OnInit {
   }
 
 
-  atuResumos() {
-    window.location.reload();
+  acessoDoclista(xcRow) {
+    const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);
+    localStorage.setItem('op', JSON.stringify(filOP));
+    this.router.navigate(['doclista']);
   }
-
-
-  buscatblOutInteg() {
-    if (('Administrador') == this.arrUserLogado.perfil) {
-      let arrTab = []
-      let arr886 = this.funcJson.busca886('tblOutInteg', {});
-      let arr887 = this.funcJson.busca887('tblOutInteg', {});
-      let arr888 = this.funcJson.busca888('tblOutInteg', {});
-
-      if (arr888 != null) {
-        arr888.subscribe(cada => {
-          cada.forEach(xy => {
-            arrTab.push({
-              WOCode: xy.WOCode,
-              ResourceCode: xy.ResourceCode,
-              WODetCode: xy.WODetCode,
-              ProductCode: xy.ProductCode,
-              Integrated: xy.Integrated,
-              Qty: xy.Qty,
-              DtProduction: xy.DtProduction,
-              DtCreation: xy.DtCreation,
-              UserCode: xy.UserCode,
-              ReWorkCode: xy.ReWorkCode,
-            })
-          });
-          if (arr886 != null) {
-            arr886.subscribe(cada => {
-              cada.forEach(xy => {
-                arrTab.push({
-                  WOCode: xy.WOCode,
-                  ResourceCode: xy.ResourceCode,
-                  WODetCode: xy.WODetCode,
-                  ProductCode: xy.ProductCode,
-                  Integrated: xy.Integrated,
-                  Qty: xy.Qty,
-                  DtProduction: xy.DtProduction,
-                  DtCreation: xy.DtCreation,
-                  UserCode: xy.UserCode,
-                  ReWorkCode: xy.ReWorkCode,
-                })
-              });
-              if (arr887 != null) {
-                arr887.subscribe(cada => {
-                  cada.forEach(xy => {
-                    arrTab.push({
-                      WOCode: xy.WOCode,
-                      ResourceCode: xy.ResourceCode,
-                      WODetCode: xy.WODetCode,
-                      ProductCode: xy.ProductCode,
-                      Integrated: xy.Integrated,
-                      Qty: xy.Qty,
-                      DtProduction: xy.DtProduction,
-                      DtCreation: xy.DtCreation,
-                      UserCode: xy.UserCode,
-                      ReWorkCode: xy.ReWorkCode,
-                    })
-                  });
-                  this.dataExcel = new MatTableDataSource(arrTab)
-                  this.expExcel('tblOutInteg', 'ops')
-                });
-              }
-            });
-          } else {
-            if (arr887 != null) {
-              arr887.subscribe(cada => {
-                cada.forEach(xy => {
-                  arrTab.push({
-                    WOCode: xy.WOCode,
-                    ResourceCode: xy.ResourceCode,
-                    WODetCode: xy.WODetCode,
-                    ProductCode: xy.ProductCode,
-                    Integrated: xy.Integrated,
-                    Qty: xy.Qty,
-                    DtProduction: xy.DtProduction,
-                    DtCreation: xy.DtCreation,
-                    UserCode: xy.UserCode,
-                    ReWorkCode: xy.ReWorkCode,
-                  })
-                });
-                this.dataExcel = new MatTableDataSource(arrTab)
-                this.expExcel('tblOutInteg', 'ops')
-              });
-            }
-          }
-        });
-      } else {
-        if (arr886 != null) {
-          arr886.subscribe(cada => {
-            cada.forEach(xy => {
-              arrTab.push({
-                WOCode: xy.WOCode,
-                ResourceCode: xy.ResourceCode,
-                WODetCode: xy.WODetCode,
-                ProductCode: xy.ProductCode,
-                Integrated: xy.Integrated,
-                Qty: xy.Qty,
-                DtProduction: xy.DtProduction,
-                DtCreation: xy.DtCreation,
-                UserCode: xy.UserCode,
-                ReWorkCode: xy.ReWorkCode,
-              })
-            });
-          });
-        } else {
-          if (arr887 != null) {
-            arr887.subscribe(cada => {
-              cada.forEach(xy => {
-                arrTab.push({
-                  WOCode: xy.WOCode,
-                  ResourceCode: xy.ResourceCode,
-                  WODetCode: xy.WODetCode,
-                  ProductCode: xy.ProductCode,
-                  Integrated: xy.Integrated,
-                  Qty: xy.Qty,
-                  DtProduction: xy.DtProduction,
-                  DtCreation: xy.DtCreation,
-                  UserCode: xy.UserCode,
-                  ReWorkCode: xy.ReWorkCode,
-                })
-              });
-              this.dataExcel = new MatTableDataSource(arrTab)
-              this.expExcel('tblOutInteg', 'ops')
-            });
-          }
-        }
-      }
-    } else {
-      alert('sem acesso')
-    }
-  }
-
   // exporta os dados para o excel
   expExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
     const sn = sheetName;
-    const workSheet = XLSX.utils.json_to_sheet(this.dataExcel.data, { header: [] });
+    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
     const workBook: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);

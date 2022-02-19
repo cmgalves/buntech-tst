@@ -1,0 +1,12 @@
+[Unit]
+Description=Acesso ao Banco PCF
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/bin/env nodejs /var/www/node/app883.js
+[Install]
+WantedBy=multi-user.target

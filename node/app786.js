@@ -2,18 +2,18 @@ express = require('express');
 fs = require('fs');
 bodyParser = require('body-parser');
 const app = express();
-const porta = 787; //porta padrão
+const porta = 786; //porta padrão
 const sql = require('mssql');
 
-// Filiais:206
-// 10.3.0.225
+// Filiais:108 
+// 10.6.0.30
 // Usuário: pcp
 // Senha: pcf
 
 const conexaoStr = {
     "user": 'sql_ppi',
     "password": 'pcf',
-    "server": '10.3.0.225',
+    "server": '10.6.0.30',
     "database": 'PCF_Integ',
     "port": 1433,
     "options": {
@@ -22,7 +22,7 @@ const conexaoStr = {
     },
     "dialect": "mssql",
     "dialectOptions": {
-        "instanceName": "10.3.0.44\SQLPROTHEUS"
+        "instanceName": "MSSQLSERVER"
     }
 };
 
@@ -60,6 +60,7 @@ function execSQL(sql, res) {
 
 
 
+
 //excel dos status dos pedidos
 rota.post('/ops', (req, res) => {
     let xcSql = '';
@@ -79,10 +80,26 @@ rota.post('/ops', (req, res) => {
     xcSql += "ORDER BY "
     xcSql += "	filial, op, operacao "
 
-
     console.log(xcSql)
     execSQL(xcSql, res);
 
+})
+
+
+
+
+// deixa sempre por último
+//excel dos status dos pedidos
+rota.post('/tblOutInteg', (req, res) => {
+    let xcSql = '';
+
+    xcSql += "SELECT "
+    xcSql += "	* "
+    xcSql += "FROM "
+    xcSql += "	PCF_Integ..View_tblOutInteg "
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
 })
 
 

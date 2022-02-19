@@ -2,18 +2,15 @@ express = require('express');
 fs = require('fs');
 bodyParser = require('body-parser');
 const app = express();
-const porta = 883; //porta padrão
+const porta = 785; //porta padrão
 const sql = require('mssql');
 
-// Filiais:101,117,107
-// 10.3.0.92
-// Usuário: pcp
-// Senha: Dev!@PCP
+
 const conexaoStr = {
     "user": 'sql_ppi',
     "password": 'pcf',
-    "server": '10.3.0.204',
-    "database": 'PCP',
+    "server": '10.3.0.44\\SQLPROTHEUS',
+    "database": 'TMPRD',
     "port": 1433,
     "options": {
         "encrypt": true,
@@ -21,7 +18,7 @@ const conexaoStr = {
     },
     "dialect": "mssql",
     "dialectOptions": {
-        "instanceName": "MSSQLSERVER"
+        "instanceName": "SQLPROTHEUS"
     }
 };
 
@@ -38,13 +35,12 @@ app.use(bodyParser.json());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, HEAD, OPTIONS, PATCH, DELETE");
+    res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PATCH, DELETE");
     next();
 });
-
 //definindo as rotas
 const rota = express.Router();
-rota.get('/', (req, res) => res.json({ mensagem: 'json ok ambiente Teste - banco protheus' }));
+rota.get('/', (req, res) => res.json({ mensagem: 'json ok ambiente produção - banco protheus' }));
 app.use('/', rota);
 
 //inicia servidor
@@ -63,11 +59,14 @@ function execSQL(sql, res) {
 rota.post('/empresasBuntech', (req, res) => {
     let xcSql = '';
 
+    // const diade = req.body.diade;
+    // const diate = req.body.diate;
+    // const atend = req.body.atend;
     xcSql += "SELECT "
     xcSql += "	rtrim(codEmp) codEmp, rtrim(codFil) codFil, "
     xcSql += "  rtrim(nomeFil) nomeFil, rtrim(nomeComercial) nomeComercial "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Empresa "
+    xcSql += "	TMPRD..View_Portal_Empresa "
 
     console.log(xcSql)
     execSQL(xcSql, res);
@@ -78,12 +77,10 @@ rota.post('/empresasBuntech', (req, res) => {
 rota.post('/ordemProducaoAndamento', (req, res) => {
     let xcSql = '';
 
-    const op = req.body.op;
-
     xcSql += "SELECT DISTINCT "
     xcSql += "	FILIAL, OP, PRODUTO, EMISSAO, QTDE, ENTREGUE, FINAL, DTFIM "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_OP "
+    xcSql += "	TMPRD..View_Portal_OP "
 
 
     console.log(xcSql)
@@ -122,7 +119,7 @@ rota.post('/cadastroProdutos', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Cadastro_Produto "
+    xcSql += "	TMPRD..View_Portal_Cadastro_Produto "
     if (produto !== '') {
         xcSql += "WHERE "
         xcSql += "	codigo = '" + produto + "' "
@@ -145,7 +142,7 @@ rota.post('/cadEstruturas', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Estrutura "
+    xcSql += "	TMPRD..View_Portal_Estrutura "
     if (produto !== '') {
         xcSql += "WHERE "
         xcSql += "	codPai = '" + produto + "' AND "
@@ -169,7 +166,7 @@ rota.post('/cadRecursos', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Cadastro_Recursos "
+    xcSql += "	TMPRD..View_Portal_Cadastro_Recursos "
     if (codigo !== '') {
         xcSql += "WHERE "
         xcSql += "	codigo = '" + codigo + "' AND "
@@ -195,7 +192,7 @@ rota.post('/cadSaldos', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Saldo_Estoque "
+    xcSql += "	TMPRD..View_Portal_Saldo_Estoque "
     if (codigo !== '') {
         xcSql += "WHERE "
         xcSql += "	codigo = '" + codigo + "' AND "
@@ -290,27 +287,6 @@ rota.post('/atualiza_OP', (req, res) => {
     xcSql += "  " + filial + ",  "
     xcSql += "  '" + op + "' "
 
-
-    console.log(xcSql)
-    execSQL(xcSql, res);
-
-})
-
-//Atualiza a tabela de OP 
-rota.post('/atualizaDoc', (req, res) => {
-    let xcSql = '';
-
-    const tipo = req.body.tipo;
-    const filial = req.body.filial;
-    const op = req.body.op;
-    const datadoc = req.body.datadoc;
-
-    xcSql += "EXEC "
-    xcSql += "	PCP..sp_atualizaDoc "
-    xcSql += "  " + tipo + ",  "
-    xcSql += "  '" + filial + "',  "
-    xcSql += "  '" + op + "', "
-    xcSql += "  '" + datadoc + "' "
 
     console.log(xcSql)
     execSQL(xcSql, res);
@@ -439,36 +415,6 @@ rota.post('/tblOutInteg', (req, res) => {
     console.log(xcSql)
     execSQL(xcSql, res);
 })
-
-
-
-
-//Documentos da OP
-rota.post('/documentosOpCabec', (req, res) => {
-    let xcSql = '';
-
-    const filial = req.body.filial;
-    const op = req.body.op;
-
-    xcSql += "SELECT DISTINCT "
-    xcSql += "    FILIAL, OP, PRODUTO, DESCRICAO, QTDE,  "
-    xcSql += "    CONVERT(VARCHAR(10), CAST(DATADOC AS DATETIME), 103) DATADOC, "
-    xcSql += "    CONVERT(VARCHAR(10), CAST(EMISSAO AS DATETIME), 103) EMISSAO "
-    xcSql += "FROM "
-    xcSql += "  PCP..DOC "
-    xcSql += "WHERE "
-    xcSql += "	1 = 1 "
-    xcSql += "	AND FILIAL = '" + filial + "' "
-    xcSql += "	AND OP = '" + op + "' "
-
-    console.log(xcSql)
-    execSQL(xcSql, res);
-})
-
-
-
-
-
 
 
 //mantem sempre no final, n�o seu o que �

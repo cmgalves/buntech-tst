@@ -29,7 +29,9 @@ import { EstruturaComponent } from 'app/atualizar/cadastros/estrutura/estrutura.
 import { SaldoComponent } from 'app/atualizar/cadastros/saldo/saldo.component';
 import { RecursoComponent } from 'app/atualizar/cadastros/recurso/recurso.component';
 import { OpconfirmaComponent } from 'app/atualizar/movimentos/op/confirma/opconfirma.component';
-import { OpdocumentoComponent } from 'app/atualizar/movimentos/op/documento/opdocumento.component';
+import { OpdocumentoComponent } from 'app/atualizar/movimentos/doc/documento/opdocumento.component';
+import { DoclistaComponent } from 'app/atualizar/movimentos/doc/doclista/doclista.component';
+import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.component';
 
 
 @NgModule({
@@ -56,6 +58,8 @@ import { OpdocumentoComponent } from 'app/atualizar/movimentos/op/documento/opdo
     UsuarioComponent,
     OpresumoComponent,
     OpdocumentoComponent,
+    DoclistaComponent,
+    DocdetComponent,
     OpvisualizaComponent,
     OpajustaComponent,
     OpconfirmaComponent,
