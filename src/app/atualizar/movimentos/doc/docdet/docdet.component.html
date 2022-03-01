@@ -5,7 +5,6 @@
                 <div class="card">
                     <div class="card-header card-header divCorVerde ">
                         <h4 class="card-title">Visualização dos Dados da OP</h4>
-                        <!-- <p class="card-category">Complete your usuario</p> -->
                     </div>
                     <div class="row">
                         <div class="card-body table-responsive col-md-1">
@@ -42,20 +41,254 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Data Documento</mat-label>
-                                <input matInput [(ngModel)]="opDataDoc">
+                                <input matInput [(ngModel)]="opDataDoc" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-3">
+                            <mat-form-field>
+                                <mat-select placeholder="Processos" [(ngModel)]="valProcesso">
+                                    <mat-option *ngFor="let optProc of optProcesso" [value]="optProc">
+                                        {{optProc}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-4">
+                            <mat-form-field>
+                                <mat-select placeholder="Líder" [(ngModel)]="valLider">
+                                    <mat-option *ngFor="let optLid of optLider" [value]="optLid">
+                                        {{optLid}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Turno 1" [(ngModel)]="valTurno1">
+                                    <mat-option value="S">Sim</mat-option>
+                                    <mat-option value="N">Não</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Turno 2" [(ngModel)]="valTurno2">
+                                    <mat-option value="S">Sim</mat-option>
+                                    <mat-option value="N">Não</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Turno 3" [(ngModel)]="valTurno3">
+                                    <mat-option value="S">Sim</mat-option>
+                                    <mat-option value="N">Não</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 01</mat-label>
+                                <input matInput [(ngModel)]="valclotea">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 01</mat-label>
+                                <input matInput [(ngModel)]="valnlotea">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 02</mat-label>
+                                <input matInput [(ngModel)]="valcloteb">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 02</mat-label>
+                                <input matInput [(ngModel)]="valnloteb">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 03</mat-label>
+                                <input matInput [(ngModel)]="valclotec">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 03</mat-label>
+                                <input matInput [(ngModel)]="valnlotec">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 04</mat-label>
+                                <input matInput [(ngModel)]="valcloted">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 04</mat-label>
+                                <input matInput [(ngModel)]="valnloted">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 05</mat-label>
+                                <input matInput [(ngModel)]="valclotee">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 05</mat-label>
+                                <input matInput [(ngModel)]="valnlotee">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 06</mat-label>
+                                <input matInput [(ngModel)]="valclotef">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 06</mat-label>
+                                <input matInput [(ngModel)]="valnlotef">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 07</mat-label>
+                                <input matInput [(ngModel)]="valcloteg">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 07</mat-label>
+                                <input matInput [(ngModel)]="valnloteg">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 08</mat-label>
+                                <input matInput [(ngModel)]="valcloteh">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 08</mat-label>
+                                <input matInput [(ngModel)]="valnloteh">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 09</mat-label>
+                                <input matInput [(ngModel)]="valclotei">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 09</mat-label>
+                                <input matInput [(ngModel)]="valnlotei">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 10</mat-label>
+                                <input matInput [(ngModel)]="valclotej">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 10</mat-label>
+                                <input matInput [(ngModel)]="valnlotej">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 11</mat-label>
+                                <input matInput [(ngModel)]="valclotek">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 11</mat-label>
+                                <input matInput [(ngModel)]="valnlotek">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote 12</mat-label>
+                                <input matInput [(ngModel)]="valclotel">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde 12</mat-label>
+                                <input matInput [(ngModel)]="valnlotel">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-12">
+                            <mat-form-field>
+                                <mat-label>Obervações</mat-label>
+                                <input matInput [(ngModel)]="valobserv">
                             </mat-form-field>
                         </div>
                     </div>
                 </div>
-                <button mat-raised-button type="submit" class="btn btn-danger"(click)="voltaDocumento()">voltar</button>
-                <button mat-raised-button type="submit" class="btn btn-success"(click)="criaDocumento(1)">criar</button>
+                <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaDoclista()">voltar</button>
+                <button mat-raised-button type="submit" class="btn btn-success" (click)="altCabec()">Atualiza Cabeçalho</button>
+                <button mat-raised-button type="submit" class="btn btn-info" (click)="mostraInclusao()">Incluir Componente</button>
+            </div>
+        </div>
+        <div class="row" *ngIf="mostraInc">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorVerde ">
+                        <h4 class="card-title">Adiciona Item no Empenho"</h4>
+                        <!-- <p class="card-category">Complete your usuario</p> -->
+                    </div>
+                    <div class="row">
+                        <div class="card-body table-responsive col-md-3">
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Código do Produto</mat-label>
+                                    <input type="text" placeholder="Código Produto" aria-label="Number" matInput
+                                        [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="opItemNovo">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                        (optionSelected)="aposSelec($event)">
+                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                            [value]="option.codigo">
+                                            {{option.codigo}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </form>
+                        </div>
+                        <div class="card-body table-responsive col-md-5">
+                            <mat-form-field>
+                                <mat-label>Descrição</mat-label>
+                                <input matInput [(ngModel)]="opDescItemNovo" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Quantidade</mat-label>
+                                <input type="number" matInput [(ngModel)]="opQtdeItemNovo">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <button mat-raised-button type="submit" class="btn btn-info" (click)="incProd()">Adiciona</button>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorAzul">
-                        <a>RELAÇÃO DE ORDENS DE PRODUÇÃO<button (click)="expExcel('Ordens OP Andamento', 'OP')"
+                        <a>RELAÇÃO DE COMPONENTES DA ORDEM DE PRODUÇÃO<button (click)="expExcel('Componentes da OP', 'COMP_OP')"
                                 mat-raised-button type="button" matTooltip="Exporta Excel"
                                 [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
@@ -64,61 +297,86 @@
                             </button></a>
                     </div>
                     <div class="card-body table-responsive">
-                        <div class="row">
-                            <div class="card-body table-responsive col-md-12">
-                                <mat-form-field>
-                                    <mat-label>Filtro</mat-label>
-                                    <input matInput (keyup)="applyFilter()" placeholder="Filtrando Ordem Produção"
-                                        [(ngModel)]="opFilter">
-                                </mat-form-field>
-                            </div>
-                        </div>
+
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
                                 <ng-container matColumnDef="SEQ">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> SEQ </th>
                                     <td mat-cell *matCellDef="let row"> {{row.SEQ}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="FILIAL">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> FIL </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.FILIAL}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="OP">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> OP </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.OP}} </td>
-                                </ng-container>
                                 <ng-container matColumnDef="CODPROD">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> CODPROD </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Componente </th>
                                     <td mat-cell *matCellDef="let row"> {{row.CODPROD}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="DESCRICAO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> DESCRICAO </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
                                     <td mat-cell *matCellDef="let row"> {{row.DESCRICAO}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="QTDE">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> QTDE </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Original</th>
                                     <td mat-cell *matCellDef="let row"> {{row.QTDE}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="EMISSAO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> EMISSAO </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.EMISSAO}} </td>
+                                <ng-container matColumnDef="QTDECAL">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Informada </th>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='enableEditIndex!=i'>{{row.QTDECAL}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.QTDECAL}} class="editQtd"
+                                            id="editQtd" *ngIf='enableEditIndex==i'>
+                                    </td>
                                 </ng-container>
-                                <ng-container matColumnDef="DATADOC">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> DATADOC </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.DATADOC}} </td>
+                                <ng-container matColumnDef="LOTEOP">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> LOTE / NF / OP </th>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='enableEditIndex!=i'>{{row.LOTEOP}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.LOTEOP}} class="editLote"
+                                            id="editLote" *ngIf='enableEditIndex==i'>
+                                    </td>
                                 </ng-container>
                                 <ng-container matColumnDef="EDICAO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> EDIÇÃO </th>
-                                    <td mat-cell *matCellDef="let row">
-                                        <button (click)="acessoDetdoc(row)" mat-raised-button type="button"
-                                            matTooltip="Acesso Docdets" [matTooltipPosition]="'above'"
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
+                                    <td mat-cell *matCellDef="let row; let i = index;">
+                                        <button *ngIf='enableEditIndex != i' (click)="enableEditUser($event, i)"
+                                            mat-raised-button type="button" matTooltip="Edição"
+                                            [matTooltipPosition]="'above'"
                                             class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <i class="material-icons">settings_overscan</i>
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                        <button *ngIf='enableEditIndex==i' (click)='altLinha(row)' mat-raised-button
+                                            type='button' matTooltip="Salvar Alteração"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class='material-icons'>save</i>
+                                        </button>
+                                        <button *ngIf='enableEditIndex==i' (click)='enableEditIndex=null;'
+                                            mat-raised-button type='button' matTooltip="Cancelar"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class='material-icons'>cancel</i>
+                                        </button>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="APONTA">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Apontamento </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.APONTA}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="ATIVO">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ativo </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.ATIVO}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="APT">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Apontamento </th>
+                                    <td mat-cell *matCellDef="let row;">
+                                        <button (click)='aptLinha(row);' mat-raised-button type='button'
+                                            matTooltip="Apontamento" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class='material-icons'>outbox</i>
+                                        </button>
+                                        <button (click)='delLinha(row);' mat-raised-button type='button'
+                                            matTooltip="Deletar Registro" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class='material-icons'>remove_done</i>
                                         </button>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
+                                    [ngClass]="{'sts00' : row.ATIVO === 'Sim' && row.APONTA === 'Sim','sts10' : row.ATIVO === 'Sim' && row.APONTA === 'Não','sts20' : row.ATIVO === 'Não' && row.APONTA === 'Sim','sts30' : row.ATIVO === 'Não' && row.APONTA === 'Não'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

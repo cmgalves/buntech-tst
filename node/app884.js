@@ -92,7 +92,7 @@ rota.post('/ordemProducaoAndamento', (req, res) => {
 })
 
 
-//Ordens de produção abertas ou fechadas recentemente
+//Cadastro de Produtos por view
 rota.post('/cadastroProdutos', (req, res) => {
     let xcSql = '';
 

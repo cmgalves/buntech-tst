@@ -65,7 +65,7 @@ export class OpdocumentoComponent implements OnInit {
 
 
   opdocumentos: Observable<any>;
-  displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'RECURSO', 'OPERACAO', 'EMISSAO', 'FINAL', 'CODPROD', 'QTDEPCF', 'QTDEPRT', 'ENTREGUE', 'RETRABALHO', 'HORAS', 'SITUACAO', 'EDICAO'];
+  displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'EMISSAO', 'CODPROD', 'QTDEPCF', 'QTDEPRT', 'ENTREGUE', 'RETRABALHO', 'HORAS', 'SITUACAO', 'EDICAO'];
   dataSource: MatTableDataSource<opDocumento>;
   dataExcel: MatTableDataSource<opDocumento>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -127,8 +127,7 @@ export class OpdocumentoComponent implements OnInit {
     if (this.arrOpdocumento888 != null) {
       this.arrOpdocumento888.subscribe(cada => {
         cada.forEach(xy => {
-          const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
-          // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+          const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
           if (filOP.length > 0) {
             let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
             conta++
@@ -160,8 +159,7 @@ export class OpdocumentoComponent implements OnInit {
         if (this.arrOpdocumento886 != null) {
           this.arrOpdocumento886.subscribe(cada => {
             cada.forEach(xy => {
-              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
-              // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
@@ -192,8 +190,7 @@ export class OpdocumentoComponent implements OnInit {
             if (this.arrOpdocumento887 != null) {
               this.arrOpdocumento887.subscribe(cada => {
                 cada.forEach(xy => {
-                  const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
-                  // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+                  const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
                   if (filOP.length > 0) {
                     let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                     conta++
@@ -226,6 +223,9 @@ export class OpdocumentoComponent implements OnInit {
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
                 this.applyFilter()
+                if (this.numOP !== null) {
+                  this.opFilter = this.numOP[0].OP
+                }
               });
             }
           });
@@ -233,8 +233,7 @@ export class OpdocumentoComponent implements OnInit {
           if (this.arrOpdocumento887 != null) {
             this.arrOpdocumento887.subscribe(cada => {
               cada.forEach(xy => {
-                const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
-                // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+                const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
                 if (filOP.length > 0) {
                   let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                   conta++
@@ -267,6 +266,9 @@ export class OpdocumentoComponent implements OnInit {
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
               this.applyFilter()
+              if (this.numOP !== null) {
+                this.opFilter = this.numOP[0].OP
+              }
             });
           }
         }
@@ -275,8 +277,7 @@ export class OpdocumentoComponent implements OnInit {
       if (this.arrOpdocumento886 != null) {
         this.arrOpdocumento886.subscribe(cada => {
           cada.forEach(xy => {
-            const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
-            // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+            const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
             if (filOP.length > 0) {
               let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
               conta++
@@ -309,8 +310,7 @@ export class OpdocumentoComponent implements OnInit {
         if (this.arrOpdocumento887 != null) {
           this.arrOpdocumento887.subscribe(cada => {
             cada.forEach(xy => {
-              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial));
-              // const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
@@ -343,6 +343,9 @@ export class OpdocumentoComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
             this.applyFilter()
+            if (this.numOP !== null) {
+              this.opFilter = this.numOP[0].OP
+            }
           });
         }
       }

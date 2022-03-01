@@ -84,7 +84,7 @@ export class DoclistaComponent implements OnInit {
 
   buscaProdutos() {
     const obj = {
-      'produto': ''
+      'produto': this.numOP[0].CODPROD
     };
     this.arrProdA = this.funcJson.busca884('cadastroProdutos', obj);
 
@@ -94,13 +94,10 @@ export class DoclistaComponent implements OnInit {
           this.arrProdB.push({
             'codigo': xy.codigo,
             'descricao': xy.descricao,
-            'unidade': xy.unidade,
-            'retrabalho': xy.retrabalho,
-            'mdo': xy.mdo,
           })
         }
       });
-      localStorage.setItem('cadProd', JSON.stringify(this.arrProdB));
+      localStorage.setItem('cadProdDoc', JSON.stringify(this.arrProdB));
       this.buscaOpsAndamentoProtheus();
     });
   }
@@ -108,7 +105,7 @@ export class DoclistaComponent implements OnInit {
   // busca os produtos no cadastro para utilizar os dados necessários
   buscaOpsAndamentoProtheus() {
     const codPro = this.numOP[0].CODPROD;
-    let aCadProd = JSON.parse(localStorage.getItem('cadProd'));
+    let aCadProd = JSON.parse(localStorage.getItem('cadProdDoc'));
     let seq = 0;
 
     const obj = {
@@ -122,13 +119,13 @@ export class DoclistaComponent implements OnInit {
         seq++
         this.arrOpAndB.push({
           'SEQ': seq,
-          'FILIAL': xy.FILIAL,
-          'OP': xy.OP,
-          'CODPROD': xy.CODPROD,
-          'DESCRICAO': xy.DESCRICAO,
-          'QTDE': xy.QTDE,
-          'EMISSAO': xy.EMISSAO,
-          'DATADOC': xy.DATADOC,
+          'FILIAL': xy.filial,
+          'OP': xy.op,
+          'CODPROD': xy.produto,
+          'DESCRICAO': xy.descricao,
+          'QTDE': xy.qtdeori,
+          'EMISSAO': xy.emissao,
+          'DATADOC': xy.datadoc,
         })
 
       });
@@ -137,28 +134,23 @@ export class DoclistaComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       
-      aCadProd = aCadProd.filter(x => (x.codigo === codPro))[0];
+      // aCadProd = aCadProd.filter(x => (x.codigo === codPro))[0];
 
       this.opFilial = this.numOP[0].FILIAL;
       this.opCodigo = this.numOP[0].OP;
       this.opDataDoc = this.funcJson.datadehoje('brasuca')
       this.opFinal = this.numOP[0].FINAL;
       this.opProduto = codPro;
-      this.opDescricao = aCadProd.descricao;
+      this.opDescricao = aCadProd[0].descricao;
       this.opQtde = this.numOP[0].QTDEPRT;
       this.opEntregue = this.numOP[0].ENTREGUE;
     });
-
-
-
   }
 
 
 
   acessoDetdoc(xcRow) {
-    alert('Aguardando!')
-    // const filOP = this.arrDoclistaTab.filter(x => x.OP == xcRow.OP);
-    // localStorage.setItem('op', JSON.stringify(filOP));
+    localStorage.setItem('dadosDoc', JSON.stringify(xcRow));
     this.router.navigate(['docdet']);
   }
   // exporta os dados para o excel
@@ -187,7 +179,10 @@ export class DoclistaComponent implements OnInit {
           'tipo': xnTipo,
           'filial': this.opFilial,
           'op': this.opCodigo,
-          'datadoc': arrData[2] + arrData[1] + arrData[0]
+          'datadoc': arrData[2] + arrData[1] + arrData[0],
+          'qtdeinfo': 0,
+          'itComp': ' ',
+          'itlote': ' ',
         }
         this.funcJson.execProd('atualizaDoc', obj);
         window.location.reload();
@@ -196,7 +191,10 @@ export class DoclistaComponent implements OnInit {
           'tipo': xnTipo,
           'filial': this.opFilial,
           'op': this.opCodigo,
-          'datadoc': arrData[2] + arrData[1] + arrData[0]
+          'datadoc': arrData[2] + arrData[1] + arrData[0],
+          'qtdeinfo': 0,
+          'itComp': ' ',
+          'itlote': ' ',
         }
         this.funcJson.execProd('atualizaDoc', obj);
         window.location.reload();
