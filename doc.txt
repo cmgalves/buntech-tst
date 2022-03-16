@@ -86,3 +86,16 @@ sudo systemctl start app88.service
 - Correção dos saldos empenhados, em envio de parciais da janela de apontamento; daniel
 - Tratativa de erros de integração Protheus/Janela de apontamento; daniel
 - Status quando ocorrer alteração no PCFactrory: em andamento
+
+
+ATIVIDADES DA INCLUSÃO DE DOCS.
+
+01 - criar atalho na linha para excluir o documento com pergunta de confirmação. ok
+02 - no item do DOCUMENTO, caso os dois sejam não, deleta a linha. ok
+03 - doclista tirar as colunas QTDE e EMISSAO. ok
+04 - COLOCAR QUEBRA NA DESCRIÇÃO E NO LOTE/NF/OP ok
+05 - INCLUIR A COLUNA UNIDADE DEPOIS DA QTDE - ok
+06 - TIRAR COLUNA APONTA - ok
+
+
+

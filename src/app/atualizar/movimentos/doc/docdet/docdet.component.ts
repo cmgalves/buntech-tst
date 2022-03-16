@@ -9,6 +9,8 @@ import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
+import { jsPDF } from 'jspdf'
+import { DOCUMENT } from '@angular/common';
 
 // tslint:disable-next-line:class-name
 export interface opDocdet {
@@ -100,8 +102,8 @@ export class DocdetComponent implements OnInit {
   valTurno1: string = 'N';
   valTurno2: string = 'N';
   valTurno3: string = 'N';
-  valProcesso: string = '';
-  valLider: string = '';
+  valProcesso: string = ' ';
+  valLider: string = ' ';
   valobserv: string = ' ';
 
   mostraInc: boolean = false;
@@ -125,7 +127,7 @@ export class DocdetComponent implements OnInit {
 
 
   docdets: Observable<any>;
-  displayedColumns: string[] = ['SEQ', 'CODPROD', 'DESCRICAO', 'QTDE', 'QTDECAL', 'LOTEOP', 'EDICAO', 'APONTA', 'ATIVO', 'APT'];
+  displayedColumns: string[] = ['SEQ', 'CODPROD', 'DESCRICAO', 'QTDE', 'QTDECAL', 'LOTEOP', 'EDICAO', 'ATIVO', 'APONTA', 'APT'];
   dataSource: MatTableDataSource<opDocdet>;
   dataExcel: MatTableDataSource<opDocdet>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -164,6 +166,7 @@ export class DocdetComponent implements OnInit {
           'FILIAL': xy.itfilial,
           'OP': xy.itop,
           'CODPROD': xy.itcomp,
+          'UNIDADE': xy.ituni,
           'DESCRICAO': xy.itdesc,
           'QTDE': xy.itqtdeorig,
           'QTDECAL': xy.itqtdeinfo,
@@ -215,6 +218,7 @@ export class DocdetComponent implements OnInit {
 
       });
 
+      localStorage.setItem('listaComponentes', JSON.stringify(this.arrOpAndB));
       this.dataSource = new MatTableDataSource(this.arrOpAndB)
 
     });
@@ -377,13 +381,22 @@ export class DocdetComponent implements OnInit {
     this.funcJson.execProd('atualizaDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
-}
+  }
 
   // Altera se deseja fazer apontamento ou não
   aptLinha(xaRow) {
     const arrData = this.opDataDoc.split('/')
+    let xcTipo = 0
+    if (xaRow.APONTA == 'Sim' && xaRow.ATIVO == 'Não') {
+      if (confirm('Confirma a Exclusão do Item ' + xaRow.CODPROD + '?')) {
+        xcTipo = 7
+      }
+    } else {
+      xcTipo = 4
+    }
+
     const obj = {
-      'tipo': 4,
+      'tipo': xcTipo,
       'filial': this.opFilial,
       'op': this.opCodigo,
       'datadoc': arrData[2] + arrData[1] + arrData[0],
@@ -394,13 +407,21 @@ export class DocdetComponent implements OnInit {
     this.funcJson.execProd('atualizaDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
-}
+  }
 
   // Altera se deseja fazer apontamento ou não
   delLinha(xaRow) {
     const arrData = this.opDataDoc.split('/')
+    let xcTipo = 0
+    if (xaRow.APONTA == 'Não' && xaRow.ATIVO == 'Sim') {
+      if (confirm('Confirma a Exclusão do Item ' + xaRow.CODPROD + '?')) {
+        xcTipo = 7
+      }
+    } else {
+      xcTipo = 5
+    }
     const obj = {
-      'tipo': 5,
+      'tipo': xcTipo,
       'filial': this.opFilial,
       'op': this.opCodigo,
       'datadoc': arrData[2] + arrData[1] + arrData[0],
@@ -411,7 +432,7 @@ export class DocdetComponent implements OnInit {
     this.funcJson.execProd('atualizaDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
-}
+  }
 
 
   retArrayLider() {
@@ -469,41 +490,436 @@ export class DocdetComponent implements OnInit {
       'filial': this.opFilial,
       'op': this.opCodigo,
       'datadoc': arrData[2] + arrData[1] + arrData[0],
-      'clotea': this.valclotea,
-      'cloteb': this.valcloteb,
-      'clotec': this.valclotec,
-      'cloted': this.valcloted,
-      'clotee': this.valclotee,
-      'clotef': this.valclotef,
-      'cloteg': this.valcloteg,
-      'cloteh': this.valcloteh,
-      'clotei': this.valclotei,
-      'clotej': this.valclotej,
-      'clotek': this.valclotek,
-      'clotel': this.valclotel,
-      'nlotea': this.valnlotea,
-      'nloteb': this.valnloteb,
-      'nlotec': this.valnlotec,
-      'nloted': this.valnloted,
-      'nlotee': this.valnlotee,
-      'nlotef': this.valnlotef,
-      'nloteg': this.valnloteg,
-      'nloteh': this.valnloteh,
-      'nlotei': this.valnlotei,
-      'nlotej': this.valnlotej,
-      'nlotek': this.valnlotek,
-      'nlotel': this.valnlotel,
-      'lider': this.valLider,
-      'processo': this.valProcesso,
-      'observ': this.valobserv,
-      'turno1': this.valTurno1,
-      'turno2': this.valTurno2,
-      'turno3': this.valTurno3,
+      'clotea': this.valclotea === null ? ' ' : this.valclotea,
+      'cloteb': this.valcloteb === null ? ' ' : this.valcloteb,
+      'clotec': this.valclotec === null ? ' ' : this.valclotec,
+      'cloted': this.valcloted === null ? ' ' : this.valcloted,
+      'clotee': this.valclotee === null ? ' ' : this.valclotee,
+      'clotef': this.valclotef === null ? ' ' : this.valclotef,
+      'cloteg': this.valcloteg === null ? ' ' : this.valcloteg,
+      'cloteh': this.valcloteh === null ? ' ' : this.valcloteh,
+      'clotei': this.valclotei === null ? ' ' : this.valclotei,
+      'clotej': this.valclotej === null ? ' ' : this.valclotej,
+      'clotek': this.valclotek === null ? ' ' : this.valclotek,
+      'clotel': this.valclotel === null ? ' ' : this.valclotel,
+      'nlotea': this.valnlotea === null ? 0 : this.valnlotea,
+      'nloteb': this.valnloteb === null ? 0 : this.valnloteb,
+      'nlotec': this.valnlotec === null ? 0 : this.valnlotec,
+      'nloted': this.valnloted === null ? 0 : this.valnloted,
+      'nlotee': this.valnlotee === null ? 0 : this.valnlotee,
+      'nlotef': this.valnlotef === null ? 0 : this.valnlotef,
+      'nloteg': this.valnloteg === null ? 0 : this.valnloteg,
+      'nloteh': this.valnloteh === null ? 0 : this.valnloteh,
+      'nlotei': this.valnlotei === null ? 0 : this.valnlotei,
+      'nlotej': this.valnlotej === null ? 0 : this.valnlotej,
+      'nlotek': this.valnlotek === null ? 0 : this.valnlotek,
+      'nlotel': this.valnlotel === null ? 0 : this.valnlotel,
+      'lider': this.valLider === null ? ' ' : this.valLider,
+      'processo': this.valProcesso === null ? ' ' : this.valProcesso,
+      'observ': this.valobserv === null ? ' ' : this.valobserv,
+      'turno1': this.valTurno1 === null ? 'N' : this.valTurno1,
+      'turno2': this.valTurno2 === null ? 'N' : this.valTurno2,
+      'turno3': this.valTurno3 === null ? 'N' : this.valTurno3,
     }
     this.funcJson.execProd('atualizaCabecDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
-}
+  }
+
+  imprimeDocumento() {
+    let doc = new jsPDF();
+    const dadosDoc = JSON.parse(localStorage.getItem('listaComponentes'));
+    const arrData = this.opDataDoc.split('/');
+    const datadoc = arrData[2] + arrData[1] + arrData[0];
+    var img = new Image()
+    let xlEntrou = true
+    const cOp = this.opCodigo;
+    const Lin = 7;
+    let nL = 3;
+    let nL2 = 0;
+    let xnTmProd = 72;
+    let xnTmLote = 50;
+    let xcDescLote = '';
+    let xcDescUnit = '';
+
+    const xnQtdeTota = this.valnlotea + this.valnloteb + this.valnlotec + this.valnloted + this.valnlotee + this.valnlotef + this.valnloteg + this.valnloteh + this.valnlotei + this.valnlotej + this.valnlotek + this.valnlotel
+    const xnQtdeTotal = xnQtdeTota.toLocaleString()
+    const aF = [8, 10, 12, 14, 16, 20];
+    img.src = 'assets/img/logo.png'
+
+    doc.setFontSize(aF[5]);
+
+    doc.addImage(img, 'png', 140, nL, 55, 17)
+
+    nL += 12; //15
+
+    doc.text('ORDEM DE PRODUÇÃO', 40, nL);
+
+    nL += 7; //22
+
+    doc.setLineWidth(1.5)
+    doc.line(10, nL, 200, nL)
+
+    nL += Lin //29
+
+    doc.setFontSize(aF[3]);
+
+    doc.text('OP: ' + cOp + ' --> ' + this.opProduto + ' - ' + this.opDescricao, 10, nL);
+
+    doc.setLineWidth(0.7)
+
+    doc.setFontSize(aF[1]);
+    nL += Lin; //36
+    doc.text('Data: ' + this.opDataDoc, 10, nL);
+    doc.text('Processo: ' + this.valProcesso, 46, nL);
+    doc.text('Lider: ' + this.valLider, 120, nL);
+    nL += 1
+    doc.setLineWidth(0.3)
+    doc.line(160, nL, 200, nL)
+    doc.line(160, nL + 6, 200, nL + 6)
+    doc.line(160, nL + 17, 200, nL + 17)
+    doc.line(160, nL, 160, nL + 17)
+    doc.line(200, nL, 200, nL + 17)
+
+    nL += 4; //43
+    
+    doc.text('Quantidade Total (TN)', 161, nL);
+
+    nL += 2; //43
+
+    doc.setFontSize(aF[2]);
+    doc.text('TURNO ', 10, nL);
+    doc.text('1 - ', 30, nL);
+    if (this.valTurno1 === 'S') {
+      doc.rect(36, nL - 4, 5, 5, 'F')
+    } else {
+      doc.rect(36, nL - 4, 5, 5)
+    }
+    doc.text('2 - ', 50, nL);
+    if (this.valTurno2 === 'S') {
+      doc.rect(56, nL - 4, 5, 5, 'F')
+    } else {
+      doc.rect(56, nL - 4, 5, 5)
+    }
+    doc.text('3 - ', 70, nL);
+    if (this.valTurno3 === 'S') {
+      doc.rect(76, nL - 4, 5, 5, 'F')
+    } else {
+      doc.rect(76, nL - 4, 5, 5)
+    }
+
+
+    
+    nL += Lin ; //52
+
+    doc.setFontSize(aF[3]);
+    doc.text(xnQtdeTotal.toString(), 172, nL);
+
+    doc.setFontSize(aF[4]);
+    doc.text('QUANTIDADE PRODUZIDA (TN) ', 62, nL);
+
+    nL += 6; //56
+
+    doc.setFontSize(aF[1]);
+
+    doc.setLineWidth(0.7)
+    doc.line(10, nL, 200, nL)
+    doc.line(10, nL + 37, 200, nL + 37)
+    doc.line(10, nL, 10, nL + 37)
+    doc.line(200, nL, 200, nL + 37)
+
+    doc.setLineWidth(0.2)
+    doc.line(27, nL, 27, nL + 37)
+    doc.line(57, nL, 57, nL + 37)
+    doc.line(75, nL, 75, nL + 37)
+    doc.line(105, nL, 105, nL + 37)
+    doc.line(122, nL, 122, nL + 37)
+    doc.line(152, nL, 152, nL + 37)
+    doc.line(169, nL, 169, nL + 37)
+
+    nL += Lin //63
+    doc.line(10, nL, 200, nL)
+    nL += -1; //62
+
+    doc.text('Lote 01 ', 11, nL);
+    doc.text('Lote 02 ', 58, nL);
+    doc.text('Lote 03 ', 106, nL);
+    doc.text('Lote 04 ', 153, nL);
+    doc.text(this.valclotea, 30, nL);
+    doc.text(this.valcloteb, 77, nL);
+    doc.text(this.valclotec, 125, nL);
+    doc.text(this.valcloted, 172, nL);
+
+    nL += Lin //69
+    doc.line(10, nL, 200, nL)
+    nL += -1; //68
+    doc.text('Qtde 01 ', 11, nL);
+    doc.text('Qtde 02 ', 58, nL);
+    doc.text('Qtde 03 ', 106, nL);
+    doc.text('Qtde 04 ', 153, nL);
+    doc.text(this.valnlotea.toString(), 30, nL);
+    doc.text(this.valnloteb.toString(), 77, nL);
+    doc.text(this.valnlotec.toString(), 125, nL);
+    doc.text(this.valnloted.toString(), 172, nL);
+
+    nL += Lin //75
+    doc.line(10, nL, 200, nL)
+    nL += -1; //74
+
+    doc.text('Lote 05 ', 11, nL);
+    doc.text('Lote 06 ', 58, nL);
+    doc.text('Lote 07 ', 106, nL);
+    doc.text('Lote 08 ', 153, nL);
+    doc.text(this.valclotee, 30, nL);
+    doc.text(this.valclotef, 77, nL);
+    doc.text(this.valcloteg, 125, nL);
+    doc.text(this.valcloteh, 172, nL);
+
+    nL += Lin //81
+    doc.line(10, nL, 200, nL)
+    nL += -1; //80
+
+    doc.text('Qtde 05 ', 11, nL);
+    doc.text('Qtde 06 ', 58, nL);
+    doc.text('Qtde 07 ', 106, nL);
+    doc.text('Qtde 08 ', 153, nL);
+    doc.text(this.valnlotee.toString(), 30, nL);
+    doc.text(this.valnlotef.toString(), 77, nL);
+    doc.text(this.valnloteg.toString(), 125, nL);
+    doc.text(this.valnloteh.toString(), 172, nL);
+
+    nL += Lin //87
+    doc.line(10, nL, 200, nL)
+    nL += -1; //86
+
+    doc.text('Lote 09 ', 11, nL);
+    doc.text('Lote 10 ', 58, nL);
+    doc.text('Lote 11 ', 106, nL);
+    doc.text('Lote 12 ', 153, nL);
+    doc.text(this.valclotei, 30, nL);
+    doc.text(this.valclotej, 77, nL);
+    doc.text(this.valclotek, 125, nL);
+    doc.text(this.valclotel, 172, nL);
+
+    nL += Lin //93
+    doc.line(10, nL, 200, nL)
+    nL += -1; //92
+
+
+    doc.text('Qtde 09 ', 11, nL);
+    doc.text('Qtde 10 ', 58, nL);
+    doc.text('Qtde 11 ', 106, nL);
+    doc.text('Qtde 12 ', 153, nL);
+    doc.text(this.valnlotei.toString(), 30, nL);
+    doc.text(this.valnlotej.toString(), 77, nL);
+    doc.text(this.valnlotek.toString(), 125, nL);
+    doc.text(this.valnlotel.toString(), 172, nL);
+
+    nL += 9; //101
+
+    doc.setFontSize(aF[4]);
+    doc.text('COMPONENTES DA ORDEM DE PRODUÇÃO', 38, nL);
+
+    nL += 5; //106
+    nL2 = nL
+    doc.setFontSize(aF[1]);
+
+
+    doc.setLineWidth(0.7)
+    doc.line(10, nL, 200, nL)
+    nL += Lin; //113
+    doc.line(10, nL, 200, nL)
+
+    nL += -1; //112
+
+    doc.text('CÓDIGO', 12, nL);
+    doc.text('DESCRIÇÃO', 55, nL);
+    doc.text('UN', 122, nL);
+    doc.text('QTDE', 136, nL);
+    doc.text('LOTE / NF / OP', 155, nL);
+
+
+    nL += Lin;
+    doc.setFontSize(aF[0]);
+
+    doc.setLineWidth(0.2)
+
+    xlEntrou = true;
+
+    dadosDoc.forEach(xy => {
+      if (xy.ATIVO !== 'Não') {
+        xcDescLote = xy.LOTEOP === null ? ' ' : xy.LOTEOP
+        xcDescUnit = xy.UNIDADE === null ? ' ' : xy.UNIDADE
+        if (xlEntrou) {
+          doc.text(xy.CODPROD, 12, nL);
+          doc.text(xy.DESCRICAO, 38, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmProd });
+          doc.text(xcDescUnit, 122, nL);
+          doc.text((xy.QTDECAL.toString()), 138, nL);
+          doc.text(xcDescLote, 149, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmLote });
+          // doc.text(xy.LOTEOP === null ? ' ' : xy.LOTEOP, 137, nL);
+          nL += Lin;
+          xlEntrou = false;
+        } else {
+          nL += -4
+          doc.text(xy.CODPROD, 12, nL);
+          doc.text(xy.DESCRICAO, 38, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmProd });
+          doc.text(xcDescUnit, 122, nL);
+          doc.text((xy.QTDECAL.toString()), 138, nL);
+          doc.text(xcDescLote, 149, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmLote });
+          nL += 4
+        }
+        doc.line(10, nL + 1, 200, nL + 1)
+        nL += Lin * 2;
+      }
+    });
+
+
+    doc.setLineWidth(0.7)
+
+    nL += -13
+
+    doc.line(10, nL, 200, nL)
+    doc.line(10, nL2, 10, nL)
+    doc.line(200, nL2, 200, nL)
+
+    doc.setLineWidth(0.2)
+
+    doc.line(37, nL2, 37, nL)
+    doc.line(120, nL2, 120, nL)
+    doc.line(135, nL2, 135, nL)
+    doc.line(148, nL2, 148, nL)
+
+    // nL += 9
+
+    // nL += Lin;
+
+    // nL = 270;
+
+    // doc.setFontSize(aF[4]);
+    // doc.text('OBSERVAÇÕES', 12, nL);
+    // nL += Lin + 5;
+    // doc.setFontSize(aF[2]);
+
+
+    // doc.text(this.valobserv, 12, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: 178 });
+
+
+    // COMEÇA A OUTRA PÁGINA
+
+    doc.addPage();
+    nL = 3;
+    img.src = 'assets/img/logo.png'
+
+    doc.setFontSize(aF[5]);
+
+    doc.addImage(img, 'png', 140, nL, 55, 17)
+
+    nL += 12; //15
+
+    doc.text('ORDEM DE PRODUÇÃO', 40, nL);
+
+    nL += 7; //22
+
+    doc.setLineWidth(1.5)
+    doc.line(10, nL, 200, nL)
+
+    nL += Lin //29
+
+    doc.setFontSize(aF[3]);
+
+    doc.text('OP: ' + cOp + ' --> ' + this.opProduto + ' - ' + this.opDescricao, 10, nL);
+
+    doc.setLineWidth(0.7)
+
+    doc.setFontSize(aF[1]);
+    nL += Lin; //36
+    doc.text('Data: ' + this.opDataDoc, 10, nL);
+    doc.text('Processo: ' + this.valProcesso, 46, nL);
+    doc.text('Lider: ' + this.valLider, 120, nL);
+
+    nL += 9; //101
+    
+    doc.setFontSize(aF[4]);
+    doc.text('COMPONENTES PARA APONTAMENTO', 42, nL);
+
+    nL += Lin;
+    nL2 = nL
+    doc.setFontSize(aF[1]);
+
+    doc.setLineWidth(0.7)
+    doc.line(10, nL2, 200, nL2)
+    nL += Lin;
+    doc.line(10, nL2 + 8, 200, nL2 + 8)
+
+
+    doc.text('CÓDIGO', 12, nL);
+    doc.text('DESCRIÇÃO', 55, nL);
+    doc.text('UN', 122, nL);
+    doc.text('QTDE', 136, nL);
+    doc.text('APONTAMENTO', 155, nL);
+
+    nL += 9;
+
+    doc.setFontSize(aF[0]);
+
+    doc.setLineWidth(0.2)
+
+    xlEntrou = true;
+
+    dadosDoc.forEach(xy => {
+      if (xy.APONTA !== 'Não') {
+        xcDescUnit = xy.UNIDADE === null ? ' ' : xy.UNIDADE
+
+        if (xlEntrou) {
+          doc.text(xy.CODPROD, 12, nL);
+          doc.text(xy.DESCRICAO, 38, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmProd });
+          doc.text(xcDescUnit, 122, nL);
+          doc.text((xy.QTDECAL.toString()), 138, nL);
+          nL += Lin;
+          xlEntrou = false;
+        } else {
+          nL += -4
+          doc.text(xy.CODPROD, 12, nL);
+          doc.text(xy.DESCRICAO, 38, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmProd });
+          doc.text(xcDescUnit, 122, nL);
+          doc.text((xy.QTDECAL.toString()), 138, nL);
+          nL += 4
+        }
+        doc.line(10, nL + 1, 200, nL + 1)
+
+        nL += Lin * 2;
+      }
+    });
+
+    doc.setLineWidth(0.7)
+
+    nL += -13
+
+    doc.line(10, nL, 200, nL)
+    doc.line(10, nL2, 10, nL)
+    doc.line(200, nL2, 200, nL)
+
+    doc.setLineWidth(0.2)
+
+    doc.line(37, nL2, 37, nL)
+    doc.line(120, nL2, 120, nL)
+    doc.line(135, nL2, 135, nL)
+    doc.line(148, nL2, 148, nL)
+
+    nL += Lin;
+    
+    nL = 260;
+
+
+    doc.setFontSize(aF[4]);
+    doc.text('OBSERVAÇÕES', 12, nL);
+    nL += Lin + 5;
+    doc.setFontSize(aF[2]);
+
+    doc.text(this.valobserv, 12, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: 178 });
+
+    doc.save(cOp + ' - ' + datadoc);
+  }
 
 }
 

@@ -99,14 +99,14 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> DESCRICAO </th>
                                     <td mat-cell *matCellDef="let row"> {{row.DESCRICAO}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="QTDE">
+                                <!-- <ng-container matColumnDef="QTDE">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> QTDE </th>
                                     <td mat-cell *matCellDef="let row"> {{row.QTDE}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="EMISSAO">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> EMISSAO </th>
                                     <td mat-cell *matCellDef="let row"> {{row.EMISSAO}} </td>
-                                </ng-container>
+                                </ng-container> -->
                                 <ng-container matColumnDef="DATADOC">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> DATADOC </th>
                                     <td mat-cell *matCellDef="let row"> {{row.DATADOC}} </td>
@@ -117,7 +117,12 @@
                                         <button (click)="acessoDetdoc(row)" mat-raised-button type="button"
                                             matTooltip="Acesso Doclistas" [matTooltipPosition]="'above'"
                                             class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <i class="material-icons">settings_overscan</i>
+                                            <i class="material-icons">receipt</i>
+                                        </button>
+                                        <button (click)="apagaDetdoc(row)" mat-raised-button type="button"
+                                            matTooltip="Deletar Documentos" [matTooltipPosition]="'above'"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons">disabled_by_default</i>
                                         </button>
                                     </td>
                                 </ng-container>

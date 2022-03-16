@@ -64,7 +64,7 @@ export class DoclistaComponent implements OnInit {
 
 
   doclistas: Observable<any>;
-  displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'CODPROD', 'DESCRICAO', 'QTDE', 'EMISSAO', 'DATADOC', 'EDICAO'];
+  displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'CODPROD', 'DESCRICAO', 'DATADOC', 'EDICAO'];
   dataSource: MatTableDataSource<opDoclista>;
   dataExcel: MatTableDataSource<opDoclista>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -133,7 +133,7 @@ export class DoclistaComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.arrOpAndB)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      
+
       // aCadProd = aCadProd.filter(x => (x.codigo === codPro))[0];
 
       this.opFilial = this.numOP[0].FILIAL;
@@ -152,6 +152,29 @@ export class DoclistaComponent implements OnInit {
   acessoDetdoc(xcRow) {
     localStorage.setItem('dadosDoc', JSON.stringify(xcRow));
     this.router.navigate(['docdet']);
+  }
+
+  //  funçao para apagar o documento do dia selecionato
+  apagaDetdoc(xcRow) {
+    const arrData = xcRow.DATADOC.split('/')
+    const cMensa = 'Confirma a Exclusão do Documento do Dia: ' + xcRow.DATADOC + '?'
+
+    if (confirm(cMensa)) {
+
+      let obj = {
+        'tipo': 6,
+        'filial': this.opFilial,
+        'op': this.opCodigo,
+        'datadoc': arrData[2] + arrData[1] + arrData[0],
+        'qtdeinfo': 0,
+        'itComp': ' ',
+        'itlote': ' ',
+      }
+
+
+      this.funcJson.execProd('atualizaDoc', obj);
+      window.location.reload();
+    }
   }
   // exporta os dados para o excel
   expExcel(fileName, sheetName) {
