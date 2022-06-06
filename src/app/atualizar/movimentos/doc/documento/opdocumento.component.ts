@@ -34,10 +34,12 @@ export class OpdocumentoComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   arrOpAnd: any = []; //JSON.parse(localStorage.getItem('user'))[0];
   arrOpPcf: any = []; //JSON.parse(localStorage.getItem('user'))[0];
-  xcFilial: any = this.arrUserLogado.empresa
-  xcPerfil: any = this.arrUserLogado.perfil
+  xcFilial: any = this.arrUserLogado.empresa;
+  xcPerfil: any = this.arrUserLogado.perfil;
   numOP = JSON.parse(localStorage.getItem('op'));
-  opFilter: any = ''
+  opConta: any = 0;
+  opFilRepet: any = '';
+  opFilter: any = '';
   arrRecA: any = [];
   arrRecB: any = [];
   arrProdA: any = [];
@@ -48,7 +50,7 @@ export class OpdocumentoComponent implements OnInit {
   arrOpdocumento887: any = [];
   arrOpdocumento888: any = [];
   arrOpdocumentoTab: any = [];
-  arrFilial: any = ['101', '107', '117', '402', '108', '206']
+  arrFilial: any = ['101', '107', '117', '402', '108', '206'];
 
   // Campina Grande - 888
   // Servidor de HML:10.3.0.92
@@ -65,7 +67,7 @@ export class OpdocumentoComponent implements OnInit {
 
 
   opdocumentos: Observable<any>;
-  displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'EMISSAO', 'CODPROD', 'QTDEPCF', 'QTDEPRT', 'ENTREGUE', 'RETRABALHO', 'HORAS', 'SITUACAO', 'EDICAO'];
+  displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'CODPROD', 'SITUACAO', 'EDICAO'];
   dataSource: MatTableDataSource<opDocumento>;
   dataExcel: MatTableDataSource<opDocumento>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -127,96 +129,17 @@ export class OpdocumentoComponent implements OnInit {
     if (this.arrOpdocumento888 != null) {
       this.arrOpdocumento888.subscribe(cada => {
         cada.forEach(xy => {
-          const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-          if (filOP.length > 0) {
-            let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-            conta++
-            this.arrOpdocumentoTab.push({
-              'SEQ': conta,
-              'FILIAL': xy.filial,
-              'OP': xy.op,
-              'RECURSO': xy.recurso,
-              'OPERACAO': xy.operacao,
-              'EMISSAO': filOP[0].emissao,
-              'FINAL': filOP[0].final,
-              'ENTREGUE': filOP[0].entregue,
-              'CODPROD': filOP[0].produto,
-              'QTDEPRT': filOP[0].qtde,
-              'QTDEPCF': xy.producao,
-              'RETRABALHO': xy.retrabalho,
-              'SEGUNDOS': xy.segundos,
-              'HORAS': this.funcJson.toHHMMSS(xy.segundos),
-              'SITUACAO': sitDesc,
-            })
-            this.arrOpPcf.push({
-              'FILIAL': xy.filial,
-              'OP': xy.op,
-              'APT': xy.dia,
-            })
-          }
-
+          this.pushTabela(xy);
         });
         if (this.arrOpdocumento886 != null) {
           this.arrOpdocumento886.subscribe(cada => {
             cada.forEach(xy => {
-              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-              if (filOP.length > 0) {
-                let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-                conta++
-                this.arrOpdocumentoTab.push({
-                  'SEQ': conta,
-                  'FILIAL': xy.filial,
-                  'OP': xy.op,
-                  'RECURSO': xy.recurso,
-                  'OPERACAO': xy.operacao,
-                  'EMISSAO': filOP[0].emissao,
-                  'FINAL': filOP[0].final,
-                  'ENTREGUE': filOP[0].entregue,
-                  'CODPROD': filOP[0].produto,
-                  'QTDEPRT': filOP[0].qtde,
-                  'QTDEPCF': xy.producao,
-                  'RETRABALHO': xy.retrabalho,
-                  'SEGUNDOS': xy.segundos,
-                  'HORAS': this.funcJson.toHHMMSS(xy.segundos),
-                  'SITUACAO': sitDesc,
-                })
-                this.arrOpPcf.push({
-                  'FILIAL': xy.filial,
-                  'OP': xy.op,
-                  'APT': xy.dia,
-                })
-              }
+              this.pushTabela(xy);
             });
             if (this.arrOpdocumento887 != null) {
               this.arrOpdocumento887.subscribe(cada => {
                 cada.forEach(xy => {
-                  const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-                  if (filOP.length > 0) {
-                    let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-                    conta++
-                    this.arrOpdocumentoTab.push({
-                      'SEQ': conta,
-                      'FILIAL': xy.filial,
-                      'OP': xy.op,
-                      'RECURSO': xy.recurso,
-                      'OPERACAO': xy.operacao,
-                      'EMISSAO': filOP[0].emissao,
-                      'FINAL': filOP[0].final,
-                      'ENTREGUE': filOP[0].entregue,
-                      'CODPROD': filOP[0].produto,
-                      'QTDEPRT': filOP[0].qtde,
-                      'QTDEPCF': xy.producao,
-                      'RETRABALHO': xy.retrabalho,
-                      'SEGUNDOS': xy.segundos,
-                      'HORAS': this.funcJson.toHHMMSS(xy.segundos),
-                      'SITUACAO': sitDesc,
-                    })
-                    this.arrOpPcf.push({
-                      'FILIAL': xy.filial,
-                      'OP': xy.op,
-                      'APT': xy.dia,
-                    })
-                  }
+                  this.pushTabela(xy);
                 });
                 localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
                 this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
@@ -233,33 +156,7 @@ export class OpdocumentoComponent implements OnInit {
           if (this.arrOpdocumento887 != null) {
             this.arrOpdocumento887.subscribe(cada => {
               cada.forEach(xy => {
-                const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-                if (filOP.length > 0) {
-                  let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-                  conta++
-                  this.arrOpdocumentoTab.push({
-                    'SEQ': conta,
-                    'FILIAL': xy.filial,
-                    'OP': xy.op,
-                    'RECURSO': xy.recurso,
-                    'OPERACAO': xy.operacao,
-                    'EMISSAO': filOP[0].emissao,
-                    'FINAL': filOP[0].final,
-                    'ENTREGUE': filOP[0].entregue,
-                    'CODPROD': filOP[0].produto,
-                    'QTDEPRT': filOP[0].qtde,
-                    'QTDEPCF': xy.producao,
-                    'RETRABALHO': xy.retrabalho,
-                    'SEGUNDOS': xy.segundos,
-                    'HORAS': this.funcJson.toHHMMSS(xy.segundos),
-                    'SITUACAO': sitDesc,
-                  })
-                  this.arrOpPcf.push({
-                    'FILIAL': xy.filial,
-                    'OP': xy.op,
-                    'APT': xy.dia,
-                  })
-                }
+                this.pushTabela(xy);
               });
               localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
               this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
@@ -277,66 +174,14 @@ export class OpdocumentoComponent implements OnInit {
       if (this.arrOpdocumento886 != null) {
         this.arrOpdocumento886.subscribe(cada => {
           cada.forEach(xy => {
-            const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-            if (filOP.length > 0) {
-              let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-              conta++
-              this.arrOpdocumentoTab.push({
-                'SEQ': conta,
-                'FILIAL': xy.filial,
-                'OP': xy.op,
-                'RECURSO': xy.recurso,
-                'OPERACAO': xy.operacao,
-                'EMISSAO': filOP[0].emissao,
-                'FINAL': filOP[0].final,
-                'ENTREGUE': filOP[0].entregue,
-                'CODPROD': filOP[0].produto,
-                'QTDEPRT': filOP[0].qtde,
-                'QTDEPCF': xy.producao,
-                'RETRABALHO': xy.retrabalho,
-                'SEGUNDOS': xy.segundos,
-                'HORAS': this.funcJson.toHHMMSS(xy.segundos),
-                'SITUACAO': sitDesc,
-              })
-              this.arrOpPcf.push({
-                'FILIAL': xy.filial,
-                'OP': xy.op,
-                'APT': xy.dia,
-              })
-            }
+            this.pushTabela(xy);
           });
         });
       } else {
         if (this.arrOpdocumento887 != null) {
           this.arrOpdocumento887.subscribe(cada => {
             cada.forEach(xy => {
-              const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-              if (filOP.length > 0) {
-                let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-                conta++
-                this.arrOpdocumentoTab.push({
-                  'SEQ': conta,
-                  'FILIAL': xy.filial,
-                  'OP': xy.op,
-                  'RECURSO': xy.recurso,
-                  'OPERACAO': xy.operacao,
-                  'EMISSAO': filOP[0].emissao,
-                  'FINAL': filOP[0].final,
-                  'ENTREGUE': filOP[0].entregue,
-                  'CODPROD': filOP[0].produto,
-                  'QTDEPRT': filOP[0].qtde,
-                  'QTDEPCF': xy.producao,
-                  'RETRABALHO': xy.retrabalho,
-                  'SEGUNDOS': xy.segundos,
-                  'HORAS': this.funcJson.toHHMMSS(xy.segundos),
-                  'SITUACAO': sitDesc,
-                })
-                this.arrOpPcf.push({
-                  'FILIAL': xy.filial,
-                  'OP': xy.op,
-                  'APT': xy.dia,
-                })
-              }
+              this.pushTabela(xy);
             });
             localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
             this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
@@ -352,6 +197,31 @@ export class OpdocumentoComponent implements OnInit {
     }
   }
 
+
+  pushTabela(xy) {
+
+    if (this.opFilRepet === '' || this.opFilRepet.indexOf(xy.filial + xy.op) === -1) {
+      this.opFilRepet += xy.filial + xy.op
+      const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+      if (filOP.length > 0) {
+        let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
+        // this.opConta++
+        this.arrOpdocumentoTab.push({
+          'SEQ': this.opConta++,
+          'FILIAL': xy.filial,
+          'OP': xy.op,
+          'CODPROD': filOP[0].produto,
+          'SITUACAO': sitDesc,
+        })
+        this.arrOpPcf.push({
+          'FILIAL': xy.filial,
+          'OP': xy.op,
+          'APT': xy.dia,
+        })
+      }
+    }
+
+  }
 
   // aplica o filtro na tabela de OPs
   applyFilter() {

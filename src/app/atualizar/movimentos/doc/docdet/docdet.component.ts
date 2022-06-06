@@ -74,7 +74,7 @@ export class DocdetComponent implements OnInit {
   arrDocdetTab: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
   optProcesso: string[] = this.retArrayProcesso()
-  optLider: string[] = this.retArrayLider()
+  // optLider: string[] = this.retArrayLider()
   valclotea: string = ' ';
   valcloteb: string = ' ';
   valclotec: string = ' ';
@@ -103,7 +103,7 @@ export class DocdetComponent implements OnInit {
   valTurno2: string = 'N';
   valTurno3: string = 'N';
   valProcesso: string = ' ';
-  valLider: string = ' ';
+  // valLider: string = ' ';
   valobserv: string = ' ';
 
   mostraInc: boolean = false;
@@ -208,7 +208,7 @@ export class DocdetComponent implements OnInit {
           this.valnlotej = xy.nlotej;
           this.valnlotek = xy.nlotek;
           this.valnlotel = xy.nlotel;
-          this.valLider = xy.lider;
+          // this.valLider = xy.lider;
           this.valProcesso = xy.processo;
           this.valobserv = xy.observ;
           this.valTurno1 = xy.turno1;
@@ -514,7 +514,7 @@ export class DocdetComponent implements OnInit {
       'nlotej': this.valnlotej === null ? 0 : this.valnlotej,
       'nlotek': this.valnlotek === null ? 0 : this.valnlotek,
       'nlotel': this.valnlotel === null ? 0 : this.valnlotel,
-      'lider': this.valLider === null ? ' ' : this.valLider,
+      'lider': ' ',
       'processo': this.valProcesso === null ? ' ' : this.valProcesso,
       'observ': this.valobserv === null ? ' ' : this.valobserv,
       'turno1': this.valTurno1 === null ? 'N' : this.valTurno1,
@@ -533,7 +533,7 @@ export class DocdetComponent implements OnInit {
     const datadoc = arrData[2] + arrData[1] + arrData[0];
     var img = new Image()
     let xlEntrou = true
-    const cOp = this.opCodigo;
+    const cOp = (this.opCodigo).substring(0,6);
     const Lin = 7;
     let nL = 3;
     let nL2 = 0;
@@ -562,9 +562,9 @@ export class DocdetComponent implements OnInit {
 
     nL += Lin //29
 
-    doc.setFontSize(aF[3]);
+    doc.setFontSize(aF[1]);
 
-    doc.text('OP: ' + cOp + ' --> ' + this.opProduto + ' - ' + this.opDescricao, 10, nL);
+    doc.text('OP: ' + cOp + ' - ' + this.opProduto + ' - ' + this.opDescricao, 10, nL);
 
     doc.setLineWidth(0.7)
 
@@ -572,7 +572,7 @@ export class DocdetComponent implements OnInit {
     nL += Lin; //36
     doc.text('Data: ' + this.opDataDoc, 10, nL);
     doc.text('Processo: ' + this.valProcesso, 46, nL);
-    doc.text('Lider: ' + this.valLider, 120, nL);
+    // doc.text('Lider: ' + this.valLider, 120, nL);
     nL += 1
     doc.setLineWidth(0.3)
     doc.line(160, nL, 200, nL)
@@ -582,7 +582,7 @@ export class DocdetComponent implements OnInit {
     doc.line(200, nL, 200, nL + 17)
 
     nL += 4; //43
-    
+
     doc.text('Quantidade Total (TN)', 161, nL);
 
     nL += 2; //43
@@ -609,8 +609,8 @@ export class DocdetComponent implements OnInit {
     }
 
 
-    
-    nL += Lin ; //52
+
+    nL += Lin; //52
 
     doc.setFontSize(aF[3]);
     doc.text(xnQtdeTotal.toString(), 172, nL);
@@ -641,10 +641,10 @@ export class DocdetComponent implements OnInit {
     doc.line(10, nL, 200, nL)
     nL += -1; //62
 
-    doc.text('Lote 01 ', 11, nL);
-    doc.text('Lote 02 ', 58, nL);
-    doc.text('Lote 03 ', 106, nL);
-    doc.text('Lote 04 ', 153, nL);
+    doc.text('01 Lote ', 11, nL);
+    doc.text('02 Lote ', 58, nL);
+    doc.text('03 Lote ', 106, nL);
+    doc.text('04 Lote ', 153, nL);
     doc.text(this.valclotea, 30, nL);
     doc.text(this.valcloteb, 77, nL);
     doc.text(this.valclotec, 125, nL);
@@ -653,23 +653,44 @@ export class DocdetComponent implements OnInit {
     nL += Lin //69
     doc.line(10, nL, 200, nL)
     nL += -1; //68
-    doc.text('Qtde 01 ', 11, nL);
-    doc.text('Qtde 02 ', 58, nL);
-    doc.text('Qtde 03 ', 106, nL);
-    doc.text('Qtde 04 ', 153, nL);
-    doc.text(this.valnlotea.toString(), 30, nL);
-    doc.text(this.valnloteb.toString(), 77, nL);
-    doc.text(this.valnlotec.toString(), 125, nL);
-    doc.text(this.valnloted.toString(), 172, nL);
+    doc.text('01 Qtde', 11, nL);
+    doc.text('02 Qtde', 58, nL);
+    doc.text('03 Qtde', 106, nL);
+    doc.text('04 Qtde', 153, nL);
+    if (this.valnlotea == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotea.toString(), 30, nL);
+    }
+    if (this.valnloteb == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnloteb.toString(), 77, nL);
+    }
+    if (this.valnlotec == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotec.toString(), 125, nL);
+    }
+    if (this.valnloted == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnloted.toString(), 172, nL);
+    }
+
+    // doc.text(this.valnlotea.toString(), 30, nL);
+    // doc.text(this.valnloteb.toString(), 77, nL);
+    // doc.text(this.valnlotec.toString(), 125, nL);
+    // doc.text(this.valnloted.toString(), 172, nL);
 
     nL += Lin //75
     doc.line(10, nL, 200, nL)
     nL += -1; //74
 
-    doc.text('Lote 05 ', 11, nL);
-    doc.text('Lote 06 ', 58, nL);
-    doc.text('Lote 07 ', 106, nL);
-    doc.text('Lote 08 ', 153, nL);
+    doc.text('05 Lote ', 11, nL);
+    doc.text('06 Lote ', 58, nL);
+    doc.text('07 Lote ', 106, nL);
+    doc.text('08 Lote ', 153, nL);
     doc.text(this.valclotee, 30, nL);
     doc.text(this.valclotef, 77, nL);
     doc.text(this.valcloteg, 125, nL);
@@ -679,23 +700,45 @@ export class DocdetComponent implements OnInit {
     doc.line(10, nL, 200, nL)
     nL += -1; //80
 
-    doc.text('Qtde 05 ', 11, nL);
-    doc.text('Qtde 06 ', 58, nL);
-    doc.text('Qtde 07 ', 106, nL);
-    doc.text('Qtde 08 ', 153, nL);
-    doc.text(this.valnlotee.toString(), 30, nL);
-    doc.text(this.valnlotef.toString(), 77, nL);
-    doc.text(this.valnloteg.toString(), 125, nL);
-    doc.text(this.valnloteh.toString(), 172, nL);
+    doc.text('05 Qtde', 11, nL);
+    doc.text('06 Qtde', 58, nL);
+    doc.text('07 Qtde', 106, nL);
+    doc.text('08 Qtde', 153, nL);
+
+    if (this.valnlotee == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotee.toString(), 30, nL);
+    }
+    if (this.valnlotef == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotef.toString(), 77, nL);
+    }
+    if (this.valnloteg == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnloteg.toString(), 125, nL);
+    }
+    if (this.valnloteh == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnloteh.toString(), 172, nL);
+    }
+
+    // doc.text(this.valnlotee.toString(), 30, nL);
+    // doc.text(this.valnlotef.toString(), 77, nL);
+    // doc.text(this.valnloteg.toString(), 125, nL);
+    // doc.text(this.valnloteh.toString(), 172, nL);
 
     nL += Lin //87
     doc.line(10, nL, 200, nL)
     nL += -1; //86
 
-    doc.text('Lote 09 ', 11, nL);
-    doc.text('Lote 10 ', 58, nL);
-    doc.text('Lote 11 ', 106, nL);
-    doc.text('Lote 12 ', 153, nL);
+    doc.text('09 Lote ', 11, nL);
+    doc.text('10 Lote ', 58, nL);
+    doc.text('11 Lote ', 106, nL);
+    doc.text('12 Lote ', 153, nL);
     doc.text(this.valclotei, 30, nL);
     doc.text(this.valclotej, 77, nL);
     doc.text(this.valclotek, 125, nL);
@@ -706,14 +749,35 @@ export class DocdetComponent implements OnInit {
     nL += -1; //92
 
 
-    doc.text('Qtde 09 ', 11, nL);
-    doc.text('Qtde 10 ', 58, nL);
-    doc.text('Qtde 11 ', 106, nL);
-    doc.text('Qtde 12 ', 153, nL);
-    doc.text(this.valnlotei.toString(), 30, nL);
-    doc.text(this.valnlotej.toString(), 77, nL);
-    doc.text(this.valnlotek.toString(), 125, nL);
-    doc.text(this.valnlotel.toString(), 172, nL);
+    doc.text('09 Qtde', 11, nL);
+    doc.text('10 Qtde', 58, nL);
+    doc.text('11 Qtde', 106, nL);
+    doc.text('12 Qtde', 153, nL);
+
+    if (this.valnlotei == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotei.toString(), 30, nL);
+    }
+    if (this.valnlotej == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotej.toString(), 77, nL);
+    }
+    if (this.valnlotek == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotek.toString(), 125, nL);
+    }
+    if (this.valnlotel == '0') {
+      doc.text(' ', 30, nL);
+    } else {
+      doc.text(this.valnlotel.toString(), 172, nL);
+    }
+    //     doc.text(this.valnlotei.toString(), 30, nL);
+    // doc.text(this.valnlotej.toString(), 77, nL);
+    // doc.text(this.valnlotek.toString(), 125, nL);
+    // doc.text(this.valnlotel.toString(), 172, nL);
 
     nL += 9; //101
 
@@ -825,9 +889,9 @@ export class DocdetComponent implements OnInit {
 
     nL += Lin //29
 
-    doc.setFontSize(aF[3]);
+    doc.setFontSize(aF[1]);
 
-    doc.text('OP: ' + cOp + ' --> ' + this.opProduto + ' - ' + this.opDescricao, 10, nL);
+    doc.text('OP: ' + cOp + ' - ' + this.opProduto + ' - ' + this.opDescricao, 10, nL);
 
     doc.setLineWidth(0.7)
 
@@ -835,10 +899,10 @@ export class DocdetComponent implements OnInit {
     nL += Lin; //36
     doc.text('Data: ' + this.opDataDoc, 10, nL);
     doc.text('Processo: ' + this.valProcesso, 46, nL);
-    doc.text('Lider: ' + this.valLider, 120, nL);
+    // doc.text('Lider: ' + this.valLider, 120, nL);
 
     nL += 9; //101
-    
+
     doc.setFontSize(aF[4]);
     doc.text('COMPONENTES PARA APONTAMENTO', 42, nL);
 
@@ -854,9 +918,9 @@ export class DocdetComponent implements OnInit {
 
     doc.text('CÓDIGO', 12, nL);
     doc.text('DESCRIÇÃO', 55, nL);
-    doc.text('UN', 122, nL);
-    doc.text('QTDE', 136, nL);
-    doc.text('APONTAMENTO', 155, nL);
+    // doc.text('UN', 122, nL);
+    // doc.text('QTDE', 136, nL);
+    doc.text('APONTAMENTO', 122, nL);
 
     nL += 9;
 
@@ -873,16 +937,16 @@ export class DocdetComponent implements OnInit {
         if (xlEntrou) {
           doc.text(xy.CODPROD, 12, nL);
           doc.text(xy.DESCRICAO, 38, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmProd });
-          doc.text(xcDescUnit, 122, nL);
-          doc.text((xy.QTDECAL.toString()), 138, nL);
+          // doc.text(xcDescUnit, 122, nL);
+          // doc.text((xy.QTDECAL.toString()), 138, nL);
           nL += Lin;
           xlEntrou = false;
         } else {
           nL += -4
           doc.text(xy.CODPROD, 12, nL);
           doc.text(xy.DESCRICAO, 38, nL, { align: 'justify', lineHeightFactor: 1, maxWidth: xnTmProd });
-          doc.text(xcDescUnit, 122, nL);
-          doc.text((xy.QTDECAL.toString()), 138, nL);
+          // doc.text(xcDescUnit, 122, nL);
+          // doc.text((xy.QTDECAL.toString()), 138, nL);
           nL += 4
         }
         doc.line(10, nL + 1, 200, nL + 1)
@@ -903,11 +967,11 @@ export class DocdetComponent implements OnInit {
 
     doc.line(37, nL2, 37, nL)
     doc.line(120, nL2, 120, nL)
-    doc.line(135, nL2, 135, nL)
-    doc.line(148, nL2, 148, nL)
+    // doc.line(135, nL2, 135, nL)
+    // doc.line(148, nL2, 148, nL)
 
     nL += Lin;
-    
+
     nL = 260;
 
 

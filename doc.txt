@@ -15,6 +15,9 @@ Conexão                 DataBase        User        Senha           Tipo       
 senha do cisco: grupo Bun secure connection
 ca1971@#Buntech
 
+User 2 : tipb - Buntech0909
+
+
 Ambiente Produção
 /var/www/html
 

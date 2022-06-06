@@ -26,25 +26,25 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="card-body table-responsive col-md-5">
+                        <div class="card-body table-responsive col-md-7">
                             <mat-form-field>
                                 <mat-label>Descrição</mat-label>
                                 <input matInput [(ngModel)]="opDescricao" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-2">
+                        <!-- <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Qtde</mat-label>
                                 <input matInput [(ngModel)]="opQtde" disabled>
                             </mat-form-field>
-                        </div>
+                        </div> -->
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Data Documento</mat-label>
                                 <input matInput [(ngModel)]="opDataDoc" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-3">
+                        <div class="card-body table-responsive col-md-4">
                             <mat-form-field>
                                 <mat-select placeholder="Processos" [(ngModel)]="valProcesso">
                                     <mat-option *ngFor="let optProc of optProcesso" [value]="optProc">
@@ -53,7 +53,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-4">
+                        <!-- <div class="card-body table-responsive col-md-4">
                             <mat-form-field>
                                 <mat-select placeholder="Líder" [(ngModel)]="valLider">
                                     <mat-option *ngFor="let optLid of optLider" [value]="optLid">
@@ -61,8 +61,8 @@
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-                        </div>
-                        <div class="card-body table-responsive col-md-1">
+                        </div> -->
+                        <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-select placeholder="Turno 1" [(ngModel)]="valTurno1">
                                     <mat-option value="S">Sim</mat-option>
@@ -70,7 +70,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-1">
+                        <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-select placeholder="Turno 2" [(ngModel)]="valTurno2">
                                     <mat-option value="S">Sim</mat-option>
@@ -78,7 +78,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-1">
+                        <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-select placeholder="Turno 3" [(ngModel)]="valTurno3">
                                     <mat-option value="S">Sim</mat-option>
