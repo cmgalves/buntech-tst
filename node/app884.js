@@ -9,7 +9,7 @@ const conexaoStr = {
     "user": 'sql_ppi',
     "password": 'pcf',
     "server": '10.3.0.204',
-    "database": 'DESENVOLVIMENTO',
+    "database": 'HOMOLOGACAO',
     "port": 1433,
     "options": {
         "encrypt": true,
@@ -65,7 +65,7 @@ rota.post('/empresasBuntech', (req, res) => {
     xcSql += "	rtrim(codEmp) codEmp, rtrim(codFil) codFil, "
     xcSql += "  rtrim(nomeFil) nomeFil, rtrim(nomeComercial) nomeComercial "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Empresa "
+    xcSql += "	HOMOLOGACAO..View_Portal_Empresa "
 
     console.log(xcSql)
     execSQL(xcSql, res);
@@ -80,7 +80,7 @@ rota.post('/ordemProducaoAndamento', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_OP "
+    xcSql += "	HOMOLOGACAO..View_Portal_OP "
     xcSql += "WHERE "
     xcSql += "  1 = 1 "
     xcSql += "	AND FILIAL = '" + filial + "' "
@@ -101,7 +101,7 @@ rota.post('/cadastroProdutos', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Cadastro_Produto "
+    xcSql += "	HOMOLOGACAO..View_Portal_Cadastro_Produto "
     if (produto !== '') {
         xcSql += "WHERE "
         xcSql += "	codigo = '" + produto + "' "
@@ -124,7 +124,7 @@ rota.post('/cadEstruturas', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Estrutura "
+    xcSql += "	HOMOLOGACAO..View_Portal_Estrutura "
     if (produto !== '') {
         xcSql += "WHERE "
         xcSql += "	codPai = '" + produto + "' AND "
@@ -148,7 +148,7 @@ rota.post('/cadRecursos', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Cadastro_Recursos "
+    xcSql += "	HOMOLOGACAO..View_Portal_Cadastro_Recursos "
     if (codigo !== '') {
         xcSql += "WHERE "
         xcSql += "	codigo = '" + codigo + "' AND "
@@ -174,7 +174,7 @@ rota.post('/cadSaldos', (req, res) => {
     xcSql += "SELECT "
     xcSql += "	* "
     xcSql += "FROM "
-    xcSql += "	DESENVOLVIMENTO..View_Portal_Saldo_Estoque "
+    xcSql += "	HOMOLOGACAO..View_Portal_Saldo_Estoque "
     if (codigo !== '') {
         xcSql += "WHERE "
         xcSql += "	codigo = '" + codigo + "' AND "

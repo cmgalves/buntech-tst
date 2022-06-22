@@ -30,6 +30,11 @@ IP: 10.3.0.48
 User: calves
 Senha: Dev!@PCP
 
+Nome da VPN GrupoBun-IND
+Endereço IP 10.212.134.128
+Usuário calves@indbun.com.br
+Senha: ca1971@#Buntech
+
 
   // Campina Grande - 888
   // Servidor de HML:10.3.0.92
