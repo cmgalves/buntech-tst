@@ -106,7 +106,8 @@ export class funcsService {
     let url = '';
 
     // url = `http://10.3.0.204:8095/DEV_REST/AJUST_EMP`
-    url = `http://10.3.0.204:8095/REST/AJUST_EMP`
+    // url = `http://10.3.0.204:8095/REST/AJUST_EMP`
+    url = `http://10.3.0.204:8090/REST/AJUST_EMP`
    
     return this._http.put(url, obj)
       .map((response: Response) => response.json());
