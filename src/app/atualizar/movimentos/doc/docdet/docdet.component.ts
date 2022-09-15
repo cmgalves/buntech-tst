@@ -480,6 +480,8 @@ export class DocdetComponent implements OnInit {
       'Mistura em tanque',
       'Granulação',
       'Reembalamento manual',
+      'Peletização',
+      'Peneiramento',
       'Reembalamento automático'];
   }
 

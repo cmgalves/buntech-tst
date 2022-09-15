@@ -105,5 +105,7 @@ ATIVIDADES DA INCLUSÃO DE DOCS.
 05 - INCLUIR A COLUNA UNIDADE DEPOIS DA QTDE - ok
 06 - TIRAR COLUNA APONTA - ok
 
-
+Atividades em 15-09-2022
+Alteração da url do REST para href="http://10.3.0.206:8091/rest/" em D:\projetos\buntech\src\app\components\navbar\navbar.component.html
+Alteração do combo box retArrayProcesso() {return ['Betoneira', 'Moagem', 'Mistura em tanque', 'Granulação', 'Reembalamento manual', 'Reembalamento automático', 'Peletização', 'Peneiramento'];  } em D:\projetos\buntech\src\app\atualizar\movimentos\doc\docdet\docdet.component.ts
 
