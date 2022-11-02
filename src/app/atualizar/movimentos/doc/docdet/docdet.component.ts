@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { funcsService } from 'app/shared/funcs/funcs.service';
+import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';

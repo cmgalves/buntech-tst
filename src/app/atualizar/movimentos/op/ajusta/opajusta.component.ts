@@ -5,7 +5,7 @@ import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { funcsService } from 'app/shared/funcs/funcs.service';
+import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
@@ -339,6 +339,7 @@ export class OpajustaComponent implements OnInit {
     let conta = 0
     let secs = 0;
     let retr = 0;
+    let grupo = '';
     let oper = '00';
     let xcFilial = this.numOP[0].FILIAL;
     let xcOp = this.numOP[0].OP;
@@ -377,13 +378,24 @@ export class OpajustaComponent implements OnInit {
           this.opEntregue = filOP.entregue;
           this.numOP.forEach(ax => {
             if (ax.OPERACAO >= oper) {
-              this.opQtdePcf = ax.QTDEPCF
+              if (ax.GRUPO === '') {
+                this.opQtdePcf = ax.QTDEPCF
+              } else {
+                if (grupo === '') {
+                  this.opQtdePcf = ax.QTDEPCF
+                } else {
+                  if (grupo === ax.GRUPO) {
+                    this.opQtdePcf += ax.QTDEPCF
+                  } else {
+                    this.opQtdePcf = ax.QTDEPCF
+                  }
+                }
+              }
               oper = ax.OPERACAO
+              grupo = ax.GRUPO
             }
             secs += ax.SEGUNDOS
             retr = ax.RETRABALHO
-
-
           });
           this.opRetrabalho = String(retr)
           let horas = this.funcJson.toHHMMSS(secs)

@@ -24,6 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 // imports sobre o login
 import { AuthService } from './components/login/shared/services/auth.service';
@@ -37,6 +38,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ReactiveFormsModule,
     HttpModule,
     ComponentsModule,
+    MatExpansionModule,
     RouterModule,
     AppRoutingModule,
     MatButtonModule,

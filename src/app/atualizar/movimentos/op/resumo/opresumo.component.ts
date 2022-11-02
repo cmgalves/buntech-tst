@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { funcsService } from 'app/shared/funcs/funcs.service';
+import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,6 +44,8 @@ export class OpresumoComponent implements OnInit {
   arrProdB: any = [];
   arrOpAndA: any = [];
   arrOpAndB: any = [];
+  aGrpA: any = [];
+  aGrpB: any = [];
   arrOpresumo886: any = [];
   arrOpresumo887: any = [];
   arrOpresumo888: any = [];
@@ -82,9 +84,22 @@ export class OpresumoComponent implements OnInit {
       this.opFilter = this.numOP[0].OP
     }
 
+    this.buscaGrupo();
     this.buscaOpsAndamentoProtheus();
     this.buscaRecursos();
     this.buscaProdutos();
+  }
+
+  buscaGrupo() {
+    this.aGrpA = this.funcJson.busca883('agurapaRecursos', {});
+    this.aGrpA.subscribe(cada => {
+      cada.forEach(xy => {
+        this.aGrpB.push({
+          'recurso': xy.recurso,
+          'grupo': xy.grupo,
+        })
+      });
+    });
   }
 
   // busca os produtos no cadastro para utilizar os dados necessários
@@ -173,6 +188,7 @@ export class OpresumoComponent implements OnInit {
       this.arrOpresumo888.subscribe(cada => {
         cada.forEach(xy => {
           const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+          const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
           if (filOP.length > 0) {
             let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
             conta++
@@ -192,6 +208,7 @@ export class OpresumoComponent implements OnInit {
               'SEGUNDOS': xy.segundos,
               'HORAS': this.funcJson.toHHMMSS(xy.segundos),
               'SITUACAO': sitDesc,
+              'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
             })
             this.arrOpPcf.push({
               'FILIAL': xy.filial,
@@ -205,6 +222,7 @@ export class OpresumoComponent implements OnInit {
           this.arrOpresumo886.subscribe(cada => {
             cada.forEach(xy => {
               const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+              const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
@@ -224,6 +242,7 @@ export class OpresumoComponent implements OnInit {
                   'SEGUNDOS': xy.segundos,
                   'HORAS': this.funcJson.toHHMMSS(xy.segundos),
                   'SITUACAO': sitDesc,
+                  'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                 })
                 this.arrOpPcf.push({
                   'FILIAL': xy.filial,
@@ -236,6 +255,7 @@ export class OpresumoComponent implements OnInit {
               this.arrOpresumo887.subscribe(cada => {
                 cada.forEach(xy => {
                   const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+                  const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
                   if (filOP.length > 0) {
                     let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                     conta++
@@ -255,6 +275,7 @@ export class OpresumoComponent implements OnInit {
                       'SEGUNDOS': xy.segundos,
                       'HORAS': this.funcJson.toHHMMSS(xy.segundos),
                       'SITUACAO': sitDesc,
+                      'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                     })
                     this.arrOpPcf.push({
                       'FILIAL': xy.filial,
@@ -276,6 +297,7 @@ export class OpresumoComponent implements OnInit {
             this.arrOpresumo887.subscribe(cada => {
               cada.forEach(xy => {
                 const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+                const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
                 if (filOP.length > 0) {
                   let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                   conta++
@@ -295,6 +317,7 @@ export class OpresumoComponent implements OnInit {
                     'SEGUNDOS': xy.segundos,
                     'HORAS': this.funcJson.toHHMMSS(xy.segundos),
                     'SITUACAO': sitDesc,
+                    'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                   })
                   this.arrOpPcf.push({
                     'FILIAL': xy.filial,
@@ -317,6 +340,7 @@ export class OpresumoComponent implements OnInit {
         this.arrOpresumo886.subscribe(cada => {
           cada.forEach(xy => {
             const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+            const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
             if (filOP.length > 0) {
               let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
               conta++
@@ -336,6 +360,7 @@ export class OpresumoComponent implements OnInit {
                 'SEGUNDOS': xy.segundos,
                 'HORAS': this.funcJson.toHHMMSS(xy.segundos),
                 'SITUACAO': sitDesc,
+                'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
               })
               this.arrOpPcf.push({
                 'FILIAL': xy.filial,
@@ -350,6 +375,7 @@ export class OpresumoComponent implements OnInit {
           this.arrOpresumo887.subscribe(cada => {
             cada.forEach(xy => {
               const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+              const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
               if (filOP.length > 0) {
                 let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
                 conta++
@@ -369,6 +395,7 @@ export class OpresumoComponent implements OnInit {
                   'SEGUNDOS': xy.segundos,
                   'HORAS': this.funcJson.toHHMMSS(xy.segundos),
                   'SITUACAO': sitDesc,
+                  'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                 })
                 this.arrOpPcf.push({
                   'FILIAL': xy.filial,
@@ -433,7 +460,7 @@ export class OpresumoComponent implements OnInit {
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
     if (tp === 'a') {
-      if ((("Baixada ").indexOf(aRow.SITUACAO) > -1))  {
+      if ((("Baixada ").indexOf(aRow.SITUACAO) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
           return false;
         }
@@ -441,7 +468,7 @@ export class OpresumoComponent implements OnInit {
     }
 
     if (tp === 'c') {
-      if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1))  {
+      if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
           return false;
         }

@@ -3,6 +3,7 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../login/shared/services/auth.service';
+import { funcsService } from 'app/funcs/funcs.service';
 
 @Component({
     selector: 'app-navbar',
@@ -15,12 +16,16 @@ export class NavbarComponent implements OnInit {
     mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
+    cRest: string = '';
+    aRest: any = [];
     // private user = JSON.parse(localStorage.getItem('user'))[0];
     constructor(
         location: Location,
         private element: ElementRef,
         private router: Router,
         public authService: AuthService,
+        private funcJson: funcsService,
+
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -28,6 +33,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.buscaRest();
         this.listTitles = ROUTES.filter(listTitle => listTitle);
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -131,5 +137,13 @@ export class NavbarComponent implements OnInit {
             }
         }
         return '';
+    }
+    buscaRest() {
+        this.aRest = this.funcJson.buscaPar('resttst');
+        this.aRest.subscribe(cada => {
+            cada.forEach(xy => {
+                this.cRest = xy.rest
+            });
+        });
     }
 }

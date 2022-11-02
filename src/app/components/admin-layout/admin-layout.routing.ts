@@ -16,6 +16,7 @@ import { RecursoComponent } from 'app/atualizar/cadastros/recurso/recurso.compon
 import { OpdocumentoComponent } from 'app/atualizar/movimentos/doc/documento/opdocumento.component';
 import { DoclistaComponent } from 'app/atualizar/movimentos/doc/doclista/doclista.component';
 import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.component';
+import { ConfiguraComponent } from '../configura/configura.component';
 
 export const AdminLayoutRoutes: Routes = [
 
@@ -34,6 +35,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'estrutura', component: EstruturaComponent, canActivate: [AuthGuard] },
     { path: 'recurso', component: RecursoComponent, canActivate: [AuthGuard] },
     { path: 'saldo', component: SaldoComponent, canActivate: [AuthGuard] },
+    { path: 'configura', component: ConfiguraComponent, canActivate: [AuthGuard] },
+    
 
 ];
 

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { funcsService } from 'app/shared/funcs/funcs.service';
+import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 
@@ -133,6 +133,7 @@ export class OpconfirmaComponent implements OnInit {
     let secs = 0;
     let retr = 0;
     let oper = '00';
+    let grupo = '';
     let xcFilial = this.numOP[0].FILIAL;
     let xcOp = this.numOP[0].OP;
 
@@ -176,8 +177,22 @@ export class OpconfirmaComponent implements OnInit {
 
           this.numOP.forEach(ax => {
             if (ax.OPERACAO >= oper) {
-              this.opQtdePcf = ax.QTDEPCF
+              if (ax.GRUPO === '') {
+                this.opQtdePcf = ax.QTDEPCF
+              } else {
+                if (grupo === '') {
+                  this.opQtdePcf = ax.QTDEPCF
+                } else {
+                  if (grupo === ax.GRUPO) {
+                    this.opQtdePcf += ax.QTDEPCF
+                  } else {
+                    this.opQtdePcf = ax.QTDEPCF
+                  }
+                }
+              }
               oper = ax.OPERACAO
+              grupo = ax.GRUPO
+
             }
             secs += ax.SEGUNDOS
             retr = ax.RETRABALHO
@@ -192,7 +207,6 @@ export class OpconfirmaComponent implements OnInit {
           this.opRetrabalho = String(retr)
           this.opHoras = this.funcJson.toHHMMSS(secs)
           oper = '00'
-
         }
       });
       this.dataSource = new MatTableDataSource(this.arrOpconfirmaTab)

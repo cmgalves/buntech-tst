@@ -55,16 +55,6 @@ Conexões
 
 #arquivo para atualizaÃ§Ã£o de todos os serviÃ§os
 
-sudo systemctl stop app75.service
-sudo systemctl stop app76.service
-sudo systemctl stop app77.service
-sudo systemctl stop app78.service
-sudo systemctl stop app83.service
-sudo systemctl stop app84.service
-sudo systemctl stop app86.service
-sudo systemctl stop app87.service
-sudo systemctl stop app88.service
-
 sudo systemctl restart app75.service
 sudo systemctl restart app76.service
 sudo systemctl restart app77.service
@@ -75,6 +65,17 @@ sudo systemctl restart app86.service
 sudo systemctl restart app87.service
 sudo systemctl restart app88.service
 
+sudo systemctl stop par.service
+sudo systemctl stop app75.service
+sudo systemctl stop app76.service
+sudo systemctl stop app77.service
+sudo systemctl stop app78.service
+sudo systemctl stop app83.service
+sudo systemctl stop app84.service
+sudo systemctl stop app86.service
+sudo systemctl stop app87.service
+sudo systemctl stop app88.service
+sudo systemctl start par.service
 sudo systemctl start app75.service
 sudo systemctl start app76.service
 sudo systemctl start app77.service
@@ -84,7 +85,6 @@ sudo systemctl start app84.service
 sudo systemctl start app86.service
 sudo systemctl start app87.service
 sudo systemctl start app88.service
-
 
 - Correção de duplo clique no envio PARCIAL; ok
 - Trava de envio total com quantidade igual a zero; ok

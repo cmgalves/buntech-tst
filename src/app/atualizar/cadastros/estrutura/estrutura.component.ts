@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { funcsService } from '../../../shared/funcs/funcs.service';
+import { funcsService } from '../../../funcs/funcs.service';
 import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';

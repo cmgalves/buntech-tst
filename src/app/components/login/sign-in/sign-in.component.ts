@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { funcsService } from 'app/shared/funcs/funcs.service';
+import { funcsService } from 'app/funcs/funcs.service';
 import { AuthService } from "../shared/services/auth.service";
 
 @Component({
@@ -22,6 +22,7 @@ export class SignInComponent implements OnInit {
   arrUsuario: any = [];
   arrUsuarioTab: any = [];
   arrUsr: any = [];
+  
 
   constructor(
     public router: Router,
@@ -121,4 +122,6 @@ export class SignInComponent implements OnInit {
       return true;
     }
   }
+  
+
 }

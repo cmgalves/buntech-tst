@@ -52,6 +52,7 @@
     "material-components-web": "^7.0.0",
     "moment": "2.24.0",
     "mssql": "^9.0.1",
+    "node-fetch": "^2.6.7",
     "perfect-scrollbar": "1.1.0",
     "popper.js": "1.15.0",
     "rxjs": "6.6.2",

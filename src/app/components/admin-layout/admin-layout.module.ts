@@ -32,6 +32,8 @@ import { OpconfirmaComponent } from 'app/atualizar/movimentos/op/confirma/opconf
 import { OpdocumentoComponent } from 'app/atualizar/movimentos/doc/documento/opdocumento.component';
 import { DoclistaComponent } from 'app/atualizar/movimentos/doc/doclista/doclista.component';
 import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.component';
+import { ConfiguraComponent } from '../configura/configura.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -45,6 +47,7 @@ import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.comp
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatExpansionModule,
     MatTooltipModule,
     MatAutocompleteModule,
     MatTableModule,
@@ -56,6 +59,7 @@ import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.comp
     SignInComponent,
     ForgotPasswordComponent,
     UsuarioComponent,
+    ConfiguraComponent,
     OpresumoComponent,
     OpdocumentoComponent,
     DoclistaComponent,

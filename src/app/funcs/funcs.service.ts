@@ -114,6 +114,29 @@ export class funcsService {
 
   }
 
+  buscaPar(_url) {
+    let url = '';
+    const dstUrla = ['10.3.0.48:900'];
+
+    url = `http://${dstUrla}/${_url}`
+
+    return this._http.get(url)
+      .map((response: Response) => response.json());
+
+  }
+
+  execPar(_url, obj) {
+    let url = '';
+    const dstUrla = ['10.3.0.48:900'];
+
+    url = `http://${dstUrla}/${_url}`
+
+    $.ajaxSetup({ async: false });
+
+    $.post(url, obj);
+
+  }
+
   execProd(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.48:883'];
