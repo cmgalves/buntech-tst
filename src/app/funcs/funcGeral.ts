@@ -88,7 +88,7 @@ export class funcGeral {
       alert('ANO INVÁLIDO')
       return false
     }
-    
+
     // valida o dia correto
     for (let xi = 0; xi < aDiaMes.length; xi++) {
       if (aDiaMes[xi] == arrData[1]) {
@@ -115,15 +115,27 @@ export class funcGeral {
     }
     return true
   }
-  
+
+
   validDataAmerica(xdData) {
     const arrData = xdData.split('-')
     // valida o ano correto
     if (arrData[0].length != 4) {
       alert('ANO INVÁLIDO')
       return false
-    }else{
+    } else {
       return true
+    }
+  }
+
+  direita(str, n) {
+    if (n <= 0)
+      return "";
+    else if (n > String(str).length)
+      return str;
+    else {
+      var iLen = String(str).length;
+      return String(str).substring(iLen, iLen - n);
     }
   }
 }

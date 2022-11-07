@@ -1,0 +1,185 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-header card-header divCorVerde ">
+                    <h4 class="card-title">Manutenção das Especificações</h4>
+                </div>
+                <div class="row">
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-label>Produto Acabado</mat-label>
+                            <input matInput [(ngModel)]="cabProduto" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-label>Descrição</mat-label>
+                            <input matInput [(ngModel)]="descrProd" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-label>Revisão</mat-label>
+                            <input matInput [(ngModel)]="cabRevisao" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-label>Vigencia De</mat-label>
+                            <input type="date" matInput [(ngModel)]="vigenciaDe">
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-label>Vigencia Até</mat-label>
+                            <input type="date" matInput [(ngModel)]="vigenciaAte">
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-select placeholder="Selecione o Status" [(ngModel)]="cabSituacao">
+                                <mat-option *ngFor="let optSit of especSit" [value]="optSit">
+                                    {{optSit}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-label>Aplicação</mat-label>
+                            <input matInput [(ngModel)]="aplicacao">
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-5">
+                        <mat-form-field>
+                            <mat-label>Embalagem</mat-label>
+                            <input matInput [(ngModel)]="embalagem">
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-5">
+                        <mat-form-field>
+                            <mat-label>Observações da Revisão</mat-label>
+                            <input matInput [(ngModel)]="qualObsRevisao">
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-12">
+                        <mat-form-field>
+                            <mat-label>Observações Gerais</mat-label>
+                            <input matInput [(ngModel)]="qualObsGeral">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaEspec()">Voltar</button>
+            <button mat-raised-button type="submit" class="btn btn-success" (click)="alterar('I')">Alterar</button>
+            <button mat-raised-button type="submit" class="btn btn-info" (click)="excluir()">Excluir</button>
+            <button mat-raised-button type="submit" class="btn btn-warning" (click)="alterar('R')">Revisar</button>
+        </div>
+        <div class="row" *ngIf="laddCarac">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorVerde ">
+                        <h4 class="card-title">Adiciona Características</h4>
+                        <!-- <p class="card-category">Complete your usuario</p> -->
+                    </div>
+                    <div class="row">
+                        <div class="card-body table-responsive col-md-2">
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Características</mat-label>
+                                    <input type="text" placeholder="Características" aria-label="Number" matInput
+                                        [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="novoCarCod">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                        (optionSelected)="aposSelec($event)">
+                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                            [value]="option.descCarac">
+                                            {{option.descCarac}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </form>
+                        </div>
+                        <div class="card-body table-responsive col-md-4">
+                            <mat-form-field>
+                                <mat-label>Descrição</mat-label>
+                                <input matInput [(ngModel)]="novoCarDesc" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Mínimo</mat-label>
+                                <input type="number" matInput [(ngModel)]="novoCarMin">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Máximo</mat-label>
+                                <input type="number" matInput [(ngModel)]="novoCarMax">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <button mat-raised-button type="submit" class="btn btn-info"
+                                (click)="especificar()">Adiciona</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorAzul">
+                        <a>Cadastro de Especificas - Buntech
+                            <button (click)="exportExcel('Especificas', 'Especifica')" mat-raised-button type="button"
+                                matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                <span class="material-icons">
+                                    file_download
+                                </span>
+                            </button></a>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <mat-form-field>
+                            <mat-label>Filtro</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de Especifica" #input>
+                        </mat-form-field>
+
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="dataSource" matSort>
+                                <ng-container matColumnDef="seq">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Seq </th>
+                                    <td *matCellDef='let row' class={{row.situacao}} mat-cell> {{row.seq}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="iteCarac">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
+                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.iteCarac}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="descCarac">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
+                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.descCarac}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="iteMin">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Mínimo </th>
+                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.iteMin}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="iteMax">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Máximo </th>
+                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.iteMax}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                </tr>
+                            </table>
+
+                            <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

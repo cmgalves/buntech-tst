@@ -34,6 +34,9 @@ import { DoclistaComponent } from 'app/atualizar/movimentos/doc/doclista/doclist
 import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.component';
 import { ConfiguraComponent } from '../configura/configura.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { CaracteristicaComponent } from 'app/atualizar/movimentos/qualidade/caracteristica/caracteristica.component';
+import { EspecificaComponent } from 'app/atualizar/movimentos/qualidade/especifica/especifica.component';
+import { RevisaComponent } from 'app/atualizar/movimentos/qualidade/revisa/revisa.component';
 
 
 @NgModule({
@@ -71,6 +74,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     EstruturaComponent,
     RecursoComponent,
     SaldoComponent,
+    CaracteristicaComponent,
+    EspecificaComponent,
+    RevisaComponent,
   ]
 })
 

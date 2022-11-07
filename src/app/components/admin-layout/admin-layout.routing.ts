@@ -17,6 +17,9 @@ import { OpdocumentoComponent } from 'app/atualizar/movimentos/doc/documento/opd
 import { DoclistaComponent } from 'app/atualizar/movimentos/doc/doclista/doclista.component';
 import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.component';
 import { ConfiguraComponent } from '../configura/configura.component';
+import { CaracteristicaComponent } from 'app/atualizar/movimentos/qualidade/caracteristica/caracteristica.component';
+import { EspecificaComponent } from 'app/atualizar/movimentos/qualidade/especifica/especifica.component';
+import { RevisaComponent } from 'app/atualizar/movimentos/qualidade/revisa/revisa.component';
 
 export const AdminLayoutRoutes: Routes = [
 
@@ -36,8 +39,11 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'recurso', component: RecursoComponent, canActivate: [AuthGuard] },
     { path: 'saldo', component: SaldoComponent, canActivate: [AuthGuard] },
     { path: 'configura', component: ConfiguraComponent, canActivate: [AuthGuard] },
+    { path: 'carac', component: CaracteristicaComponent, canActivate: [AuthGuard] },
+    { path: 'espec', component: EspecificaComponent, canActivate: [AuthGuard] },
+    { path: 'revisa', component: RevisaComponent, canActivate: [AuthGuard] },
     
-
+    
 ];
 
 

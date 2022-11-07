@@ -5,32 +5,35 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { funcsService } from '../../../funcs/funcs.service';
+import { funcsService } from '../../../../funcs/funcs.service';
 
-export interface cadProduto {
-  empresa: string;
-  nome: string;
-  email: string;
-  senha: string;
-  perfil: string;
-  telefone: string;
-  depto: string;
+export interface cadEspecifica {
+  seq: string;
+  codigo: string;
+  descricao: string;
+  tipo: string;
+  unidade: string;
+  grupo: string;
+  ncm: string;
+  situacao: string;
 }
 
 @Component({
-  selector: 'app-produto',
-  templateUrl: './produto.component.html',
-  styleUrls: ['./produto.component.css']
+  selector: 'app-especifica',
+  templateUrl: './especifica.component.html',
+  styleUrls: ['./especifica.component.css']
 })
 
-export class ProdutoComponent implements OnInit {
+export class EspecificaComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
-  arrProduto: any = [];
-  arrProdutoTab: any = [];
+  arrEspecifica: any = [];
+  arrEspecificaTab: any = [];
+  arrDados: any = [];
+  arrCarac: any = [];
 
-  produtos: Observable<any>;
-  displayedColumns: string[] = ['seq', 'codigo', 'descricao', 'tipo', 'unidade', 'grupo', 'ncm', 'situacao'];
-  dataSource: MatTableDataSource<cadProduto>;
+  especificas: Observable<any>;
+  displayedColumns: string[] = ['seq', 'codigo', 'descricao', 'tipo', 'unidade', 'grupo', 'ncm', 'situacao', 'revisa'];
+  dataSource: MatTableDataSource<cadEspecifica>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   class: string = '';
@@ -42,24 +45,38 @@ export class ProdutoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.arrUserLogado.perfil === 'Administrador') {
-      this.buscaProdutos();
+      this.buscaEspecificas();
+      this.buscaCaracs();
     } else {
       alert('Sem Acesso')
       this.router.navigate(['opResumo']);
     }
   }
 
-  buscaProdutos() {
+// monta um array via localstorage
+  buscaCaracs() {
+    this.arrCarac = [];
+    this.arrDados = this.fj.busca884('relacaoCarac', {});
+    this.arrDados.subscribe(cada => {
+      cada.forEach(xy => {
+        this.arrCarac.push({
+          'codCarac': xy.codCarac,
+          'descCarac': xy.descCarac,
+        })
+      });
+      localStorage.setItem('cadCarac', JSON.stringify(this.arrCarac));
+    });
+  }
+  
+  // busca a relação de produtos com as especificações
+  buscaEspecificas() {
     let seq = 0;
-    const obj = {
-      'produto': ''
-    };
-    this.arrProduto = this.fj.busca884('cadastroProdutos', obj);
-
-    this.arrProduto.subscribe(cada => {
+    
+    this.arrEspecifica = this.fj.busca884('cadastroProdutosQualidade', {});
+    this.arrEspecifica.subscribe(cada => {
       cada.forEach(xy => {
         seq++
-        this.arrProdutoTab.push({
+        this.arrEspecificaTab.push({
           'seq': seq,
           'codigo': xy.codigo,
           'descricao': xy.descricao,
@@ -69,11 +86,9 @@ export class ProdutoComponent implements OnInit {
           'ncm': xy.ncm,
           'situacao': xy.situacao,
         })
-  
       });
       
-  
-      this.dataSource = new MatTableDataSource(this.arrProdutoTab)
+      this.dataSource = new MatTableDataSource(this.arrEspecificaTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -95,6 +110,11 @@ export class ProdutoComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  acessoEspec(xcRow) {
+    localStorage.setItem('especProd', JSON.stringify(xcRow));
+    this.router.navigate(['revisa']);
   }
 
 

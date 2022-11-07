@@ -5,11 +5,10 @@ import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { funcsService } from 'app/funcs/funcs.service';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
-import { MatDialog } from '@angular/material/dialog';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { funcsService } from 'app/funcs/funcs.service';
 // tslint:disable-next-line:class-name
 export interface opAjusta {
   COMPONENTE: string;
@@ -84,7 +83,7 @@ export class OpajustaComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private funcJson: funcsService,
+    private fj: funcsService,
     public dialog: MatDialog
   ) { }
 
@@ -108,6 +107,19 @@ export class OpajustaComponent implements OnInit {
     return this.arrProd.filter(option => option.codigo.toLowerCase().indexOf(filterValue) === 0);
   }
 
+  // valida a inclusão dos novos itens na OP
+  aposSelec(event) {
+    const codProd = event.option.value
+    const filProd = this.arrProd.filter(x => (x.codigo === codProd))[0];
+
+    if (filProd.length === 0) {
+      alert(codProd + ' não encontrado no cadastro de produtos');
+    } else {
+      this.opItemNovo = filProd.codigo
+      this.opDescItemNovo = filProd.descricao
+      this.opUnidadeItemNovo = filProd.unidade
+    }
+  }
 
   // confirma o ajuste feito na op para enviar para o conferente
   confirmar() {
@@ -125,7 +137,7 @@ export class OpajustaComponent implements OnInit {
       'QTDEPCF': 0,
       'QTDEINF': 0,
     }
-    this.funcJson.execProd('calcOP', objConf);
+    this.fj.execProd('calcOP', objConf);
     window.location.reload();
   }
 
@@ -138,7 +150,7 @@ export class OpajustaComponent implements OnInit {
       op: this.numOP[0].OP,
       tipo: 'tudo',
     };
-    this.arrCalcOP = this.funcJson.busca883('opAndamento', obj);
+    this.arrCalcOP = this.fj.busca883('opAndamento', obj);
     this.arrCalcOP.subscribe(cada => {
       cada.forEach(xy => {
         this.calculaMod = xy.XMOD
@@ -157,7 +169,7 @@ export class OpajustaComponent implements OnInit {
             'QTDEPCF': this.opQtdePcf,
             'QTDEINF': 0,
           }
-          this.funcJson.execProd('calcOP', objProc);
+          this.fj.execProd('calcOP', objProc);
         }
       });
       if (this.opRetrabalho > 0) {
@@ -192,7 +204,7 @@ export class OpajustaComponent implements OnInit {
         'QTDEPCF': this.opQtdePcf,
         'QTDEINF': this.opRetrabalho,
       }
-      this.funcJson.execProd('calcOP', objRet);
+      this.fj.execProd('calcOP', objRet);
     } else {
       alert('o produto: ' + filProd.codigo + ' não tem cadastro de Retrabalho')
     }
@@ -220,12 +232,8 @@ export class OpajustaComponent implements OnInit {
           if (kk.cc === y[0].custo) {
             this.arrMod[ik].segundos += ax.SEGUNDOS
           }
-          // idxMod++
         });
       }
-
-      // cc = y[0].custo
-      // segundos // numOP = JSON.parse(localStorage.getItem('op'));
 
     });
 
@@ -246,29 +254,26 @@ export class OpajustaComponent implements OnInit {
           'QTDEPCF': this.opQtdePcf,
           'QTDEINF': (ay.segundos / 3600),
         }
-        this.funcJson.execProd('calcOP', objMod);
+        this.fj.execProd('calcOP', objMod);
       });
 
     });
     window.location.reload();
   }
 
-  
-  mostraInclusao(){
+
+  mostraInclusao() {
     this.mostraInc = !this.mostraInc
   }
-  
+
   // inclusão de novos itens na OP
   incProd() {
     let xcQtde = parseFloat(this.opQtdeItemNovo)
     let Tipo = 'N'
-    // const filProd = this.arrProd.filter(x => x.codigo == this.opProduto)[0];
-
 
     if (xcQtde < 0) {
       xcQtde = xcQtde * -1
       Tipo = 'R'
-      // this.opQtdeItemNovo = String(xcQtde)
     }
     if (this.opItemNovo === '' || this.opDescItemNovo === '' || this.opUnidadeItemNovo === '' || this.opQtdeItemNovo === '') {
       alert('Dados incompletos');
@@ -288,23 +293,8 @@ export class OpajustaComponent implements OnInit {
       'QTDEPCF': this.opQtdePcf,
       'QTDEINF': String(xcQtde),
     }
-    this.funcJson.execProd('calcOP', objInc);
+    this.fj.execProd('calcOP', objInc);
     window.location.reload();
-  }
-
-  // valida a inclusão dos novos itens na OP
-  aposSelec(event) {
-    const codProd = event.option.value
-    const filProd = this.arrProd.filter(x => (x.codigo === codProd))[0];
-
-    if (filProd.length === 0) {
-      alert(codProd + ' não encontrado no cadastro de produtos');
-    } else {
-      this.opItemNovo = filProd.codigo
-      this.opDescItemNovo = filProd.descricao
-      this.opUnidadeItemNovo = filProd.unidade
-      // this.tstTrue = true
-    }
   }
 
 
@@ -317,7 +307,7 @@ export class OpajustaComponent implements OnInit {
     const obj = {
       'op': ''
     };
-    this.arrOpAndA = this.funcJson.busca883('ordemProducaoAndamento', obj);
+    this.arrOpAndA = this.fj.busca883('ordemProducaoAndamento', obj);
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
@@ -350,8 +340,8 @@ export class OpajustaComponent implements OnInit {
     };
 
     const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
-    
-    this.arrOpajusta = this.funcJson.busca883('opAndamento', obj);
+
+    this.arrOpajusta = this.fj.busca883('opAndamento', obj);
 
     this.arrOpajusta.subscribe(cada => {
       cada.forEach(xy => {
@@ -398,7 +388,7 @@ export class OpajustaComponent implements OnInit {
             retr = ax.RETRABALHO
           });
           this.opRetrabalho = String(retr)
-          let horas = this.funcJson.toHHMMSS(secs)
+          let horas = this.fj.toHHMMSS(secs)
           this.opHoras = horas.length === 2 ? '00:00:' + horas : horas.length === 5 ? '00:' + horas : horas //          ('00:00:00' + horas)
           oper = '00'
         }
@@ -418,7 +408,7 @@ export class OpajustaComponent implements OnInit {
 
   // edita a quantidade do empenho da OP
   altQtde(xaRow) {
-    let qdt = (<HTMLInputElement>(document.getElementById("editQtd"))).value.replace(',','.')
+    let qdt = (<HTMLInputElement>(document.getElementById("editQtd"))).value.replace(',', '.')
     this.arrOpajustaTab[this.enableEditIndex].QTDECALC = qdt
     const objAlt = {
       'FILIAL': this.opFilial,
@@ -434,7 +424,7 @@ export class OpajustaComponent implements OnInit {
       'QTDEPCF': this.opQtdePcf,
       'QTDEINF': parseFloat(qdt),
     }
-    this.funcJson.execProd('calcOP', objAlt);
+    this.fj.execProd('calcOP', objAlt);
 
     this.enableEdit = false;
     this.enableEditIndex = null;

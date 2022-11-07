@@ -107,6 +107,7 @@ export class OpresumoComponent implements OnInit {
     const obj = {
       'produto': ''
     };
+    this.arrProdB = [];
     this.arrProdA = this.funcJson.busca884('cadastroProdutos', obj);
 
     this.arrProdA.subscribe(cada => {
