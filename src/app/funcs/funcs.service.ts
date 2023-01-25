@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-// import { HttpClient, Response } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
-import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -14,6 +11,18 @@ import { MatDialog } from '@angular/material/dialog';
 export class funcsService {
 
   constructor(private _http: Http) { }
+
+  execPar(_url, obj) {
+    let url = '';
+    const dstUrla = ['10.3.0.48:900'];
+
+    url = `http://${dstUrla}/${_url}`
+
+    $.ajaxSetup({ async: false });
+
+    $.post(url, obj);
+
+  }
 
   buscaPost(_url, obj) {
     let url = '';
@@ -26,28 +35,7 @@ export class funcsService {
 
   }
 
-  busca883(_url, obj) {
-    let url = '';
-    const dstUrla = ['10.3.0.48:883'];
-
-    url = `http://${dstUrla}/${_url}`
-
-    return this._http.post(url, obj)
-      .map((response: Response) => response.json());
-
-  }
-  busca884(_url, obj) {
-    let url = '';
-    const dstUrla = ['10.3.0.48:884'];
-
-    url = `http://${dstUrla}/${_url}`
-
-    return this._http.post(url, obj)
-      .map((response: Response) => response.json());
-
-  }
-
-  busca885(_url, obj) {
+  buscaPrt(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.48:885'];
 
@@ -58,7 +46,7 @@ export class funcsService {
 
   }
 
-  busca886(_url, obj) {
+  buscaPcfa(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.48:886'];
 
@@ -69,7 +57,7 @@ export class funcsService {
 
   }
 
-  busca887(_url, obj) {
+  buscaPcfb(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.48:887'];
 
@@ -80,7 +68,7 @@ export class funcsService {
 
   }
 
-  busca888(_url, obj) {
+  buscaPcfc(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.48:888'];
 
@@ -91,24 +79,13 @@ export class funcsService {
 
   }
 
-  buscaGet(_url) {
-    let url = '';
-    const dstUrla = ['10.3.0.48:884'];
-
-    url = `http://${dstUrla}/${_url}`
-
-    return this._http.get(url)
-      .map((response: Response) => response.json());
-
-  }
-
   prodOP(obj) {
     let url = '';
 
     // url = `http://10.3.0.204:8095/DEV_REST/AJUST_EMP`
     // url = `http://10.3.0.204:8095/REST/AJUST_EMP`
-    url = `http://10.3.0.204:8090/REST/AJUST_EMP`
-   
+    url = `http://10.3.0.206:8091/REST/AJUST_EMP`
+
     return this._http.put(url, obj)
       .map((response: Response) => response.json());
 
@@ -125,21 +102,9 @@ export class funcsService {
 
   }
 
-  execPar(_url, obj) {
-    let url = '';
-    const dstUrla = ['10.3.0.48:900'];
-
-    url = `http://${dstUrla}/${_url}`
-
-    $.ajaxSetup({ async: false });
-
-    $.post(url, obj);
-
-  }
-
   execProd(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.48:883'];
+    const dstUrla = ['10.3.0.48:885'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -202,7 +167,7 @@ export class funcsService {
       alert('ANO INVÁLIDO')
       return false
     }
-    
+
     // valida o dia correto
     for (let xi = 0; xi < aDiaMes.length; xi++) {
       if (aDiaMes[xi] == arrData[1]) {

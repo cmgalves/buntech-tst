@@ -86,7 +86,7 @@ export class DoclistaComponent implements OnInit {
     const obj = {
       'produto': this.numOP[0].CODPROD
     };
-    this.arrProdA = this.funcJson.busca884('cadastroProdutos', obj);
+    this.arrProdA = this.funcJson.buscaPrt('cadastroProdutos', obj);
 
     this.arrProdA.subscribe(cada => {
       cada.forEach(xy => {
@@ -112,7 +112,7 @@ export class DoclistaComponent implements OnInit {
       'filial': this.numOP[0].FILIAL,
       'op': this.numOP[0].OP
     };
-    this.arrOpAndA = this.funcJson.busca883('documentosOpCabec', obj);
+    this.arrOpAndA = this.funcJson.buscaPrt('documentosOpCabec', obj);
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {

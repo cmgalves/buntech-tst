@@ -75,7 +75,7 @@ export class OpresumoComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private funcJson: funcsService,
+    private fj: funcsService,
     public dialog: MatDialog
   ) { }
 
@@ -91,7 +91,7 @@ export class OpresumoComponent implements OnInit {
   }
 
   buscaGrupo() {
-    this.aGrpA = this.funcJson.busca883('agurapaRecursos', {});
+    this.aGrpA = this.fj.buscaPrt('agrupaRecursos', {});
     this.aGrpA.subscribe(cada => {
       cada.forEach(xy => {
         this.aGrpB.push({
@@ -108,7 +108,7 @@ export class OpresumoComponent implements OnInit {
       'produto': ''
     };
     this.arrProdB = [];
-    this.arrProdA = this.funcJson.busca884('cadastroProdutos', obj);
+    this.arrProdA = this.fj.buscaPrt('cadastroProdutos', obj);
 
     this.arrProdA.subscribe(cada => {
       cada.forEach(xy => {
@@ -128,10 +128,8 @@ export class OpresumoComponent implements OnInit {
 
   // busca os produtos no cadastro para utilizar os dados necessários
   buscaOpsAndamentoProtheus() {
-    const obj = {
-      'op': ''
-    };
-    this.arrOpAndA = this.funcJson.busca883('ordemProducaoAndamento', obj);
+    
+    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
@@ -157,7 +155,7 @@ export class OpresumoComponent implements OnInit {
       'filial': '',
       'codigo': '',
     };
-    this.arrRecA = this.funcJson.busca884('cadRecursos', obj);
+    this.arrRecA = this.fj.buscaPrt('cadRecursos', obj);
 
     this.arrRecA.subscribe(cada => {
       cada.forEach(xy => {
@@ -181,9 +179,9 @@ export class OpresumoComponent implements OnInit {
       'perfil': this.xcPerfil
     };
     let conta = 0
-    this.arrOpresumo886 = this.funcJson.busca886('ops', obj);
-    this.arrOpresumo887 = this.funcJson.busca887('ops', obj);
-    this.arrOpresumo888 = this.funcJson.busca888('ops', obj);
+    this.arrOpresumo886 = this.fj.buscaPcfa('ops', obj);
+    this.arrOpresumo887 = this.fj.buscaPcfb('ops', obj);
+    this.arrOpresumo888 = this.fj.buscaPcfc('ops', obj);
 
     if (this.arrOpresumo888 != null) {
       this.arrOpresumo888.subscribe(cada => {
@@ -207,7 +205,7 @@ export class OpresumoComponent implements OnInit {
               'QTDEPCF': xy.producao,
               'RETRABALHO': xy.retrabalho,
               'SEGUNDOS': xy.segundos,
-              'HORAS': this.funcJson.toHHMMSS(xy.segundos),
+              'HORAS': this.fj.toHHMMSS(xy.segundos),
               'SITUACAO': sitDesc,
               'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
             })
@@ -241,7 +239,7 @@ export class OpresumoComponent implements OnInit {
                   'QTDEPCF': xy.producao,
                   'RETRABALHO': xy.retrabalho,
                   'SEGUNDOS': xy.segundos,
-                  'HORAS': this.funcJson.toHHMMSS(xy.segundos),
+                  'HORAS': this.fj.toHHMMSS(xy.segundos),
                   'SITUACAO': sitDesc,
                   'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                 })
@@ -274,7 +272,7 @@ export class OpresumoComponent implements OnInit {
                       'QTDEPCF': xy.producao,
                       'RETRABALHO': xy.retrabalho,
                       'SEGUNDOS': xy.segundos,
-                      'HORAS': this.funcJson.toHHMMSS(xy.segundos),
+                      'HORAS': this.fj.toHHMMSS(xy.segundos),
                       'SITUACAO': sitDesc,
                       'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                     })
@@ -316,7 +314,7 @@ export class OpresumoComponent implements OnInit {
                     'QTDEPCF': xy.producao,
                     'RETRABALHO': xy.retrabalho,
                     'SEGUNDOS': xy.segundos,
-                    'HORAS': this.funcJson.toHHMMSS(xy.segundos),
+                    'HORAS': this.fj.toHHMMSS(xy.segundos),
                     'SITUACAO': sitDesc,
                     'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                   })
@@ -359,7 +357,7 @@ export class OpresumoComponent implements OnInit {
                 'QTDEPCF': xy.producao,
                 'RETRABALHO': xy.retrabalho,
                 'SEGUNDOS': xy.segundos,
-                'HORAS': this.funcJson.toHHMMSS(xy.segundos),
+                'HORAS': this.fj.toHHMMSS(xy.segundos),
                 'SITUACAO': sitDesc,
                 'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
               })
@@ -394,7 +392,7 @@ export class OpresumoComponent implements OnInit {
                   'QTDEPCF': xy.producao,
                   'RETRABALHO': xy.retrabalho,
                   'SEGUNDOS': xy.segundos,
-                  'HORAS': this.funcJson.toHHMMSS(xy.segundos),
+                  'HORAS': this.fj.toHHMMSS(xy.segundos),
                   'SITUACAO': sitDesc,
                   'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
                 })
@@ -443,7 +441,7 @@ export class OpresumoComponent implements OnInit {
       'filial': xcFil,
       'op': xcOp,
     }
-    this.funcJson.execProd('atualiza_OP', obj);
+    this.fj.execProd('atualiza_OP', obj);
   }
 
 
@@ -503,9 +501,9 @@ export class OpresumoComponent implements OnInit {
   buscatblOutInteg() {
     if (('Administrador') == this.arrUserLogado.perfil) {
       let arrTab = []
-      let arr886 = this.funcJson.busca886('tblOutInteg', {});
-      let arr887 = this.funcJson.busca887('tblOutInteg', {});
-      let arr888 = this.funcJson.busca888('tblOutInteg', {});
+      let arr886 = this.fj.buscaPcfa('tblOutInteg', {});
+      let arr887 = this.fj.buscaPcfb('tblOutInteg', {});
+      let arr888 = this.fj.buscaPcfc('tblOutInteg', {});
 
       if (arr888 != null) {
         arr888.subscribe(cada => {

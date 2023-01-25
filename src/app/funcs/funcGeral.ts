@@ -65,7 +65,6 @@ export class funcGeral {
   }
 
   datadehoje(tp) {
-
     var data = new Date();
     var dia = ('0' + String(data.getDate())).slice(-2);
     var mes = ('0' + String(data.getMonth() + 1)).slice(-2);
@@ -77,6 +76,7 @@ export class funcGeral {
       return ano + '-' + mes + '-' + dia;
     }
   }
+
   validDataFormat(xdData) {
     const arrData = xdData.split('/')
     const data = new Date();
@@ -126,6 +126,26 @@ export class funcGeral {
     } else {
       return true
     }
+  }
+
+  dtoa(xdData) {
+    const ano = xdData.substring(0, 4)
+    const mes = xdData.substring(4, 6)
+    const dia = xdData.substring(6, 8)
+
+    return mes + '+' + dia + '+' + ano
+  }
+
+  dtob(xdData) {
+    const ano = xdData.substring(0, 4)
+    const mes = xdData.substring(4, 6)
+    const dia = xdData.substring(6, 8)
+    return dia + '/' + mes + '/' + ano
+  }
+
+  btod(xdData) {
+    const aDt = xdData.split('/')
+    return aDt[2] + aDt[1] + aDt[0]
   }
 
   direita(str, n) {

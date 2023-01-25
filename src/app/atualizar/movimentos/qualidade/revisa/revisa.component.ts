@@ -35,14 +35,13 @@ export class RevisaComponent implements OnInit {
   cabProduto: string = ''
   descrProd: string = '';
   cabRevisao: string = '';
-  vigenciaDe: string = '';
-  vigenciaAte: string = '';
+  dataAprov: string = '';
+  numEspec: string = '';
   cabSituacao: string = '';
   qualObsGeral: string = '';
   qualObsRevisao: string = '';
   aplicacao: string = '';
   embalagem: string = '';
-  prazoValid: string = '';
   feitoPor: string = '';
   aprovPor: string = '';
   iteProduto: string = '';
@@ -50,22 +49,28 @@ export class RevisaComponent implements OnInit {
   iteCarac: string = '';
   iteMin: string = '';
   iteMax: string = '';
+  iteMeio: string = '';
   descCarac: string = '';
   novoCarCod: string = '';
   novoCarDesc: string = '';
   novoCarMin: string = '';
   novoCarMax: string = '';
+  novoCarMeio: string = '';
   laddCarac: boolean = true
+  lForm: boolean = false;
+  editInd = null;
   revisas: Observable<any>;
-  especSit: string[] = ['Andamento', 'Finalizada', 'Encerrada'];
-  displayedColumns: string[] = ['seq', 'iteCarac', 'descCarac', 'iteMin', 'iteMax'];
+  especSit: string[] = ['Andamento', 'Concluída', 'Encerrada'];
+  especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
+
+  displayedColumns: string[] = ['seq', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'iteMeio', 'iteEdit', 'iteExc'];
   dataSource: MatTableDataSource<cadRevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   class: string = '';
 
   myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+  options: string[] = [];
   filteredOptions: Observable<string[]>;
 
 
@@ -84,13 +89,53 @@ export class RevisaComponent implements OnInit {
     );
   }
 
-  especificar() {
-    const obj = {
-      'iteProduto': this.cabProduto,
-      'iteRevisao': this.cabRevisao,
-      'iteCarac': this.novoCarCod,
-      'iteMin': this.novoCarMin,
-      'iteMax': this.novoCarMax
+  especificar(xInc, aRow) {
+    let obj = {}
+    if (xInc === 'I') {
+      if (this.novoCarMin > this.novoCarMax) {
+        alert('O MÍNIMO está maior que o MÁXIMO!');
+        return;
+      }
+      obj = {
+        'iteProduto': this.cabProduto,
+        'iteRevisao': this.cabRevisao,
+        'iteCarac': this.novoCarCod,
+        'iteMin': this.novoCarMin,
+        'iteMax': this.novoCarMax,
+        'iteMeio': this.novoCarMeio,
+        'iteTp': 'I'
+      }
+    }
+    if (xInc === 'A') {
+      let vMin = (<HTMLInputElement>(document.getElementById("idMin"))).value.replace(',', '.')
+      let vMax = (<HTMLInputElement>(document.getElementById("idMax"))).value.replace(',', '.')
+      let cMeio = (<HTMLInputElement>(document.getElementById("idMeio"))).value.replace(',', '.')
+
+      if (+vMin > +vMax) {
+        alert('O MÍNIMO está maior que o MÁXIMO!');
+        return;
+      }
+      obj = {
+        'iteProduto': aRow.cabProduto,
+        'iteRevisao': aRow.cabRevisao,
+        'iteCarac': aRow.iteCarac,
+        'iteMin': vMin,
+        'iteMax': vMax,
+        'iteMeio': cMeio,
+        'iteTp': 'A'
+      }
+    }
+
+    if (xInc === 'E') {
+      obj = {
+        'iteProduto': aRow.cabProduto,
+        'iteRevisao': aRow.cabRevisao,
+        'iteCarac': aRow.iteCarac,
+        'iteMin': 0,
+        'iteMax': 0,
+        'iteMeio': '',
+        'iteTp': 'E'
+      }
     }
 
     this.fj.execProd('incluiEspecItens', obj);
@@ -98,12 +143,20 @@ export class RevisaComponent implements OnInit {
   }
 
   alterar(cTipo) {
+    if (cTipo === 'R' && this.iteProduto === '' && this.cabRevisao !== '000') {
+      alert('Esta REVISÃO não tem Especificação!')
+      return;
+    }
+    if (cTipo === 'A' && this.cabRevisao === '000') {
+      alert('Não é possível ALTERAR Especificações em Revisão igual a 000!')
+      return;
+    }
     const obj = {
       'cabProduto': this.cabProduto,
       'descrProd': this.descrProd,
       'cabRevisao': this.cabRevisao,
-      'vigenciaDe': this.vigenciaDe,
-      'vigenciaAte': this.vigenciaAte,
+      'dataAprov': this.dataAprov,
+      'numEspec': this.numEspec,
       'situacao': this.cabSituacao,
       'qualObsGeral': this.qualObsGeral,
       'qualObsRevisao': this.qualObsRevisao,
@@ -135,14 +188,12 @@ export class RevisaComponent implements OnInit {
       this.novoCarDesc = filProd.descCarac
       this.novoCarMin = '0'
       this.novoCarMax = '0'
+      this.novoCarMeio = ' '
     }
   }
 
-
-
   buscaRevisas() {
     let seq = 0;
-    let mxRev = '000'
     let aProd: any = JSON.parse(localStorage.getItem('especProd'));
     this.cabProduto = aProd.codigo;
     this.descrProd = aProd.descricao;
@@ -151,55 +202,43 @@ export class RevisaComponent implements OnInit {
     const obj = {
       'cabProduto': this.cabProduto
     };
-    this.arrDb = this.fj.busca884('relacaoRevisaoEspec', obj);
-    
-    this.arrDb.subscribe(cada => {
-      cada.forEach(xy => {
-        if (mxRev <= xy.cabRevisao ) {
-          if (xy.situacao != 'Encerrada') {
-            mxRev = xy.cabRevisao
-          }
-        }
-      });
-    });
-
+    this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj);
 
     this.arrDb.subscribe(cada => {
       cada.forEach(xy => {
-        if (xy.cabRevisao == mxRev) {
-          seq++
-          this.arrRev.push({
-            'seq': seq,
-            'cabProduto': xy.cabProduto,
-            'descrProd': xy.descrProd,
-            'cabRevisao': xy.cabRevisao,
-            'vigenciaDe': xy.vigenciaDe,
-            'vigenciaAte': xy.vigenciaAte,
-            'situacao': xy.situacao,
-            'qualObsGeral': xy.qualObsGeral,
-            'qualObsRevisao': xy.qualObsRevisao,
-            'aplicacao': xy.aplicacao,
-            'embalagem': xy.embalagem,
-            'prazoValid': xy.prazoValid,
-            'feitoPor': xy.feitoPor,
-            'aprovPor': xy.aprovPor,
-            'iteProduto': xy.iteProduto,
-            'iteRevisao': xy.iteRevisao,
-            'iteCarac': xy.iteCarac,
-            'iteMin': xy.iteMin,
-            'iteMax': xy.iteMax,
-            'descCarac': xy.descCarac,
-          })
-          if (seq === 1) {
-            this.cabRevisao = xy.cabRevisao;
-            this.vigenciaDe = xy.vigenciaDe;
-            this.vigenciaAte = xy.vigenciaAte;
-            this.cabSituacao = xy.situacao;
-            this.aplicacao = xy.aplicacao;
-            this.embalagem = xy.embalagem;
-            this.qualObsRevisao = xy.qualObsRevisao;
-            this.qualObsGeral = xy.qualObsGeral;
-          }
+        seq++
+        this.arrRev.push({
+          'seq': seq,
+          'cabProduto': xy.cabProduto,
+          'descrProd': xy.descrProd,
+          'cabRevisao': xy.cabRevisao,
+          'dataAprov': xy.dataAprov,
+          'numEspec': xy.numEspec,
+          'situacao': xy.situacao,
+          'qualObsGeral': xy.qualObsGeral,
+          'qualObsRevisao': xy.qualObsRevisao,
+          'aplicacao': xy.aplicacao,
+          'embalagem': xy.embalagem,
+          'feitoPor': xy.feitoPor,
+          'aprovPor': xy.aprovPor,
+          'iteProduto': xy.iteProduto,
+          'iteRevisao': xy.iteRevisao,
+          'iteCarac': xy.iteCarac,
+          'iteMin': xy.iteMin,
+          'iteMax': xy.iteMax,
+          'iteMeio': xy.iteMeio,
+          'descCarac': xy.descCarac,
+        })
+        if (seq === 1) {
+          this.iteProduto = xy.iteProduto;
+          this.cabRevisao = xy.cabRevisao;
+          this.dataAprov = xy.dataAprov;
+          this.numEspec = xy.numEspec;
+          this.cabSituacao = xy.situacao;
+          this.aplicacao = xy.aplicacao;
+          this.embalagem = xy.embalagem;
+          this.qualObsRevisao = xy.qualObsRevisao;
+          this.qualObsGeral = xy.qualObsGeral;
         }
       });
 
@@ -234,8 +273,12 @@ export class RevisaComponent implements OnInit {
     this.router.navigate(['espec']);
   }
 
-  incCarac() {
+  editLinha(e, i) {
+    this.editInd = i;
+  }
 
+  incCarac() {
+    this.lForm = !this.lForm;
   }
 
 }

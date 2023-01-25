@@ -37,6 +37,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CaracteristicaComponent } from 'app/atualizar/movimentos/qualidade/caracteristica/caracteristica.component';
 import { EspecificaComponent } from 'app/atualizar/movimentos/qualidade/especifica/especifica.component';
 import { RevisaComponent } from 'app/atualizar/movimentos/qualidade/revisa/revisa.component';
+import { HistoricoComponent } from 'app/atualizar/movimentos/qualidade/historico/historico.component';
+import { HistrevisaComponent } from 'app/atualizar/movimentos/qualidade/histrevisa/histrevisa.component';
+import { LoteComponent } from 'app/atualizar/movimentos/qualidade/lote/lote.component';
+import { LoteGestaoComponent } from 'app/atualizar/movimentos/qualidade/loteGestao/loteGestao.component';
+import { LoteRegComponent } from 'app/atualizar/movimentos/qualidade/loteReg/loteReg.component';
+import { LoteDetalheComponent } from 'app/atualizar/movimentos/qualidade/loteDetalhe/loteDetalhe.component';
+import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteAprova/loteAprova.component';
+import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
 
 
 @NgModule({
@@ -77,6 +85,14 @@ import { RevisaComponent } from 'app/atualizar/movimentos/qualidade/revisa/revis
     CaracteristicaComponent,
     EspecificaComponent,
     RevisaComponent,
+    HistoricoComponent,
+    HistrevisaComponent,
+    LoteComponent,
+    LoteGestaoComponent,
+    LoteRegComponent,
+    LoteDetalheComponent,
+    LoteAprovaComponent,
+    LoteAnalisaComponent,
   ]
 })
 

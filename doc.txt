@@ -33,7 +33,8 @@ Senha: Dev!@PCP
 Nome da VPN GrupoBun-IND
 Endereço IP 10.212.134.128
 Usuário calves@indbun.com.br
-Senha: ca1971@#Buntech
+Senha:  Casamontana@#1
+        ca1971@#Buntech
 
 
   // Campina Grande - 888

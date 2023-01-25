@@ -1,0 +1,149 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorAzul">
+                        <a>DETALHES DOS LOTES PRODUZIDOS
+                            <button (click)="exportExcel('LoteRegs', 'LoteReg')" mat-raised-button type="button"
+                                matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                <span class="material-icons">
+                                    file_download
+                                </span>
+                            </button>
+                        </a>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <div class="row">
+                            <div class="card-body table-responsive col-md-5">
+                                <mat-form-field>
+                                    <mat-label>Filtro Geral</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de LoteReg"
+                                        #input>
+                                </mat-form-field>
+                            </div>
+                            <div class="card-body table-responsive col-md-2">
+                                <mat-form-field>
+                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro LoteReg"
+                                        [(ngModel)]="filLoteReg">
+                                        <mat-option *ngFor="let optFilter of filterLoteReg" [value]="optFilter">
+                                            {{optFilter}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="dataSource" matSort>
+                                <ng-container matColumnDef="filial">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Filial
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell> {{row.filial}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="op">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> OP </th>
+                                    <td *matCellDef='let row' mat-cell> {{row.op}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="produto">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.produto}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="descricao">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="lote">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Lote </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.lote}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="loteAprov">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Status Lote </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.loteAprov}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="dtAprov">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Aprovação </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtAprov}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="dtProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Produção </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtProd}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="dtVenc">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Vencimento</th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtVenc}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdeTot">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeTot}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="quebra">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Quebra </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.quebra}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdeQuebra">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Quebra </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeQuebra}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="situacao">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Situação </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.situacao}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="loteReg">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="centro"> M A N U T E N
+                                        Ç Ã O
+                                    </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <button (click)="detalheLote(row)" mat-raised-button type="button"
+                                            matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons">explore</i>
+                                        </button>
+                                        <button (click)="fechaLote(row)" [disabled]="btnDisable(row)" mat-raised-button
+                                            type="button" matTooltip="Adiantar Fechamento"
+                                            [matTooltipPosition]="'above'"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons">flash_on</i>
+                                        </button>
+                                        <button (click)="analisaLote(row)" [disabled]="btnDisable(row)"
+                                            mat-raised-button type="button" matTooltip="Análise do Lote"
+                                            [matTooltipPosition]="'above'"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons md-48">gps_fixed</i>
+                                        </button>
+                                        <button (click)="aprovaLote(row)" [disabled]="btnDisable(row)" mat-raised-button
+                                            type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons md-48">center_focus_weak</i>
+                                        </button>
+                                        <button (click)="imprimeLote(row)" [disabled]="btnDisable(row)"
+                                            mat-raised-button type="button" matTooltip="Imprime Etiqueta"
+                                            [matTooltipPosition]="'above'"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons md-48">apps</i>
+                                        </button>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
+                                    [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto'}">
+                                </tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                </tr>
+                            </table>
+
+                            <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

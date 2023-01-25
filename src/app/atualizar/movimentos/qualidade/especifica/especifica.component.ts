@@ -16,6 +16,7 @@ export interface cadEspecifica {
   grupo: string;
   ncm: string;
   situacao: string;
+  revisao: string;
 }
 
 @Component({
@@ -32,7 +33,7 @@ export class EspecificaComponent implements OnInit {
   arrCarac: any = [];
 
   especificas: Observable<any>;
-  displayedColumns: string[] = ['seq', 'codigo', 'descricao', 'tipo', 'unidade', 'grupo', 'ncm', 'situacao', 'revisa'];
+  displayedColumns: string[] = ['seq', 'codigo', 'descricao', 'tipo', 'unidade', 'grupo', 'ncm', 'revisao', 'situacao', 'revisa'];
   dataSource: MatTableDataSource<cadEspecifica>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -53,10 +54,10 @@ export class EspecificaComponent implements OnInit {
     }
   }
 
-// monta um array via localstorage
+  // monta um array via localstorage
   buscaCaracs() {
     this.arrCarac = [];
-    this.arrDados = this.fj.busca884('relacaoCarac', {});
+    this.arrDados = this.fj.buscaPrt('relacaoCarac', {});
     this.arrDados.subscribe(cada => {
       cada.forEach(xy => {
         this.arrCarac.push({
@@ -67,12 +68,12 @@ export class EspecificaComponent implements OnInit {
       localStorage.setItem('cadCarac', JSON.stringify(this.arrCarac));
     });
   }
-  
+
   // busca a relação de produtos com as especificações
   buscaEspecificas() {
     let seq = 0;
-    
-    this.arrEspecifica = this.fj.busca884('cadastroProdutosQualidade', {});
+
+    this.arrEspecifica = this.fj.buscaPrt('cadastroProdutosQualidade', {});
     this.arrEspecifica.subscribe(cada => {
       cada.forEach(xy => {
         seq++
@@ -85,9 +86,10 @@ export class EspecificaComponent implements OnInit {
           'grupo': xy.grupo,
           'ncm': xy.ncm,
           'situacao': xy.situacao,
+          'revisao': xy.revisao,
         })
       });
-      
+
       this.dataSource = new MatTableDataSource(this.arrEspecificaTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -102,7 +104,7 @@ export class EspecificaComponent implements OnInit {
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);
   }
-  
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -116,6 +118,5 @@ export class EspecificaComponent implements OnInit {
     localStorage.setItem('especProd', JSON.stringify(xcRow));
     this.router.navigate(['revisa']);
   }
-
 
 }

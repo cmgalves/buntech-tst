@@ -54,7 +54,7 @@ export class ProdutoComponent implements OnInit {
     const obj = {
       'produto': ''
     };
-    this.arrProduto = this.fj.busca884('cadastroProdutos', obj);
+    this.arrProduto = this.fj.buscaPrt('cadastroProdutos', obj);
 
     this.arrProduto.subscribe(cada => {
       cada.forEach(xy => {
@@ -69,10 +69,10 @@ export class ProdutoComponent implements OnInit {
           'ncm': xy.ncm,
           'situacao': xy.situacao,
         })
-  
+
       });
-      
-  
+
+
       this.dataSource = new MatTableDataSource(this.arrProdutoTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -87,7 +87,7 @@ export class ProdutoComponent implements OnInit {
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);
   }
-  
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

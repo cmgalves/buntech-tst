@@ -1,5 +1,6 @@
 use PCP
 
+--DROP TABLE qualCarac 
 CREATE TABLE qualCarac (
     codCarac varchar(03),
     descCarac varchar(55)
@@ -10,6 +11,8 @@ CREATE TABLE qualEspecCab (
     cabProduto varchar(15),
     descrProd varchar(70),
     cabRevisao varchar(03),
+    numEspec varchar(20),
+    dataAprov varchar(10),
     vigenciaDe varchar(10),
     vigenciaAte varchar(10),
     situacao varchar(20),
@@ -17,9 +20,8 @@ CREATE TABLE qualEspecCab (
     qualObsRevisao varchar(250),
     aplicacao varchar(70),
     embalagem varchar(250),
-    prazoValid varchar(70),
-    feitoPor varchar(70),
-    aprovPor varchar(70)
+	feitoPor varchar(70), 
+	aprovPor varchar(70)
 );
 
 --DROP TABLE qualEspecItens 

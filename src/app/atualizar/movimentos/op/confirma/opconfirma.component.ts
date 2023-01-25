@@ -37,6 +37,11 @@ export class OpconfirmaComponent implements OnInit {
   arrOpconfirmaTab: any = [];
   arrEstrutura: any = [];
   arrEstruturaTab: any = [];
+  objParcial: any = [];
+  objTotal: any = [];
+  arrLote: any = [];
+  arrLoteTab: any = [];
+  temLote: boolean = true;
   opFilial: string = '';
   opCodigo: string = '';
   opEmissao: string = '';
@@ -67,7 +72,7 @@ export class OpconfirmaComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private funcJson: funcsService,
+    private fj: funcsService,
   ) { }
 
   ngOnInit(): void {
@@ -75,8 +80,9 @@ export class OpconfirmaComponent implements OnInit {
     if (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1) {
       // this.buscaOpconfirma();
       this.buscaOpsAndamentoProtheus();
+      this.confirmaLote();
     } else {
-      alert('Sem Acesso')
+      alert('Sem Acesso');
       this.router.navigate(['opResumo']);
     }
 
@@ -101,16 +107,14 @@ export class OpconfirmaComponent implements OnInit {
       'QTDEPCF': 0,
       'QTDEINF': 0,
     }
-    this.funcJson.execProd('calcOP', objConf);
+    this.fj.execProd('calcOP', objConf);
     window.location.reload();
   }
 
 
   buscaOpsAndamentoProtheus() {
-    const obj = {
-      'op': ''
-    };
-    this.arrOpAndA = this.funcJson.busca883('ordemProducaoAndamento', obj);
+
+    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
@@ -142,8 +146,8 @@ export class OpconfirmaComponent implements OnInit {
       op: xcOp,
       tipo: 'tudo',
     };
-    // this.arrOpconfirma = this.funcJson.busca884('ordemProducaoAndamento', obj);
-    this.arrOpconfirma = this.funcJson.busca883('opAndamento', obj);
+
+    this.arrOpconfirma = this.fj.buscaPrt('opAndamento', obj);
 
     const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
 
@@ -205,7 +209,7 @@ export class OpconfirmaComponent implements OnInit {
             this.opMaxQtd = parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue);
           }
           this.opRetrabalho = String(retr)
-          this.opHoras = this.funcJson.toHHMMSS(secs)
+          this.opHoras = this.fj.toHHMMSS(secs)
           oper = '00'
         }
       });
@@ -232,81 +236,107 @@ export class OpconfirmaComponent implements OnInit {
     // console.log(qdt)
   }
 
-  exportExcel(fileName, sheetName) {
-    const fn = fileName + '.xlsx';
-    const sn = sheetName;
-    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
-    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, sn);
-    XLSX.writeFile(workBook, fn);
+  // verifica se tem lote para o produto selecionado
+  confirmaLote() {
+    this.arrLote = this.fj.buscaPrt('relacaoProdLote', { 'produto': this.numOP[0].CODPROD });
+    this.arrLoteTab = []
+    this.temLote = false
+
+    this.arrLote.subscribe(cada => {
+      cada.forEach(xy => {
+        this.arrLoteTab.push({
+          'produto': xy.produto,
+          'descricao': xy.descricao,
+          'revisao': xy.revisao,
+          'seq': xy.seq,
+          'validade': xy.validade,
+          'ativo': xy.ativo,
+          'quebra': xy.quebra,
+          'qtde': xy.qtde,
+          'diaRevisao': xy.diaRevisao,
+          'obs': xy.obs,
+        })
+        this.temLote = true
+      });
+    });
   }
+
 
   prodParcialOp() {
     const nQtdeLen = this.numOP.length - 1
     const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
     this.parcialAtivo = false;
+    if (this.temLote) {
+      if (this.opQtdeParcial > 0) {
+        if (Math.round(this.opMaxQtd * 10000) / 10000 > this.opQtdeParcial) {
+          const obj = {
+            cFilialOp: this.opFilial,
+            cNumOp: this.opCodigo,
+            cC2Prod: this.opProduto,
+            cC2Local: '01',
+            cDocAjst: 'DOCPARCI',
+            nC2QtdOri: this.opQtde,
+            nC2QtdAjst: this.opQtdePcf,
+            cTipoProd: 'P',
+            nQtdEntrg: this.opQtdeParcial,
+            cOperacao: this.numOP[nQtdeLen].OPERACAO,
+            cRecurso: this.numOP[nQtdeLen].RECURSO,
+            dDataApt: datApt[0].APT,
+            ItensD4: []
+          };
 
-    if (this.opQtdeParcial > 0) {
-      if (Math.round(this.opMaxQtd * 10000) / 10000 > this.opQtdeParcial) {
-        const obj = {
-          cFilialOp: this.opFilial,
-          cNumOp: this.opCodigo,
-          cC2Prod: this.opProduto,
-          cC2Local: '01',
-          cDocAjst: 'DOCPARCI',
-          nC2QtdOri: this.opQtde,
-          nC2QtdAjst: this.opQtdePcf,
-          cTipoProd: 'P',
-          nQtdEntrg: this.opQtdeParcial,
-          cOperacao: this.numOP[nQtdeLen].OPERACAO,
-          cRecurso: this.numOP[nQtdeLen].RECURSO,
-          dDataApt: datApt[0].APT,
-          ItensD4: []
-        };
+          this.objParcial = {
+            filial: this.opFilial,
+            op: this.opCodigo,
+            qtde: this.opQtdeParcial,
+            tipo: 'P',
+            usrProd: this.arrUserLogado.codUser,
+            fechamento: 'automatico',
+          };
+          const retProdParcial = this.fj.prodOP(obj);
+          retProdParcial.subscribe(cada => {
+            alert(cada.Sucesso.substring(2, 60))
+            if (cada.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+              this.fj.execProd('produzOP', this.objParcial);
+              this.fj.execProd('produzLote', this.objParcial);
+              this.parcialAtivo = true;
+            }
+            this.fj.execProd('produzLote', this.objParcial);
 
-        const retProdParcial = this.funcJson.prodOP(obj);
-        retProdParcial.subscribe(cada => {
-          alert(cada.Sucesso.substring(2, 60))
-          if (cada.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
-            const objParcial = {
-              filial: this.opFilial,
-              op: this.opCodigo,
-              qtde: this.opQtdeParcial,
-              tipo: 'P',
-            };
-            this.funcJson.execProd('produzOP', objParcial);
+            window.location.reload();
+          });
+        } else {
+          if (Math.round(this.opMaxQtd * 10000) / 10000 == this.opQtdeParcial) {
+            if (Math.round(this.opMaxQtd * 10000) / 10000 > 0.1) {
+              this.opQtdeParcial = this.opMaxQtd - 0.1;
+            }
+            alert('Não pode zerar a OP no apontamento Parcial!!!')
+            this.parcialAtivo = true;
+          } else {
+            alert('Quantidade maior que a produzida!!!')
+            this.opQtdeParcial = Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000;
             this.parcialAtivo = true;
           }
-          window.location.reload();
-        });
-      } else {
-        if (Math.round(this.opMaxQtd * 10000) / 10000 == this.opQtdeParcial) {
-          if (Math.round(this.opMaxQtd * 10000) / 10000 > 0.1) {
-            this.opQtdeParcial = this.opMaxQtd - 0.1;
-          }
-          alert('Não pode zerar a OP no apontamento Parcial!!!')
-          this.parcialAtivo = true;
-        } else {
-          alert('Quantidade maior que a produzida!!!')
-          this.opQtdeParcial = Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000;
-          this.parcialAtivo = true;
         }
+      } else {
+        alert('Quantidade igual a zero!!!');
+        this.parcialAtivo = true;
       }
     } else {
-      alert('Quantidade igual a zero!!!');
-      this.parcialAtivo = true;
+      alert('Não existe Lote atribuído para este produto')
+      window.location.reload();
     }
 
 
 
   }
 
-
   prodTotalOp() {
     let temSaldo = true
     let ajustado = true
     let arrItens = []
     const nQtdeLen = this.numOP.length - 1
+
     this.arrOpconfirmaTab.forEach(xl => {
       if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
         temSaldo = false
@@ -326,49 +356,56 @@ export class OpconfirmaComponent implements OnInit {
       }
     });
 
+    if (this.temLote) {
+      if (ajustado) {
+        if (temSaldo) {
+          const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
 
-    if (ajustado) {
-      if (temSaldo) {
-        const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
-
-        const obj = {
-          cFilialOp: this.opFilial,
-          cNumOp: this.opCodigo,
-          cC2Prod: this.opProduto,
-          cC2Local: '01',
-          cDocAjst: 'DOCTOTAL',
-          nC2QtdOri: this.opQtde,
-          nC2QtdAjst: this.opQtdePcf,
-          cTipoProd: 'T',
-          nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000,
-          cOperacao: this.numOP[nQtdeLen].OPERACAO,
-          cRecurso: this.numOP[nQtdeLen].RECURSO,
-          dDataApt: datApt[0].APT,
-          ItensD4: arrItens
-        };
-        const retProdParcial = this.funcJson.prodOP(obj);
-        retProdParcial.subscribe(cada => {
-          alert(cada.Sucesso.substring(2, 60))
-          if (cada.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
-            const objTotal = {
-              filial: this.opFilial,
-              op: this.opCodigo,
-              qtde: this.opQtdeParcial,
-              tipo: 'T',
-            };
-            this.funcJson.execProd('produzOP', objTotal)
-          }
-          window.location.reload();
-        });
+          const obj = {
+            cFilialOp: this.opFilial,
+            cNumOp: this.opCodigo,
+            cC2Prod: this.opProduto,
+            cC2Local: '01',
+            cDocAjst: 'DOCTOTAL',
+            nC2QtdOri: this.opQtde,
+            nC2QtdAjst: this.opQtdePcf,
+            cTipoProd: 'T',
+            nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000,
+            cOperacao: this.numOP[nQtdeLen].OPERACAO,
+            cRecurso: this.numOP[nQtdeLen].RECURSO,
+            dDataApt: datApt[0].APT,
+            ItensD4: arrItens
+          };
+          this.objTotal = {
+            filial: this.opFilial,
+            op: this.opCodigo,
+            qtde: this.opQtdeParcial,
+            tipo: 'T',
+            usrProd: this.arrUserLogado.codUser,
+            fechamento: 'automatico',
+          };
+          const retProdParcial = this.fj.prodOP(obj);
+          retProdParcial.subscribe(cada => {
+            alert(cada.Sucesso.substring(2, 60))
+            if (cada.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
+              this.fj.execProd('produzOP', this.objTotal)
+              this.fj.execProd('produzLote', this.objTotal);
+            }
+            this.fj.execProd('produzLote', this.objTotal);
+            window.location.reload();
+          });
+        } else {
+          alert('Itens com saldo insuficiente!')
+        }
       } else {
-        alert('Itens com saldo insuficiente!')
+        alert('Itens sem ajuste pelo apontado!')
       }
-    } else {
-      alert('Itens sem ajuste pelo apontado!')
+      alert('Não existe Lote atribuído para este produto')
     }
   }
 
 
+  // aplicar o filtro ao digitar na tela dos itens
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -377,5 +414,14 @@ export class OpconfirmaComponent implements OnInit {
     }
   }
 
+  // função para exportar todos os registros para o excel
+  exportExcel(fileName, sheetName) {
+    const fn = fileName + '.xlsx';
+    const sn = sheetName;
+    const workSheet = XLSX.utils.json_to_sheet(this.dataSource.data, { header: [] });
+    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, sn);
+    XLSX.writeFile(workBook, fn);
+  }
 
 }

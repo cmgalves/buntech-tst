@@ -20,12 +20,20 @@ import { ConfiguraComponent } from '../configura/configura.component';
 import { CaracteristicaComponent } from 'app/atualizar/movimentos/qualidade/caracteristica/caracteristica.component';
 import { EspecificaComponent } from 'app/atualizar/movimentos/qualidade/especifica/especifica.component';
 import { RevisaComponent } from 'app/atualizar/movimentos/qualidade/revisa/revisa.component';
+import { HistoricoComponent } from 'app/atualizar/movimentos/qualidade/historico/historico.component';
+import { HistrevisaComponent } from 'app/atualizar/movimentos/qualidade/histrevisa/histrevisa.component';
+import { LoteComponent } from 'app/atualizar/movimentos/qualidade/lote/lote.component';
+import { LoteGestaoComponent } from 'app/atualizar/movimentos/qualidade/loteGestao/loteGestao.component';
+import { LoteRegComponent } from 'app/atualizar/movimentos/qualidade/loteReg/loteReg.component';
+import { LoteDetalheComponent } from 'app/atualizar/movimentos/qualidade/loteDetalhe/loteDetalhe.component';
+import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteAprova/loteAprova.component';
+import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
 
 export const AdminLayoutRoutes: Routes = [
 
     { path: 'sign-in', component: SignInComponent },
     { path: 'esqueci-Senha', component: ForgotPasswordComponent },
-    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'usuario', component: UsuarioComponent, canActivate: [AuthGuard] },
     { path: 'opResumo', component: OpresumoComponent, canActivate: [AuthGuard] },
     { path: 'document', component: OpdocumentoComponent, canActivate: [AuthGuard] },
@@ -42,8 +50,14 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'carac', component: CaracteristicaComponent, canActivate: [AuthGuard] },
     { path: 'espec', component: EspecificaComponent, canActivate: [AuthGuard] },
     { path: 'revisa', component: RevisaComponent, canActivate: [AuthGuard] },
-    
-    
+    { path: 'histor', component: HistoricoComponent, canActivate: [AuthGuard] },
+    { path: 'histrevisa', component: HistrevisaComponent, canActivate: [AuthGuard] },
+    { path: 'lote', component: LoteComponent, canActivate: [AuthGuard] },
+    { path: 'loteGestao', component: LoteGestaoComponent, canActivate: [AuthGuard] },
+    { path: 'loteReg', component: LoteRegComponent, canActivate: [AuthGuard] },
+    { path: 'loteDetalhe', component: LoteDetalheComponent, canActivate: [AuthGuard] },
+    { path: 'loteAprova', component: LoteAprovaComponent, canActivate: [AuthGuard] },
+    { path: 'loteAnalisa', component: LoteAnalisaComponent, canActivate: [AuthGuard] },
 ];
 
 

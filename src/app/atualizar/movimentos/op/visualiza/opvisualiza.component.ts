@@ -54,7 +54,7 @@ export class OpvisualizaComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private funcJson: funcsService,
+    private fj: funcsService,
   ) { }
 
   ngOnInit(): void {
@@ -65,10 +65,8 @@ export class OpvisualizaComponent implements OnInit {
     this.router.navigate(['opResumo']);
   }
   buscaOpsAndamentoProtheus() {
-    const obj = {
-      'op': ''
-    };
-    this.arrOpAndA = this.funcJson.busca883('ordemProducaoAndamento', obj);
+
+    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
@@ -99,10 +97,9 @@ export class OpvisualizaComponent implements OnInit {
       op: xcOp,
       tipo: 'tudo',
     };
-    // this.arrOpvisualiza = this.funcJson.busca884('ordemProducaoAndamento', obj);
 
     const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
-    this.arrOpvisualiza = this.funcJson.busca883('opAndamento', obj);
+    this.arrOpvisualiza = this.fj.buscaPrt('opAndamento', obj);
 
     this.arrOpvisualiza.subscribe(cada => {
       cada.forEach(xy => {
@@ -151,7 +148,7 @@ export class OpvisualizaComponent implements OnInit {
             retr = ax.RETRABALHO
           });
           this.opRetrabalho = String(retr)
-          this.opHoras = this.funcJson.toHHMMSS(secs)
+          this.opHoras = this.fj.toHHMMSS(secs)
           oper = '00'
         }
       });

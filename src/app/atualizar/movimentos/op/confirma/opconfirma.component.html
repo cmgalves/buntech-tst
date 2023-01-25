@@ -122,9 +122,12 @@
                     </div>
                 </div>
                 <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaResumo()">voltar</button>
-                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-success" (click)="prodTotalOp()">Total</button>
-                <button mat-raised-button type="submit" *ngIf="parcialAtivo" class="btn btn-warning" (click)="prodParcialOp()">Parcial</button>
-                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-info" (click)="reabrOp()">Re-Ajustar</button>
+                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-success"
+                    (click)="prodTotalOp()">Total</button>
+                <button mat-raised-button type="submit" *ngIf="parcialAtivo" class="btn btn-warning"
+                    (click)="prodParcialOp()">Parcial</button>
+                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-info"
+                    (click)="reabrOp()">Re-Ajustar</button>
             </div>
         </div>
         <div class="row" *ngIf="numOP[0].SITUACAO == 'Baixada'">
@@ -139,8 +142,6 @@
                                     file_download
                                 </span>
                             </button></a>
-                        <!-- <h4 class="card-title">RELAÇÃO DE ORDENS DE PRODUÇÃO</h4> -->
-                        <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
                     </div>
                     <div class="card-body table-responsive">
                         <mat-form-field>
@@ -170,7 +171,8 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Calc </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='enableEditIndex!=i'>{{row.QTDECALC}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.QTDECALC}} class="editQtd" id="editQtd" *ngIf='enableEdit && enableEditIndex==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.QTDECALC}} class="editQtd"
+                                            id="editQtd" *ngIf='enableEdit && enableEditIndex==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="SITUACA">
@@ -180,13 +182,19 @@
                                 <ng-container matColumnDef="EDICAO">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
-                                        <button *ngIf='enableEdit && enableEditIndex != i' (click)="enableEditUser($event, i)" mat-raised-button type="button" matTooltip="Edição" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEdit && enableEditIndex != i'
+                                            (click)="enableEditUser($event, i)" mat-raised-button type="button"
+                                            matTooltip="Edição" [matTooltipPosition]="'above'"
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">edit</i>
                                         </button>
-                                        <button *ngIf='enableEditIndex==i' (click)='altQtde()' mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEditIndex==i' (click)='altQtde()' mat-raised-button
+                                            type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>save</i>
                                         </button>
-                                        <button *ngIf='enableEditIndex==i' (click)='enableEditIndex=null;' mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEditIndex==i' (click)='enableEditIndex=null;'
+                                            mat-raised-button type='button'
+                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>cancel</i>
                                         </button>
                                     </td>
@@ -201,7 +209,8 @@
                                 </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'saldoL' : row.SALDO >= row.QTDECALC || row.TIPO === 'R' || ('M3 | H | ').indexOf(row.UNIDADE) !== -1,
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
+                                    [ngClass]="{'saldoL' : row.SALDO >= row.QTDECALC || row.TIPO === 'R' || ('M3 | H | ').indexOf(row.UNIDADE) !== -1,
                                     'saldoB' : row.QTDECALC > row.SALDO && row.TIPO !== 'R' && ('M3 | H | ').indexOf(row.UNIDADE) === -1 }"></tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

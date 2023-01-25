@@ -150,7 +150,7 @@ export class OpajustaComponent implements OnInit {
       op: this.numOP[0].OP,
       tipo: 'tudo',
     };
-    this.arrCalcOP = this.fj.busca883('opAndamento', obj);
+    this.arrCalcOP = this.fj.buscaPrt('opAndamento', obj);
     this.arrCalcOP.subscribe(cada => {
       cada.forEach(xy => {
         this.calculaMod = xy.XMOD
@@ -304,10 +304,8 @@ export class OpajustaComponent implements OnInit {
   }
 
   buscaOpsAndamentoProtheus() {
-    const obj = {
-      'op': ''
-    };
-    this.arrOpAndA = this.fj.busca883('ordemProducaoAndamento', obj);
+
+    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
@@ -341,7 +339,7 @@ export class OpajustaComponent implements OnInit {
 
     const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
 
-    this.arrOpajusta = this.fj.busca883('opAndamento', obj);
+    this.arrOpajusta = this.fj.buscaPrt('opAndamento', obj);
 
     this.arrOpajusta.subscribe(cada => {
       cada.forEach(xy => {

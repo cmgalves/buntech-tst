@@ -58,7 +58,7 @@ export class SaldoComponent implements OnInit {
       'armazem': '',
       'filial': '',
     };
-    this.arrSaldo = this.funcJson.busca884('cadSaldos', obj);
+    this.arrSaldo = this.funcJson.buscaPrt('cadSaldos', obj);
 
     this.arrSaldo.subscribe(cada => {
       cada.forEach(xy => {

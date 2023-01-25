@@ -51,12 +51,12 @@ export class UsuarioComponent implements OnInit {
   // Campina Grande - 888
   // Servidor de HML:10.3.0.92
   // Filiais:101,107,117,402
-  
+
   // Boa vista - 886
   // Servidor de HML:10.1.0.250
   // Filiais:108
-  
-  
+
+
   // Indaiatuba - 887
   // Servidor de HML: 10.3.0.204
   // Filiais:206
@@ -99,7 +99,7 @@ export class UsuarioComponent implements OnInit {
 
   buscaUsuarios() {
     const obj = {};
-    this.arrUsuario = this.funcJson.busca883('cadUsuarios', obj);
+    this.arrUsuario = this.funcJson.buscaPrt('cadUsuarios', obj);
 
     this.arrUsuario.subscribe(cada => {
       cada.forEach(xy => {

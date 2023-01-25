@@ -22,12 +22,12 @@ export class SignInComponent implements OnInit {
   arrUsuario: any = [];
   arrUsuarioTab: any = [];
   arrUsr: any = [];
-  
+
 
   constructor(
     public router: Router,
     public authService: AuthService,
-    private funcJson: funcsService,
+    private fj: funcsService,
   ) { }
 
   ngOnInit() {
@@ -85,7 +85,7 @@ export class SignInComponent implements OnInit {
 
   buscaUsuarios() {
     const obj = {};
-    this.arrUsuario = this.funcJson.busca883('cadUsuarios', obj);
+    this.arrUsuario = this.fj.buscaPrt('cadUsuarios', obj);
     this.arrUsuario.subscribe(cada => {
       cada.forEach(xy => {
         this.arrUsuarioTab.push({
@@ -113,7 +113,7 @@ export class SignInComponent implements OnInit {
           'senhaNew': this.senhaNova,
         }
         entra = 5;
-        this.funcJson.execProd('alteraSenhaUsuario', obj);
+        this.fj.execProd('alteraSenhaUsuario', obj);
         window.location.reload();
       }
     });
@@ -122,6 +122,6 @@ export class SignInComponent implements OnInit {
       return true;
     }
   }
-  
+
 
 }

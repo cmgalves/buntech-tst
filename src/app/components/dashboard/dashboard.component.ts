@@ -28,10 +28,10 @@ export class DashboardComponent implements OnInit {
 
   buscaProdutos() {
     const obj = {
-      'produto':''
+      'produto': ''
     };
 
-    this.arrProduto = this.funcJson.busca884('cadastroProdutos', obj);
+    this.arrProduto = this.funcJson.buscaPrt('cadastroProdutos', obj);
 
     this.arrProduto.subscribe(cada => {
       cada.forEach(xy => {

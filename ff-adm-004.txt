@@ -1,0 +1,236 @@
+roteiro de implantação
+
+*****************criação das tabelas*****************
+
+qualLote
+
+CREATE TABLE qualLote(
+	id_lote int IDENTITY(1,1),
+	produto varchar(15) NULL,
+	descricao varchar(70) NULL,
+	seq varchar(10) NULL, --'202212'
+	validade float NULL,
+	ativo varchar(1) NULL,
+	quebra varchar(1) NULL, --Peso Dia
+	qtde float NULL,
+	revisao varchar(3) NULL,
+	diaRevisao varchar(8) NULL,
+	obs varchar(250) NULL
+) 
+
+USE PCP
+GO
+
+loteProd
+CREATE TABLE loteProd(
+	id_loteProd int IDENTITY(1,1),
+	produto varchar(15) NULL,
+	descricao varchar(70) NULL,
+	lote varchar(10) NULL, --'202212'
+	diaProd varchar(8) NULL,
+	diaVenc varchar(8) NULL,
+	qtde float NULL,
+	qtdeTot float NULL,
+	seqProd varchar(3) NULL,
+	quebra varchar(1) NULL,
+	revisao varchar(3) NULL,
+	obs varchar(250) NULL
+) 
+GO
+
+
+
+*****************Criação de Viewes*****************
+
+alter view [dbo].[View_Portal_Cadastro_Produto_Qualidade_Lote] as
+-- View para os produtos que estão disponíveis para o PCF
+
+	SELECT
+		rtrim(B1_COD) produto,
+		rtrim(B1_DESC) descricao,
+		rtrim(B1_TIPO) tipo,
+		rtrim(B1_UM) unidade,
+		rtrim(B1_GRUPO) grupo,
+		rtrim(B1_POSIPI) ncm,
+		rtrim(B1_XTRANSF) retrabalho,
+		rtrim(B1_XINDICA) mdo,
+		isnull(revisao, '000') revisao,
+		isnull(seq, '') seq,
+		isnull(validade, 0) validade,
+		case
+			when isnull(ativo, '') = '' then ''
+			when isnull(ativo, '') = 'S' then 'Sim'
+			when isnull(ativo, '') = 'N' then 'Não'
+			else 'Err'
+		end ativo,
+		case
+			when isnull(quebra, '') = '' then ''
+			when isnull(quebra, '') = 'D' then 'Dia'
+			when isnull(quebra, '') = 'P' then 'Peso'
+			else 'Err'
+		end quebra,
+		isnull(qtde, 0) qtde,
+		isnull(diaRevisao, '') diaRevisao,
+		isnull(obs, '') obs,
+        rtrim(case when B1_MSBLQL = '1' then'Bloqueado' else 'Liberado' end) sit
+	FROM
+		HOMOLOGACAO..SB1010 A LEFT JOIN
+		(
+			select 
+				* 
+			from 
+				PCP..qualLote c inner join
+				(
+					select 
+						produto cabPrd, max(revisao) mxRev
+					from 
+						PCP..qualLote
+					group by
+						produto
+				)d on
+				1 = 1
+				and produto = cabPrd
+				and revisao = mxRev		
+		) B ON
+		1 = 1
+		AND B1_COD = produto
+	WHERE 
+		1 = 1
+		AND D_E_L_E_T_ = ''
+        --AND B1_COD = 'P800501'
+		AND B1_TIPO IN ('PA', 'PP') 
+		AND B1_XINTPCF <> ''
+	--order by  9 desc
+
+	--select * from PCP..qualEspecCab
+
+GO
+
+
+*****************Criação de procedures*****************
+
+USE [PCP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_incluiEspec]    Script Date: 25/12/2022 13:10:00 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+alter procedure sp_manuLote
+
+-- procedure para inclusão, alteração e revisão de lotes.
+
+/*
+PCP..sp_manuLote  'PA000120',  'ALP WHITE N 1',  '000',  '2022122501',  12,  'D',  10,  'inclusão',  'C'
+
+PCP..sp_manuLote  'PA000120',  'ALP WHITE N 1',  '001',  '2022122501',  12,  'D',  10,  'inclusão',  'R'
+
+SELECT * FROM PCP..qualLote
+delete PCP..qualLote
+*/
+
+	@produto varchar(15),
+    @descricao varchar(70),
+    @revisao varchar(03),
+    @seq varchar(10),
+    @validade float,
+    @quebra varchar(1),
+    @qtde float,
+	@obs varchar(250),
+	@cTipo varchar(1)
+as
+
+
+declare 
+	@existRev int,
+	@novaRev varchar(3),
+	@ativo varchar(1),
+	@diaRevisao varchar(8)
+
+
+set @novaRev = right(concat('000', rtrim(convert(varchar(3), cast(@revisao as int) + 1))), 3) --numero da próxima revisão
+set @diaRevisao = (select convert(varchar(8), getdate(), 112))
+
+
+if @cTipo = 'C'
+	
+	if @revisao = '000'
+		begin
+			insert into PCP..qualLote  
+				(produto, descricao, seq, validade, ativo, quebra, qtde, revisao, diaRevisao, obs)
+			values
+				(@produto, @descricao, @seq, @validade, 'S', @quebra, @qtde, '001', @diaRevisao, @obs)
+		end
+	else
+		begin
+			update 
+				PCP..qualLote  
+			set
+				seq = @seq,
+				validade = @validade,
+				quebra = @quebra,
+				qtde = @qtde
+			where
+				1 = 1
+				and produto = @produto 
+				and revisao = @revisao
+			
+		end 
+
+if @cTipo = 'R'
+
+	begin
+		update 
+			PCP..qualLote  
+		set
+			ativo = 'N',
+			diaRevisao = @diaRevisao
+		where
+			1 = 1
+			and produto = @produto 
+			and revisao = @revisao
+
+
+		insert into PCP..qualLote  
+			(produto, descricao, seq, validade, ativo, quebra, qtde, revisao, diaRevisao, obs)
+		values
+			(@produto, @descricao, @seq, @validade, 'S', @quebra, @qtde, @novaRev, @diaRevisao, 'Geração Automática por Revisão')
+
+	end
+
+/*
+
+produto varchar(15) NULL,
+	descricao varchar(70) NULL,
+	seq varchar(10) NULL, --'202212'
+	validade float NULL,
+	ativo varchar(1) NULL,
+	quebra varchar(1) NULL,
+	qtde float NULL,
+	revisao varchar(3) NULL,
+	diaRevisao varchar(8) NULL,
+	obs varchar(250) NULL
+	*/
+	
+GO
+
+
+
+
+
+*****************Criação de menus*****************
+
+Cad Lotes baseado no Especificações com menu lateral.
+GEstão de Lotes baseado no Revisa sem menu lateral - chamado internamente.
+
+
+
+
+edição do resultado - alteração no status.
+
+CRIAR UM BOTÃO NA TELA LOTEREG PARA aprovação depois da análise
+

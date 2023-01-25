@@ -1,0 +1,58 @@
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+.divCorAzul {
+    background: rgba(4, 146, 204);
+    color: rgb(250, 246, 244);
+}
+
+.divCorVerde {
+    background: rgba(3, 173, 162)
+}
+
+.Liberado {
+    background: rgb(230, 255, 230);
+}
+
+.Bloqueado {
+    background: rgb(255, 204, 204);
+}
+
+.SituVin {
+    background: rgb(246, 162, 162)
+}
+
+.SituFin {
+    background: rgb(162, 211, 175)
+}
+
+.SituAnd {
+    background: rgb(173, 204, 236)
+}
+
+.SituEnc {
+    background: rgb(191, 186, 241)
+}
+
+.SituEsp {
+    background: rgba(240, 215, 189, 0.887)
+}
+
+.textoVerde {
+    color: limegreen
+}
+
+.textoVermelho {
+    color: DarkSalmon
+}

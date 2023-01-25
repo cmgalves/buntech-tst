@@ -57,7 +57,7 @@ export class RecursoComponent implements OnInit {
       'filial': '',
       'codigo': '',
     };
-    this.arrRecurso = this.funcJson.busca884('cadRecursos', obj);
+    this.arrRecurso = this.funcJson.buscaPrt('cadRecursos', obj);
 
     this.arrRecurso.subscribe(cada => {
       cada.forEach(xy => {

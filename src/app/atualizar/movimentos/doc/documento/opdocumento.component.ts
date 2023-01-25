@@ -75,7 +75,7 @@ export class OpdocumentoComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private funcJson: funcsService,
+    private fj: funcsService,
     public dialog: MatDialog
   ) { }
 
@@ -89,10 +89,8 @@ export class OpdocumentoComponent implements OnInit {
 
   // busca os produtos no cadastro para utilizar os dados necessários
   buscaOpsAndamentoProtheus() {
-    const obj = {
-      'op': ''
-    };
-    this.arrOpAndA = this.funcJson.busca883('ordemProducaoAndamento', obj);
+
+    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
@@ -122,9 +120,9 @@ export class OpdocumentoComponent implements OnInit {
       'perfil': this.xcPerfil
     };
     let conta = 0
-    this.arrOpdocumento886 = this.funcJson.busca886('ops', obj);
-    this.arrOpdocumento887 = this.funcJson.busca887('ops', obj);
-    this.arrOpdocumento888 = this.funcJson.busca888('ops', obj);
+    this.arrOpdocumento886 = this.fj.buscaPcfa('ops', obj);
+    this.arrOpdocumento887 = this.fj.buscaPcfb('ops', obj);
+    this.arrOpdocumento888 = this.fj.buscaPcfc('ops', obj);
 
     if (this.arrOpdocumento888 != null) {
       this.arrOpdocumento888.subscribe(cada => {

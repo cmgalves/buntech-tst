@@ -57,12 +57,12 @@ export class EstruturaComponent implements OnInit {
       'produto': '',
       'filial': ''
     };
-    this.arrEstrutura = this.funcJson.busca884('cadEstruturas', obj);
+    this.arrEstrutura = this.funcJson.buscaPrt('cadEstruturas', obj);
 
     this.arrEstrutura.subscribe(cada => {
       cada.forEach(xy => {
         seq++
-        this.arrEstruturaTab.push({ 
+        this.arrEstruturaTab.push({
           'seq': seq,
           'filial': xy.filial,
           'codPai': xy.codPai,

@@ -56,7 +56,7 @@ export class CaracteristicaComponent implements OnInit {
     const obj = {
       'caracteristica': ''
     };
-    this.arrCaracteristica = this.fj.busca884('cadastroCaracteristicas', obj);
+    this.arrCaracteristica = this.fj.buscaPrt('cadastroCaracteristicas', obj);
 
     this.arrCaracteristica.subscribe(cada => {
       this.seq = 0
@@ -94,7 +94,7 @@ export class CaracteristicaComponent implements OnInit {
     }
   }
 
- 
+
 
   manutCarac(nOpt, aLin) {
     if (nOpt === 1) {

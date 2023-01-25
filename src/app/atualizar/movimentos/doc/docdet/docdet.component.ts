@@ -155,7 +155,7 @@ export class DocdetComponent implements OnInit {
       'op': this.dadosDoc.OP,
       'datadoc': datadoc
     };
-    this.arrOpAndA = this.funcJson.busca883('documentosOpLista', obj);
+    this.arrOpAndA = this.funcJson.buscaPrt('documentosOpLista', obj);
 
     this.arrOpAndA.subscribe(cada => {
       this.arrOpAndB = [];
@@ -332,7 +332,7 @@ export class DocdetComponent implements OnInit {
     const obj = {
       'produto': ''
     };
-    this.arrProdA = this.funcJson.busca884('cadastroProdutos', obj);
+    this.arrProdA = this.funcJson.buscaPrt('cadastroProdutos', obj);
 
     this.arrProdA.subscribe(cada => {
       cada.forEach(xy => {
@@ -535,7 +535,7 @@ export class DocdetComponent implements OnInit {
     const datadoc = arrData[2] + arrData[1] + arrData[0];
     var img = new Image()
     let xlEntrou = true
-    const cOp = (this.opCodigo).substring(0,6);
+    const cOp = (this.opCodigo).substring(0, 6);
     const Lin = 7;
     let nL = 3;
     let nL2 = 0;
