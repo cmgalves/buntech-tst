@@ -135,7 +135,7 @@ export class DocdetComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private fj: funcsService,
+    private funcJson: funcsService,
     public dialog: MatDialog
   ) { }
 
@@ -155,7 +155,7 @@ export class DocdetComponent implements OnInit {
       'op': this.dadosDoc.OP,
       'datadoc': datadoc
     };
-    this.arrOpAndA = this.fj.buscaPrt('documentosOpLista', obj);
+    this.arrOpAndA = this.funcJson.buscaPrt('documentosOpLista', obj);
 
     this.arrOpAndA.subscribe(cada => {
       this.arrOpAndB = [];
@@ -247,7 +247,7 @@ export class DocdetComponent implements OnInit {
       'itComp': xaRow.CODPROD,
       'itlote': xcLote,
     }
-    this.fj.execProd('atualizaDoc', obj);
+    this.funcJson.execProd('atualizaDoc', obj);
 
     this.enableEdit = false;
     this.enableEditIndex = null;
@@ -273,7 +273,7 @@ export class DocdetComponent implements OnInit {
 
   criaDocumento(xnTipo) {
     const arrData = this.opDataDoc.split('/')
-    if (this.fj.validDataFormat(this.opDataDoc)) {
+    if (this.funcJson.validDataFormat(this.opDataDoc)) {
       if (xnTipo === 1) {
         let obj = {
           'tipo': xnTipo,
@@ -284,7 +284,7 @@ export class DocdetComponent implements OnInit {
           'itComp': ' ',
           'itlote': ' ',
         }
-        this.fj.execProd('atualizaDoc', obj);
+        this.funcJson.execProd('atualizaDoc', obj);
         this.buscaDocsOps();
         // window.location.reload();
       } else {
@@ -297,7 +297,7 @@ export class DocdetComponent implements OnInit {
           'itComp': ' ',
           'itlote': ' ',
         }
-        this.fj.execProd('atualizaDoc', obj);
+        this.funcJson.execProd('atualizaDoc', obj);
         this.buscaDocsOps();
         // window.location.reload();
       }
@@ -332,7 +332,7 @@ export class DocdetComponent implements OnInit {
     const obj = {
       'produto': ''
     };
-    this.arrProdA = this.fj.buscaPrt('cadastroProdutos', obj);
+    this.arrProdA = this.funcJson.buscaPrt('cadastroProdutos', obj);
 
     this.arrProdA.subscribe(cada => {
       cada.forEach(xy => {
@@ -378,7 +378,7 @@ export class DocdetComponent implements OnInit {
       'itComp': this.opItemNovo,
       'itlote': ' ',
     }
-    this.fj.execProd('atualizaDoc', obj);
+    this.funcJson.execProd('atualizaDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
   }
@@ -404,7 +404,7 @@ export class DocdetComponent implements OnInit {
       'itComp': xaRow.CODPROD,
       'itlote': ' ',
     }
-    this.fj.execProd('atualizaDoc', obj);
+    this.funcJson.execProd('atualizaDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
   }
@@ -429,7 +429,7 @@ export class DocdetComponent implements OnInit {
       'itComp': xaRow.CODPROD,
       'itlote': ' ',
     }
-    this.fj.execProd('atualizaDoc', obj);
+    this.funcJson.execProd('atualizaDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
   }
@@ -523,7 +523,7 @@ export class DocdetComponent implements OnInit {
       'turno2': this.valTurno2 === null ? 'N' : this.valTurno2,
       'turno3': this.valTurno3 === null ? 'N' : this.valTurno3,
     }
-    this.fj.execProd('atualizaCabecDoc', obj);
+    this.funcJson.execProd('atualizaCabecDoc', obj);
     this.buscaDocsOps();
     // window.location.reload();
   }

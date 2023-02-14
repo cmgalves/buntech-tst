@@ -38,7 +38,7 @@ export class EstruturaComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private fj: funcsService,
+    private funcJson: funcsService,
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class EstruturaComponent implements OnInit {
       'produto': '',
       'filial': ''
     };
-    this.arrEstrutura = this.fj.buscaPrt('cadEstruturas', obj);
+    this.arrEstrutura = this.funcJson.buscaPrt('cadEstruturas', obj);
 
     this.arrEstrutura.subscribe(cada => {
       cada.forEach(xy => {

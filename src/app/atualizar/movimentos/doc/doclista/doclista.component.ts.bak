@@ -72,7 +72,7 @@ export class DoclistaComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private fj: funcsService,
+    private funcJson: funcsService,
     public dialog: MatDialog
   ) { }
 
@@ -86,7 +86,7 @@ export class DoclistaComponent implements OnInit {
     const obj = {
       'produto': this.numOP[0].CODPROD
     };
-    this.arrProdA = this.fj.buscaPrt('cadastroProdutos', obj);
+    this.arrProdA = this.funcJson.buscaPrt('cadastroProdutos', obj);
 
     this.arrProdA.subscribe(cada => {
       cada.forEach(xy => {
@@ -112,7 +112,7 @@ export class DoclistaComponent implements OnInit {
       'filial': this.numOP[0].FILIAL,
       'op': this.numOP[0].OP
     };
-    this.arrOpAndA = this.fj.buscaPrt('documentosOpCabec', obj);
+    this.arrOpAndA = this.funcJson.buscaPrt('documentosOpCabec', obj);
 
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
@@ -138,7 +138,7 @@ export class DoclistaComponent implements OnInit {
 
       this.opFilial = this.numOP[0].FILIAL;
       this.opCodigo = this.numOP[0].OP;
-      this.opDataDoc = this.fj.datadehoje('brasuca')
+      this.opDataDoc = this.funcJson.datadehoje('brasuca')
       this.opFinal = this.numOP[0].FINAL;
       this.opProduto = codPro;
       this.opDescricao = aCadProd[0].descricao;
@@ -172,7 +172,7 @@ export class DoclistaComponent implements OnInit {
       }
 
 
-      this.fj.execProd('atualizaDoc', obj);
+      this.funcJson.execProd('atualizaDoc', obj);
       window.location.reload();
     }
   }
@@ -196,7 +196,7 @@ export class DoclistaComponent implements OnInit {
     const arrData = this.opDataDoc.split('/')
 
 
-    if (this.fj.validDataFormat(this.opDataDoc)) {
+    if (this.funcJson.validDataFormat(this.opDataDoc)) {
       if (xnTipo === 1) {
         let obj = {
           'tipo': xnTipo,
@@ -207,7 +207,7 @@ export class DoclistaComponent implements OnInit {
           'itComp': ' ',
           'itlote': ' ',
         }
-        this.fj.execProd('atualizaDoc', obj);
+        this.funcJson.execProd('atualizaDoc', obj);
         window.location.reload();
       } else {
         let obj = {
@@ -219,7 +219,7 @@ export class DoclistaComponent implements OnInit {
           'itComp': ' ',
           'itlote': ' ',
         }
-        this.fj.execProd('atualizaDoc', obj);
+        this.funcJson.execProd('atualizaDoc', obj);
         window.location.reload();
       }
     }

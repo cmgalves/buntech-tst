@@ -26,6 +26,12 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
+                            <mat-label>RevTemp</mat-label>
+                            <input matInput [(ngModel)]="cabRevisaoTemp">
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
                             <mat-label>Data Aprovação</mat-label>
                             <input type="date" matInput [(ngModel)]="dataAprov">
                         </mat-form-field>
@@ -51,13 +57,13 @@
                             <input matInput [(ngModel)]="aplicacao">
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-5">
+                    <div class="card-body table-responsive col-md-4">
                         <mat-form-field>
                             <mat-label>Embalagem</mat-label>
                             <input matInput [(ngModel)]="embalagem">
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-5">
+                    <div class="card-body table-responsive col-md-4">
                         <mat-form-field>
                             <mat-label>Observações da Revisão</mat-label>
                             <input matInput [(ngModel)]="qualObsRevisao">
@@ -74,6 +80,7 @@
             <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaEspec()">Voltar</button>
             <button mat-raised-button type="submit" class="btn btn-success" (click)="alterar('A')">Alterar</button>
             <button mat-raised-button type="submit" class="btn btn-warning" (click)="alterar('R')">Revisar</button>
+            <button mat-raised-button type="submit" class="btn btn-info" (click)="alterar('I')">Incluir</button>
         </div>
         <div class="row" *ngIf="lForm">
             <div class="col-lg-12 col-md-12">
@@ -187,7 +194,7 @@
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMax">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Mínimo </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Máximo </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.iteMax}}</p>
                                         <input ng-maxlength="20" type='text' value={{row.iteMax}} id="idMax"

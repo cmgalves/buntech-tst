@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 
 // tslint:disable-next-line:class-name
-export interface cadEstrutura {
+export interface cadSaldo {
   empresa: string;
   nome: string;
   email: string;
@@ -19,67 +19,63 @@ export interface cadEstrutura {
 }
 
 @Component({
-  selector: 'app-estrutura',
-  templateUrl: './estrutura.component.html',
-  styleUrls: ['./estrutura.component.css']
+  selector: 'app-saldo',
+  templateUrl: './saldo.component.html',
+  styleUrls: ['./saldo.component.css']
 })
 
-export class EstruturaComponent implements OnInit {
+export class SaldoComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
-  arrEstrutura: any = [];
-  arrEstruturaTab: any = [];
+  arrSaldo: any = [];
+  arrSaldoTab: any = [];
 
 
-  estruturas: Observable<any>;
-  displayedColumns: string[] = ['seq', 'filial', 'codPai', 'descPai', 'tipoPai', 'codComp', 'descComp', 'tipoComp', 'unidadeComp', 'basePai', 'qtde', 'perda', 'nivel'];
-  dataSource: MatTableDataSource<cadEstrutura>;
+  saldos: Observable<any>;
+  displayedColumns: string[] = ['seq', 'filial', 'codigo', 'descricao', 'armazem', 'saldo', 'empenhado'];
+  dataSource: MatTableDataSource<cadSaldo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  class: string = '';
 
   constructor(
     public router: Router,
-    private fj: funcsService,
+    private funcJson: funcsService,
   ) { }
 
   ngOnInit(): void {
-    if (this.arrUserLogado.perfil === 'Administrador') {
-      this.buscaEstruturas();
+    if (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1) {
+      this.buscaSaldos();
     } else {
       alert('Sem Acesso')
       this.router.navigate(['opResumo']);
     }
   }
 
-
-  buscaEstruturas() {
+  buscaSaldos() {
     let seq = 0
     const obj = {
-      'produto': '',
-      'filial': ''
+      'codigo': '',
+      'armazem': '',
+      'filial': '',
     };
-    this.arrEstrutura = this.fj.buscaPrt('cadEstruturas', obj);
+    this.arrSaldo = this.funcJson.buscaPrt('cadSaldos', obj);
 
-    this.arrEstrutura.subscribe(cada => {
+    this.arrSaldo.subscribe(cada => {
       cada.forEach(xy => {
         seq++
-        this.arrEstruturaTab.push({
+        this.arrSaldoTab.push({
           'seq': seq,
           'filial': xy.filial,
-          'codPai': xy.codPai,
-          'descPai': xy.descPai,
-          'tipoPai': xy.tipoPai,
-          'codComp': xy.codComp,
-          'descComp': xy.descComp,
-          'tipoComp': xy.tipoComp,
-          'unidadeComp': xy.unidadeComp,
-          'basePai': xy.basePai,
-          'qtde': xy.qtde,
-          'perda': xy.perda,
-          'nivel': xy.nivel,
+          'codigo': xy.codigo,
+          'descricao': xy.descricao,
+          'armazem': xy.armazem,
+          'saldo': xy.saldo,
+          'cm': xy.cm,
+          'empenhado': xy.empenhado,
         })
 
       });
-      this.dataSource = new MatTableDataSource(this.arrEstruturaTab)
+      this.dataSource = new MatTableDataSource(this.arrSaldoTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });

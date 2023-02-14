@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 
 // tslint:disable-next-line:class-name
-export interface cadEstrutura {
+export interface cadRecurso {
   empresa: string;
   nome: string;
   email: string;
@@ -19,67 +19,61 @@ export interface cadEstrutura {
 }
 
 @Component({
-  selector: 'app-estrutura',
-  templateUrl: './estrutura.component.html',
-  styleUrls: ['./estrutura.component.css']
+  selector: 'app-recurso',
+  templateUrl: './recurso.component.html',
+  styleUrls: ['./recurso.component.css']
 })
 
-export class EstruturaComponent implements OnInit {
+export class RecursoComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
-  arrEstrutura: any = [];
-  arrEstruturaTab: any = [];
+  arrRecurso: any = [];
+  arrRecursoTab: any = [];
 
 
-  estruturas: Observable<any>;
-  displayedColumns: string[] = ['seq', 'filial', 'codPai', 'descPai', 'tipoPai', 'codComp', 'descComp', 'tipoComp', 'unidadeComp', 'basePai', 'qtde', 'perda', 'nivel'];
-  dataSource: MatTableDataSource<cadEstrutura>;
+  recursos: Observable<any>;
+  displayedColumns: string[] = ['seq', 'filial', 'codigo', 'descricao', 'custo', 'setor', 'calendario'];
+  dataSource: MatTableDataSource<cadRecurso>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  class: string = '';
 
   constructor(
     public router: Router,
-    private fj: funcsService,
+    private funcJson: funcsService,
   ) { }
 
   ngOnInit(): void {
     if (this.arrUserLogado.perfil === 'Administrador') {
-      this.buscaEstruturas();
+      this.buscaRecursos();
     } else {
       alert('Sem Acesso')
       this.router.navigate(['opResumo']);
     }
   }
 
-
-  buscaEstruturas() {
+  buscaRecursos() {
     let seq = 0
     const obj = {
-      'produto': '',
-      'filial': ''
+      'filial': '',
+      'codigo': '',
     };
-    this.arrEstrutura = this.fj.buscaPrt('cadEstruturas', obj);
+    this.arrRecurso = this.funcJson.buscaPrt('cadRecursos', obj);
 
-    this.arrEstrutura.subscribe(cada => {
+    this.arrRecurso.subscribe(cada => {
       cada.forEach(xy => {
         seq++
-        this.arrEstruturaTab.push({
+        this.arrRecursoTab.push({
           'seq': seq,
           'filial': xy.filial,
-          'codPai': xy.codPai,
-          'descPai': xy.descPai,
-          'tipoPai': xy.tipoPai,
-          'codComp': xy.codComp,
-          'descComp': xy.descComp,
-          'tipoComp': xy.tipoComp,
-          'unidadeComp': xy.unidadeComp,
-          'basePai': xy.basePai,
-          'qtde': xy.qtde,
-          'perda': xy.perda,
-          'nivel': xy.nivel,
+          'codigo': xy.codigo,
+          'descricao': xy.descricao,
+          'custo': xy.custo,
+          'setor': xy.setor,
+          'calendario': xy.calendario,
         })
-
       });
-      this.dataSource = new MatTableDataSource(this.arrEstruturaTab)
+      // localStorage.setItem('recurso', JSON.stringify(this.arrRecursoTab));
+      this.dataSource = new MatTableDataSource(this.arrRecursoTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });

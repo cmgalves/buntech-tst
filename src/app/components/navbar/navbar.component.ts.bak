@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
         private element: ElementRef,
         private router: Router,
         public authService: AuthService,
-        private fj: funcsService,
+        private funcJson: funcsService,
 
     ) {
         this.location = location;
@@ -138,7 +138,7 @@ export class NavbarComponent implements OnInit {
         return '';
     }
     buscaRest() {
-        this.aRest = this.fj.buscaPar('resttst');
+        this.aRest = this.funcJson.buscaPar('resttst');
         this.aRest.subscribe(cada => {
             cada.forEach(xy => {
                 this.cRest = xy.rest

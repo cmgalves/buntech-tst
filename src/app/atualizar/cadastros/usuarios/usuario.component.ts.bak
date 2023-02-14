@@ -64,7 +64,7 @@ export class UsuarioComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private fj: funcsService,
+    private funcJson: funcsService,
   ) { }
 
   ngOnInit(): void {
@@ -80,7 +80,7 @@ export class UsuarioComponent implements OnInit {
 
   buscaEmpresas() {
     const obj = {};
-    this.arrEmpresa = this.fj.buscaPrt('empresasBuntech', obj);
+    this.arrEmpresa = this.funcJson.buscaPost('empresasBuntech', obj);
 
     this.arrEmpresa.subscribe(cada => {
       cada.forEach(xy => {
@@ -99,7 +99,7 @@ export class UsuarioComponent implements OnInit {
 
   buscaUsuarios() {
     const obj = {};
-    this.arrUsuario = this.fj.buscaPrt('cadUsuarios', obj);
+    this.arrUsuario = this.funcJson.buscaPrt('cadUsuarios', obj);
 
     this.arrUsuario.subscribe(cada => {
       cada.forEach(xy => {
@@ -169,7 +169,7 @@ export class UsuarioComponent implements OnInit {
         alert('Usuário ou Email em branco')
         return true
       } else {
-        this.fj.execProd('incluiAlteraUsuario', obj);
+        this.funcJson.execProd('incluiAlteraUsuario', obj);
 
         window.location.reload();
 

@@ -39,7 +39,7 @@ export class RecursoComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private funcJson: funcsService,
+    private fj: funcsService,
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class RecursoComponent implements OnInit {
       'filial': '',
       'codigo': '',
     };
-    this.arrRecurso = this.funcJson.buscaPrt('cadRecursos', obj);
+    this.arrRecurso = this.fj.buscaPrt('cadRecursos', obj);
 
     this.arrRecurso.subscribe(cada => {
       cada.forEach(xy => {

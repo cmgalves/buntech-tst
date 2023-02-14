@@ -15,9 +15,24 @@ export class funcsService {
   execPar(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.48:900'];
+
     url = `http://${dstUrla}/${_url}`
+
     $.ajaxSetup({ async: false });
+
     $.post(url, obj);
+
+  }
+
+  buscaPost(_url, obj) {
+    let url = '';
+    const dstUrla = ['10.3.0.48:884'];
+
+    url = `http://${dstUrla}/${_url}`
+
+    return this._http.post(url, obj)
+      .map((response: Response) => response.json());
+
   }
 
   buscaPrt(_url, obj) {
@@ -67,6 +82,8 @@ export class funcsService {
   prodOP(obj) {
     let url = '';
 
+    // url = `http://10.3.0.204:8095/DEV_REST/AJUST_EMP`
+    // url = `http://10.3.0.204:8095/REST/AJUST_EMP`
     url = `http://10.3.0.206:8091/REST/AJUST_EMP`
 
     return this._http.put(url, obj)

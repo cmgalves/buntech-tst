@@ -39,7 +39,7 @@ export class SaldoComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private funcJson: funcsService,
+    private fj: funcsService,
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class SaldoComponent implements OnInit {
       'armazem': '',
       'filial': '',
     };
-    this.arrSaldo = this.funcJson.buscaPrt('cadSaldos', obj);
+    this.arrSaldo = this.fj.buscaPrt('cadSaldos', obj);
 
     this.arrSaldo.subscribe(cada => {
       cada.forEach(xy => {

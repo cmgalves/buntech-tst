@@ -35,6 +35,7 @@ export class RevisaComponent implements OnInit {
   cabProduto: string = ''
   descrProd: string = '';
   cabRevisao: string = '';
+  cabRevisaoTemp: string = '';
   dataAprov: string = '';
   numEspec: string = '';
   cabSituacao: string = '';
@@ -92,10 +93,10 @@ export class RevisaComponent implements OnInit {
   especificar(xInc, aRow) {
     let obj = {}
     if (xInc === 'I') {
-      if (this.novoCarMin > this.novoCarMax) {
-        alert('O MÍNIMO está maior que o MÁXIMO!');
-        return;
-      }
+      // if (this.novoCarMin > this.novoCarMax) {
+      //   alert('O MÍNIMO está maior que o MÁXIMO!');
+      //   return;
+      // }
       obj = {
         'iteProduto': this.cabProduto,
         'iteRevisao': this.cabRevisao,
@@ -143,6 +144,10 @@ export class RevisaComponent implements OnInit {
   }
 
   alterar(cTipo) {
+    if (cTipo === 'I') {
+      this.cabRevisao = this.cabRevisaoTemp
+    }
+
     if (cTipo === 'R' && this.iteProduto === '' && this.cabRevisao !== '000') {
       alert('Esta REVISÃO não tem Especificação!')
       return;
