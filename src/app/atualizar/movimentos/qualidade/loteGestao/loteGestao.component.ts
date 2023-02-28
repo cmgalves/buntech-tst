@@ -31,7 +31,7 @@ export interface cadLote {
 })
 
 export class LoteGestaoComponent implements OnInit {
-  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
+  aUsr = JSON.parse(localStorage.getItem('user'))[0];
   aProd: any = JSON.parse(localStorage.getItem('loteProd'));
   cProd: string = this.aProd.produto
   arrLote: any = [];
@@ -41,14 +41,17 @@ export class LoteGestaoComponent implements OnInit {
   revisao: string = '';
   seq: string = '';
   validade: any = 0;
+  nivel: string = '';
   quebra: string = '';
   qtde: any = 0;
   obs: any = '';
+  usuario: any = '';
   cTipo: any = 0;
   tpQuebra: string[] = ['DIA', 'PESO'];
   tpativo: string[] = ['SIM', 'NAO'];
+  tpNivel: string[] = ['N1', 'N2', 'N3'];
   lotes: Observable<any>;
-  displayedColumns: string[] = ['ord', 'produto', 'descricao', 'revisao', 'seq', 'validade', 'ativo', 'quebra', 'qtde', 'diaRevisao', 'obs'];
+  displayedColumns: string[] = ['ord', 'produto', 'descricao', 'revisao', 'seq', 'validade', 'ativo', 'nivel', 'quebra', 'qtde', 'diaRevisao', 'obs'];
   dataSource: MatTableDataSource<cadLote>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -82,9 +85,11 @@ export class LoteGestaoComponent implements OnInit {
           'validade': xy.validade,
           'ativo': xy.ativo,
           'quebra': xy.quebra,
+          'nivel': xy.nivel,
           'qtde': xy.qtde,
           'diaRevisao': this.fg.dtob(xy.diaRevisao),
           'obs': xy.obs,
+          'usuario': xy.usuario,
         })
         this.produto = xy.produto
         this.descricao = xy.descricao
@@ -92,8 +97,10 @@ export class LoteGestaoComponent implements OnInit {
         this.seq = xy.seq
         this.validade = xy.validade
         this.quebra = xy.quebra
+        this.nivel = xy.nivel
         this.qtde = xy.qtde
         this.obs = xy.obs
+        this.usuario = xy.usuario
       });
       if (this.produto === '') {
         this.produto = this.aProd.produto
@@ -104,6 +111,7 @@ export class LoteGestaoComponent implements OnInit {
         this.quebra = 'PESO'
         this.qtde = this.aProd.qtde
         this.obs = this.aProd.obs
+        this.usuario = this.aUsr.codUser
       }
       this.dataSource = new MatTableDataSource(this.arrLoteTab)
       this.dataSource.paginator = this.paginator;
@@ -146,8 +154,10 @@ export class LoteGestaoComponent implements OnInit {
       'seq': this.seq,
       'validade': this.validade,
       'quebra': this.quebra,
+      'nivel': this.nivel,
       'qtde': this.qtde,
       'obs': this.obs,
+      'usuario': this.aUsr.codUser,
       'cTipo': cTipo,
     }
     this.fj.execProd('manuLote', obj);

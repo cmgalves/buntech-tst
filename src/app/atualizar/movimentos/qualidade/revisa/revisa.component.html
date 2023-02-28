@@ -63,9 +63,9 @@
                             <input matInput [(ngModel)]="embalagem">
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-4">
+                    <div class="card-body table-responsive col-md-12">
                         <mat-form-field>
-                            <mat-label>Observações da Revisão</mat-label>
+                            <mat-label>Histórico de Revisão</mat-label>
                             <input matInput [(ngModel)]="qualObsRevisao">
                         </mat-form-field>
                     </div>
@@ -126,8 +126,14 @@
                         </div>
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
+                                <mat-label>Parâmetro</mat-label>
+                                <input type="text" matInput [(ngModel)]="novoCarTxt">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
                                 <mat-label>Meio</mat-label>
-                                <input matInput [(ngModel)]="novoCarMeio">
+                                <input type="text" matInput [(ngModel)]="novoCarMeio">
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
@@ -198,6 +204,14 @@
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.iteMax}}</p>
                                         <input ng-maxlength="20" type='text' value={{row.iteMax}} id="idMax"
+                                            *ngIf='editInd==i'>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="itetxt">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Parâmetro </th>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='editInd!=i'>{{row.itetxt}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.itetxt}} id="idtxt"
                                             *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>

@@ -56,6 +56,7 @@ export class RevisaComponent implements OnInit {
   novoCarDesc: string = '';
   novoCarMin: string = '';
   novoCarMax: string = '';
+  novoCarTxt: string = '';
   novoCarMeio: string = '';
   laddCarac: boolean = true
   lForm: boolean = false;
@@ -64,7 +65,7 @@ export class RevisaComponent implements OnInit {
   especSit: string[] = ['Andamento', 'Concluída', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
-  displayedColumns: string[] = ['seq', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'iteMeio', 'iteEdit', 'iteExc'];
+  displayedColumns: string[] = ['seq', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'itetxt', 'iteMeio', 'iteEdit', 'iteExc'];
   dataSource: MatTableDataSource<cadRevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -93,10 +94,7 @@ export class RevisaComponent implements OnInit {
   especificar(xInc, aRow) {
     let obj = {}
     if (xInc === 'I') {
-      // if (this.novoCarMin > this.novoCarMax) {
-      //   alert('O MÍNIMO está maior que o MÁXIMO!');
-      //   return;
-      // }
+
       obj = {
         'iteProduto': this.cabProduto,
         'iteRevisao': this.cabRevisao,
@@ -104,6 +102,7 @@ export class RevisaComponent implements OnInit {
         'iteMin': this.novoCarMin,
         'iteMax': this.novoCarMax,
         'iteMeio': this.novoCarMeio,
+        'itetxt': this.novoCarTxt,
         'iteTp': 'I'
       }
     }
@@ -111,11 +110,8 @@ export class RevisaComponent implements OnInit {
       let vMin = (<HTMLInputElement>(document.getElementById("idMin"))).value.replace(',', '.')
       let vMax = (<HTMLInputElement>(document.getElementById("idMax"))).value.replace(',', '.')
       let cMeio = (<HTMLInputElement>(document.getElementById("idMeio"))).value.replace(',', '.')
+      let ctxt = (<HTMLInputElement>(document.getElementById("idtxt"))).value
 
-      if (+vMin > +vMax) {
-        alert('O MÍNIMO está maior que o MÁXIMO!');
-        return;
-      }
       obj = {
         'iteProduto': aRow.cabProduto,
         'iteRevisao': aRow.cabRevisao,
@@ -123,6 +119,7 @@ export class RevisaComponent implements OnInit {
         'iteMin': vMin,
         'iteMax': vMax,
         'iteMeio': cMeio,
+        'itetxt': ctxt,
         'iteTp': 'A'
       }
     }
@@ -135,6 +132,7 @@ export class RevisaComponent implements OnInit {
         'iteMin': 0,
         'iteMax': 0,
         'iteMeio': '',
+        'itetxt': '',
         'iteTp': 'E'
       }
     }
@@ -229,8 +227,9 @@ export class RevisaComponent implements OnInit {
           'iteProduto': xy.iteProduto,
           'iteRevisao': xy.iteRevisao,
           'iteCarac': xy.iteCarac,
-          'iteMin': xy.iteMin,
-          'iteMax': xy.iteMax,
+          'iteMin': xy.iteMin.toFixed(3),
+          'iteMax': xy.iteMax.toFixed(3),
+          'itetxt': xy.itetxt,
           'iteMeio': xy.iteMeio,
           'descCarac': xy.descCarac,
         })

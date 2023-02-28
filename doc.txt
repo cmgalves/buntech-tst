@@ -23,7 +23,7 @@ Ambiente Produção
 
 
 Ambiente Teste
-/var/www/buntech
+/var/www/homolog
 
 Servidor ubuntu de acesso
 IP: 10.3.0.48

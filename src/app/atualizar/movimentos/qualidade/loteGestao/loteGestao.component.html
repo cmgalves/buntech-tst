@@ -18,7 +18,7 @@
                             <input matInput [(ngModel)]="descricao" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-1">
+                    <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Revisão</mat-label>
                             <input matInput [(ngModel)]="revisao" disabled>
@@ -30,13 +30,22 @@
                             <input (change)="altSeq($event)" matInput [(ngModel)]="seq">
                         </mat-form-field>
                     </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-select placeholder="Nível para Aprovação" [(ngModel)]="nivel">
+                                <mat-option *ngFor="let optNivel of tpNivel" [value]="optNivel">
+                                    {{optNivel}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                     <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Validade Meses</mat-label>
                             <input type="number" matInput [(ngModel)]="validade">
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-1">
+                    <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-select placeholder="Tipo de Quebra" [(ngModel)]="quebra">
                                 <mat-option *ngFor="let optQuebra of tpQuebra" [value]="optQuebra">
@@ -51,7 +60,7 @@
                             <input type="number" matInput [(ngModel)]="qtde">
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-12">
+                    <div class="card-body table-responsive col-md-8">
                         <mat-form-field>
                             <mat-label>Observações Gerais</mat-label>
                             <input matInput [(ngModel)]="obs">
@@ -114,6 +123,11 @@
                                 <ng-container matColumnDef="ativo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Ativo </th>
                                     <td mat-cell *matCellDef="let row"> {{row.ativo}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="nivel">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nível </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.nivel}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="quebra">

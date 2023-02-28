@@ -39,7 +39,7 @@ export class UsuarioComponent implements OnInit {
   usuarioFone: string = '';
   usuarioDepto: string = '';
   altIncuser: string = '';
-  optPerfil: string[] = ['Apontador', 'Conferente', 'Conferente-Apontador', 'Administrador'];
+  optPerfil: string[] = ['Apontador', 'Conferente', 'Conferente-Apontador', 'Administrador', 'Qualidade N1', 'Qualidade N2', 'Qualidade N3'];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
   usuarios: Observable<any>;
   displayedColumns: string[] = ['nome', 'email', 'empresa', 'perfil', 'telefone', 'depto', 'edicao'];
