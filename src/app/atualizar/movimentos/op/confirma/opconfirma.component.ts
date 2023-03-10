@@ -24,7 +24,7 @@ export interface opConfirma {
 })
 
 export class OpconfirmaComponent implements OnInit {
-  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
+  aUsr = JSON.parse(localStorage.getItem('user'))[0];
   numOP = JSON.parse(localStorage.getItem('op'));
   opPcf = JSON.parse(localStorage.getItem('opPcf'));
   parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.numOP[0].SITUACAO) > -1;
@@ -38,6 +38,7 @@ export class OpconfirmaComponent implements OnInit {
   arrEstrutura: any = [];
   arrEstruturaTab: any = [];
   objParcial: any = [];
+  objLote: any = [];
   objTotal: any = [];
   arrLote: any = [];
   arrLoteTab: any = [];
@@ -59,6 +60,13 @@ export class OpconfirmaComponent implements OnInit {
   opMaxQtd: number = 0;
   opRetrabalho: string = '';
   opHoras: string = '';
+  ltcrevisao: string = '';
+  ltclote: string = '';
+  ltcvalidade: string = '';
+  ltcquebra: string = '';
+  ltcnivel: string = '';
+  ltcqtLote: string = '';
+  ltcobs: string = '';
   enableEdit: boolean = false;
   enableEditIndex = null;
   editQtd: any = 0;
@@ -76,9 +84,7 @@ export class OpconfirmaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.numOP)
-    if (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1) {
-      // this.buscaOpconfirma();
+    if (('Administrador | Conferente | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
       this.buscaOpsAndamentoProtheus();
       this.confirmaLote();
     } else {
@@ -222,18 +228,13 @@ export class OpconfirmaComponent implements OnInit {
 
   enableEditUser(e, i) {
     this.enableEditIndex = i;
-    // (<HTMLInputElement>(document.getElementById("editQtd"))).focus()
-    console.log(i, e)
   }
 
   altQtde() {
     let qdt = (<HTMLInputElement>(document.getElementById("editQtd"))).value
-
     this.arrOpconfirmaTab[this.enableEditIndex].QTDECALC = qdt
-
     this.enableEdit = false;
     this.enableEditIndex = null;
-    // console.log(qdt)
   }
 
   // verifica se tem lote para o produto selecionado
@@ -244,19 +245,16 @@ export class OpconfirmaComponent implements OnInit {
 
     this.arrLote.subscribe(cada => {
       cada.forEach(xy => {
-        this.arrLoteTab.push({
-          'produto': xy.produto,
-          'descricao': xy.descricao,
-          'revisao': xy.revisao,
-          'seq': xy.seq,
-          'validade': xy.validade,
-          'ativo': xy.ativo,
-          'quebra': xy.quebra,
-          'qtde': xy.qtde,
-          'diaRevisao': xy.diaRevisao,
-          'obs': xy.obs,
-        })
-        this.temLote = true
+        if (xy.ativo == 'SIM') {
+          this.ltcrevisao = xy.revisao;
+          this.ltclote = xy.lote;
+          this.ltcvalidade = xy.validade;
+          this.ltcquebra = xy.quebra;
+          this.ltcnivel = xy.nivel;
+          this.ltcqtLote = xy.qtde;
+          this.ltcobs = xy.obs;
+          this.temLote = true;
+        }
       });
     });
   }
@@ -290,18 +288,34 @@ export class OpconfirmaComponent implements OnInit {
             op: this.opCodigo,
             qtde: this.opQtdeParcial,
             tipo: 'P',
-            usrProd: this.arrUserLogado.codUser,
+            usrProd: this.aUsr.codUser,
             fechamento: 'automatico',
           };
+
+          this.objLote = {
+            'filial': this.opFilial,
+            'op': this.opCodigo,
+            'produto': this.opProduto,
+            'descricao': this.opDescricao,
+            'revisao': this.ltcrevisao,
+            'lote': this.ltclote,
+            'validade': this.ltcvalidade,
+            'quebra': this.ltcquebra,
+            'nivel': this.ltcnivel,
+            'qtde': this.opQtdeParcial,
+            'obs': this.ltcobs,
+            'usuario': this.aUsr.codUser,
+            'cTipo': 'P',
+          }
           const retProdParcial = this.fj.prodOP(obj);
           retProdParcial.subscribe(cada => {
             alert(cada.Sucesso.substring(2, 60))
             if (cada.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
               this.fj.execProd('produzOP', this.objParcial);
-              this.fj.execProd('produzLote', this.objParcial);
+              this.fj.execProd('manuLote', this.objLote);
               this.parcialAtivo = true;
             }
-            this.fj.execProd('produzLote', this.objParcial);
+            this.fj.execProd('manuLote', this.objLote);
 
             window.location.reload();
           });
@@ -376,12 +390,29 @@ export class OpconfirmaComponent implements OnInit {
             dDataApt: datApt[0].APT,
             ItensD4: arrItens
           };
+
+          this.objLote = {
+            'filial': this.opFilial,
+            'op': this.opCodigo,
+            'produto': this.opProduto,
+            'descricao': this.opDescricao,
+            'revisao': this.ltcrevisao,
+            'lote': this.ltclote,
+            'validade': this.ltcvalidade,
+            'quebra': this.ltcquebra,
+            'nivel': this.ltcnivel,
+            'qtde': this.opQtdeParcial,
+            'obs': this.ltcobs,
+            'usuario': this.aUsr.codUser,
+            'cTipo': 'T',
+          }
+
           this.objTotal = {
             filial: this.opFilial,
             op: this.opCodigo,
             qtde: this.opQtdeParcial,
             tipo: 'T',
-            usrProd: this.arrUserLogado.codUser,
+            usrProd: this.aUsr.codUser,
             fechamento: 'automatico',
           };
           const retProdParcial = this.fj.prodOP(obj);
@@ -389,9 +420,9 @@ export class OpconfirmaComponent implements OnInit {
             alert(cada.Sucesso.substring(2, 60))
             if (cada.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
               this.fj.execProd('produzOP', this.objTotal)
-              this.fj.execProd('produzLote', this.objTotal);
+              this.fj.execProd('manuLote', this.objLote);
             }
-            this.fj.execProd('produzLote', this.objTotal);
+            this.fj.execProd('manuLote', this.objLote);
             window.location.reload();
           });
         } else {

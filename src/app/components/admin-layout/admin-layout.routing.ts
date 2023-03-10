@@ -28,6 +28,7 @@ import { LoteRegComponent } from 'app/atualizar/movimentos/qualidade/loteReg/lot
 import { LoteDetalheComponent } from 'app/atualizar/movimentos/qualidade/loteDetalhe/loteDetalhe.component';
 import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteAprova/loteAprova.component';
 import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
+import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdianta/loteAdianta.component';
 
 export const AdminLayoutRoutes: Routes = [
 
@@ -56,6 +57,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'loteGestao', component: LoteGestaoComponent, canActivate: [AuthGuard] },
     { path: 'loteReg', component: LoteRegComponent, canActivate: [AuthGuard] },
     { path: 'loteDetalhe', component: LoteDetalheComponent, canActivate: [AuthGuard] },
+    { path: 'loteAdianta', component: LoteAdiantaComponent, canActivate: [AuthGuard] },
     { path: 'loteAprova', component: LoteAprovaComponent, canActivate: [AuthGuard] },
     { path: 'loteAnalisa', component: LoteAnalisaComponent, canActivate: [AuthGuard] },
 ];

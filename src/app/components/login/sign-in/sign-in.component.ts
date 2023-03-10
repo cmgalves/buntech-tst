@@ -84,8 +84,7 @@ export class SignInComponent implements OnInit {
 
 
   buscaUsuarios() {
-    const obj = {};
-    this.arrUsuario = this.fj.buscaPrt('cadUsuarios', obj);
+    this.arrUsuario = this.fj.buscaPrt('cadUsuarios', {});
     this.arrUsuario.subscribe(cada => {
       cada.forEach(xy => {
         this.arrUsuarioTab.push({

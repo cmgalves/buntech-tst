@@ -12,7 +12,7 @@ import { funcsService } from 'app/funcs/funcs.service';
 import { funcGeral } from 'app/funcs/funcGeral';
 
 export interface cadLote {
-  seq: string;
+  lote: string;
   codigo: string;
   descricao: string;
   tipo: string;
@@ -39,7 +39,7 @@ export class LoteGestaoComponent implements OnInit {
   produto: string = '';
   descricao: string = '';
   revisao: string = '';
-  seq: string = '';
+  lote: string = '';
   validade: any = 0;
   nivel: string = '';
   quebra: string = '';
@@ -47,11 +47,15 @@ export class LoteGestaoComponent implements OnInit {
   obs: any = '';
   usuario: any = '';
   cTipo: any = 0;
+
+  lBtnConf: boolean = true
+  lBtnRev: boolean = true
+
   tpQuebra: string[] = ['DIA', 'PESO'];
   tpativo: string[] = ['SIM', 'NAO'];
   tpNivel: string[] = ['N1', 'N2', 'N3'];
   lotes: Observable<any>;
-  displayedColumns: string[] = ['ord', 'produto', 'descricao', 'revisao', 'seq', 'validade', 'ativo', 'nivel', 'quebra', 'qtde', 'diaRevisao', 'obs'];
+  displayedColumns: string[] = ['ord', 'produto', 'descricao', 'revisao', 'lote', 'validade', 'ativo', 'nivel', 'quebra', 'qtde', 'diaRevisao', 'obs'];
   dataSource: MatTableDataSource<cadLote>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -81,7 +85,7 @@ export class LoteGestaoComponent implements OnInit {
           'produto': xy.produto,
           'descricao': xy.descricao,
           'revisao': xy.revisao,
-          'seq': xy.seq,
+          'lote': xy.lote,
           'validade': xy.validade,
           'ativo': xy.ativo,
           'quebra': xy.quebra,
@@ -94,7 +98,7 @@ export class LoteGestaoComponent implements OnInit {
         this.produto = xy.produto
         this.descricao = xy.descricao
         this.revisao = xy.revisao
-        this.seq = xy.seq
+        this.lote = xy.lote
         this.validade = xy.validade
         this.quebra = xy.quebra
         this.nivel = xy.nivel
@@ -106,12 +110,17 @@ export class LoteGestaoComponent implements OnInit {
         this.produto = this.aProd.produto
         this.descricao = this.aProd.descricao
         this.revisao = this.aProd.revisao
-        this.seq = '000000001'
+        this.lote = '000000001'
         this.validade = 12
         this.quebra = 'PESO'
         this.qtde = this.aProd.qtde
         this.obs = this.aProd.obs
         this.usuario = this.aUsr.codUser
+        this.lBtnConf = true
+        this.lBtnRev = false
+      }else{
+        this.lBtnConf = false
+        this.lBtnRev = true
       }
       this.dataSource = new MatTableDataSource(this.arrLoteTab)
       this.dataSource.paginator = this.paginator;
@@ -143,19 +152,22 @@ export class LoteGestaoComponent implements OnInit {
       alert('Este produto ainda não tem lote!')
       return;
     }
-    if (cTipo === 'C' && (this.seq === '' || this.validade === 0 || this.quebra === '' || this.qtde === 0)) {
+    if (cTipo === 'I' && (this.lote === '' || this.validade === 0 || this.quebra === '' || this.qtde === 0 || this.nivel === '')) {
       alert('Informações Incompletas, voltar e corrigir!')
       return;
     }
     const obj = {
+      'filial': '',
+      'op': '',
       'produto': this.produto,
       'descricao': this.descricao,
       'revisao': this.revisao,
-      'seq': this.seq,
+      'lote': this.lote,
       'validade': this.validade,
       'quebra': this.quebra,
       'nivel': this.nivel,
       'qtde': this.qtde,
+      'qtLote': 0,
       'obs': this.obs,
       'usuario': this.aUsr.codUser,
       'cTipo': cTipo,
@@ -175,8 +187,8 @@ export class LoteGestaoComponent implements OnInit {
     this.router.navigate(['lote']);
   }
 
-  altSeq(xcEvento) {
-    this.seq = this.fg.direita('000000000' + xcEvento.target.value, 9)
+  altLote(xcEvento) {
+    this.lote = this.fg.direita('000000000' + xcEvento.target.value, 9)
   }
 
 }

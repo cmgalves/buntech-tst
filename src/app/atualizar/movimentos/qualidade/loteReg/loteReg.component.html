@@ -19,14 +19,12 @@
                             <div class="card-body table-responsive col-md-5">
                                 <mat-form-field>
                                     <mat-label>Filtro Geral</mat-label>
-                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de LoteReg"
-                                        #input>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de LoteReg" #input>
                                 </mat-form-field>
                             </div>
                             <div class="card-body table-responsive col-md-2">
                                 <mat-form-field>
-                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro LoteReg"
-                                        [(ngModel)]="filLoteReg">
+                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro LoteReg" [(ngModel)]="filLoteReg">
                                         <mat-option *ngFor="let optFilter of filterLoteReg" [value]="optFilter">
                                             {{optFilter}}
                                         </mat-option>
@@ -74,8 +72,13 @@
                                     <td mat-cell *matCellDef="let row"> {{row.dtVenc}}
                                     </td>
                                 </ng-container>
+                                <ng-container matColumnDef="qtdeProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Produzida </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeProd}}
+                                    </td>
+                                </ng-container>
                                 <ng-container matColumnDef="qtdeTot">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Total </th>
                                     <td mat-cell *matCellDef="let row"> {{row.qtdeTot}}
                                     </td>
                                 </ng-container>
@@ -95,44 +98,29 @@
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="loteReg">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="centro"> M A N U T E N
-                                        Ç Ã O
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="centro"> M A N U T E N Ç Ã O
                                     </th>
                                     <td mat-cell *matCellDef="let row">
-                                        <button (click)="detalheLote(row)" mat-raised-button type="button"
-                                            matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="detalheLote(row)" mat-raised-button type="button" matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">explore</i>
                                         </button>
-                                        <button (click)="fechaLote(row)" [disabled]="btnDisable(row)" mat-raised-button
-                                            type="button" matTooltip="Adiantar Fechamento"
-                                            [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="adiantaLote(row)" [disabled]="btnDisable(row)" mat-raised-button type="button" matTooltip="Adiantar Fechamento" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">flash_on</i>
                                         </button>
-                                        <button (click)="analisaLote(row)" [disabled]="btnDisable(row)"
-                                            mat-raised-button type="button" matTooltip="Análise do Lote"
-                                            [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="analisaLote(row)" [disabled]="btnDisable(row)" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">gps_fixed</i>
                                         </button>
-                                        <button (click)="aprovaLote(row)" [disabled]="btnDisable(row)" mat-raised-button
-                                            type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="aprovaLote(row)" [disabled]="btnDisable(row)" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">center_focus_weak</i>
                                         </button>
-                                        <button (click)="imprimeLote(row)" [disabled]="btnDisable(row)"
-                                            mat-raised-button type="button" matTooltip="Imprime Etiqueta"
-                                            [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="imprimeLote(row)" [disabled]="btnDisable(row)" mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">apps</i>
                                         </button>
                                     </td>
                                 </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

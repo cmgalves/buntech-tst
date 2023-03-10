@@ -35,7 +35,7 @@ export class LoteRegComponent implements OnInit {
   filterLoteReg: any = ['Todos', 'Aberto', 'Fechado', 'Aprovado', 'Rejeitado'];
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'loteAprov', 'dtAprov', 'dtProd', 'dtVenc', 'qtdeTot', 'quebra', 'qtdeQuebra', 'situacao', 'loteReg'];
+  displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'loteAprov', 'dtAprov', 'dtProd', 'dtVenc', 'qtdeProd', 'qtdeTot', 'quebra', 'qtdeQuebra', 'situacao', 'loteReg'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -156,7 +156,8 @@ export class LoteRegComponent implements OnInit {
 
     this.router.navigate(['loteDetalhe']);
   }
-  fechaLote(aRow) {
+
+  adiantaLote(aRow) {
     const obj = {
       filial: aRow.filial,
       produto: aRow.produto,
@@ -167,36 +168,26 @@ export class LoteRegComponent implements OnInit {
     if (aRow.situacao === 'Fechado') {
       alert('Lote já está Fechado')
     } else {
-
-      if (confirm('Deseja antecipar o encerramento do Lote?')) {
-        alert('sim')
-        this.fj.execProd('antecipaLote', obj);
-        window.location.reload();
-      } else {
-        alert('não')
-      }
+      const _aProd = this.arrDados.filter(x => (x.produto === aRow.produto && x.lote === aRow.lote))[0];
+      localStorage.removeItem('loteAdianta');
+      localStorage.setItem('loteAdianta', JSON.stringify(_aProd));
+      this.router.navigate(['loteAdianta']);
     }
   }
+
+ 
   analisaLote(xcRow) {
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
-
     localStorage.removeItem('loteAnalisa');
-
     localStorage.setItem('loteAnalisa', JSON.stringify(_aProd));
-
     this.router.navigate(['loteAnalisa']);
-
     this.router.navigate(['loteAnalisa']);
   }
   aprovaLote(xcRow) {
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
-
     localStorage.removeItem('loteAprv');
-
     localStorage.setItem('loteAprv', JSON.stringify(_aProd));
-
     this.router.navigate(['loteAprv']);
-
     this.router.navigate(['loteAprova']);
   }
 

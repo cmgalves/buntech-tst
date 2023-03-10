@@ -23,19 +23,18 @@ export interface cadLote {
 }
 
 @Component({
-  selector: 'app-loteAnalisa',
-  templateUrl: './loteAnalisa.component.html',
-  styleUrls: ['./loteAnalisa.component.css']
+  selector: 'app-loteAdianta',
+  templateUrl: './loteAdianta.component.html',
+  styleUrls: ['./loteAdianta.component.css']
 })
 
-export class LoteAnalisaComponent implements OnInit {
+export class LoteAdiantaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
-  aProd = JSON.parse(localStorage.getItem('loteAnalisa'));
+  aProd = JSON.parse(localStorage.getItem('loteAdianta'));
   arrBusca: any = [];
   arrDados: any = [];
   Dados: any = [];
   filial: string = '';
-  op: string = '';
   produto: string = '';
   descricao: string = '';
   revisao: string = '';
@@ -46,25 +45,17 @@ export class LoteAnalisaComponent implements OnInit {
   lote: string = '';
   qtde: any = 0;
   qtdeTot: any = 0;
-  usrAprov: any = '';
-  usrAnalise: any = '';
+  qtdeProd: any = 0;
   dtProd: any = '';
   hrProd: any = '';
-  carac: any = '';
-  itemin: any = '';
-  itemax: any = '';
-  itemeio: any = '';
-  itetxt: any = '';
-  result: any = '';
-  situacao: any = '';
   dtVenc: any = '';
+  justificativa: any = '';
   obs: any = '';
   cTipo: any = 0;
-  editInd = null;
-  tpQuebra: string[] = ['Dia', 'Peso'];
-  tpativo: string[] = ['Sim', 'Não'];
+  tpQuebra: string[] = ['DIA', 'PESO'];
+  tpativo: string[] = ['SIM', 'NAO'];
   lotes: Observable<any>;
-  displayedColumns: string[] = ['op', 'codCarac', 'descCarac', 'itemin', 'itemax', 'itemeio', 'itetxt', 'result', 'situacao', 'editResult'];
+  displayedColumns: string[] = ['id_loteProd', 'op', 'produto', 'descricao', 'qtdeProd', 'situacao', 'fechamento'];
   dataSource: MatTableDataSource<cadLote>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -78,49 +69,90 @@ export class LoteAnalisaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buscaLoteDetalhes();
+    this.buscaLoteAdiantas();
+  }
+
+  antecipaFecha() {
+    const obj = {
+      'filial': this.filial,
+      'op': '',
+      'produto': this.produto,
+      'descricao': '',
+      'revisao': '',
+      'lote': this.lote,
+      'validade': 0,
+      'quebra': '',
+      'nivel': '',
+      'qtde': 0,
+      'obs': this.justificativa,
+      'usuario': this.aUsr.codUser,
+      'cTipo': 'A',
+    };
+
+    if (confirm('Deseja antecipar o encerramento do Lote?')) {
+      if (this.justificativa.length < 7) {
+        alert('Favor detalhar mais!!')
+      } else {
+        this.fj.execProd('manuLote', obj);
+        this.router.navigate(['loteReg']);
+      }
+    } else {
+      alert('Cancelado Pelo Usuário')
+    }
   }
 
   // busca a relação de produtos com as loteções
-  buscaLoteDetalhes() {
+  buscaLoteAdiantas() {
     let ord = 0;
 
     const obj = {
-      'filial': this.aProd.filial,
       'produto': this.aProd.produto,
       'lote': this.aProd.lote
     };
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj);
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteAdianta', obj);
     this.arrBusca.subscribe(cada => {
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
+          'id_loteProd': xy.id_loteProd,
           'filial': xy.filial,
           'op': xy.op,
           'produto': xy.produto,
           'descricao': xy.descricao,
           'lote': xy.lote,
+          'loteAprov': xy.loteAprov,
           'dtAprov': xy.dtAprov,
           'usrAprov': xy.usrAprov,
+          'usrProd': xy.usrProd,
+          'dtProd': xy.dtProd,
+          'hrProd': xy.hrProd,
           'dtVenc': xy.dtVenc,
+          'qtdeProd': xy.qtdeProd,
+          'qtdeQuebra': xy.qtdeQuebra,
           'qtdeTot': xy.qtdeTot,
+          'seqProd': xy.seqProd,
+          'quebra': xy.quebra,
           'revisao': xy.revisao,
-          'codCarac': xy.codCarac,
-          'descCarac': xy.descCarac,
-          'itemin': xy.itemin,
-          'itemax': xy.itemax,
-          'itemeio': xy.itemeio,
-          'itetxt': xy.itetxt,
-          'result': xy.result,
           'situacao': xy.situacao,
+          'fechamento': xy.fechamento,
+          'obs': xy.obs,
+          'justificativa': xy.justificativa,
         })
         this.filial = xy.filial
         this.produto = xy.produto
         this.descricao = xy.descricao
         this.revisao = xy.revisao
         this.lote = xy.lote
+        this.validade = xy.validade
+        this.quebra = xy.quebra
+        this.qtdeProd = xy.qtdeProd
         this.qtdeTot = xy.qtdeTot
+        this.dtProd = this.fg.dtob(xy.dtProd)
         this.dtVenc = this.fg.dtob(xy.dtVenc)
+        this.hrProd = xy.hrProd
+        this.quebra = xy.quebra
+        this.qtdeQuebra = xy.qtdeQuebra
+        this.obs = xy.obs
       });
 
       this.dataSource = new MatTableDataSource(this.arrDados)
@@ -151,54 +183,5 @@ export class LoteAnalisaComponent implements OnInit {
   voltaLote() {
     this.router.navigate(['loteReg']);
   }
-  editLinha(e, i) {
-    this.editInd = i;
-  }
 
-  editResult(xcRow, tipo) {
-    const validInput = /^[0-9]+$/;
-    let sit: string = 'Aprovado';
-    let vResultxt: string = '';
-    let vResult = (<HTMLInputElement>(document.getElementById("idResult"))).value;
-
-    if (validInput.test(vResult)) {
-      if (+vResult < xcRow.itemin || vResult > xcRow.itemax) {
-        sit = 'Reprovado'
-      }
-    } else {
-      if (vResult == 'NAO') {
-        sit = 'Reprovado'
-      } else if (vResult == 'SIM') {
-        sit = 'Aprovado'
-      } else {
-        alert('Favor digitar SIM, NAO ou NUMERO')
-        return
-      }
-      vResultxt = vResult;
-      vResult = '';
-    }
-
-    const obj = {
-      'filial': this.filial,
-      'op': xcRow.op,
-      'produto': this.produto,
-      'descricao': this.descricao,
-      'lote': this.lote,
-      'usrAprov': this.aUsr.codUser,
-      'dtVenc': this.fg.btod(this.dtVenc),
-      'qtde': this.qtdeTot,
-      'revisao': this.revisao,
-      'codCarac': xcRow.codCarac,
-      'itemin': xcRow.itemin,
-      'itemax': xcRow.itemax,
-      'itemeio': xcRow.itemeio,
-      'itetxt': xcRow.itetxt,
-      'result': vResult,
-      'resultxt': vResultxt,
-      'situacao': sit,
-      'tipo': 'A',
-    }
-    this.fj.execProd('analisaAprovaLote', obj);
-    window.location.reload();
-  }
 }

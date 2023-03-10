@@ -26,14 +26,14 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-label>Sequência</mat-label>
-                            <input (change)="altSeq($event)" matInput [(ngModel)]="seq">
+                            <mat-label>Lote</mat-label>
+                            <input (change)=altLote($event) matInput [(ngModel)]=lote>
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-select placeholder="Nível para Aprovação" [(ngModel)]="nivel">
-                                <mat-option *ngFor="let optNivel of tpNivel" [value]="optNivel">
+                            <mat-select placeholder="Nível para Aprovação" [(ngModel)]=nivel>
+                                <mat-option *ngFor="let optNivel of tpNivel" [value]=optNivel>
                                     {{optNivel}}
                                 </mat-option>
                             </mat-select>
@@ -69,8 +69,8 @@
                 </div>
             </div>
             <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaLote()">Voltar</button>
-            <button mat-raised-button type="submit" class="btn btn-success" (click)="confLote('C')">Confirmar</button>
-            <button mat-raised-button type="submit" class="btn btn-warning" (click)="confLote('R')">Revisar</button>
+            <button *ngIf=lBtnConf mat-raised-button type="submit" class="btn btn-success" (click)="confLote('I')">Confirmar</button>
+            <button *ngIf=lBtnRev mat-raised-button type="submit" class="btn btn-warning" (click)="confLote('R')">Revisar</button>
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
@@ -110,9 +110,9 @@
                                     <td mat-cell *matCellDef="let row"> {{row.revisao}}
                                     </td>
                                 </ng-container>
-                                <ng-container matColumnDef="seq">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sequência </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.seq}}
+                                <ng-container matColumnDef="lote">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Lote </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.lote}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="validade">
@@ -151,8 +151,7 @@
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'Ativo' : row.ativo === 'Sim','Inativo' : row.ativo === 'Não'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Ativo' : row.ativo === 'SIM','Inativo' : row.ativo === 'NAO'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

@@ -26,12 +26,10 @@
                             <div class="card-body table-responsive col-md-5">
                                 <mat-form-field>
                                     <mat-label>Filtro</mat-label>
-                                    <input matInput (keyup)="applyFilter()" placeholder="Filtrando Ordem Produção"
-                                        [(ngModel)]="opFilter">
+                                    <input matInput (keyup)="applyFilter()" placeholder="Filtrando Ordem Produção" [(ngModel)]=opFilter>
                                 </mat-form-field>
                             </div>
-                            <button (click)="atuResumos()" mat-raised-button type="button" matTooltip="Atualiza a Tela"
-                                [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                            <button (click)="atuResumos()" mat-raised-button type="button" matTooltip="Atualiza a Tela" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     view_in_ar
                                 </span>
@@ -98,28 +96,19 @@
                                 <ng-container matColumnDef="EDICAO">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> EDIÇÃO </th>
                                     <td mat-cell *matCellDef="let row">
-                                        <button (click)="visuOp(row)" mat-raised-button type="button"
-                                            matTooltip="Visualizar" [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="visuOp(row)" mat-raised-button type="button" matTooltip="Visualizar" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">visibility</i>
                                         </button>
-                                        <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a')"
-                                            mat-raised-button type="button" matTooltip="Ajustar Empenho"
-                                            [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a')" mat-raised-button type="button" matTooltip="Ajustar Empenho" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">build</i>
                                         </button>
-                                        <button (click)="confirmaOp(row)" [disabled]="btnDisable(row, 'c')"
-                                            mat-raised-button type="button" matTooltip="Produzir"
-                                            [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="confirmaOp(row)" [disabled]="btnDisable(row, 'c')" mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">verified</i>
                                         </button>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'sts00' : row.SITUACAO === 'Sem Status','sts10' : row.SITUACAO === 'Produção','sts20' : row.SITUACAO === 'Liberada','sts30' : row.SITUACAO === 'Planejada','sts40' : row.SITUACAO === 'Interrompida','sts50' : row.SITUACAO === 'Baixada','sts60' : row.SITUACAO === 'Encerrada','sts70' : row.SITUACAO === 'Cancelada','sts80' : row.SITUACAO === 'Integrada'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'sts00' : row.SITUACAO === 'Sem Status','sts10' : row.SITUACAO === 'Produção','sts20' : row.SITUACAO === 'Liberada','sts30' : row.SITUACAO === 'Planejada','sts40' : row.SITUACAO === 'Interrompida','sts50' : row.SITUACAO === 'Baixada','sts60' : row.SITUACAO === 'Encerrada','sts70' : row.SITUACAO === 'Cancelada','sts80' : row.SITUACAO === 'Integrada'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

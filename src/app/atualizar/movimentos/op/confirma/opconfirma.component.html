@@ -11,25 +11,25 @@
                         <div class="card-body table-responsive col-md-1">
                             <mat-form-field>
                                 <mat-label>Filial</mat-label>
-                                <input matInput [(ngModel)]="opFilial" disabled>
+                                <input matInput [(ngModel)]=opFilial disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Ordem de Produção</mat-label>
-                                <input matInput [(ngModel)]="opCodigo" disabled>
+                                <input matInput [(ngModel)]=opCodigo disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Produto Acabado</mat-label>
-                                <input matInput [(ngModel)]="opProduto" disabled>
+                                <input matInput [(ngModel)]=opProduto disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-5">
                             <mat-form-field>
                                 <mat-label>Descrição</mat-label>
-                                <input matInput [(ngModel)]="opDescricao" disabled>
+                                <input matInput [(ngModel)]=opDescricao disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-1">
@@ -47,7 +47,7 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Quantidade Protheus</mat-label>
-                                <input matInput [(ngModel)]="opQtde" disabled>
+                                <input matInput [(ngModel)]=opQtde disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
@@ -110,24 +110,21 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Qtde PCF</mat-label>
-                                <input matInput [(ngModel)]="opQtdePcf" disabled>
+                                <input matInput [(ngModel)]=opQtdePcf disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Quantidade Parcial</mat-label>
-                                <input matInput type="number" [(ngModel)]="opQtdeParcial">
+                                <input matInput type="number" [(ngModel)]=opQtdeParcial>
                             </mat-form-field>
                         </div>
                     </div>
                 </div>
                 <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaResumo()">voltar</button>
-                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-success"
-                    (click)="prodTotalOp()">Total</button>
-                <button mat-raised-button type="submit" *ngIf="parcialAtivo" class="btn btn-warning"
-                    (click)="prodParcialOp()">Parcial</button>
-                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-info"
-                    (click)="reabrOp()">Re-Ajustar</button>
+                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-success" (click)=prodTotalOp()>Total</button>
+                <button mat-raised-button type="submit" *ngIf=parcialAtivo class="btn btn-warning" (click)=prodParcialOp()>Parcial</button>
+                <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-info" (click)=reabrOp()>Re-Ajustar</button>
             </div>
         </div>
         <div class="row" *ngIf="numOP[0].SITUACAO == 'Baixada'">
@@ -171,8 +168,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Calc </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='enableEditIndex!=i'>{{row.QTDECALC}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.QTDECALC}} class="editQtd"
-                                            id="editQtd" *ngIf='enableEdit && enableEditIndex==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.QTDECALC}} class="editQtd" id="editQtd" *ngIf='enableEdit && enableEditIndex==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="SITUACA">
@@ -182,19 +178,13 @@
                                 <ng-container matColumnDef="EDICAO">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
-                                        <button *ngIf='enableEdit && enableEditIndex != i'
-                                            (click)="enableEditUser($event, i)" mat-raised-button type="button"
-                                            matTooltip="Edição" [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEdit && enableEditIndex != i' (click)="enableEditUser($event, i)" mat-raised-button type="button" matTooltip="Edição" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">edit</i>
                                         </button>
-                                        <button *ngIf='enableEditIndex==i' (click)='altQtde()' mat-raised-button
-                                            type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEditIndex==i' (click)='altQtde()' mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>save</i>
                                         </button>
-                                        <button *ngIf='enableEditIndex==i' (click)='enableEditIndex=null;'
-                                            mat-raised-button type='button'
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEditIndex==i' (click)='enableEditIndex=null;' mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>cancel</i>
                                         </button>
                                     </td>
@@ -209,8 +199,7 @@
                                 </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'saldoL' : row.SALDO >= row.QTDECALC || row.TIPO === 'R' || ('M3 | H | ').indexOf(row.UNIDADE) !== -1,
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'saldoL' : row.SALDO >= row.QTDECALC || row.TIPO === 'R' || ('M3 | H | ').indexOf(row.UNIDADE) !== -1,
                                     'saldoB' : row.QTDECALC > row.SALDO && row.TIPO !== 'R' && ('M3 | H | ').indexOf(row.UNIDADE) === -1 }"></tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
