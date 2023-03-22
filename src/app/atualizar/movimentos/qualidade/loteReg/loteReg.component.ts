@@ -35,7 +35,7 @@ export class LoteRegComponent implements OnInit {
   filterLoteReg: any = ['Todos', 'Aberto', 'Fechado', 'Aprovado', 'Rejeitado'];
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'loteAprov', 'dtAprov', 'dtProd', 'dtVenc', 'qtdeProd', 'qtdeTot', 'quebra', 'qtdeQuebra', 'situacao', 'loteReg'];
+  displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'loteAprov', 'dtAprov', 'dtProd', 'dtVenc', 'qtdeProd', 'quebra', 'qtdeQuebra', 'situacao', 'analiseStatus', 'loteReg'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -49,7 +49,7 @@ export class LoteRegComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.arrUserLogado.perfil === 'Administrador') {
+    if (('Administrador, Qualidade N1, Qualidade N2, Qualidade N3').indexOf(this.arrUserLogado.perfil) >= 0) {
       this.buscaLoteRegs('Todos');
     } else {
       alert('Sem Acesso')
@@ -82,12 +82,14 @@ export class LoteRegComponent implements OnInit {
           'dtVenc': this.fg.dtob(xy.dtVenc),
           'qtdeProd': xy.qtdeProd,
           'qtdeQuebra': xy.qtdeQuebra,
-          'qtdeTot': xy.qtdeTot,
+          // 'qtdeTot': xy.qtdeTot,
           'seqProd': xy.seqProd,
           'quebra': xy.quebra,
           'revisao': xy.revisao,
           'situacao': xy.situacao,
-          'obs': xy.obs,
+          // 'obs': xy.obs,
+          'analiseStatus': xy.analiseStatus,
+          // 'dtAnaliseStatus': xy.dtAnaliseStatus,
         })
       });
       this.filLoteReg = xcFil;
@@ -117,9 +119,7 @@ export class LoteRegComponent implements OnInit {
 
   acessoLoteReg(xcRow) {
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto))[0];
-
     localStorage.removeItem('loteRegProd');
-
     localStorage.setItem('loteRegProd', JSON.stringify(_aProd));
     this.router.navigate(['loteRegGestao']);
   }
@@ -129,6 +129,12 @@ export class LoteRegComponent implements OnInit {
   }
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
+    if (tp=='aprova') {
+      if (aRow.analiseStatus != 'analisado') {
+        return false
+      }
+    }
+    
     if (tp === 'a') {
       if ((("Baixada ").indexOf(aRow.SITUACAO) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
@@ -149,11 +155,8 @@ export class LoteRegComponent implements OnInit {
 
   detalheLote(xcRow) {
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
-
     localStorage.removeItem('loteDetalhe');
-
     localStorage.setItem('loteDetalhe', JSON.stringify(_aProd));
-
     this.router.navigate(['loteDetalhe']);
   }
 
@@ -181,13 +184,11 @@ export class LoteRegComponent implements OnInit {
     localStorage.removeItem('loteAnalisa');
     localStorage.setItem('loteAnalisa', JSON.stringify(_aProd));
     this.router.navigate(['loteAnalisa']);
-    this.router.navigate(['loteAnalisa']);
   }
   aprovaLote(xcRow) {
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
     localStorage.removeItem('loteAprv');
     localStorage.setItem('loteAprv', JSON.stringify(_aProd));
-    this.router.navigate(['loteAprv']);
     this.router.navigate(['loteAprova']);
   }
 

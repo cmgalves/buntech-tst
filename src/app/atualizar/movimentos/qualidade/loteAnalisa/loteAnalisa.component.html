@@ -42,16 +42,22 @@
                             <input matInput [(ngModel)]="revisao" disabled>
                         </mat-form-field>
                     </div>
-
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Vencimento do Lote</mat-label>
                             <input matInput [(ngModel)]="dtVenc" disabled>
                         </mat-form-field>
                     </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-label>Nivel do Produto</mat-label>
+                            <input matInput [(ngModel)]=nivel disabled>
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
-            <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaLote()">Voltar</button>
+            <button mat-raised-button type="submit" class="btn btn-danger" (click)=voltaLote()>Voltar</button>
+            <button mat-raised-button type="submit" class="btn btn-success" (click)="aprovaLote('B')" [hidden]=lAnalise>Confirmar</button>
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
@@ -86,6 +92,11 @@
                                 <ng-container matColumnDef="descCarac">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Característica </th>
                                     <td mat-cell *matCellDef="let row"> {{row.descCarac}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdeProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qt Prod </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeProd}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="itemin">
@@ -123,7 +134,7 @@
                                 <ng-container matColumnDef="editResult">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
-                                        <button *ngIf='editInd != i' (click)="editLinha($event, i)" mat-raised-button type="button" matTooltip="Apontar o Resultado" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='editInd != i' [hidden]=lEdit (click)="editLinha($event, i)" mat-raised-button type="button" matTooltip="Apontar o Resultado" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">edit</i>
                                         </button>
                                         <button *ngIf='editInd==i' (click)="editResult(row)" mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">

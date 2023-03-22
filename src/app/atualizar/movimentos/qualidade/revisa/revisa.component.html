@@ -94,12 +94,9 @@
                             <form class="example-form">
                                 <mat-form-field class="example-full-width">
                                     <mat-label>Características</mat-label>
-                                    <input type="text" placeholder="Características" aria-label="Number" matInput
-                                        [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="novoCarCod">
-                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                        (optionSelected)="aposSelec($event)">
-                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                            [value]="option.descCarac">
+                                    <input type="text" placeholder="Características" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="novoCarCod">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="aposSelec($event)">
+                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descCarac">
                                             {{option.descCarac}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -137,8 +134,7 @@
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
-                            <button mat-raised-button type="submit" class="btn btn-info"
-                                (click)="especificar('I', {})">Adiciona</button>
+                            <button mat-raised-button type="submit" class="btn btn-info" (click)="especificar('I', {})">Adiciona</button>
                         </div>
                     </div>
                 </div>
@@ -164,13 +160,10 @@
                             <div class="card-body table-responsive col-md-5">
                                 <mat-form-field>
                                     <mat-label>Filtro</mat-label>
-                                    <input matInput (keyup)="applyFilter()" placeholder="Filtrando Ordem Produção"
-                                        [(ngModel)]="opFilter">
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtrando Ordem Produção" #input>
                                 </mat-form-field>
                             </div>
-                            <button (click)="incCarac()" mat-raised-button type="button"
-                                matTooltip="Inclusão de Características" [matTooltipPosition]="'above'"
-                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                            <button (click)="incCarac()" mat-raised-button type="button" matTooltip="Inclusão de Características" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     add_to_photos
                                 </span>
@@ -195,48 +188,40 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Mínimo </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.iteMin}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.iteMin}} id="idMin"
-                                            *ngIf='editInd==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.iteMin}} id="idMin" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMax">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Máximo </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.iteMax}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.iteMax}} id="idMax"
-                                            *ngIf='editInd==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.iteMax}} id="idMax" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="itetxt">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Parâmetro </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.itetxt}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.itetxt}} id="idtxt"
-                                            *ngIf='editInd==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.itetxt}} id="idtxt" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMeio">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Meio </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.iteMeio}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.iteMeio}} id="idMeio"
-                                            *ngIf='editInd==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.iteMeio}} id="idMeio" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteEdit">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
-                                        <button *ngIf='editInd != i' (click)="editLinha($event, i)" mat-raised-button
-                                            type="button" matTooltip="Edição" [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='editInd != i' (click)="editLinha($event, i)" mat-raised-button type="button" matTooltip="Edição" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">edit</i>
                                         </button>
-                                        <button *ngIf='editInd==i' (click)="especificar('A',row)" mat-raised-button
-                                            type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='editInd==i' (click)="especificar('A',row)" mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>save</i>
                                         </button>
-                                        <button *ngIf='editInd==i' (click)='editInd=null;' mat-raised-button
-                                            type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='editInd==i' (click)='editInd=null;' mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>cancel</i>
                                         </button>
                                     </td>
@@ -244,9 +229,7 @@
                                 <ng-container matColumnDef="iteExc">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Exclusão </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
-                                        <button (click)="especificar('E',row)" mat-raised-button type="button"
-                                            matTooltip="Exclusão do Item" [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="especificar('E',row)" mat-raised-button type="button" matTooltip="Exclusão do Item" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">not_interested</i>
                                         </button>
                                     </td>

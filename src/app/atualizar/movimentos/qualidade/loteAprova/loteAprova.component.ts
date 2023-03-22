@@ -33,6 +33,7 @@ export class LoteAprovaComponent implements OnInit {
   aProd = JSON.parse(localStorage.getItem('loteAprv'));
   arrBusca: any = [];
   arrDados: any = [];
+  aDados: any = [];
   Dados: any = [];
   filial: string = '';
   produto: string = '';
@@ -43,6 +44,11 @@ export class LoteAprovaComponent implements OnInit {
   quebra: string = '';
   qtdeQuebra: string = '';
   lote: string = '';
+  justificativa: string = '';
+  nivel: string = '';
+  n1: string = '';
+  n2: string = '';
+  n3: string = '';
   qtde: any = 0;
   qtdeTot: any = 0;
   dtProd: any = '';
@@ -68,10 +74,40 @@ export class LoteAprovaComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscaLoteDetalhes();
+    this.nivelAprovado(1);
+  }
+
+  nivelAprovado(nEnt) {
+    this.arrBusca = {};
+    this.aDados = [];
+    const obj = {
+      'filial': this.aProd.filial,
+      'produto': this.aProd.produto,
+      'lote': this.aProd.lote
+    }
+    this.arrBusca = this.fj.buscaPrt('relacaoNivelLoteAprova', obj);
+    this.arrBusca.subscribe(cada => {
+      cada.forEach(xy => {
+        this.aDados.push({ nivel: xy.nivel, nivelAprov: xy.nivelAprov, situacao: xy.situacao })
+        if (xy.nivelAprov == 'N1') {
+          this.n1 = xy.situacao
+        }
+        if (xy.nivelAprov == 'N2') {
+          this.n2 = xy.nivel == 'N1' ? 'Sem Aprovação' : xy.situacao
+        }
+        if (xy.nivelAprov == 'N3') {
+          this.n3 = xy.nivel == 'N1' ? 'Sem Aprovação' : xy.nivel == 'N2' ? 'Sem Aprovação' : xy.situacao
+        }
+      });
+      if (nEnt === 2) {
+        this.confAprov()
+      }
+    });
   }
 
   // busca a relação de produtos com as loteções
   buscaLoteDetalhes() {
+    this.arrBusca = {};
     let ord = 0;
 
     const obj = {
@@ -101,22 +137,236 @@ export class LoteAprovaComponent implements OnInit {
           'itemin': xy.itemin,
           'itemax': xy.itemax,
           'itemeio': xy.itemeio,
+          'justificativa': xy.justificativa,
           'result': xy.result,
         })
-        this.filial = xy.filial
-        this.produto = xy.produto
-        this.descricao = xy.descricao
-        this.revisao = xy.revisao
-        this.lote = xy.lote
-        this.quebra = xy.quebra
-        this.qtdeTot = xy.qtdeTot
-        this.dtVenc = this.fg.dtob(xy.dtVenc)
+        if (ord === 1) {
+
+          this.filial = xy.filial
+          this.produto = xy.produto
+          this.descricao = xy.descricao
+          this.revisao = xy.revisao
+          this.lote = xy.lote
+          this.quebra = xy.quebra
+          this.qtdeTot = xy.qtdeTot
+          this.nivel = xy.nivel
+          this.dtVenc = this.fg.dtob(xy.dtVenc)
+        }
+
       });
 
       this.dataSource = new MatTableDataSource(this.arrDados)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  aprovaLote(tipo: string) {
+    let nivAprov = '';
+    let sitAprov = '';
+    let txtAprov = '';
+
+    switch (this.aUsr.perfil) {
+      case 'Qualidade N1':
+        nivAprov = 'N1'
+        break
+      case 'Qualidade N2':
+        nivAprov = 'N2'
+        break
+      case 'Qualidade N3':
+        nivAprov = 'N3'
+        break
+      default:
+        nivAprov = 'XX';
+    }
+
+
+    if (!(nivAprov == 'XX')) {
+      if (nivAprov > this.nivel) {
+        alert('Não precisa aprovar, até o Nível: ' + this.nivel)
+      } else {
+        if (this.temJustificativa()) {
+          sitAprov = tipo === 'A' ? 'Aprovado' : 'Rejeitado'
+          txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
+          const obj = {
+            'filial': this.filial,
+            'op': ' ',
+            'produto': this.produto,
+            'descricao': this.descricao,
+            'lote': this.lote,
+            'usrAprov': this.aUsr.codUser,
+            'usrPerfil': nivAprov,
+            'dtVenc': this.fg.btod(this.dtVenc),
+            'qtde': this.qtdeTot,
+            'revisao': this.revisao,
+            'codCarac': ' ',
+            'itemin': 0,
+            'itemax': 0,
+            'itemeio': ' ',
+            'itetxt': ' ',
+            'result': 0,
+            'resultxt': ' ',
+            'situacao': sitAprov,
+            'just': this.justificativa,
+            'tipo': tipo,
+          }
+
+          if (confirm(txtAprov)) {
+            this.fj.execProd('analisaAprovaLote', obj);
+            this.nivelAprovado(2);
+          }
+
+        }
+      }
+    } else {
+      alert('Usuário sem perfil de aprovação')
+    }
+  }
+
+  confAprov() {
+    let cResult: string = '';
+    let nConta = 0;
+    let cNiv = '';
+
+    this.aDados.forEach(xy => {
+      if (cNiv === '') {
+        cNiv = xy.nivel
+
+      }
+      if (xy.nivel == 'N1') {
+        nConta++;
+
+        if (xy.situacao === 'Aprovado') {
+          cResult = 'A'
+        }
+        if (xy.situacao === 'Rejeitado') {
+          cResult = 'R'
+        }
+      }
+      if (xy.nivel == 'N2') {
+        if (xy.nivelAprov == 'N1' && (cResult == '' || cResult == 'A')) {
+          nConta++;
+          if (xy.situacao === 'Aprovado') {
+            cResult = 'A'
+          } else {
+            cResult = 'R'
+          }
+        }
+        if (xy.nivelAprov == 'N2' && (cResult == '' || cResult == 'A')) {
+          nConta++;
+          if (xy.situacao === 'Aprovado') {
+            cResult = 'A'
+          } else {
+            cResult = 'R'
+          }
+        }
+      }
+      if (xy.nivel == 'N3') {
+        if (xy.nivelAprov == 'N1' && (cResult == '' || cResult == 'A')) {
+          nConta++;
+          if (xy.situacao === 'Aprovado') {
+            cResult = 'A'
+          } else {
+            cResult = 'R'
+          }
+        }
+        if (xy.nivelAprov == 'N2' && (cResult == '' || cResult == 'A')) {
+          nConta++;
+          if (xy.situacao === 'Aprovado') {
+            cResult = 'A'
+          } else {
+            cResult = 'R'
+          }
+        }
+        if (xy.nivelAprov == 'N3' && (cResult == '' || cResult == 'A')) {
+          nConta++;
+          if (xy.situacao === 'Aprovado') {
+            cResult = 'A'
+          } else {
+            cResult = 'R'
+          }
+        }
+      }
+    });
+    if ((cNiv == 'N1' && nConta == 1) || (cNiv == 'N2' && nConta == 2) || (cNiv == 'N3' && nConta == 3)) {
+      this.atuLoteProd(cResult)
+    }
+  }
+
+  atuLoteProd(cSit: string) {
+    let sitAprov = cSit === 'A' ? 'Aprovado' : 'Rejeitado'
+
+    const obj = {
+      'filial': this.filial,
+      'op': ' ',
+      'produto': this.produto,
+      'descricao': this.descricao,
+      'lote': this.lote,
+      'usrAprov': this.aUsr.codUser,
+      'usrPerfil': '',
+      'dtVenc': this.fg.btod(this.dtVenc),
+      'qtde': this.qtdeTot,
+      'revisao': this.revisao,
+      'codCarac': ' ',
+      'itemin': 0,
+      'itemax': 0,
+      'itemeio': ' ',
+      'itetxt': ' ',
+      'result': 0,
+      'resultxt': ' ',
+      'situacao': sitAprov,
+      'just': this.justificativa,
+      'tipo': 'L',
+    }
+    this.fj.execProd('analisaAprovaLote', obj);
+    this.atuLoteAprov(cSit)
+  }
+
+  atuLoteAprov(cSit: string) {
+    this.arrBusca = {};
+    let aProt = [];
+    const obj = {
+      'filial': this.aProd.filial,
+      'produto': this.aProd.produto,
+      'lote': this.aProd.lote
+    }
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteProtheus', obj);
+    this.arrBusca.subscribe(cada => {
+      cada.forEach(xy => {
+        const item = xy.itemin
+        aProt.push({ "cLFilial": xy.filial, "cProduto": xy.produto, "cArmazem": '01', "cOP": xy.op, "cLote": xy.lote, "nQuantidade": xy.qtdeProd, "dValidade": xy.dtVenc, "dFabricacao": xy.dtProd, "cCaracteristica": xy.descCarac, "cValMin": xy.itemin.toString(), "cValMax": xy.itemax.toString(), "cResultado": xy.obtido.toString(), "cStatus": xy.sitLote })
+      });
+      const retProdParcial = this.fj.prodLote(aProt);
+      retProdParcial.subscribe(ret => {
+        if (ret.status) {
+          if (confirm('processado') == true) {
+            window.location.reload();
+          } else {
+            window.location.reload();
+          }
+        } else {
+          alert('aguardando')
+        }
+      });
+    });
+  }
+
+
+  temJustificativa() {
+    const tst = this.arrDados
+    let cRet = ''
+
+    tst.forEach(xx => {
+      if (xx.situacao == 'Reprovado' && (this.justificativa).length < 10 && cRet == '') {
+        cRet = 'Reprovado'
+      }
+    });
+    if (cRet == '') {
+      return true
+    } else {
+      alert('Justificativa Obrigatória')
+      return false
+    }
   }
 
   exportExcel(fileName, sheetName) {
@@ -142,27 +392,4 @@ export class LoteAprovaComponent implements OnInit {
     this.router.navigate(['loteReg']);
   }
 
-  aprovaLote(tipo: string) {
-
-    const obj = {
-      'filial': this.filial,
-      'op': ' ',
-      'produto': this.produto,
-      'descricao': this.descricao,
-      'lote': this.lote,
-      'usrAprov': this.aUsr.codUser,
-      'dtVenc': this.fg.btod(this.dtVenc),
-      'qtde': this.qtdeTot,
-      'revisao': this.revisao,
-      'codCarac': ' ',
-      'itemin': ' ',
-      'itemax': ' ',
-      'itemeio': ' ',
-      'result': ' ',
-      'situacao': ' ',
-      'tipo': tipo,
-    }
-    this.fj.execProd('analisaAprovaLote', obj);
-    window.location.reload();
-  }
 }

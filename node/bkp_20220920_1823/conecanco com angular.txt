@@ -1,0 +1,35 @@
+npm install --save
+npm install -g @angular/cli --save
+npm install bootstrap --save
+npm i material-components-web --save
+ng update 
+npm update
+ng add @angular/material
+ng serve --o
+
+kk
+
+
+problema de acesso no shell:
+abrir como admin
+executar 
+get-executionpolicy
+set-executionpolicy unrestricted
+get-executionpolicy
+
+
+
+/*
+ * {
+  "rules": {
+    ".read": false,
+    ".write": false
+  }
+}
+*/
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}

@@ -1,0 +1,144 @@
+Bancos de dados de desenvolvimento
+
+Conexão                 DataBase        User        Senha           Tipo            Node        Status  filiais
+10.3.0.44\SQLPROTHEUS   TMPRD           sql_ppi     pcf             Produção        app785      Ativo
+10.6.0.30               PCF_Integ       sql_ppi     pcf             Produção        app786      Ativo
+10.3.0.44\SQLPROTHEUS   PCF_Integ       sql_ppi     pcf             Produção        app787      Ativo
+10.1.0.190              PCF_Integ       sql_ppi     pcf             Produção        app788      Ativo
+10.3.0.204              PCP             sql_ppi     pcf             Testes          app883      Ativo
+10.3.0.204              HOMOLOGACAO     sql_ppi     pcf             Testes          app884      Ativo
+10.1.0.250\SQLEXPRESS   PCF_Integ       pcp         Dev!@PCP        Testes          app886      Ativo   108
+10.3.0.204\SQLEXPRESS   PCF_Integ       pcp         Dev!@PCP        Testes          app887      Ativo   206
+10.3.0.92               PCF_Integ       pcp         Dev!@PCP        Testes          app888      Ativo   101,107,117,402
+
+
+senha do cisco: grupo Bun secure connection
+usuário: calves@indbun.com.br
+senha: Casamontana@#1
+senhas antigas: ca1971@#Buntech
+
+User 2 : tipb - Buntech0909
+
+
+Ambiente Produção
+/var/www/html
+
+
+Ambiente Teste
+/var/www/homolog
+
+Servidor ubuntu de acesso
+IP: 10.3.0.48
+User: calves
+Senha: Dev!@PCP
+
+Nome da VPN GrupoBun-IND
+Endereço IP 10.212.134.128
+Usuário calves@indbun.com.br
+Senha: ca1971@#Buntech
+
+
+  // Campina Grande - 888
+  // Servidor de HML:10.3.0.92
+  // Filiais:101,107,117,402
+
+  // Boa vista - 886
+  // Servidor de HML:10.1.0.250
+  // Filiais:108
+
+
+  // Indaiatuba - 887
+  // Servidor de HML: 10.3.0.204
+  // Filiais:206
+
+
+Conexões
+#!/bin/bash
+
+#arquivo para atualizaÃ§Ã£o de todos os serviÃ§os
+
+parar todos os serviços Node
+sudo pkill -f node
+
+sudo node /var/www/node/app885
+
+HOMOLOGAÇÃO
+10.3.0.48:885 - PRT - HML
+10.3.0.48:886 - PCFA - HML
+10.3.0.48:887 - PCFB - HML
+10.3.0.48:888 - PCFC - HML
+
+sudo systemctl stop app85.service
+sudo systemctl stop app86.service
+sudo systemctl stop app87.service
+sudo systemctl stop app88.service
+
+sudo systemctl restart app85.service
+sudo systemctl restart app86.service
+sudo systemctl restart app87.service
+sudo systemctl restart app88.service
+
+sudo systemctl start app85.service
+sudo systemctl start app86.service
+sudo systemctl start app87.service
+sudo systemctl start app88.service
+
+
+PRODUÇÃO
+10.3.0.48:785 - PRT - PROD
+10.3.0.48:786 - PCFA - PROD
+10.3.0.48:787 - PCFB - PROD
+10.3.0.48:788 - PCFC - PROD
+
+sudo systemctl stop app75.service
+sudo systemctl stop app76.service
+sudo systemctl stop app77.service
+sudo systemctl stop app78.service
+
+sudo systemctl restart app75.service
+sudo systemctl restart app76.service
+sudo systemctl restart app77.service
+sudo systemctl restart app78.service
+
+sudo systemctl start app75.service
+sudo systemctl start app76.service
+sudo systemctl start app77.service
+sudo systemctl start app78.service
+
+
+
+reiniciar todos os serviços
+sudo systemctl restart par.service
+sudo systemctl restart app75.service
+sudo systemctl restart app76.service
+sudo systemctl restart app77.service
+sudo systemctl restart app78.service
+sudo systemctl restart app85.service
+sudo systemctl restart app86.service
+sudo systemctl restart app87.service
+sudo systemctl restart app88.service
+
+
+- Correção de duplo clique no envio PARCIAL; ok
+- Trava de envio total com quantidade igual a zero; ok
+- Resíduo no campo quantidade PCF/ Janela de apontamento;ok
+- Colocar ícone exporta OutInteg na  janela de OPS HML;ok
+- Redefinir cores nas linhas das tabelas; em andamento
+- Correção dos saldos empenhados, em envio de parciais da janela de apontamento; daniel
+- Tratativa de erros de integração Protheus/Janela de apontamento; daniel
+- Status quando ocorrer alteração no PCFactrory: em andamento
+
+
+ATIVIDADES DA INCLUSÃO DE DOCS.
+
+01 - criar atalho na linha para excluir o documento com pergunta de confirmação. ok
+02 - no item do DOCUMENTO, caso os dois sejam não, deleta a linha. ok
+03 - doclista tirar as colunas QTDE e EMISSAO. ok
+04 - COLOCAR QUEBRA NA DESCRIÇÃO E NO LOTE/NF/OP ok
+05 - INCLUIR A COLUNA UNIDADE DEPOIS DA QTDE - ok
+06 - TIRAR COLUNA APONTA - ok
+
+Atividades em 15-09-2022
+Alteração da url do REST para href="http://10.3.0.206:8091/rest/" em D:\projetos\buntech\src\app\components\navbar\navbar.component.html
+Alteração do combo box retArrayProcesso() {return ['Betoneira', 'Moagem', 'Mistura em tanque', 'Granulação', 'Reembalamento manual', 'Reembalamento automático', 'Peletização', 'Peneiramento'];  } em D:\projetos\buntech\src\app\atualizar\movimentos\doc\docdet\docdet.component.ts
+

@@ -122,8 +122,8 @@ export class OpconfirmaComponent implements OnInit {
 
     this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
 
-    this.arrOpAndA.subscribe(cada => {
-      cada.forEach(xy => {
+    this.arrOpAndA.subscribe(x => {
+      x.forEach(xy => {
         this.arrOpAndB.push({
           'filial': xy.FILIAL,
           'op': xy.OP,
@@ -158,8 +158,8 @@ export class OpconfirmaComponent implements OnInit {
     const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
 
 
-    this.arrOpconfirma.subscribe(cada => {
-      cada.forEach(xy => {
+    this.arrOpconfirma.subscribe(x => {
+      x.forEach(xy => {
         this.arrOpconfirmaTab.push({
           'COMPONENTE': xy.COMPONENTE,
           'DESCRIC': xy.DESCRIC,
@@ -243,8 +243,8 @@ export class OpconfirmaComponent implements OnInit {
     this.arrLoteTab = []
     this.temLote = false
 
-    this.arrLote.subscribe(cada => {
-      cada.forEach(xy => {
+    this.arrLote.subscribe(x => {
+      x.forEach(xy => {
         if (xy.ativo == 'SIM') {
           this.ltcrevisao = xy.revisao;
           this.ltclote = xy.lote;
@@ -262,6 +262,7 @@ export class OpconfirmaComponent implements OnInit {
 
   prodParcialOp() {
     const nQtdeLen = this.numOP.length - 1
+    let cLoc: string = this.opFilial === '108' ? '99' : '01';
     const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
     this.parcialAtivo = false;
     if (this.temLote) {
@@ -271,7 +272,7 @@ export class OpconfirmaComponent implements OnInit {
             cFilialOp: this.opFilial,
             cNumOp: this.opCodigo,
             cC2Prod: this.opProduto,
-            cC2Local: '01',
+            cC2Local: cLoc,
             cDocAjst: 'DOCPARCI',
             nC2QtdOri: this.opQtde,
             nC2QtdAjst: this.opQtdePcf,
@@ -307,15 +308,19 @@ export class OpconfirmaComponent implements OnInit {
             'usuario': this.aUsr.codUser,
             'cTipo': 'P',
           }
-          const retProdParcial = this.fj.prodOP(obj);
-          retProdParcial.subscribe(cada => {
-            alert(cada.Sucesso.substring(2, 60))
-            if (cada.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+          const retProd = this.fj.prodOP(obj);
+          retProd.subscribe(x => {
+            alert(x.Sucesso.substring(2, 60))
+            if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
               this.fj.execProd('produzOP', this.objParcial);
-              this.fj.execProd('manuLote', this.objLote);
+              if (this.opFilial == '108') {
+                this.fj.execProd('manuLote', this.objLote);
+              }
               this.parcialAtivo = true;
             }
-            this.fj.execProd('manuLote', this.objLote);
+            if (this.opFilial == '108') {
+              this.fj.execProd('manuLote', this.objLote);
+            }
 
             window.location.reload();
           });
@@ -350,7 +355,7 @@ export class OpconfirmaComponent implements OnInit {
     let ajustado = true
     let arrItens = []
     const nQtdeLen = this.numOP.length - 1
-
+    let cLoc: string = this.opFilial === '108' ? '99' : '01';;
     this.arrOpconfirmaTab.forEach(xl => {
       if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
         temSaldo = false
@@ -361,7 +366,7 @@ export class OpconfirmaComponent implements OnInit {
       if ((xl.QTDEORI == 0 && xl.QTDECALC > 0) || (xl.QTDEORI > 0 && xl.QTDECALC == 0) || (xl.QTDEORI != 0 && xl.QTDECALC != 0)) {
         arrItens.push({
           'cD4CodPrd': xl.COMPONENTE,
-          'cD4Local': "01",
+          'cD4Local': cLoc,
           'nD4QtdOri': xl.QTDEORI,
           'nD4QtdAjst': xl.QTDECALC,
           'cTpComp': xl.TIPO,
@@ -379,7 +384,7 @@ export class OpconfirmaComponent implements OnInit {
             cFilialOp: this.opFilial,
             cNumOp: this.opCodigo,
             cC2Prod: this.opProduto,
-            cC2Local: '01',
+            cC2Local: cLoc,
             cDocAjst: 'DOCTOTAL',
             nC2QtdOri: this.opQtde,
             nC2QtdAjst: this.opQtdePcf,
@@ -415,14 +420,18 @@ export class OpconfirmaComponent implements OnInit {
             usrProd: this.aUsr.codUser,
             fechamento: 'automatico',
           };
-          const retProdParcial = this.fj.prodOP(obj);
-          retProdParcial.subscribe(cada => {
-            alert(cada.Sucesso.substring(2, 60))
-            if (cada.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
+          const retProd = this.fj.prodOP(obj);
+          retProd.subscribe(x => {
+            alert(x.Sucesso.substring(2, 60))
+            if (x.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
               this.fj.execProd('produzOP', this.objTotal)
+              if (this.opFilial == '108') {
+                this.fj.execProd('manuLote', this.objLote);
+              }
+            }
+            if (this.opFilial == '108') {
               this.fj.execProd('manuLote', this.objLote);
             }
-            this.fj.execProd('manuLote', this.objLote);
             window.location.reload();
           });
         } else {

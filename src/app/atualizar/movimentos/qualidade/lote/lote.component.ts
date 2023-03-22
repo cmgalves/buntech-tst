@@ -47,7 +47,7 @@ export class LoteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.arrUserLogado.perfil === 'Administrador') {
+    if (this.arrUserLogado.perfil.indexOf('Administrador') >= 0) {
       this.buscaLotes('Todos');
     } else {
       alert('Sem Acesso')
