@@ -222,18 +222,22 @@ export class LoteAnalisaComponent implements OnInit {
   editResult(xcRow) {
     let sit: string = 'Aprovado';
     let vResultxt: string = '';
-    let vResult = (<HTMLInputElement>(document.getElementById("idResult"))).value;
+    let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value;
+    let vResult: number = 0
+    let vResultt: string = ''
 
+    vResult = parseFloat(vNum)
+    vResultt = vNum
     if (xcRow.itemin * 1 > 0 || xcRow.itemax * 1 > 0) {
-      if (vResult < xcRow.itemin || vResult > xcRow.itemax) {
+      if (vResult < xcRow.itemin * 1 || vResult > xcRow.itemax * 1 ) {
         sit = 'Reprovado'
       }
     } else {
-      if (vResult == 'SIM' || vResult == 'NAO') {
-        if (vResult == 'SIM') {
+      if (vResultt == 'SIM' || vResultt == 'NAO') {
+        if (vResultt == 'SIM') {
           sit = 'Aprovado'
         }
-        if (vResult == 'NAO') {
+        if (vResultt == 'NAO') {
           sit = 'Reprovado'
         }
       }else{
