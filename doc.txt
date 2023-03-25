@@ -13,7 +13,7 @@ Conexão                 DataBase        User        Senha           Tipo       
 
 
 senha do cisco: grupo Bun secure connection
-ca1971@#Buntech
+Buntech01
 
 User 2 : tipb - Buntech0909
 

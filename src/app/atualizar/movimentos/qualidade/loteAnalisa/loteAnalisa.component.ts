@@ -220,27 +220,28 @@ export class LoteAnalisaComponent implements OnInit {
   }
 
   editResult(xcRow) {
-    // const validInput = /^[0-9]+$/;
     let sit: string = 'Aprovado';
     let vResultxt: string = '';
     let vResult = (<HTMLInputElement>(document.getElementById("idResult"))).value;
 
-    if (isNaN(vResult)) {
-      if (+vResult < xcRow.itemin || vResult > xcRow.itemax) {
+    if (xcRow.itemin * 1 > 0 || xcRow.itemax * 1 > 0) {
+      if (vResult < xcRow.itemin || vResult > xcRow.itemax) {
         sit = 'Reprovado'
       }
     } else {
-      if (vResult == 'NAO') {
-        sit = 'Reprovado'
-      } else if (vResult == 'SIM') {
-        sit = 'Aprovado'
-      } else {
-        alert('Favor digitar SIM, NAO ou NUMERO')
-        return
+      if (vResult == 'SIM' || vResult == 'NAO') {
+        if (vResult == 'SIM') {
+          sit = 'Aprovado'
+        }
+        if (vResult == 'NAO') {
+          sit = 'Reprovado'
+        }
+      }else{
+        alert('Favor digitar SIM ou NAO')
       }
-      vResultxt = vResult;
-      vResult = '';
+      
     }
+
 
     const obj = {
       'filial': this.filial,

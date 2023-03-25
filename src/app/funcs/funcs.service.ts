@@ -67,7 +67,7 @@ export class funcsService {
   prodOP(obj) {
     let url = '';
 
-    url = `http://10.3.0.206:8091/REST/AJUST_EMP`
+    url = `http://10.3.0.204:8095/REST/AJUST_EMP`
 
     return this._http.put(url, obj)
       .map((response: Response) => response.json());
