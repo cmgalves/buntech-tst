@@ -318,9 +318,6 @@ export class OpconfirmaComponent implements OnInit {
               }
               this.parcialAtivo = true;
             }
-            if (this.opFilial == '108') {
-              this.fj.execProd('manuLote', this.objLote);
-            }
 
             window.location.reload();
           });
@@ -429,9 +426,7 @@ export class OpconfirmaComponent implements OnInit {
                 this.fj.execProd('manuLote', this.objLote);
               }
             }
-            if (this.opFilial == '108') {
-              this.fj.execProd('manuLote', this.objLote);
-            }
+            
             window.location.reload();
           });
         } else {
