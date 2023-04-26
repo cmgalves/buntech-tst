@@ -135,7 +135,6 @@
       }
     }
   },
-  "defaultProject": "Portal-Buntech",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -64,7 +64,7 @@ export class HistrevisaComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   class: string = '';
 
-  myControl = new FormControl();
+  myControl = new UntypedFormControl();
   options: string[] = [];
   filteredOptions: Observable<string[]>;
 

@@ -1,7 +1,7 @@
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 
 export class FormValidations {
-    static cpfValidator(control: FormControl){
+    static cpfValidator(control: UntypedFormControl){
         const cpf = control.value;
         if (cpf && cpf != " "){
             

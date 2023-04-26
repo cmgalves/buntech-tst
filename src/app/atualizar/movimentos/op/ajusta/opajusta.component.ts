@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -31,7 +31,7 @@ export class OpajustaComponent implements OnInit {
   arrRecurso = JSON.parse(localStorage.getItem('recurso'));
   arrProd = JSON.parse(localStorage.getItem('cadProd'));
 
-  myControl = new FormControl();
+  myControl = new UntypedFormControl();
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
 

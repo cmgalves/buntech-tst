@@ -7,7 +7,7 @@ import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { jsPDF } from 'jspdf'
 import { DOCUMENT } from '@angular/common';
@@ -41,7 +41,7 @@ export class DocdetComponent implements OnInit {
   xcPerfil: any = this.arrUserLogado.perfil
   dadosDoc = JSON.parse(localStorage.getItem('dadosDoc'));
 
-  myControl = new FormControl();
+  myControl = new UntypedFormControl();
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
   opFilial: string = '';
