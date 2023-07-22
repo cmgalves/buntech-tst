@@ -1,6 +1,6 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
+@import '@angular/material/theming';
 // Plus imports for other components in your app.
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -19,10 +19,10 @@ $Portal-Buntech-theme: mat-light-theme($Portal-Buntech-primary, $Portal-Buntech-
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 // @include angular-material-theme($Portal-Buntech-theme);
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 @import "core/variables";
 @import "core/mixins";
-@import "~bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 // Core Components
 @import "core/buttons";
 @import "core/checkboxes";

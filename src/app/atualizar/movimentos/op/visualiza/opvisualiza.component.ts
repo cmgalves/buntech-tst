@@ -6,7 +6,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
-import { NullTemplateVisitor } from '@angular/compiler';
 
 // tslint:disable-next-line:class-name
 export interface opVisualiza {
