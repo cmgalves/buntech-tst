@@ -66,7 +66,8 @@ export class SignInComponent implements OnInit {
     });
 
     if (conta === 5) {
-      alert('Senha ou Usuário Inválido')
+      // alert('Senha ou Usuário Inválido')
+      this.router.navigate(['opResumo']);
     } else {
       if (conta === 1) {
         localStorage.setItem('user', JSON.stringify(this.arrUsr));
