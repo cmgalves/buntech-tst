@@ -5,7 +5,7 @@
                 <div class="card-header card-header divCorVerde ">
                     <a>MANUTENÇÃO DAS ESPECIFICAÇÕES</a>
                 </div>
-                <div class="row">
+                 <div class="row">
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Produto Acabado</mat-label>
@@ -42,6 +42,7 @@
                             <input matInput [(ngModel)]="numEspec">
                         </mat-form-field>
                     </div>
+
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-select placeholder="Selecione o Status" [(ngModel)]="cabSituacao">
@@ -51,32 +52,91 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-6 ">
+
                         <mat-form-field>
                             <mat-label>Aplicação</mat-label>
                             <input matInput [(ngModel)]="aplicacao">
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-4">
+                    <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Embalagem</mat-label>
                             <input matInput [(ngModel)]="embalagem">
                         </mat-form-field>
                     </div>
+
+
+
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-select placeholder="Alçada" [(ngModel)]="especAlcada">
+                                <mat-option *ngFor="let optAlcada of sEspecAlcada" [value]="optAlcada">
+                                    {{optAlcada}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-select placeholder="Análise em processo" [(ngModel)]="especAnalise">
+                                <mat-option *ngFor="let optSit of sEspecAnalise" [value]="optSit">
+                                    {{optSit}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-select placeholder="Sequência de análise" [(ngModel)]="sEspecAnalise">
+                                <mat-option *ngFor="let optSit of sEspecAnalise" [value]="optSit">
+                                    {{optSit}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-select placeholder="Quebra de análise" [(ngModel)]="sEspecQuebra">
+                                <mat-option *ngFor="let optSit of sEspecQuebra" [value]="optSit">
+                                    {{optSit}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    
                     <div class="card-body table-responsive col-md-12">
                         <mat-form-field>
                             <mat-label>Histórico de Revisão</mat-label>
                             <input matInput [(ngModel)]="qualObsRevisao">
                         </mat-form-field>
                     </div>
+
+
+
+
                     <div class="card-body table-responsive col-md-12">
                         <mat-form-field>
                             <mat-label>Observações Gerais</mat-label>
                             <input matInput [(ngModel)]="qualObsGeral">
                         </mat-form-field>
                     </div>
+                    
                 </div>
+
+
+                
+
             </div>
+
+
             <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaEspec()">Voltar</button>
             <button mat-raised-button type="submit" class="btn btn-success" (click)="alterar('A')">Alterar</button>
             <button mat-raised-button type="submit" class="btn btn-warning" (click)="alterar('R')">Revisar</button>

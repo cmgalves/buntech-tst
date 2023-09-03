@@ -35,6 +35,10 @@ export class RevisaComponent implements OnInit {
   cabProduto: string = ''
   descrProd: string = '';
   cabRevisao: string = '';
+  especAlcada: string = '';
+  especAnalise: string = '';
+  especQuebra: string = '';
+
   cabRevisaoTemp: string = '';
   dataAprov: string = '';
   numEspec: string = '';
@@ -62,6 +66,13 @@ export class RevisaComponent implements OnInit {
   lForm: boolean = false;
   editInd = null;
   revisas: Observable<any>;
+
+  sEspecAlcada: string[] = ['Sem alçada', 'N1','N1-N2','N1-N2-N3','N1-N3','N2-N3'];
+
+
+  sEspecAnalise: string[] = ['SIM','NÃO'];
+  sEspecQuebra: string[] = ['HORA','DIA'];
+
   especSit: string[] = ['Andamento', 'Concluída', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
