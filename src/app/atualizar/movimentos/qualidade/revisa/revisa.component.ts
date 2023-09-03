@@ -37,6 +37,8 @@ export class RevisaComponent implements OnInit {
   cabRevisao: string = '';
   especAlcada: string = '';
   especAnalise: string = '';
+  especSequencia: string = '';
+
   especQuebra: string = '';
 
   cabRevisaoTemp: string = '';
@@ -67,11 +69,12 @@ export class RevisaComponent implements OnInit {
   editInd = null;
   revisas: Observable<any>;
 
-  sEspecAlcada: string[] = ['Sem alçada', 'N1','N1-N2','N1-N2-N3','N1-N3','N2-N3'];
+  sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
+  sEspecAnalise: string[] = ['SIM', 'NÃO'];
+  sEspecSequencia: string[] = ['1', '2'];
+  sEspecQuebra: string[] = ['HORA', 'DIA'];
 
 
-  sEspecAnalise: string[] = ['SIM','NÃO'];
-  sEspecQuebra: string[] = ['HORA','DIA'];
 
   especSit: string[] = ['Andamento', 'Concluída', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
@@ -154,7 +157,15 @@ export class RevisaComponent implements OnInit {
 
   alterar(cTipo) {
     if (cTipo === 'I') {
-      this.cabRevisao = this.cabRevisaoTemp
+      if (this.cabRevisao !== '000' && this.cabRevisaoTemp == '') {
+        alert('Já existe Revisão, Precisa Alterar ou incluir Um Numero de Revisão nova!')
+        return;
+      }
+      if (this.cabRevisaoTemp == '') {
+        this.cabRevisao = this.cabRevisao
+      } else {
+        this.cabRevisao = this.cabRevisaoTemp
+      }
     }
 
     if (cTipo === 'R' && this.iteProduto === '' && this.cabRevisao !== '000') {
@@ -178,7 +189,12 @@ export class RevisaComponent implements OnInit {
       'embalagem': this.embalagem,
       'feitoPor': this.feitoPor,
       'aprovPor': this.aprovPor,
+      'especAlcada': this.especAlcada,
+      'especAnalise': this.especAnalise,
+      'especSequencia': this.especSequencia,
+      'especQuebra': this.especQuebra,
       'cTipo': cTipo,
+
     }
     this.fj.execProd('incluiEspec', obj);
     window.location.reload();
@@ -243,6 +259,10 @@ export class RevisaComponent implements OnInit {
           'itetxt': xy.itetxt,
           'iteMeio': xy.iteMeio,
           'descCarac': xy.descCarac,
+          'especAlcada': xy.especAlcada,
+          'especAnalise': xy.especAnalise,
+          'especSequencia': xy.especSequencia,
+          'especQuebra': xy.especQuebra,
         })
         if (seq === 1) {
           this.iteProduto = xy.iteProduto;
@@ -254,6 +274,10 @@ export class RevisaComponent implements OnInit {
           this.embalagem = xy.embalagem;
           this.qualObsRevisao = xy.qualObsRevisao;
           this.qualObsGeral = xy.qualObsGeral;
+          this.especAlcada = xy.especAlcada;
+          this.especAnalise = xy.especAnalise;
+          this.especSequencia = xy.especSequencia;
+          this.especQuebra = xy.especQuebra;
         }
       });
 

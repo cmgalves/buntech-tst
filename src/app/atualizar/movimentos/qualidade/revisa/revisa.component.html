@@ -27,7 +27,7 @@
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>RevTemp</mat-label>
-                            <input matInput [(ngModel)]=cabRevisaoTemp>
+                            <input type="number" matInput [(ngModel)]=cabRevisaoTemp>
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-2">
@@ -82,19 +82,8 @@
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-select placeholder="Análise em processo" [(ngModel)]="especAnalise">
-                                <mat-option *ngFor="let optSit of sEspecAnalise" [value]="optSit">
-                                    {{optSit}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-select placeholder="Sequência de análise" [(ngModel)]="sEspecAnalise">
-                                <mat-option *ngFor="let optSit of sEspecAnalise" [value]="optSit">
-                                    {{optSit}}
+                                <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise">
+                                    {{optAnalise}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -102,24 +91,31 @@
 
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-select placeholder="Quebra de análise" [(ngModel)]="sEspecQuebra">
-                                <mat-option *ngFor="let optSit of sEspecQuebra" [value]="optSit">
-                                    {{optSit}}
+                            <mat-select placeholder="Sequência de análise" [(ngModel)]="especSequencia">
+                                <mat-option *ngFor="let optSequencia of sEspecSequencia" [value]="optSequencia">
+                                    {{optSequencia}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
+                            <mat-select placeholder="Quebra de análise" [(ngModel)]="especQuebra">
+                                <mat-option *ngFor="let optQuebra of sEspecQuebra" [value]="optQuebra">
+                                    {{optQuebra}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
 
 
-                    
                     <div class="card-body table-responsive col-md-12">
                         <mat-form-field>
                             <mat-label>Histórico de Revisão</mat-label>
                             <input matInput [(ngModel)]="qualObsRevisao">
                         </mat-form-field>
                     </div>
-
-
 
 
                     <div class="card-body table-responsive col-md-12">
