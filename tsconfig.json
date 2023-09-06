@@ -5,7 +5,7 @@
     "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
-    "module": "ES2022", // add this line
+    "module": "commonjs", // add this line
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -14,7 +14,7 @@
       "node_modules/@types"
     ],
     "lib": [
-      "es2020",
+      "es2016",
       "dom"
     ],
     "useDefineForClassFields": false
