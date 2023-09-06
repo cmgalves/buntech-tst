@@ -25,11 +25,15 @@ npm install angularfire2 firebase --legacy-peer-deps
 npm audit fix --legacy-peer-deps
 
 problema de acesso no shell:
-abrir como admin
+abrir como adminnpm --vercion
+
 executar 
 get-executionpolicy
 set-executionpolicy unrestricted
 get-executionpolicy
+
+  git config --global user.email "cmgalves@gmail.com"
+  git config --global user.name "cmgalves"
 
 
 atualização angular versão x = 10
