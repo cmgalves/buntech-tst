@@ -14,7 +14,7 @@ export class funcsService {
 
   execPar(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.48:900'];
+    const dstUrla = ['10.3.0.49:900'];
     url = `http://${dstUrla}/${_url}`
     $.ajaxSetup({ async: false });
     $.post(url, obj);
@@ -22,7 +22,7 @@ export class funcsService {
 
   buscaPrt(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.48:885'];
+    const dstUrla = ['10.3.0.49:885'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -33,7 +33,7 @@ export class funcsService {
 
   buscaPcfa(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.48:886'];
+    const dstUrla = ['10.3.0.49:886'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -44,7 +44,7 @@ export class funcsService {
 
   buscaPcfb(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.48:887'];
+    const dstUrla = ['10.3.0.49:887'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -55,7 +55,7 @@ export class funcsService {
 
   buscaPcfc(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.48:888'];
+    const dstUrla = ['10.3.0.49:888'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -86,7 +86,7 @@ export class funcsService {
 
   buscaPar(_url) {
     let url = '';
-    const dstUrla = ['10.3.0.48:900'];
+    const dstUrla = ['10.3.0.49:900'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -97,7 +97,7 @@ export class funcsService {
 
   execProd(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.48:885'];
+    const dstUrla = ['10.3.0.49:885'];
 
     url = `http://${dstUrla}/${_url}`
 
