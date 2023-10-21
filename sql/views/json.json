@@ -1,0 +1,44 @@
+[
+  {
+    "filial": "206",
+    "op": "00431401001",
+    "recurso": "MOINHO 01",
+    "operacao": "10",
+    "integrado": 0,
+    "produto": "PPN00250",
+    "producao": 720000.0,
+    "retrabalho": 0,
+    "segundos": 265740,
+    "situacao": "50",
+    "situDesc": "Baixada",
+    "dia": "18/08/2023"
+  },
+  {
+    "filial": "206",
+    "op": "00431401001",
+    "recurso": "MOINHO 02",
+    "operacao": "20",
+    "integrado": 0,
+    "produto": "PPN00250",
+    "producao": 740000.0,
+    "retrabalho": 0,
+    "segundos": 250602,
+    "situacao": "50",
+    "situDesc": "Baixada",
+    "dia": "18/08/2023"
+  },
+  {
+    "filial": "206",
+    "op": "00431401001",
+    "recurso": "MOINHO 03",
+    "operacao": "30",
+    "integrado": 0,
+    "produto": "PPN00250",
+    "producao": 740000.0,
+    "retrabalho": 0,
+    "segundos": 264574,
+    "situacao": "50",
+    "situDesc": "Baixada",
+    "dia": "18/08/2023"
+  }
+]

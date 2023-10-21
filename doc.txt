@@ -9,6 +9,15 @@ Bancos de dados de desenvolvimento
  10.1.0.250\SQLEXPRESS   PCF_Integ                 sql_ppi     pcf             Testes          app886      Ativo   108               Boa Vista
  10.3.0.92               PCF_Integ                 sql_ppi     pcf             Testes          app888      Ativo   101,107,117,402   Campina Grande
 
+app785 Ativo Indaiatuba
+app786 Ativo Boa Vista
+app788 Ativo Campina Grande
+app884 Ativo Indaiatuba
+app887 Ativo 206 Indaiatuba
+app886 Ativo 108 Boa Vista
+app888 Ativo 101,107,117,402 Campina Grande
+
+
 
 senha do cisco: grupo Bun secure connection
 Buntech01
