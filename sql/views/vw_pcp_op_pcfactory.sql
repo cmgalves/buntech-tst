@@ -10,7 +10,7 @@ from
 	--	sum(c.qty)
 		a.code1 op, 
 		d.code produto, 
-		isnull(b.WOShiftProd, 0) qtde, 
+		WOShiftProd qtde, 
 		b.DtTimeStamp dtime, 
 		a.DtCreation dtcria, 
 		e.code codRecurso, 

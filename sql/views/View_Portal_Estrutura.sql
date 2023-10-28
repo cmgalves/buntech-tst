@@ -1,0 +1,69 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+ALTER VIEW [dbo].[View_Portal_Estrutura] as
+WITH 
+	ESTRUT( 
+		FILIAL, CODIGO, COD_PAI, COD_COMP, 
+		QTD, PERDA, DT_INI, DT_FIM, NIVEL 
+		) AS 
+( 
+	SELECT 
+		G1_FILIAL, G1_COD PAI, G1_COD, G1_COMP, 
+		G1_QUANT, G1_PERDA, G1_INI, 
+		G1_FIM, 1 AS NIVEL 
+	FROM 
+		HOMOLOGACAO..SG1010 A (NOLOCK) 
+	WHERE 
+		D_E_L_E_T_ = ''
+
+	UNION ALL 
+
+	SELECT 
+		G1_FILIAL, CODIGO, G1_COD, G1_COMP, QTD * G1_QUANT, G1_PERDA, G1_INI, G1_FIM, NIVEL + 1 
+	FROM 
+		HOMOLOGACAO..SG1010 A WITH (NOLOCK) INNER JOIN 
+		ESTRUT B ON 
+		G1_COD = COD_COMP 
+	WHERE 
+		1 = 1
+		AND D_E_L_E_T_ = '' 
+)
+
+SELECT 
+	rtrim(FILIAL) filial, 
+	rtrim(CODIGO) codigo, 
+	rtrim(B.B1_DESC) descCodigo, 
+	rtrim(B.B1_TIPO) tipo, 
+	rtrim(COD_PAI) codPai, 
+	rtrim(C.B1_DESC) descPai , 
+	rtrim(C.B1_TIPO) tipoPai, 
+	rtrim(COD_COMP) codComp, 
+	rtrim(D.B1_DESC) descComp, 
+	rtrim(D.B1_TIPO) tipoComp, 
+	rtrim(C.B1_QB) basePai, 
+	QTD qtde, 
+	PERDA perda, 
+	rtrim(D.B1_UM) unidadeComp, 
+	DT_INI dtIni, 
+	DT_FIM dtFim, 
+	NIVEL nivel      
+FROM 
+	ESTRUT A INNER JOIN 
+	HOMOLOGACAO..SB1010 B WITH (NOLOCK) ON 
+	1 = 1
+	AND B.D_E_L_E_T_ = '' 
+	AND B.B1_COD = A.CODIGO INNER JOIN 
+	HOMOLOGACAO..SB1010 C WITH (NOLOCK) ON 
+	1 = 1
+	AND C.D_E_L_E_T_ = '' 
+	AND C.B1_COD = COD_PAI INNER JOIN 
+	HOMOLOGACAO..SB1010 D WITH (NOLOCK) ON 
+	1 = 1
+	AND D.D_E_L_E_T_ = '' 
+	AND D.B1_COD = COD_COMP 
+GO

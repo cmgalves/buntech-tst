@@ -38,9 +38,8 @@ export class RevisaComponent implements OnInit {
   especAlcada: string = '';
   especAnalise: string = '';
   especSequencia: string = '';
-
   especQuebra: string = '';
-
+  cabQtdeQuebra: string = '';
   cabRevisaoTemp: string = '';
   dataAprov: string = '';
   numEspec: string = '';
@@ -72,7 +71,7 @@ export class RevisaComponent implements OnInit {
   sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
   sEspecAnalise: string[] = ['SIM', 'NÃO'];
   sEspecSequencia: string[] = ['1', '2'];
-  sEspecQuebra: string[] = ['HORA', 'DIA'];
+  sEspecQuebra: string[] = ['HORA', 'QTDE'];
 
 
 
