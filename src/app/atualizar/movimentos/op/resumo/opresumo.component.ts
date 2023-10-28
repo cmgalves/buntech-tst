@@ -47,6 +47,7 @@ export class OpresumoComponent implements OnInit {
   aGrpA: any = [];
   aGrpB: any = [];
   aOpAndamentoResumo: any = [];
+  aOpAnalitica: any = [];
   arrOpresumo886: any = [];
   arrOpresumo887: any = [];
   arrOpresumo888: any = [];
@@ -219,7 +220,7 @@ export class OpresumoComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.applyFilter()
-      
+
     });
 
   }
@@ -309,142 +310,47 @@ export class OpresumoComponent implements OnInit {
 
 
   buscatblOutInteg() {
+
     if (('Administrador') == this.arrUserLogado.perfil) {
       let arrTab = []
-      let arr886 = this.fj.buscaPcfa('tblOutInteg', {});
-      let arr887 = this.fj.buscaPcfb('tblOutInteg', {});
-      let arr888 = this.fj.buscaPcfc('tblOutInteg', {});
+      
+      this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
 
-      if (arr888 != null) {
-        arr888.subscribe(cada => {
-          cada.forEach(xy => {
-            arrTab.push({
-              WOCode: xy.WOCode,
-              ResourceCode: xy.ResourceCode,
-              WODetCode: xy.WODetCode,
-              ProductCode: xy.ProductCode,
-              Integrated: xy.Integrated,
-              Qty: xy.Qty,
-              DtProduction: xy.DtProduction,
-              DtCreation: xy.DtCreation,
-              UserCode: xy.UserCode,
-              ReWorkCode: xy.ReWorkCode,
-            })
-          });
-          if (arr886 != null) {
-            arr886.subscribe(cada => {
-              cada.forEach(xy => {
-                arrTab.push({
-                  WOCode: xy.WOCode,
-                  ResourceCode: xy.ResourceCode,
-                  WODetCode: xy.WODetCode,
-                  ProductCode: xy.ProductCode,
-                  Integrated: xy.Integrated,
-                  Qty: xy.Qty,
-                  DtProduction: xy.DtProduction,
-                  DtCreation: xy.DtCreation,
-                  UserCode: xy.UserCode,
-                  ReWorkCode: xy.ReWorkCode,
-                })
-              });
-              if (arr887 != null) {
-                arr887.subscribe(cada => {
-                  cada.forEach(xy => {
-                    arrTab.push({
-                      WOCode: xy.WOCode,
-                      ResourceCode: xy.ResourceCode,
-                      WODetCode: xy.WODetCode,
-                      ProductCode: xy.ProductCode,
-                      Integrated: xy.Integrated,
-                      Qty: xy.Qty,
-                      DtProduction: xy.DtProduction,
-                      DtCreation: xy.DtCreation,
-                      UserCode: xy.UserCode,
-                      ReWorkCode: xy.ReWorkCode,
-                    })
-                  });
-                  this.dataExcel = new MatTableDataSource(arrTab)
-                  this.expExcel('tblOutInteg', 'ops')
-                });
-              }
-            });
-          } else {
-            if (arr887 != null) {
-              arr887.subscribe(cada => {
-                cada.forEach(xy => {
-                  arrTab.push({
-                    WOCode: xy.WOCode,
-                    ResourceCode: xy.ResourceCode,
-                    WODetCode: xy.WODetCode,
-                    ProductCode: xy.ProductCode,
-                    Integrated: xy.Integrated,
-                    Qty: xy.Qty,
-                    DtProduction: xy.DtProduction,
-                    DtCreation: xy.DtCreation,
-                    UserCode: xy.UserCode,
-                    ReWorkCode: xy.ReWorkCode,
-                  })
-                });
-                this.dataExcel = new MatTableDataSource(arrTab)
-                this.expExcel('tblOutInteg', 'ops')
-              });
-            }
-          }
+      this.aOpAnalitica.subscribe(cada => {
+        cada.forEach(xy => {
+          arrTab.push({
+            filial: xy.filial,
+            op: xy.op,
+            recurso: xy.recurso,
+            operacao: xy.operacao,
+            integrado: xy.integrado,
+            produto: xy.produto,
+            producao: xy.producao,
+            retrabalho: xy.retrabalho,
+            segundos: xy.segundos,
+            situacao: xy.situacao,
+            situDesc: xy.situDesc,
+            criacao: xy.criacao,
+            aponta: xy.aponta,
+          })
         });
-      } else {
-        if (arr886 != null) {
-          arr886.subscribe(cada => {
-            cada.forEach(xy => {
-              arrTab.push({
-                WOCode: xy.WOCode,
-                ResourceCode: xy.ResourceCode,
-                WODetCode: xy.WODetCode,
-                ProductCode: xy.ProductCode,
-                Integrated: xy.Integrated,
-                Qty: xy.Qty,
-                DtProduction: xy.DtProduction,
-                DtCreation: xy.DtCreation,
-                UserCode: xy.UserCode,
-                ReWorkCode: xy.ReWorkCode,
-              })
-            });
-          });
-        } else {
-          if (arr887 != null) {
-            arr887.subscribe(cada => {
-              cada.forEach(xy => {
-                arrTab.push({
-                  WOCode: xy.WOCode,
-                  ResourceCode: xy.ResourceCode,
-                  WODetCode: xy.WODetCode,
-                  ProductCode: xy.ProductCode,
-                  Integrated: xy.Integrated,
-                  Qty: xy.Qty,
-                  DtProduction: xy.DtProduction,
-                  DtCreation: xy.DtCreation,
-                  UserCode: xy.UserCode,
-                  ReWorkCode: xy.ReWorkCode,
-                })
-              });
-              this.dataExcel = new MatTableDataSource(arrTab)
-              this.expExcel('tblOutInteg', 'ops')
-            });
-          }
-        }
-      }
-    } else {
-      alert('sem acesso')
-    }
+
+        this.dataExcel = new MatTableDataSource(arrTab)
+        this.expExcel('tblOutInteg', 'ops')
+      });
+  } else {
+  alert('sem acesso')
+}
   }
 
-  // exporta os dados para o excel
-  expExcel(fileName, sheetName) {
-    const fn = fileName + '.xlsx';
-    const sn = sheetName;
-    const workSheet = XLSX.utils.json_to_sheet(this.dataExcel.data, { header: [] });
-    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, sn);
-    XLSX.writeFile(workBook, fn);
-  }
+// exporta os dados para o excel
+expExcel(fileName, sheetName) {
+  const fn = fileName + '.xlsx';
+  const sn = sheetName;
+  const workSheet = XLSX.utils.json_to_sheet(this.dataExcel.data, { header: [] });
+  const workBook: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workBook, workSheet, sn);
+  XLSX.writeFile(workBook, fn);
+}
 
 }
