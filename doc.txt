@@ -4,7 +4,7 @@ Bancos de dados de desenvolvimento
  10.3.0.44\SQLPROTHEUS   TMPRD/PCF_Integ/PCP       sql_ppi     pcf             Produção        app785      Ativo                     Indaiatuba
  10.6.0.30               PCF_Integ                 sql_ppi     pcf             Produção        app786      Ativo                     Boa Vista
  10.1.0.190              PCF_Integ                 sql_ppi     pcf             Produção        app788      Ativo                     Campina Grande
- 10.3.0.204              HOMOLOGACAO / PCP         sql_ppi     pcf             Testes          app884      Ativo                     Indaiatuba
+ 10.3.0.204              HOMOLOGACAO / PCP         sql_ppi     pcf             Testes          app885      Ativo                     Indaiatuba
  10.3.0.204\SQLEXPRESS   PCF_Integ                 sql_ppi     pcf             Testes          app887      Ativo   206               Indaiatuba
  10.1.0.250\SQLEXPRESS   PCF_Integ                 sql_ppi     pcf             Testes          app886      Ativo   108               Boa Vista
  10.3.0.92               PCF_Integ                 sql_ppi     pcf             Testes          app888      Ativo   101,107,117,402   Campina Grande
