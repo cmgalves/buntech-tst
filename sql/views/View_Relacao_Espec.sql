@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 ALTER view [dbo].[View_Relacao_Espec] as
 SELECT
     cabProduto, descrProd, cabRevisao, dataAprov, numEspec, 
@@ -10,7 +6,8 @@ SELECT
 	especAnalise,especQuebra,especSequencia,
     isnull(iteProduto, '') iteProduto, isnull(iteRevisao, '') iteRevisao,
     isnull(iteCarac, '') iteCarac, isnull(iteMin, 0) iteMin,
-    isnull(iteMax, 0) iteMax, isnull(iteMeio, '') iteMeio, isnull(itetxt, '') itetxt, isnull(codCarac, '') codCarac, isnull(descCarac, '') descCarac
+    isnull(iteMax, 0) iteMax, isnull(iteMeio, '') iteMeio, isnull(itetxt, '') itetxt, 
+    isnull(codCarac, '') codCarac, isnull(descCarac, '') descCarac, cabQtdeQuebra
 FROM
     PCP..qualEspecCab a inner join
 	(
