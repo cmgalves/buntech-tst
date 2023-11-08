@@ -313,7 +313,7 @@ export class OpresumoComponent implements OnInit {
 
     if (('Administrador') == this.arrUserLogado.perfil) {
       let arrTab = []
-      
+
       this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
 
       this.aOpAnalitica.subscribe(cada => {
@@ -338,19 +338,19 @@ export class OpresumoComponent implements OnInit {
         this.dataExcel = new MatTableDataSource(arrTab)
         this.expExcel('tblOutInteg', 'ops')
       });
-  } else {
-  alert('sem acesso')
-}
+    } else {
+      alert('sem acesso')
+    }
   }
 
-// exporta os dados para o excel
-expExcel(fileName, sheetName) {
-  const fn = fileName + '.xlsx';
-  const sn = sheetName;
-  const workSheet = XLSX.utils.json_to_sheet(this.dataExcel.data, { header: [] });
-  const workBook: XLSX.WorkBook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workBook, workSheet, sn);
-  XLSX.writeFile(workBook, fn);
-}
+  // exporta os dados para o excel
+  expExcel(fileName, sheetName) {
+    const fn = fileName + '.xlsx';
+    const sn = sheetName;
+    const workSheet = XLSX.utils.json_to_sheet(this.dataExcel.data, { header: [] });
+    const workBook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, sn);
+    XLSX.writeFile(workBook, fn);
+  }
 
 }

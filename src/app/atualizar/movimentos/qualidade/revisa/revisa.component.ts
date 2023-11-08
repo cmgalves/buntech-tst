@@ -155,6 +155,20 @@ export class RevisaComponent implements OnInit {
   }
 
   alterar(cTipo) {
+    let tpQuebra = this.especQuebra
+    let qtdeQubra = parseFloat(this.cabQtdeQuebra)
+    if (tpQuebra == 'HORA') {
+      if (qtdeQubra > 24 ) {
+        alert('A quebra por hora deve ser de, no máximo, 24 horas. Horas possíveis: (1,2,4,6,8,12)')
+        this.cabQtdeQuebra = '0'
+        return
+      };
+      if (24 % qtdeQubra > 0 ) {
+        alert('A quebra por hora deve ser múltiplo de 24. Horas possíveis: (1,2,4,6,8,12)')
+        this.cabQtdeQuebra = '0'
+        return
+      };
+    }
     if (cTipo === 'I') {
       if (this.cabRevisao !== '000' && this.cabRevisaoTemp == '') {
         alert('Já existe Revisão, Precisa Alterar ou incluir Um Numero de Revisão nova!')

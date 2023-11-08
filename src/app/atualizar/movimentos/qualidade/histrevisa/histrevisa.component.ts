@@ -130,8 +130,6 @@ export class HistrevisaComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
-
-
   }
 
   exportExcel(fileName, sheetName) {
