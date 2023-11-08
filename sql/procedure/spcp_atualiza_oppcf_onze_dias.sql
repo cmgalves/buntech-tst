@@ -1,9 +1,4 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-ALTER procedure [dbo].[spcp_atualiza_oppcf_onze_dias] as
+--ALTER procedure [dbo].[spcp_atualiza_oppcf_onze_dias] as
 
 declare 
 	@dias int,
@@ -14,7 +9,7 @@ set @inc = 0
 set @fim = 4
 /*
 	spcp_atualiza_oppcf_onze_dias
-	select * FROM oppcf order by dtime desc
+	select * FROM oppcf order by dtcria desc
 	DELETE FROM oppcf
 */
 
@@ -24,60 +19,52 @@ while @inc <= (@dias - @fim)
 	begin
 		
 		--boa vista
+		--DELETA DADOS NOVOS DESATUALIZADOS
+		DELETE FROM PCP..oppcf WHERE convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate() - (@dias - @inc), 112)
 
 		--LIMPA DADOS TEMP
-		TRUNCATE TABLE oppcftemp
+		TRUNCATE TABLE oppcf011
 
 		--PEGA DADOS NOVOS
-		insert into oppcftemp
+		insert into PCP..oppcf011
 		select 
 			* 
 		from 
-			[BOA_VISTA].[PCF4].[dbo].[vw_pcp_op_pcfactory]
-			--order by dtime desc
-		where
-			convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate()- (@dias - @inc), 112)
-	
-		insert into oppcftemp
-		select 
-			* 
-		from 
-			[CAMPINA_GRANDE].[PCF4].[dbo].[vw_pcp_op_pcfactory]
-		where
-			convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate()- (@dias - @inc), 112)
-	
-		insert into oppcftemp
-		select 
-			* 
-		from 
-			[INDAIATUBA].[PCF4].[dbo].[vw_pcp_op_pcfactory]
-		where
-			convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate()- (@dias - @inc), 112) 
-	
-		--DELETA DADOS NOVOS DESATUALIZADOS
-		DELETE FROM oppcf WHERE convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate() - (@dias - @inc), 112)
+		(
+			select 
+				* 
+			from 
+				[BOA_VISTA].[PCF4].[dbo].[vw_pcp_op_pcfactory]
+				--order by dtime desc
+			where
+				convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate()- (@dias - @inc), 112)
+			union all
+			select 
+				* 
+			from 
+				[CAMPINA_GRANDE].[PCF4].[dbo].[vw_pcp_op_pcfactory]
+			where
+				convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate()- (@dias - @inc), 112)
+			union all
+			select 
+				* 
+			from 
+				[INDAIATUBA].[PCF4].[dbo].[vw_pcp_op_pcfactory]
+			where
+				convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate()- (@dias - @inc), 112) 
+		)k
  
 
 		 --INSERE OS DADOS NOVOS
-		INSERT INTO oppcf
+		INSERT INTO PCP..oppcf
 		SELECT 
 			*
 		FROM 
-			oppcftemp a
-		WHERE
-			NOT EXISTS
-			(
-				SELECT 
-					op 
-				FROM 
-					oppcf b
-				WHERE
-					1 = 1
-					and a.op = b.op
-					and a.dtime = b.dtime
-					and a.qtde = b.qtde
-			)
+			PCP..oppcf011 a
+		
 		set @inc = @inc + 1
 	end
 
 GO
+
+

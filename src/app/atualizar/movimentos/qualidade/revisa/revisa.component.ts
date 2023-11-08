@@ -193,6 +193,7 @@ export class RevisaComponent implements OnInit {
       'especSequencia': this.especSequencia,
       'especQuebra': this.especQuebra,
       'cTipo': cTipo,
+      'cabQtdeQuebra': this.cabQtdeQuebra,
 
     }
     this.fj.execProd('incluiEspec', obj);
@@ -262,6 +263,7 @@ export class RevisaComponent implements OnInit {
           'especAnalise': xy.especAnalise,
           'especSequencia': xy.especSequencia,
           'especQuebra': xy.especQuebra,
+          'cabQtdeQuebra': xy.cabQtdeQuebra,
         })
         if (seq === 1) {
           this.iteProduto = xy.iteProduto;
@@ -277,6 +279,7 @@ export class RevisaComponent implements OnInit {
           this.especAnalise = xy.especAnalise;
           this.especSequencia = xy.especSequencia;
           this.especQuebra = xy.especQuebra;
+          this.cabQtdeQuebra = xy.cabQtdeQuebra;
         }
       });
 
