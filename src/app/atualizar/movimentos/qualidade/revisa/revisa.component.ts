@@ -320,26 +320,26 @@ export class RevisaComponent implements OnInit {
     let qtdeQubra = parseFloat(this.cabQtdeQuebra)
     if (tpQuebra == 'HORA') {
       if (qtdeQubra == 0) {
-        alert('A quebra por HORA está ZERO. Horas possíveis: (1,2,4,6,8,12)')
+        alert('A quebra por HORA está ZERO. Horas possíveis: (1,2,4,6,8,12)');
         this.cabQtdeQuebra = '0'
-        return true
+        return true;
       };
       if (qtdeQubra > 24) {
-        alert('A quebra por HORA deve ser de, no máximo, 24 horas. Horas possíveis: (1,2,4,6,8,12)')
+        alert('A quebra por HORA deve ser de, no máximo, 24 horas. Horas possíveis: (1,2,4,6,8,12)');
         this.cabQtdeQuebra = '0'
-        return true
+        return true;
       };
       if (24 % qtdeQubra > 0) {
-        alert('A quebra por HORA deve ser múltiplo de 24. Horas possíveis: (1,2,4,6,8,12)')
+        alert('A quebra por HORA deve ser múltiplo de 24. Horas possíveis: (1,2,4,6,8,12)');
         this.cabQtdeQuebra = '0'
-        return true
+        return true;
       };
     }
     if (tpQuebra == 'QTDE') {
       if (qtdeQubra == 0) {
-        alert('A quebra por QTDE está ZERO.')
+        alert('A quebra por QTDE está ZERO.');
         this.cabQtdeQuebra = '0'
-        return true
+        return true;
       };
       
     }
@@ -349,16 +349,16 @@ export class RevisaComponent implements OnInit {
   // validação dos tipos de cada alteração das especificações
   validarTipos(tipoAltera) {
     if (tipoAltera === 'I' && this.cabRevisao !== '000' && this.cabRevisaoTemp == '') {
-      alert('Já existe Revisão, Precisa Alterar ou incluir Um Numero de Revisão nova!')
+      alert('Já existe Revisão, Precisa Alterar ou incluir Um Numero de Revisão nova!');
       return true;
     }
 
     if (tipoAltera === 'R' && this.iteProduto === '' && this.cabRevisao !== '000') {
-      alert('Esta REVISÃO não tem Especificação!')
+      alert('Esta REVISÃO não tem Especificação!');
       return true;
     }
     if (tipoAltera === 'A' && this.cabRevisao === '000') {
-      alert('Não é possível ALTERAR Especificações em Revisão igual a 000!')
+      alert('Não é possível ALTERAR Especificações em Revisão igual a 000!');
       return true;
     }
     return false
