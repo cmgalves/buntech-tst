@@ -58,75 +58,78 @@ export class LoteComponent implements OnInit {
   // busca a relação de produtos com as loteções
   buscaLotes(xcFil) {
     let ord = 0;
+    const obj = {
+      'xcFil': xcFil
+    };
     this.arrLoteTab = [];
-    this.arrLote = this.fj.buscaPrt('cadastroProdutosQualidadeLote', {});
+    this.arrLote = this.fj.buscaPrt('cadastroProdutosQualidadeLote', obj);
     this.arrLote.subscribe(cada => {
       cada.forEach(xy => {
         ord++
-        if (xcFil === 'Com Lote') {
-          if (xy.seq !== '') {
-            this.arrLoteTab.push({
-              'ord': ord,
-              'produto': xy.produto,
-              'descricao': xy.descricao,
-              'tipo': xy.tipo,
-              'unidade': xy.unidade,
-              'grupo': xy.grupo,
-              'ncm': xy.ncm,
-              'situacao': xy.situacao,
-              'revisao': xy.revisao,
-              'seq': xy.seq,
-              'validade': xy.validade,
-              'ativo': xy.ativo,
-              'quebra': xy.quebra,
-              'qtde': xy.qtde,
-              'diaRevisao': xy.diaRevisao,
-              'obs': xy.obs,
-            })
-          }
-        }
-        if (xcFil === 'Sem Lote') {
-          if (xy.seq === '') {
-            this.arrLoteTab.push({
-              'ord': ord,
-              'produto': xy.produto,
-              'descricao': xy.descricao,
-              'tipo': xy.tipo,
-              'unidade': xy.unidade,
-              'grupo': xy.grupo,
-              'ncm': xy.ncm,
-              'situacao': xy.situacao,
-              'revisao': xy.revisao,
-              'seq': xy.seq,
-              'validade': xy.validade,
-              'ativo': xy.ativo,
-              'quebra': xy.quebra,
-              'qtde': xy.qtde,
-              'diaRevisao': xy.diaRevisao,
-              'obs': xy.obs,
-            })
-          }
-        }
-        if (xcFil === 'Todos') {
-          this.arrLoteTab.push({
-            'ord': ord,
-            'produto': xy.produto,
-            'descricao': xy.descricao,
-            'tipo': xy.tipo,
-            'unidade': xy.unidade,
-            'grupo': xy.grupo,
-            'ncm': xy.ncm,
-            'situacao': xy.situacao,
-            'revisao': xy.revisao,
-            'seq': xy.seq,
-            'validade': xy.validade,
-            'ativo': xy.ativo,
-            'quebra': xy.quebra,
-            'qtde': xy.qtde,
-            'diaRevisao': xy.diaRevisao,
-            'obs': xy.obs,
-          })
-        }
+        // if (xcFil === 'Com Lote') {
+        //   if (xy.seq !== '') {
+        this.arrLoteTab.push({
+          'ord': ord,
+          'produto': xy.produto,
+          'descricao': xy.descricao,
+          'tipo': xy.tipo,
+          'unidade': xy.unidade,
+          'grupo': xy.grupo,
+          'ncm': xy.ncm,
+          'situacao': xy.situacao,
+          'revisao': xy.revisao,
+          'seq': xy.seq,
+          'validade': xy.validade,
+          'ativo': xy.ativo,
+          'quebra': xy.quebra,
+          'qtde': xy.qtde,
+          'diaRevisao': xy.diaRevisao,
+          'obs': xy.obs,
+        })
+        //   }
+        // }
+        // if (xcFil === 'Sem Lote') {
+        //   if (xy.seq === '') {
+        //     this.arrLoteTab.push({
+        //       'ord': ord,
+        //       'produto': xy.produto,
+        //       'descricao': xy.descricao,
+        //       'tipo': xy.tipo,
+        //       'unidade': xy.unidade,
+        //       'grupo': xy.grupo,
+        //       'ncm': xy.ncm,
+        //       'situacao': xy.situacao,
+        //       'revisao': xy.revisao,
+        //       'seq': xy.seq,
+        //       'validade': xy.validade,
+        //       'ativo': xy.ativo,
+        //       'quebra': xy.quebra,
+        //       'qtde': xy.qtde,
+        //       'diaRevisao': xy.diaRevisao,
+        //       'obs': xy.obs,
+        //     })
+        //   }
+        // }
+        // if (xcFil === 'Todos') {
+        //   this.arrLoteTab.push({
+        //     'ord': ord,
+        //     'produto': xy.produto,
+        //     'descricao': xy.descricao,
+        //     'tipo': xy.tipo,
+        //     'unidade': xy.unidade,
+        //     'grupo': xy.grupo,
+        //     'ncm': xy.ncm,
+        //     'situacao': xy.situacao,
+        //     'revisao': xy.revisao,
+        //     'seq': xy.seq,
+        //     'validade': xy.validade,
+        //     'ativo': xy.ativo,
+        //     'quebra': xy.quebra,
+        //     'qtde': xy.qtde,
+        //     'diaRevisao': xy.diaRevisao,
+        //     'obs': xy.obs,
+        //   })
+        // }
       });
       this.filLote = xcFil;
       this.dataSource = new MatTableDataSource(this.arrLoteTab)

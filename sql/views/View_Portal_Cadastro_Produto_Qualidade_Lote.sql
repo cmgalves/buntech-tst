@@ -1,8 +1,4 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade_Lote] as
+--ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade_Lote] as
 -- View para os produtos que estão disponíveis para o PCF
 
 	SELECT
@@ -33,7 +29,8 @@ ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade_Lote] as
 		HOMOLOGACAO..SB1010 A LEFT JOIN
 		(
 			select 
-				* 
+				produto, revisao, seq, validade, 
+				ativo, quebra, qtde, diaRevisao, obs
 			from 
 				PCP..qualLote c inner join
 				(
@@ -56,6 +53,7 @@ ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade_Lote] as
         --AND B1_COD = 'P800501'
 		AND B1_TIPO IN ('PA', 'PP') 
 		AND B1_XINTPCF <> ''
+		-- and isnull(seq, '') <> ''
 	--order by  9 desc
 
 	--select * from PCP..qualEspecCab
