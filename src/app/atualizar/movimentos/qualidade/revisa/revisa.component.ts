@@ -67,6 +67,8 @@ export class RevisaComponent implements OnInit {
   lForm: boolean = false;
   editInd = null;
   revisas: Observable<any>;
+  imprimeLaudo: boolean = null;
+  tempoMaximo: number = null;
 
   sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
   sEspecAnalise: string[] = ['SIM', 'NÃO'];

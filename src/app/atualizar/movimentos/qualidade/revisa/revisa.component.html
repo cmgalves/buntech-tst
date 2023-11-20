@@ -118,6 +118,21 @@
                             <input matInput [(ngModel)]="qualObsGeral">
                         </mat-form-field>
                     </div>
+                    <div class="card-body table-responsive col-md-4">
+                        <mat-form-field>
+                            <mat-label>Imprime Laudo</mat-label>
+                            <mat-select [ngModel]="imprimeLaudo">
+                                <mat-option (value)="true">Sim</mat-option>
+                                <mat-option (value)="false">Não</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-4">
+                        <mat-form-field>
+                            <mat-label>Tempo Máximo Análise</mat-label>
+                            <input [ngModel]="tempoMaximo" type="number" matInput>
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
 
