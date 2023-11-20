@@ -24,7 +24,7 @@
                             </div>
                             <div class="card-body table-responsive col-md-2">
                                 <mat-form-field>
-                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro LoteReg" [(ngModel)]="filLoteReg">
+                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro Status Lote" [(ngModel)]="filLoteReg">
                                         <mat-option *ngFor="let optFilter of filterLoteReg" [value]="optFilter">
                                             {{optFilter}}
                                         </mat-option>

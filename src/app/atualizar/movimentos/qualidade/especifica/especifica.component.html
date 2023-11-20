@@ -15,11 +15,23 @@
                         </a>
                     </div>
                     <div class="card-body table-responsive">
-                        <mat-form-field>
-                            <mat-label>Filtro</mat-label>
-                            <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de Especifica" #input>
-                        </mat-form-field>
-
+                        <div class="row">
+                            <div class="card-body table-responsive col-md-5">
+                                <mat-form-field>
+                                    <mat-label>Filtro</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de Especifica" #input>
+                                </mat-form-field>
+                            </div>
+                            <div class="card-body table-responsive col-md-2">
+                                <mat-form-field>
+                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro Status Lote" [(ngModel)]="cfilEspecProd">
+                                        <mat-option *ngFor="let optFilter of afilEspecProd" [value]="optFilter">
+                                            {{optFilter}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
                                 <ng-container matColumnDef="seq">
@@ -63,17 +75,14 @@
                                 <ng-container matColumnDef="revisa">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Espec</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <button (click)="acessoEspec(row)" mat-raised-button type="button"
-                                            matTooltip="Acesso Especificações" [matTooltipPosition]="'above'"
-                                            class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                        <button (click)="acessoEspec(row)" mat-raised-button type="button" matTooltip="Acesso Especificações" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">leak_add</i>
                                         </button>
                                     </td>
                                 </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'SituAnd' : row.situacao === 'Andamento','SituFin' : row.situacao === 'Concluída','SituEnc' : row.situacao === 'Encerrada','SituVin' : row.situacao === 'Fora Vigência','SituEsp' : row.situacao === 'Sem Epecificação'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'SituAnd' : row.situacao === 'Andamento','SituFin' : row.situacao === 'Concluída','SituEnc' : row.situacao === 'Encerrada','SituVin' : row.situacao === 'Fora Vigência','SituEsp' : row.situacao === 'Sem Epecificação'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
