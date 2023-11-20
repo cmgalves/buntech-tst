@@ -47,12 +47,7 @@ export class LoteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.arrUserLogado.perfil.indexOf('Administrador') >= 0) {
-      this.buscaLotes('Todos');
-    } else {
-      alert('Sem Acesso')
-      this.router.navigate(['opResumo']);
-    }
+    this.buscaLotes('Todos');
   }
 
   // busca a relação de produtos com as loteções
