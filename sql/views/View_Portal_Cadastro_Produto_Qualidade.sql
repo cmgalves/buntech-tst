@@ -1,11 +1,4 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-
-ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade] as
+--ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade] as
 -- View para os produtos que estão disponíveis para o PCF
 
 	SELECT
@@ -20,7 +13,8 @@ ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade] as
 		isnull(cabRevisao, '000') revisao,
         rtrim(case when B1_MSBLQL = '1' then'Bloqueado' else 'Liberado' end) sit,
 		case 
-			when convert(varchar(10), getdate(), 112) < convert(varchar(8), cast(vigenciaDe as datetime), 112) or convert(varchar(10), getdate(), 112) > convert(varchar(8), cast(vigenciaAte as datetime), 112) 
+			when convert(varchar(10), getdate(), 112) < convert(varchar(8), cast(vigenciaDe as datetime), 112) or 
+			convert(varchar(10), getdate(), 112) > convert(varchar(8), cast(vigenciaAte as datetime), 112) 
 			then 'Fora Vigência'
 			when isnull(situacao, '') = ''
 			then 'Sem Epecificação'
@@ -32,7 +26,8 @@ ALTER view [dbo].[View_Portal_Cadastro_Produto_Qualidade] as
 		HOMOLOGACAO..SB1010 A LEFT JOIN
 		(
 			select 
-				* 
+				situacao, cabProduto, cabRevisao, 
+				vigenciaDe, vigenciaAte
 			from 
 				PCP..qualEspecCab c inner join
 				(

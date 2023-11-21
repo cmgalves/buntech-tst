@@ -31,6 +31,8 @@ export class EspecificaComponent implements OnInit {
   arrEspecificaTab: any = [];
   arrDados: any = [];
   arrCarac: any = [];
+  cfilEspecProd: string = '';
+  afilEspecProd: any = ['Todos', 'Concluida', 'Andamento', 'Fora Vigência', 'Encerrada', 'Sem Epecificação'];
 
   especificas: Observable<any>;
   displayedColumns: string[] = ['seq', 'codigo', 'descricao', 'tipo', 'unidade', 'grupo', 'ncm', 'revisao', 'situacao', 'revisa'];
@@ -46,7 +48,7 @@ export class EspecificaComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.arrUserLogado.perfil === 'Administrador') {
-      this.buscaEspecificas();
+      this.buscaEspecificas('Todos');
       this.buscaCaracs();
     } else {
       alert('Sem Acesso')
@@ -69,13 +71,18 @@ export class EspecificaComponent implements OnInit {
     });
   }
 
-  // busca a relação de produtos com as especificações
-  buscaEspecificas() {
-    let seq = 0;
+  altFilter(xcEvento) {
+    this.buscaEspecificas(xcEvento.value)
+  }
 
-    this.arrEspecifica = this.fj.buscaPrt('cadastroProdutosQualidade', {});
-    this.arrEspecifica.subscribe(cada => {
-      cada.forEach(xy => {
+  // busca a relação de produtos com as especificações
+  buscaEspecificas(xcFil) {
+    let seq = 0;
+    this.arrEspecificaTab = [];
+
+    this.arrEspecifica = this.fj.buscaPrt('cadastroProdutosQualidade', { 'xcFil': xcFil });
+    this.arrEspecifica.subscribe(xd => {
+      xd.forEach(xy => {
         seq++
         this.arrEspecificaTab.push({
           'seq': seq,
