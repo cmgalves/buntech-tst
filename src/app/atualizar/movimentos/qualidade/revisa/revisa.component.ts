@@ -67,8 +67,8 @@ export class RevisaComponent implements OnInit {
   lForm: boolean = false;
   editInd = null;
   revisas: Observable<any>;
-  imprimeLaudo: boolean = null;
-  tempoMaximo: number = null;
+  imprimeLaudo: string = '';
+  tempoMaximo: string = '';
 
   sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
   sEspecAnalise: string[] = ['SIM', 'NÃO'];
@@ -188,7 +188,8 @@ export class RevisaComponent implements OnInit {
       'especQuebra': this.especQuebra,
       'cTipo': cTipo,
       'cabQtdeQuebra': this.cabQtdeQuebra,
-
+      'imprimeLaudo': this.imprimeLaudo,
+      'tempoMaximo': this.tempoMaximo,
     }
     this.fj.execProd('incluiEspec', obj);
     window.location.reload();
@@ -258,7 +259,9 @@ export class RevisaComponent implements OnInit {
           'especSequencia': xy.especSequencia,
           'especQuebra': xy.especQuebra,
           'cabQtdeQuebra': xy.cabQtdeQuebra,
-        })
+          'imprimeLaudo': xy.imprimeLaudo,
+          'tempoMaximo': xy.tempoMaximo,
+       })
         if (seq === 1) {
           this.iteProduto = xy.iteProduto;
           this.cabRevisao = xy.cabRevisao;
@@ -274,6 +277,8 @@ export class RevisaComponent implements OnInit {
           this.especSequencia = xy.especSequencia;
           this.especQuebra = xy.especQuebra;
           this.cabQtdeQuebra = xy.cabQtdeQuebra;
+          this.imprimeLaudo = xy.imprimeLaudo;
+          this.tempoMaximo = xy.tempoMaximo;
         }
       });
 

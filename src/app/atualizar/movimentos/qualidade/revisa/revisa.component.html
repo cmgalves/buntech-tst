@@ -106,16 +106,16 @@
                             <input type="number" matInput [(ngModel)]=cabQtdeQuebra>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-4">
+                    <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Imprime Laudo</mat-label>
                             <mat-select [ngModel]="imprimeLaudo">
-                                <mat-option (value)="true">Sim</mat-option>
-                                <mat-option (value)="false">Não</mat-option>
+                                <mat-option (value)="true">SIM</mat-option>
+                                <mat-option (value)="false">NAO</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-4">
+                    <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Tempo Máximo Análise</mat-label>
                             <input [ngModel]="tempoMaximo" type="number" matInput>

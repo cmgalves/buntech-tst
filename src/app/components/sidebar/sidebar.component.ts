@@ -23,10 +23,10 @@ const CadastroRoutes: RouteInfo[] = [
 
 const QualidadeRoutes: RouteInfo[] = [
   { path: '/espec', title: 'Especificar Lotes', icon: 'center_focus_strong', class: '' },
-  { path: '/lote', title: 'Cad Lotes', icon: 'aspect_ratio', class: '' },
+  // { path: '/lote', title: 'Cad Lotes', icon: 'aspect_ratio', class: '' },
   { path: '/loteReg', title: 'Relação Lotes', icon: 'border_inner', class: '' },
+  { path: '/histor', title: 'Hist Revisões', icon: 'album', class: '' },
   { path: '/carac', title: 'Características', icon: 'blur_circular', class: '' },
-  { path: '/histor', title: 'Revisões', icon: 'album', class: '' },
 ]
 
 const AtividadeRoutes: RouteInfo[] = [
