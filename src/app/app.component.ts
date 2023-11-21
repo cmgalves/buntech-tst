@@ -8,16 +8,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
+  arrUserLogado;
 
   constructor(
     public router: Router,
   ) { }
 
   ngOnInit(): void {
-    if (this.arrUserLogado.perfil.indexOf('Administrador') < 0) {
-      alert('Sem Acesso')
-      this.router.navigate(['opResumo']);
-    }
+    if (JSON.parse(localStorage.getItem('user')) != undefined) {
+      this.arrUserLogado = JSON.parse(localStorage.getItem('user'));
+      if (this.arrUserLogado.perfil.indexOf('Administrador') < 0) {
+        alert('Sem Acesso')
+        this.router.navigate(['opResumo']);
+      }
+    } else this.router.navigate(['sign-in']);
   }
 }
