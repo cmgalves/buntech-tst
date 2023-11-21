@@ -114,11 +114,11 @@ export class LoteAnalisaComponent implements OnInit {
           'revisao': xy.revisao,
           'codCarac': xy.codCarac,
           'descCarac': xy.descCarac,
-          'itemin': xy.itemin.toFixed(3),
-          'itemax': xy.itemax.toFixed(3),
+          'itemin': xy.itemin?.toFixed(3),
+          'itemax': xy.itemax?.toFixed(3),
           'itemeio': xy.itemeio,
           'itetxt': xy.itetxt,
-          'result': xy.result.toFixed(3),
+          'result': xy.result?.toFixed(3),
           'situacao': xy.situacao,
           'sitFim': xy.sitFim,
         })
@@ -147,11 +147,10 @@ export class LoteAnalisaComponent implements OnInit {
         this.nivel = cNivel
         this.qtdeTot = xy.qtdeTot
         this.dtVenc = this.fg.dtob(xy.dtVenc)
-      });
-
-      this.dataSource = new MatTableDataSource(this.arrDados)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      })
+        this.dataSource = new MatTableDataSource(this.arrDados)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
     });
   }
 
@@ -229,7 +228,7 @@ export class LoteAnalisaComponent implements OnInit {
     vResult = parseFloat(vNum)
     vResultt = vNum
     if (xcRow.itemin * 1 > 0 || xcRow.itemax * 1 > 0) {
-      if (vResult < xcRow.itemin * 1 || vResult > xcRow.itemax * 1 ) {
+      if (vResult < xcRow.itemin * 1 || vResult > xcRow.itemax * 1) {
         sit = 'Reprovado'
       }
     } else {
@@ -240,10 +239,10 @@ export class LoteAnalisaComponent implements OnInit {
         if (vResultt == 'NAO') {
           sit = 'Reprovado'
         }
-      }else{
+      } else {
         alert('Favor digitar SIM ou NAO')
       }
-      
+
     }
 
 

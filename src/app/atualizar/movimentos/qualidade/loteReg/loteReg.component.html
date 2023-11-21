@@ -104,7 +104,7 @@
                                         <button (click)="detalheLote(row)" mat-raised-button type="button" matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">explore</i>
                                         </button>
-                                        <button (click)="adiantaLote(row)" mat-raised-button type="button" matTooltip="Adiantar Fechamento" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="adiantaLote(row)" [disabled]="row.situacao != 'Aberto'" mat-raised-button type="button" matTooltip="Adiantar Fechamento" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">flash_on</i>
                                         </button>
                                         <button (click)="analisaLote(row)" [disabled]="row.situacao == 'Aberto'" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

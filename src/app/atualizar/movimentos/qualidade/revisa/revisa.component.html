@@ -108,10 +108,10 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-label>Imprime Laudo</mat-label>
-                            <mat-select [ngModel]="imprimeLaudo">
-                                <mat-option (value)="true">SIM</mat-option>
-                                <mat-option (value)="false">NAO</mat-option>
+                            <mat-select placeholder="Imprime Laudo" [value]="imprimeLaudo" [(ngModel)]="imprimeLaudo">
+                                <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise">
+                                    {{optAnalise}}
+                                </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
