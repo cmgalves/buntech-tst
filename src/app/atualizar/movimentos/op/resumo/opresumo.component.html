@@ -29,6 +29,15 @@
                                     <input matInput (keyup)="applyFilter()" placeholder="Filtrando Ordem Produção" [(ngModel)]=opFilter>
                                 </mat-form-field>
                             </div>
+                            <div class="card-body table-responsive col-md-5">
+                                <mat-form-field>
+                                    <mat-label>Situação</mat-label>
+                                    <mat-select (valueChange)="filterSituacao($event)" [(ngModel)]="situacaoFiltro">
+                                        <mat-option [value]="undefined">Todos</mat-option>
+                                        <mat-option *ngFor="let situ of situacoes; index as i" [value]="i*10">{{situ}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                             <button (click)="atuResumos()" mat-raised-button type="button" matTooltip="Atualiza a Tela" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     view_in_ar
@@ -111,7 +120,7 @@
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'sts00' : row.SITUACAO === 'Sem Status','sts10' : row.SITUACAO === 'Produção','sts20' : row.SITUACAO === 'Liberada','sts30' : row.SITUACAO === 'Planejada','sts40' : row.SITUACAO === 'Interrompida','sts50' : row.SITUACAO === 'Baixada','sts60' : row.SITUACAO === 'Encerrada','sts70' : row.SITUACAO === 'Cancelada','sts80' : row.SITUACAO === 'Integrada'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input?.value}}"</td>
                                 </tr>
                             </table>
 

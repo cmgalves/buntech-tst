@@ -67,6 +67,8 @@ export class OpresumoComponent implements OnInit {
   // Servidor de HML: 10.3.0.204
   // Filiais:206
 
+  situacoes = ["Sem Status", "Produção", "Liberada", "Planejada", "Interrompida", "Baixada", "Encerrada", "Cancelada"];
+  situacaoFiltro;
 
   opresumos: Observable<any>;
   displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'RECURSO', 'OPERACAO', 'EMISSAO', 'FINAL', 'CODPROD', 'QTDEPCF', 'QTDEPRT', 'ENTREGUE', 'RETRABALHO', 'HORAS', 'SITUACAO', 'EDICAO'];
@@ -303,6 +305,16 @@ export class OpresumoComponent implements OnInit {
 
   }
 
+  filterSituacao(filterValue) {
+    if(filterValue != undefined){
+      console.log(this.arrOpresumoTab);
+      const arrayFiltrado = this.arrOpresumoTab.filter(q => q.SITUACAO == this.situacoes[filterValue/10]);
+      this.dataSource = new MatTableDataSource(arrayFiltrado);
+    } else {
+      this.dataSource = new MatTableDataSource(this.arrOpresumoTab);
+    }
+  }
+
 
   atuResumos() {
     window.location.reload();
@@ -352,5 +364,7 @@ export class OpresumoComponent implements OnInit {
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);
   }
+
+
 
 }
