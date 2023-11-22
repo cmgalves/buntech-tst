@@ -15,6 +15,7 @@ export const ROUTES: RouteInfo[] = [
 
 const CadastroRoutes: RouteInfo[] = [
   { path: '/produto', title: 'Produtos', icon: 'view_in_ar', class: '' },
+  { path: '/carac', title: 'Características', icon: 'blur_circular', class: '' },
   { path: '/estrutura', title: 'Estrutura', icon: 'view_headline', class: '' },
   { path: '/saldo', title: 'Estoque', icon: 'hourglass_full', class: '' },
   { path: '/recurso', title: 'Recursos', icon: 'open_with', class: '' },
@@ -26,7 +27,6 @@ const QualidadeRoutes: RouteInfo[] = [
   // { path: '/lote', title: 'Cad Lotes', icon: 'aspect_ratio', class: '' },
   { path: '/loteReg', title: 'Relação Lotes', icon: 'border_inner', class: '' },
   { path: '/histor', title: 'Hist Revisões', icon: 'album', class: '' },
-  { path: '/carac', title: 'Características', icon: 'blur_circular', class: '' },
 ]
 
 const AtividadeRoutes: RouteInfo[] = [
