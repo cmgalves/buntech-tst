@@ -53,20 +53,6 @@ export class OpresumoComponent implements OnInit {
   arrOpresumo888: any = [];
   arrOpresumoTab: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
-
-  // Campina Grande - 888
-  // Servidor de HML:10.3.0.92
-  // Filiais:101,107,117,402
-
-  // Boa vista - 886
-  // Servidor de HML:10.1.0.250
-  // Filiais:108
-
-
-  // Indaiatuba - 887
-  // Servidor de HML: 10.3.0.204
-  // Filiais:206
-
   situacoes = ["Sem Status", "Produção", "Liberada", "Planejada", "Interrompida", "Baixada", "Encerrada", "Cancelada"];
   situacaoFiltro;
 
@@ -364,7 +350,5 @@ export class OpresumoComponent implements OnInit {
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);
   }
-
-
 
 }

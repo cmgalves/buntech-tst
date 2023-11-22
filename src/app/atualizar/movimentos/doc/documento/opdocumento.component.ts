@@ -38,7 +38,7 @@ export class OpdocumentoComponent implements OnInit {
   xcPerfil: any = this.arrUserLogado.perfil;
   numOP = JSON.parse(localStorage.getItem('op'));
   opConta: any = 0;
-  opFilRepet: any = '';
+  opFilRepet: any = 'filop';
   opFilter: any = '';
   arrRecA: any = [];
   arrRecB: any = [];
@@ -46,24 +46,12 @@ export class OpdocumentoComponent implements OnInit {
   arrProdB: any = [];
   arrOpAndA: any = [];
   arrOpAndB: any = [];
+  arrOpdocumento: any = [];
   arrOpdocumento886: any = [];
   arrOpdocumento887: any = [];
   arrOpdocumento888: any = [];
   arrOpdocumentoTab: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206'];
-
-  // Campina Grande - 888
-  // Servidor de HML:10.3.0.92
-  // Filiais:101,107,117,402
-
-  // Boa vista - 886
-  // Servidor de HML:10.1.0.250
-  // Filiais:108
-
-
-  // Indaiatuba - 887
-  // Servidor de HML: 10.3.0.204
-  // Filiais:206
 
 
   opdocumentos: Observable<any>;
@@ -80,10 +68,6 @@ export class OpdocumentoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.numOP !== null) {
-      this.opFilter = this.numOP[0].OP
-    }
-
     this.buscaOpsAndamentoProtheus();
   }
 
@@ -91,7 +75,6 @@ export class OpdocumentoComponent implements OnInit {
   buscaOpsAndamentoProtheus() {
 
     this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
-
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
         this.arrOpAndB.push({
@@ -114,112 +97,46 @@ export class OpdocumentoComponent implements OnInit {
   // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
   buscaOpdocumentos() {
     this.arrOpAnd = JSON.parse(localStorage.getItem('opAndamento'));
-
     const obj = {
       'filial': this.xcFilial,
       'perfil': this.xcPerfil
     };
     let conta = 0
-    this.arrOpdocumento886 = this.fj.buscaPcfa('ops', obj);
-    this.arrOpdocumento887 = this.fj.buscaPcfb('ops', obj);
-    this.arrOpdocumento888 = this.fj.buscaPcfc('ops', obj);
 
-    if (this.arrOpdocumento888 != null) {
-      this.arrOpdocumento888.subscribe(cada => {
-        cada.forEach(xy => {
-          this.pushTabela(xy);
-        });
-        if (this.arrOpdocumento886 != null) {
-          this.arrOpdocumento886.subscribe(cada => {
-            cada.forEach(xy => {
-              this.pushTabela(xy);
-            });
-            if (this.arrOpdocumento887 != null) {
-              this.arrOpdocumento887.subscribe(cada => {
-                cada.forEach(xy => {
-                  this.pushTabela(xy);
-                });
-                localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-                this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-                this.applyFilter()
-                if (this.numOP !== null) {
-                  this.opFilter = this.numOP[0].OP
-                }
-              });
-            }
-          });
-        } else {
-          if (this.arrOpdocumento887 != null) {
-            this.arrOpdocumento887.subscribe(cada => {
-              cada.forEach(xy => {
-                this.pushTabela(xy);
-              });
-              localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-              this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
-              this.dataSource.paginator = this.paginator;
-              this.dataSource.sort = this.sort;
-              this.applyFilter()
-              if (this.numOP !== null) {
-                this.opFilter = this.numOP[0].OP
-              }
-            });
+    this.arrOpdocumento = this.fj.buscaPrt('opAndamentoResumo', obj);
+
+    this.arrOpdocumento.subscribe(x => {
+      x.forEach(xy => {
+        if (this.opFilRepet === 'filop' || this.opFilRepet.indexOf(xy.filial + xy.op) < 0) {
+          this.opFilRepet += '|' + xy.filial + xy.op
+          const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
+          if (filOP.length > 0) {
+            let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
+            // this.opConta++
+            this.arrOpdocumentoTab.push({
+              'SEQ': this.opConta++,
+              'FILIAL': xy.filial,
+              'OP': xy.op,
+              'CODPROD': filOP[0].produto,
+              'SITUACAO': sitDesc,
+            })
+            this.arrOpPcf.push({
+              'FILIAL': xy.filial,
+              'OP': xy.op,
+              'APT': xy.dia,
+            })
           }
         }
+
+        localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
+        this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.applyFilter()
       });
-    } else {
-      if (this.arrOpdocumento886 != null) {
-        this.arrOpdocumento886.subscribe(cada => {
-          cada.forEach(xy => {
-            this.pushTabela(xy);
-          });
-        });
-      } else {
-        if (this.arrOpdocumento887 != null) {
-          this.arrOpdocumento887.subscribe(cada => {
-            cada.forEach(xy => {
-              this.pushTabela(xy);
-            });
-            localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-            this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-            this.applyFilter()
-            if (this.numOP !== null) {
-              this.opFilter = this.numOP[0].OP
-            }
-          });
-        }
-      }
-    }
+    });
   }
 
-
-  pushTabela(xy) {
-
-    if (this.opFilRepet === '' || this.opFilRepet.indexOf(xy.filial + xy.op) === -1) {
-      this.opFilRepet += xy.filial + xy.op
-      const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-      if (filOP.length > 0) {
-        let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-        // this.opConta++
-        this.arrOpdocumentoTab.push({
-          'SEQ': this.opConta++,
-          'FILIAL': xy.filial,
-          'OP': xy.op,
-          'CODPROD': filOP[0].produto,
-          'SITUACAO': sitDesc,
-        })
-        this.arrOpPcf.push({
-          'FILIAL': xy.filial,
-          'OP': xy.op,
-          'APT': xy.dia,
-        })
-      }
-    }
-
-  }
 
   // aplica o filtro na tabela de OPs
   applyFilter() {

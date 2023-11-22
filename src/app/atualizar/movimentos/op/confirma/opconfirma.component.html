@@ -123,7 +123,7 @@
                 </div>
                 <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaResumo()">voltar</button>
                 <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-success" (click)=prodTotalOp()>Total</button>
-                <button mat-raised-button type="submit" *ngIf=parcialAtivo class="btn btn-warning" (click)=prodParcialOp()>Parcial</button>
+                <!-- <button mat-raised-button type="submit" *ngIf=parcialAtivo class="btn btn-warning" (click)=prodParcialOp()>Parcial</button> -->
                 <button mat-raised-button type="submit" *ngIf="numOP[0].SITUACAO == 'Baixada'" class="btn btn-info" (click)=reabrOp()>Re-Ajustar</button>
             </div>
         </div>
