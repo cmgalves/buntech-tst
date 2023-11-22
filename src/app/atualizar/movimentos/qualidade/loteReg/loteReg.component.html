@@ -31,6 +31,15 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+                            <div class="card-body table-responsive col-md-2">
+                                <mat-form-field>
+                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro Posição Análise" [(ngModel)]="filPosAnalise">
+                                        <mat-option *ngFor="let optFilter of filterPosAnalise" [value]="optFilter">
+                                            {{optFilter}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                         </div>
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
@@ -110,7 +119,7 @@
                                         <button (click)="analisaLote(row)" [disabled]="row.situacao == 'Aberto'" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">gps_fixed</i>
                                         </button>
-                                        <button (click)="aprovaLote(row)" [disabled]="row.analiseStatus != 'analisado'" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="aprovaLote(row)" [disabled]="checarAcesso(row)" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">center_focus_weak</i>
                                         </button>
                                         <button (click)="imprimeLote(row)" mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     if (JSON.parse(localStorage.getItem('user')) != undefined) {
       this.arrUserLogado = JSON.parse(localStorage.getItem('user'));
-      if (this.arrUserLogado.perfil.indexOf('Administrador') < 0) {
+      if (this.arrUserLogado.perfil?.indexOf('Administrador') < 0) {
         alert('Sem Acesso')
         this.router.navigate(['opResumo']);
       }

@@ -33,6 +33,8 @@ export class LoteRegComponent implements OnInit {
   arrCarac: any = [];
   filLoteReg: string = '';
   filterLoteReg: any = ['Todos', 'Aberto', 'Fechado', 'Aprovado', 'Rejeitado'];
+  filterPosAnalise: any = ['Todos', 'Andamento', 'Aguardando', 'Analisado'];
+  filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
   displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'loteAprov', 'dtAprov', 'dtProd', 'dtVenc', 'qtdeProd', 'quebra', 'qtdeQuebra', 'situacao', 'analiseStatus', 'loteReg'];
@@ -64,6 +66,7 @@ export class LoteRegComponent implements OnInit {
 
     this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil });
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -89,6 +92,7 @@ export class LoteRegComponent implements OnInit {
           'situacao': xy.situacao,
           // 'obs': xy.obs,
           'analiseStatus': xy.analiseStatus,
+          'alcadaProd': xy.alcadaProd
           // 'dtAnaliseStatus': xy.dtAnaliseStatus,
         })
       });
@@ -117,6 +121,11 @@ export class LoteRegComponent implements OnInit {
     }
   }
 
+  checarAcesso(row) {
+    const podeAcessar = (`Administrador, ${row.alcadaProd ? row.alcadaProd : ''}`).indexOf(this.arrUserLogado.perfil) >= 0
+    return row.analiseStatus != 'analisado' || row.situacao != 'Fechado' || !podeAcessar
+  }
+
   acessoLoteReg(xcRow) {
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto))[0];
     localStorage.removeItem('loteRegProd');
@@ -125,16 +134,29 @@ export class LoteRegComponent implements OnInit {
   }
 
   altFilter(xcEvento) {
-    this.buscaLoteRegs(xcEvento.value)
+    let arrFiltrado = this.arrDados;
+    if (this.filLoteReg != "Todos") {
+      arrFiltrado = arrFiltrado.filter(x => x.situacao?.toUpperCase() == this.filLoteReg?.toUpperCase());
+      this.dataSource = new MatTableDataSource(arrFiltrado);
+      console.log(arrFiltrado);
+    } if (this.filPosAnalise != "Todos") {
+      arrFiltrado = arrFiltrado.filter(x => x.analiseStatus?.toUpperCase() == this.filPosAnalise?.toUpperCase());
+      this.dataSource = new MatTableDataSource(arrFiltrado);
+      console.log(arrFiltrado);
+    }
+    else if(this.filLoteReg == "Todos") {
+      this.dataSource = new MatTableDataSource(this.arrDados);
+    }
   }
+
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
-    if (tp=='aprova') {
+    if (tp == 'aprova') {
       if (aRow.analiseStatus != 'analisado') {
         return false
       }
     }
-    
+
     if (tp === 'a') {
       if ((("Baixada ").indexOf(aRow.SITUACAO) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
@@ -178,7 +200,7 @@ export class LoteRegComponent implements OnInit {
     }
   }
 
- 
+
   analisaLote(xcRow) {
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
     localStorage.removeItem('loteAnalisa');
