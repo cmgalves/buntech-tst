@@ -1,12 +1,16 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 ALTER procedure [dbo].[sp_incluiEspec]
 
 -- procedure para inclusão de escecificações na tabela principal
 
 /*
-EXEC    PCP..sp_incluiEspec  'P800501',  'KELDOG+CROK BISCOITO ORIGINAL 900G',  '999',  '2023-01-20',  
-'ITESPABV040',  'Concluida',  'qualObsGeral',  'qualObsRevisao',  'aplicacao',  'embalagem',  'feitoPor',  'aprovPor', 'especAlcada', 
+EXEC    PCP..sp_incluiEspec  'PA000724',  'KELDOG+CROK BISCOITO ORIGINAL 900G',  '999',  '2023-01-20',  
+'ITESPABV040',  'Concluida',  'qualObsGeral',  'qualObsRevisao',  'aplicacao', '1526',  'embalagem',  'feitoPor',  'aprovPor', 'especAlcada', 
  'especAnalise', 'especSequencia', 'especQuebra',
-	'I',10
+	'I',10, 'SIM', 0
 SELECT * FROM PCP..qualEspecCab
 select * from PCP..qualEspecItens 
 
@@ -21,6 +25,7 @@ select * from PCP..qualEspecItens
     @qualObsGeral varchar(250),
     @qualObsRevisao varchar(250),
     @aplicacao varchar(70),
+    @loteAtual varchar(09),
     @embalagem varchar(250),
     @feitoPor varchar(70), 
 	@aprovPor varchar(70),
@@ -29,7 +34,9 @@ select * from PCP..qualEspecItens
 	@especSequencia varchar(20),
 	@especQuebra varchar(20),
 	@cTipo varchar(1),
-	@cabQtdeQuebra FLOAT
+	@cabQtdeQuebra FLOAT,
+	@imprimeLaudo varchar(3),
+	@tempoMaximo float
 as
 
 
@@ -43,6 +50,8 @@ declare
 
 set @novaRev = right(concat('000', rtrim(convert(varchar(3), cast(@cabRevisao as int) + 1))), 3) --numero da próxima revisão
 
+set @loteAtual = right(concat('000000000', rtrim(convert(varchar(9), @loteAtual))), 9) --numero da próxima revisão
+
 if LEN(@cabRevisao ) < 3
 	set @rev3digi = right(CONCAT('000', rtrim(@cabRevisao)), 3)
 else
@@ -55,10 +64,9 @@ if @cTipo = 'R'
 	if @rev3digi = '000'
 		begin
 			insert into PCP..qualEspecCab  
-				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra)
+				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, loteAtual, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra, imprimeLaudo, tempoMaximo)
 			values
-				(@cabProduto, @descrProd, '001', @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra)
-
+				(@cabProduto, @descrProd, '001', @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @loteAtual, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra, @imprimeLaudo, @tempoMaximo)
 		end
 	else
 		begin
@@ -72,11 +80,9 @@ if @cTipo = 'R'
 				and cabRevisao = @rev3digi
 
 			insert into PCP..qualEspecCab  
-				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra)
+				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, loteAtual, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra, imprimeLaudo, tempoMaximo)
 			values
-				(@cabProduto, @descrProd, @novaRev, @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra)
-
-			
+				(@cabProduto, @descrProd, @novaRev, @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @loteAtual, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra, @imprimeLaudo, @tempoMaximo)
 
 			insert into PCP..qualEspecItens select iteProduto, @novaRev iteRevisao, iteCarac, iteMin, iteMax, iteMeio, itetxt from PCP..qualEspecItens where iteRevisao = @rev3digi and iteProduto = @cabProduto
 		end 
@@ -86,10 +92,9 @@ if @cTipo = 'I'
 	if @rev3digi = '000'
 		begin
 			insert into PCP..qualEspecCab  
-				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra)
+				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, loteAtual, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra, imprimeLaudo, tempoMaximo)
 			values
-				(@cabProduto, @descrProd, '001', @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra)
-
+				(@cabProduto, @descrProd, '001', @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @loteAtual, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra, @imprimeLaudo, @tempoMaximo)
 		end
 	else
 		begin
@@ -103,9 +108,9 @@ if @cTipo = 'I'
 				and cabRevisao = isnull((select cabRevisao from PCP..qualEspecCab a inner join (select distinct max(idEspecCab) idcab from PCP..qualEspecCab where cabProduto = @cabProduto)b on idEspecCab = idcab), '000')
 
 			insert into PCP..qualEspecCab  
-				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra)
+				(cabProduto, descrProd, cabRevisao, dataAprov, numEspec, situacao, qualObsGeral, qualObsRevisao, aplicacao, loteAtual, embalagem, feitoPor, aprovPor,especAlcada,especAnalise,especSequencia,especQuebra,cabQtdeQuebra, imprimeLaudo, tempoMaximo)
 			values
-				(@cabProduto, @descrProd, @rev3digi, @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra)
+				(@cabProduto, @descrProd, @rev3digi, @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @loteAtual, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra, @imprimeLaudo, @tempoMaximo)
 
 			insert into PCP..qualEspecItens select iteProduto, @rev3digi iteRevisao, iteCarac, iteMin, iteMax, iteMeio, itetxt from PCP..qualEspecItens a inner join (select iteProduto prod, max(iteRevisao) revis from PCP..qualEspecItens group by iteProduto) b on iteProduto = prod and iteRevisao = revis where iteProduto = @cabProduto
 		end 
@@ -122,6 +127,7 @@ if @cTipo = 'A'
 			qualObsGeral = @qualObsGeral, 
 			qualObsRevisao = @qualObsRevisao, 
 			aplicacao = @aplicacao, 
+			loteAtual = @loteAtual, 
 			embalagem = @embalagem, 
 			feitoPor = @feitoPor, 
 			aprovPor = @aprovPor,
@@ -129,8 +135,9 @@ if @cTipo = 'A'
 			especAnalise = @especAnalise,
 			especSequencia= @especSequencia,
 			especQuebra = @especQuebra,
-			cabQtdeQuebra = @cabQtdeQuebra 
-
+			cabQtdeQuebra = @cabQtdeQuebra,
+			imprimeLaudo =  @imprimeLaudo,
+			tempoMaximo = @tempoMaximo 
 		where
 			1 = 1
 			and cabProduto = @cabProduto 
@@ -138,3 +145,14 @@ if @cTipo = 'A'
 	end
 
 GO
+
+
+/*
+select * from PCP..qualEspecCab
+select * from PCP..qualEspecItens
+
+delete from PCP..qualEspecCab
+delete from PCP..qualEspecItens
+
+
+*/

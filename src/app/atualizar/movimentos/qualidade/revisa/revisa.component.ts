@@ -47,6 +47,7 @@ export class RevisaComponent implements OnInit {
   qualObsGeral: string = '';
   qualObsRevisao: string = '';
   aplicacao: string = '';
+  loteAtual: string = '';
   embalagem: string = '';
   feitoPor: string = '';
   aprovPor: string = '';
@@ -77,7 +78,7 @@ export class RevisaComponent implements OnInit {
 
 
 
-  especSit: string[] = ['Andamento', 'Concluída', 'Encerrada'];
+  especSit: string[] = ['Andamento', 'Concluida', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
   displayedColumns: string[] = ['seq', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'itetxt', 'iteMeio', 'iteEdit', 'iteExc'];
@@ -179,6 +180,7 @@ export class RevisaComponent implements OnInit {
       'qualObsGeral': this.qualObsGeral,
       'qualObsRevisao': this.qualObsRevisao,
       'aplicacao': this.aplicacao,
+      'loteAtual': this.loteAtual,
       'embalagem': this.embalagem,
       'feitoPor': this.feitoPor,
       'aprovPor': this.aprovPor,
@@ -223,6 +225,7 @@ export class RevisaComponent implements OnInit {
     this.cabProduto = aProd.codigo;
     this.descrProd = aProd.descricao;
     this.cabRevisao = '000';
+    this.loteAtual = '000000000';
     this.cabSituacao = 'Andamento';
     const obj = {
       'cabProduto': this.cabProduto
@@ -243,6 +246,7 @@ export class RevisaComponent implements OnInit {
           'qualObsGeral': xy.qualObsGeral,
           'qualObsRevisao': xy.qualObsRevisao,
           'aplicacao': xy.aplicacao,
+          'loteAtual': xy.loteAtual,
           'embalagem': xy.embalagem,
           'feitoPor': xy.feitoPor,
           'aprovPor': xy.aprovPor,
@@ -269,6 +273,7 @@ export class RevisaComponent implements OnInit {
           this.numEspec = xy.numEspec;
           this.cabSituacao = xy.situacao;
           this.aplicacao = xy.aplicacao;
+          this.loteAtual = xy.loteAtual;
           this.embalagem = xy.embalagem;
           this.qualObsRevisao = xy.qualObsRevisao;
           this.qualObsGeral = xy.qualObsGeral;

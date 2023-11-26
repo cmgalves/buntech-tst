@@ -52,16 +52,13 @@
                                 <ng-container matColumnDef="revisa">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Espec</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <button (click)="acessoHist(row)" mat-raised-button type="button"
-                                            matTooltip="Acesso Especificações" [matTooltipPosition]="'above'"
-                                            class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                        <button (click)="acessoHist(row)" mat-raised-button type="button" matTooltip="Acesso Especificações" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">leak_add</i>
                                         </button>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'SituAnd' : row.situacao === 'Andamento','SituFin' : row.situacao === 'Concluída','SituEnc' : row.situacao === 'Encerrada','SituVin' : row.situacao === 'Fora Vigência','SituEsp' : row.situacao === 'Sem Epecificação'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'SituAnd' : row.situacao === 'Andamento','SituFin' : row.situacao === 'Concluida','SituEnc' : row.situacao === 'Encerrada','SituVin' : row.situacao === 'Fora Vigência','SituEsp' : row.situacao === 'Sem Epecificação'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
