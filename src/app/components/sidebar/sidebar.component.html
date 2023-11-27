@@ -25,6 +25,20 @@
         <mat-expansion-panel class="mat-elevation-z0">
             <mat-expansion-panel-header>
                 <mat-panel-title>
+                    <i class="material-icons">dataset_linked</i>
+                    <p>Relatórios</p>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <li routerLinkActive="active" *ngFor="let menuItem of relatItems" class="{{menuItem.class}} nav-item ">
+                <a class="nav-link btnAtivo" [routerLink]="[menuItem.path]">
+                    <i class="material-icons">{{menuItem.icon}}</i>
+                    <p>{{menuItem.title}}</p>
+                </a>
+            </li>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
                     <i class="material-icons">app_registration</i>
                     <p>PCP</p>
                 </mat-panel-title>

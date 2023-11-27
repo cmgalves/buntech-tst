@@ -14,12 +14,15 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 const CadastroRoutes: RouteInfo[] = [
-  { path: '/produto', title: 'Produtos', icon: 'view_in_ar', class: '' },
   { path: '/carac', title: 'Características', icon: 'blur_circular', class: '' },
+  { path: '/usuario', title: 'Usuários', icon: 'account_circle', class: '' },
+]
+
+const RelatRoutes: RouteInfo[] = [
+  { path: '/produto', title: 'Produtos', icon: 'view_in_ar', class: '' },
   { path: '/estrutura', title: 'Estrutura', icon: 'view_headline', class: '' },
   { path: '/saldo', title: 'Estoque', icon: 'hourglass_full', class: '' },
   { path: '/recurso', title: 'Recursos', icon: 'open_with', class: '' },
-  { path: '/usuario', title: 'Usuários', icon: 'account_circle', class: '' },
 ]
 
 const QualidadeRoutes: RouteInfo[] = [
@@ -44,6 +47,7 @@ const AtividadeRoutes: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
+  relatItems: any[];
   cadastroItems: any[];
   qualidadeItens: any[];
   atividadeItems: any[];
@@ -58,6 +62,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.relatItems = RelatRoutes.filter(relatItems => relatItems);
     this.cadastroItems = CadastroRoutes.filter(cadastroItems => cadastroItems);
     this.atividadeItems = AtividadeRoutes.filter(atividadeItems => atividadeItems);
     this.qualidadeItens = QualidadeRoutes.filter(qualidadeItens => qualidadeItens);

@@ -9,15 +9,14 @@ import { OpresumoComponent } from 'app/atualizar/movimentos/op/resumo/opresumo.c
 import { OpvisualizaComponent } from 'app/atualizar/movimentos/op/visualiza/opvisualiza.component';
 import { OpajustaComponent } from 'app/atualizar/movimentos/op/ajusta/opajusta.component';
 import { OpconfirmaComponent } from 'app/atualizar/movimentos/op/confirma/opconfirma.component';
-import { EstruturaComponent } from 'app/atualizar/cadastros/estrutura/estrutura.component';
-import { ProdutoComponent } from 'app/atualizar/cadastros/produto/produto.component';
-import { SaldoComponent } from 'app/atualizar/cadastros/saldo/saldo.component';
-import { RecursoComponent } from 'app/atualizar/cadastros/recurso/recurso.component';
+import { ProdutoComponent } from 'app/atualizar/relatorios/produto/produto.component';
+import { SaldoComponent } from 'app/atualizar/relatorios/saldo/saldo.component';
+import { RecursoComponent } from 'app/atualizar/relatorios/recurso/recurso.component';
 import { OpdocumentoComponent } from 'app/atualizar/movimentos/doc/documento/opdocumento.component';
 import { DoclistaComponent } from 'app/atualizar/movimentos/doc/doclista/doclista.component';
 import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.component';
 import { ConfiguraComponent } from '../configura/configura.component';
-import { CaracteristicaComponent } from 'app/atualizar/movimentos/qualidade/caracteristica/caracteristica.component';
+import { CaracteristicaComponent } from 'app/atualizar/cadastros/caracteristica/caracteristica.component';
 import { EspecificaComponent } from 'app/atualizar/movimentos/qualidade/especifica/especifica.component';
 import { RevisaComponent } from 'app/atualizar/movimentos/qualidade/revisa/revisa.component';
 import { HistoricoComponent } from 'app/atualizar/movimentos/qualidade/historico/historico.component';
@@ -29,6 +28,7 @@ import { LoteDetalheComponent } from 'app/atualizar/movimentos/qualidade/loteDet
 import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteAprova/loteAprova.component';
 import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
 import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdianta/loteAdianta.component';
+import { EstruturaComponent } from 'app/atualizar/relatorios/estrutura/estrutura.component';
 
 export const AdminLayoutRoutes: Routes = [
 
