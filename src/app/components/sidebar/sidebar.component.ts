@@ -16,6 +16,7 @@ export const ROUTES: RouteInfo[] = [
 const CadastroRoutes: RouteInfo[] = [
   { path: '/carac', title: 'Características', icon: 'blur_circular', class: '' },
   { path: '/usuario', title: 'Usuários', icon: 'account_circle', class: '' },
+  { path: '/grupoRecurso', title: 'Grupo de Recursos', icon: 'aspect_ratio', class: '' },
 ]
 
 const RelatRoutes: RouteInfo[] = [
@@ -27,7 +28,6 @@ const RelatRoutes: RouteInfo[] = [
 
 const QualidadeRoutes: RouteInfo[] = [
   { path: '/espec', title: 'Especificar Lotes', icon: 'center_focus_strong', class: '' },
-  // { path: '/lote', title: 'Cad Lotes', icon: 'aspect_ratio', class: '' },
   { path: '/loteReg', title: 'Relação Lotes', icon: 'border_inner', class: '' },
   { path: '/histor', title: 'Hist Revisões', icon: 'album', class: '' },
 ]
@@ -36,8 +36,6 @@ const AtividadeRoutes: RouteInfo[] = [
   { path: '/opResumo', title: 'Ordem de Produção', icon: 'visibility', class: '' },
   { path: '/document', title: 'Documentos', icon: 'pending', class: '' },
 ]
-
-// <span class="material-icons-outlined">account_circle</span>
 
 
 @Component({

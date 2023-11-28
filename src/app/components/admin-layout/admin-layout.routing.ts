@@ -29,6 +29,7 @@ import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteApro
 import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
 import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdianta/loteAdianta.component';
 import { EstruturaComponent } from 'app/atualizar/relatorios/estrutura/estrutura.component';
+import { GrupoRecursoComponent } from 'app/atualizar/cadastros/grupoRecurso/grupoRecurso.component';
 
 export const AdminLayoutRoutes: Routes = [
 
@@ -46,6 +47,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'produto', component: ProdutoComponent, canActivate: [AuthGuard] },
     { path: 'estrutura', component: EstruturaComponent, canActivate: [AuthGuard] },
     { path: 'recurso', component: RecursoComponent, canActivate: [AuthGuard] },
+    { path: 'grupoRecurso', component: GrupoRecursoComponent, canActivate: [AuthGuard] },
     { path: 'saldo', component: SaldoComponent, canActivate: [AuthGuard] },
     { path: 'configura', component: ConfiguraComponent, canActivate: [AuthGuard] },
     { path: 'carac', component: CaracteristicaComponent, canActivate: [AuthGuard] },

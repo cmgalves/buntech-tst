@@ -46,6 +46,7 @@ import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteApro
 import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
 import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdianta/loteAdianta.component';
 import { EstruturaComponent } from 'app/atualizar/relatorios/estrutura/estrutura.component';
+import { GrupoRecursoComponent } from 'app/atualizar/cadastros/grupoRecurso/grupoRecurso.component';
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { EstruturaComponent } from 'app/atualizar/relatorios/estrutura/estrutura
     ProdutoComponent,
     EstruturaComponent,
     RecursoComponent,
+    GrupoRecursoComponent,
     SaldoComponent,
     CaracteristicaComponent,
     EspecificaComponent,
