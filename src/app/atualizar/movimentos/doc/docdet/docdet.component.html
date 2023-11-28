@@ -244,12 +244,9 @@
                             <form class="example-form">
                                 <mat-form-field class="example-full-width">
                                     <mat-label>Código do Produto</mat-label>
-                                    <input type="text" placeholder="Código Produto" aria-label="Number" matInput
-                                        [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="opItemNovo">
-                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
-                                        (optionSelected)="aposSelec($event)">
-                                        <mat-option *ngFor="let option of filteredOptions | async"
-                                            [value]="option.codigo">
+                                    <input type="text" placeholder="Código Produto" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="opItemNovo">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="aposSelec($event)">
+                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option.codigo">
                                             {{option.codigo}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -310,35 +307,26 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Informada </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='enableEditIndex!=i'>{{row.QTDECAL}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.QTDECAL}} class="editQtd"
-                                            id="editQtd" *ngIf='enableEditIndex==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.QTDECAL}} class="editQtd" id="editQtd" *ngIf='enableEditIndex==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="LOTEOP">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> LOTE / NF / OP </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='enableEditIndex!=i'>{{row.LOTEOP}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.LOTEOP}} class="editLote"
-                                            id="editLote" *ngIf='enableEditIndex==i'>
+                                        <input ng-maxlength="20" type='text' value={{row.LOTEOP}} class="editLote" id="editLote" *ngIf='enableEditIndex==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="EDICAO">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
-                                        <button *ngIf='enableEditIndex != i' (click)="enableEditUser($event, i)"
-                                            mat-raised-button type="button" matTooltip="Edição"
-                                            [matTooltipPosition]="'above'"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEditIndex != i' (click)="enableEditUser($event, i)" mat-raised-button type="button" matTooltip="Edição" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">edit</i>
                                         </button>
-                                        <button *ngIf='enableEditIndex==i' (click)='altLinha(row)' mat-raised-button
-                                            type='button' matTooltip="Salvar Alteração"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEditIndex==i' (click)='altLinha(row)' mat-raised-button type='button' matTooltip="Salvar Alteração" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>save</i>
                                         </button>
-                                        <button *ngIf='enableEditIndex==i' (click)='enableEditIndex=null;'
-                                            mat-raised-button type='button' matTooltip="Cancelar"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='enableEditIndex==i' (click)='enableEditIndex=null;' mat-raised-button type='button' matTooltip="Cancelar" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>cancel</i>
                                         </button>
                                     </td>
@@ -354,20 +342,16 @@
                                 <ng-container matColumnDef="APT">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
                                     <td mat-cell *matCellDef="let row;">
-                                        <button (click)='delLinha(row);' mat-raised-button type='button'
-                                            matTooltip="Ordem" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)='delLinha(row);' mat-raised-button type='button' matTooltip="Ordem" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>remove_done</i>
                                         </button>
-                                        <button (click)='aptLinha(row);' mat-raised-button type='button'
-                                            matTooltip="Apontamento"
-                                            class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)='aptLinha(row);' mat-raised-button type='button' matTooltip="Apontamento" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>outbox</i>
                                         </button>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'sts00' : row.ATIVO === 'Sim' && row.APONTA === 'Sim','sts10' : row.ATIVO === 'Sim' && row.APONTA === 'Não','sts20' : row.ATIVO === 'Não' && row.APONTA === 'Sim','sts30' : row.ATIVO === 'Não' && row.APONTA === 'Não'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'sts00' : row.ATIVO === 'Sim' && row.APONTA === 'Sim','sts10' : row.ATIVO === 'Sim' && row.APONTA === 'Não','sts20' : row.ATIVO === 'Não' && row.APONTA === 'Sim','sts30' : row.ATIVO === 'Não' && row.APONTA === 'Não'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

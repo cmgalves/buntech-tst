@@ -64,6 +64,7 @@ export class RevisaComponent implements OnInit {
   novoCarMax: string = '';
   novoCarTxt: string = '';
   novoCarMeio: string = '';
+  btnLaudo: string = 'remove_done';
   laddCarac: boolean = true
   lForm: boolean = false;
   editInd = null;
@@ -81,7 +82,7 @@ export class RevisaComponent implements OnInit {
   especSit: string[] = ['Andamento', 'Concluida', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
-  displayedColumns: string[] = ['seq', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'itetxt', 'iteMeio', 'iteEdit', 'iteExc'];
+  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'itetxt', 'iteMeio', 'iteLaudo', 'iteEdit', 'iteExc'];
   dataSource: MatTableDataSource<cadRevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -112,6 +113,7 @@ export class RevisaComponent implements OnInit {
     if (xInc === 'I') {
 
       obj = {
+        'idEspecItens': '0',
         'iteProduto': this.cabProduto,
         'iteRevisao': this.cabRevisao,
         'iteCarac': this.novoCarCod,
@@ -119,6 +121,7 @@ export class RevisaComponent implements OnInit {
         'iteMax': this.novoCarMax,
         'iteMeio': this.novoCarMeio,
         'itetxt': this.novoCarTxt,
+        'iteLaudo': 'SIM',
         'iteTp': 'I'
       }
     }
@@ -129,6 +132,7 @@ export class RevisaComponent implements OnInit {
       let ctxt = (<HTMLInputElement>(document.getElementById("idtxt"))).value
 
       obj = {
+        'idEspecItens': aRow.idEspecItens,
         'iteProduto': aRow.cabProduto,
         'iteRevisao': aRow.cabRevisao,
         'iteCarac': aRow.iteCarac,
@@ -136,12 +140,14 @@ export class RevisaComponent implements OnInit {
         'iteMax': vMax,
         'iteMeio': cMeio,
         'itetxt': ctxt,
+        'iteLaudo': aRow.iteCarac,
         'iteTp': 'A'
       }
     }
 
     if (xInc === 'E') {
       obj = {
+        'idEspecItens': aRow.idEspecItens,
         'iteProduto': aRow.cabProduto,
         'iteRevisao': aRow.cabRevisao,
         'iteCarac': aRow.iteCarac,
@@ -149,7 +155,23 @@ export class RevisaComponent implements OnInit {
         'iteMax': 0,
         'iteMeio': '',
         'itetxt': '',
+        'iteLaudo': '',
         'iteTp': 'E'
+      }
+    }
+
+    if (xInc === 'L') {
+      obj = {
+        'idEspecItens': aRow.idEspecItens,
+        'iteProduto': aRow.cabProduto,
+        'iteRevisao': aRow.cabRevisao,
+        'iteCarac': aRow.iteCarac,
+        'iteMin': aRow.iteCarac,
+        'iteMax': aRow.iteCarac,
+        'iteMeio': aRow.iteCarac,
+        'itetxt': aRow.iteCarac,
+        'iteLaudo': aRow.iteLaudo == 'SIM' ? 'NAO' : 'SIM',
+        'iteTp': 'L'
       }
     }
 
@@ -236,7 +258,7 @@ export class RevisaComponent implements OnInit {
       cada.forEach(xy => {
         seq++
         this.arrRev.push({
-          'seq': seq,
+          'idEspecItens': xy.idEspecItens,
           'cabProduto': xy.cabProduto,
           'descrProd': xy.descrProd,
           'cabRevisao': xy.cabRevisao,
@@ -256,6 +278,7 @@ export class RevisaComponent implements OnInit {
           'iteMin': xy.iteMin.toFixed(3),
           'iteMax': xy.iteMax.toFixed(3),
           'itetxt': xy.itetxt,
+          'iteLaudo': xy.iteLaudo,
           'iteMeio': xy.iteMeio,
           'descCarac': xy.descCarac,
           'especAlcada': xy.especAlcada,
@@ -284,9 +307,6 @@ export class RevisaComponent implements OnInit {
           this.cabQtdeQuebra = xy.cabQtdeQuebra;
           this.imprimeLaudo = xy.imprimeLaudo;
           this.tempoMaximo = xy.tempoMaximo;
-
-          console.log(this.imprimeLaudo);
-          console.log(this.tempoMaximo);
         }
       });
 
@@ -356,7 +376,7 @@ export class RevisaComponent implements OnInit {
         this.cabQtdeQuebra = '0'
         return true;
       };
-      
+
     }
     return false
   }
