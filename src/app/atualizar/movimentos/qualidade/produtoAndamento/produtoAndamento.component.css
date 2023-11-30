@@ -1,0 +1,88 @@
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+.centro {
+    text-align: center;
+}
+
+.divCorAzul {
+    background: rgba(4, 146, 204);
+    color: rgb(250, 246, 244);
+}
+
+.divCorVerde {
+    background: rgba(3, 173, 162)
+}
+
+.Liberado {
+    background: rgb(230, 255, 230);
+}
+
+.Bloqueado {
+    background: rgb(255, 204, 204);
+}
+
+.semLoteReg {
+    background: rgb(175, 146, 146)
+}
+
+.comLoteReg {
+    background: rgb(171, 175, 228)
+}
+
+.Fechado {
+    background: rgb(160, 173, 196)
+}
+
+.Aberto {
+    background: rgb(196, 189, 160)
+}
+
+.Aprovado {
+    background: rgb(176, 218, 168)
+}
+
+.Rejeitado {
+    background: rgb(236, 177, 169)
+}
+
+.textoVerde {
+    color: limegreen
+}
+
+.textoVermelho {
+    color: DarkSalmon
+}
+
+.my-overlay {
+    left: 0 !important;
+    top: 0 !important;
+    z-index: 10000 !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: fixed !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    cursor: pointer !important;
+    visibility: visible !important;
+    transition: visibility 0s, opacity 0.4s linear !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: wait !important;
+}
+
+.my-overlay i.fa.fa-spinner.fa-spin,
+.spinner-big {
+    font-size: 100px !important;
+}

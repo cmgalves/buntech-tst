@@ -1,0 +1,94 @@
+<div class="my-overlay" *ngIf="showOverlay">
+    <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+</div>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorAzul">
+                        <a>PRODUTOS EM ANDAMENTO
+                            <button
+                                (click)="exportExcel('ProdutosAndamento', 'ProdutosAndamento')"
+                                mat-raised-button type="button"
+                                matTooltip="Exporta Excel"
+                                [matTooltipPosition]="'above'"
+                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                <span class="material-icons">
+                                    file_download
+                                </span>
+                            </button>
+                        </a>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <div class="row">
+                            <div class="card-body table-responsive col-md-5">
+                                <mat-form-field>
+                                    <mat-label>Filtro Geral</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de LoteReg" #input>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="card-body table-responsive col-md-5">
+                                <button mat-raised-button class="btn btn-confirm" (click)="processarLote()">Processar Lote</button>
+                            </div>
+                        </div>
+
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="dataSource" matSort>
+                                <ng-container matColumnDef="produto">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Produto
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.produto}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="descricao">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.descrProd}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="quebra">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Quebra
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.especQuebra}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdQuebra">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Quebra
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.cabQtdeQuebra}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="alcada">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Alçada
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.especAlcada}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="acoes">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ações
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        <button (click)="detalhe(row)" [disabled] mat-raised-button type="button" matTooltip="Detalhes do Produto" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons md-48">center_focus_weak</i>
+                                        </button>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto','Aprovado' : row.situacao === 'Aprovado','Rejeitado' : row.situacao === 'Rejeitado'}">
+                                </tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                </tr>
+                            </table>
+
+                            <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29,6 +29,8 @@ import { LoteDetalheComponent } from 'app/atualizar/movimentos/qualidade/loteDet
 import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteAprova/loteAprova.component';
 import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
 import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdianta/loteAdianta.component';
+import { ProdutoAndamentoComponent } from 'app/atualizar/movimentos/qualidade/produtoAndamento/produtoAndamento.component';
+import { ProdutoAndamentoDetalheComponent } from 'app/atualizar/movimentos/qualidade/produtoAndamentoDetalhe/produtoAndamentoDetalhe.component';
 
 export const AdminLayoutRoutes: Routes = [
 
@@ -60,6 +62,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'loteAdianta', component: LoteAdiantaComponent, canActivate: [AuthGuard] },
     { path: 'loteAprova', component: LoteAprovaComponent, canActivate: [AuthGuard] },
     { path: 'loteAnalisa', component: LoteAnalisaComponent, canActivate: [AuthGuard] },
+    { path: 'produtoAndamento', component: ProdutoAndamentoComponent, canActivate: [AuthGuard] },
+    { path: 'produtoAndamentoDetalhe', component: ProdutoAndamentoDetalheComponent, canActivate: [AuthGuard] }
 ];
 
 

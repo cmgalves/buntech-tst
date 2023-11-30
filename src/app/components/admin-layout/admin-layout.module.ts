@@ -46,6 +46,8 @@ import { LoteDetalheComponent } from 'app/atualizar/movimentos/qualidade/loteDet
 import { LoteAprovaComponent } from 'app/atualizar/movimentos/qualidade/loteAprova/loteAprova.component';
 import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAnalisa/loteAnalisa.component';
 import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdianta/loteAdianta.component';
+import { ProdutoAndamentoComponent } from 'app/atualizar/movimentos/qualidade/produtoAndamento/produtoAndamento.component';
+import { ProdutoAndamentoDetalheComponent } from 'app/atualizar/movimentos/qualidade/produtoAndamentoDetalhe/produtoAndamentoDetalhe.component';
 
 
 @NgModule({
@@ -91,6 +93,8 @@ import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdi
     LoteComponent,
     LoteGestaoComponent,
     LoteRegComponent,
+    ProdutoAndamentoComponent,
+    ProdutoAndamentoDetalheComponent,
     LoteDetalheComponent,
     LoteAdiantaComponent,
     LoteAprovaComponent,

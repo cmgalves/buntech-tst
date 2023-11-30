@@ -148,12 +148,12 @@
                                 <ng-container matColumnDef="impLaudo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Imprime Laudo </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
-                                        <!-- <button *ngif="row.imprimeLaudo" mat-icon-button>
-                                            <mat-icon>check_circle</mat-icon>
+                                        <button (click)="alteraImprimeLaudo(row)" *ngIf="row.imprimeLaudo == 'SIM'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class='material-icons'>check_circle</i>
                                         </button>
-                                        <button *ngif="!row.imprimeLaudo" mat-icon-button>
-                                            <mat-icon>not_interested</mat-icon>
-                                        </button> -->
+                                        <button (click)="alteraImprimeLaudo(row)" *ngIf="row.imprimeLaudo == 'NÃO'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class='material-icons'>not_interested</i>
+                                        </button>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>

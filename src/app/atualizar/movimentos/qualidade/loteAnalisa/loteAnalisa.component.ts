@@ -97,7 +97,9 @@ export class LoteAnalisaComponent implements OnInit {
       'lote': this.aProd.lote
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj);
+    
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -121,6 +123,8 @@ export class LoteAnalisaComponent implements OnInit {
           'result': xy.result?.toFixed(3),
           'situacao': xy.situacao,
           'sitFim': xy.sitFim,
+          'imprimeLaudo': xy.imprimeLaudo != ""?xy.imprimeLaudo:"SIM",
+          'id_loteProd': xy.id_loteProd
         })
         if (cNivel == '') {
           if (xy.nivel == 'N1') {
@@ -148,6 +152,7 @@ export class LoteAnalisaComponent implements OnInit {
         this.qtdeTot = xy.qtdeTot
         this.dtVenc = this.fg.dtob(xy.dtVenc)
       })
+      console.log(this.arrDados);
         this.dataSource = new MatTableDataSource(this.arrDados)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -211,6 +216,7 @@ export class LoteAnalisaComponent implements OnInit {
       });
     });
   }
+
 
 
 
@@ -292,6 +298,12 @@ export class LoteAnalisaComponent implements OnInit {
   // tecla para retorno de tela
   voltaLote() {
     this.router.navigate(['loteReg']);
+  }
+
+  alteraImprimeLaudo(row){
+    var obj = {id_loteProd: row.id_loteProd}
+    console.log(obj);
+    this.fj.execProd('analisaAprovaLote', obj);
   }
 
 }
