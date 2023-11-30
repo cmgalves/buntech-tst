@@ -24,17 +24,16 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { OpresumoComponent } from 'app/atualizar/movimentos/op/resumo/opresumo.component';
 import { OpvisualizaComponent } from 'app/atualizar/movimentos/op/visualiza/opvisualiza.component';
 import { OpajustaComponent } from 'app/atualizar/movimentos/op/ajusta/opajusta.component';
-import { ProdutoComponent } from 'app/atualizar/cadastros/produto/produto.component';
-import { EstruturaComponent } from 'app/atualizar/cadastros/estrutura/estrutura.component';
-import { SaldoComponent } from 'app/atualizar/cadastros/saldo/saldo.component';
-import { RecursoComponent } from 'app/atualizar/cadastros/recurso/recurso.component';
+import { ProdutoComponent } from 'app/atualizar/relatorios/produto/produto.component';
+import { SaldoComponent } from 'app/atualizar/relatorios/saldo/saldo.component';
+import { RecursoComponent } from 'app/atualizar/relatorios/recurso/recurso.component';
 import { OpconfirmaComponent } from 'app/atualizar/movimentos/op/confirma/opconfirma.component';
 import { OpdocumentoComponent } from 'app/atualizar/movimentos/doc/documento/opdocumento.component';
 import { DoclistaComponent } from 'app/atualizar/movimentos/doc/doclista/doclista.component';
 import { DocdetComponent } from 'app/atualizar/movimentos/doc/docdet/docdet.component';
 import { ConfiguraComponent } from '../configura/configura.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { CaracteristicaComponent } from 'app/atualizar/movimentos/qualidade/caracteristica/caracteristica.component';
+import { CaracteristicaComponent } from 'app/atualizar/cadastros/caracteristica/caracteristica.component';
 import { EspecificaComponent } from 'app/atualizar/movimentos/qualidade/especifica/especifica.component';
 import { RevisaComponent } from 'app/atualizar/movimentos/qualidade/revisa/revisa.component';
 import { HistoricoComponent } from 'app/atualizar/movimentos/qualidade/historico/historico.component';
@@ -48,6 +47,8 @@ import { LoteAnalisaComponent } from 'app/atualizar/movimentos/qualidade/loteAna
 import { LoteAdiantaComponent } from 'app/atualizar/movimentos/qualidade/loteAdianta/loteAdianta.component';
 import { ProdutoAndamentoComponent } from 'app/atualizar/movimentos/qualidade/produtoAndamento/produtoAndamento.component';
 import { ProdutoAndamentoDetalheComponent } from 'app/atualizar/movimentos/qualidade/produtoAndamentoDetalhe/produtoAndamentoDetalhe.component';
+import { EstruturaComponent } from 'app/atualizar/relatorios/estrutura/estrutura.component';
+import { GrupoRecursoComponent } from 'app/atualizar/cadastros/grupoRecurso/grupoRecurso.component';
 
 
 @NgModule({
@@ -84,6 +85,7 @@ import { ProdutoAndamentoDetalheComponent } from 'app/atualizar/movimentos/quali
     ProdutoComponent,
     EstruturaComponent,
     RecursoComponent,
+    GrupoRecursoComponent,
     SaldoComponent,
     CaracteristicaComponent,
     EspecificaComponent,

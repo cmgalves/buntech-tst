@@ -10,7 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { jsPDF } from 'jspdf'
-import { DOCUMENT } from '@angular/common';
 
 // tslint:disable-next-line:class-name
 export interface opDocdet {

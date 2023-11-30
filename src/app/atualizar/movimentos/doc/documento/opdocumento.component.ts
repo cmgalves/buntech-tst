@@ -132,28 +132,20 @@ export class OpdocumentoComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.applyFilter()
+        // this.applyFilter()
       });
     });
   }
 
 
-  // aplica o filtro na tabela de OPs
-  applyFilter() {
-    const filterValue = this.opFilter;
+  // aplicar o filtro ao digitar na tela dos itens
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-
-    if (this.opFilter.length >= 10) {
-      this.opFilter = ''
-    }
-    localStorage.removeItem('op');
-
   }
-
 
   acessoDoclista(xcRow) {
     const filOP = this.arrOpdocumentoTab.filter(x => x.OP == xcRow.OP);

@@ -134,8 +134,6 @@ export class DoclistaComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
-      // aCadProd = aCadProd.filter(x => (x.codigo === codPro))[0];
-
       this.opFilial = this.numOP[0].FILIAL;
       this.opCodigo = this.numOP[0].OP;
       this.opDataDoc = this.fj.datadehoje('brasuca')
@@ -148,6 +146,14 @@ export class DoclistaComponent implements OnInit {
   }
 
 
+  // aplicar o filtro ao digitar na tela dos itens
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
   acessoDetdoc(xcRow) {
     localStorage.setItem('dadosDoc', JSON.stringify(xcRow));
@@ -189,7 +195,6 @@ export class DoclistaComponent implements OnInit {
   voltaDocumento() {
     this.router.navigate(['document']);
   }
-
 
 
   criaDocumento(xnTipo) {

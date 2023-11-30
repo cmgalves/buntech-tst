@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { funcsService } from '../../../../funcs/funcs.service';
+import { funcsService } from '../../../funcs/funcs.service';
 
 export interface cadCaracteristica {
   seq: BigInteger;
