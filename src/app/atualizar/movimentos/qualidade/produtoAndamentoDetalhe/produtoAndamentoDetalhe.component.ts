@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { funcsService } from '../../../../funcs/funcs.service';
 import { funcGeral } from 'app/funcs/funcGeral';
+import {Location} from '@angular/common';
 
 export interface cadLoteReg {
   seq: string;
@@ -39,7 +40,7 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
   finishLoading = () => {this.showOverlay = false;}
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['produto', 'filial', 'op', 'descrProd', 'qtde_lote', 'qtde'];
+  displayedColumns: string[] = ['filial', 'op', 'produto', 'descrProd', 'qtde_lote', 'qtde'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -52,6 +53,7 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
     public router: Router,
     private fg: funcGeral,
     private fj: funcsService,
+    private _location: Location
   ) { }
 
   ngOnInit(): void {
@@ -75,6 +77,21 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
         ord++
         this.arrDados.push(xy)
       });
+
+      const resultado = this.arrDados.reduce((acc, elemento) => {
+        const chave = `${elemento.filial}-${elemento.produto}-${elemento.op}`;
+        const encontrado = acc.find(item => item.chave === chave);
+        if (encontrado) {
+          encontrado.qtde += elemento.qtde;
+        } else {
+          acc.push({ chave, ...elemento });
+        }
+        return acc;
+      }, []);
+
+      this.arrDados = resultado;
+
+
       this.filLoteReg = xcFil;
       this.dataSource = new MatTableDataSource(this.arrDados)
       this.dataSource.paginator = this.paginator;
@@ -205,6 +222,10 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
   comboboxOP(){
     let clone = [...this.arrDados]
     return [...new Set(clone.map(x => x.op))];
+  }
+
+  backClicked() {
+    this._location.back();
   }
 
 }

@@ -71,7 +71,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Ações
                                     </th>
                                     <td *matCellDef='let row' mat-cell>
-                                        <button (click)="detalhe(row)" [disabled] mat-raised-button type="button" matTooltip="Detalhes do Produto" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="detalhe(row)" [disabled]="row.cabQtdeQuebra == null" mat-raised-button type="button" matTooltip="Detalhes do Produto" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">center_focus_weak</i>
                                         </button>
                                     </td>

@@ -27,9 +27,9 @@ const RelatRoutes: RouteInfo[] = [
 ]
 
 const QualidadeRoutes: RouteInfo[] = [
-  { path: '/espec', title: 'Especificar Lotes', icon: 'center_focus_strong', class: '' },
+  { path: '/produtoAndamento', title: 'Produtos em Andamento', icon: 'card_travel', class: '' },
   { path: '/loteReg', title: 'Relação Lotes', icon: 'border_inner', class: '' },
-  { path: '/produtoAndamento', title: 'Produtos em Andamento', icon: 'border_inner', class: '' },
+  { path: '/espec', title: 'Especificar Lotes', icon: 'center_focus_strong', class: '' },
   { path: '/histor', title: 'Hist Revisões', icon: 'album', class: '' },
 ]
 
