@@ -37,14 +37,14 @@ export class ProdutoAndamentoComponent implements OnInit {
   filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['produto', 'especificacao', 'descricao', 'quebra', 'qtdQuebra', 'alcada', 'acoes'];
+  displayedColumns: string[] = ['produto', 'descricao', 'especificacao', 'quebra', 'qtdQuebra', 'alcada', 'acoes'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   class: string = '';
   showOverlay = false;
 
-  finishLoading = () => {this.showOverlay = false;}
+  finishLoading = () => { this.showOverlay = false; }
 
   constructor(
     public router: Router,
