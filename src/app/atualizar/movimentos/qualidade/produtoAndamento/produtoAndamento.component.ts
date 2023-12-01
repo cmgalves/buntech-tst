@@ -37,7 +37,7 @@ export class ProdutoAndamentoComponent implements OnInit {
   filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['produto', 'descricao', 'quebra', 'qtdQuebra', 'alcada', 'acoes'];
+  displayedColumns: string[] = ['produto', 'especificacao', 'descricao', 'quebra', 'qtdQuebra', 'alcada', 'acoes'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

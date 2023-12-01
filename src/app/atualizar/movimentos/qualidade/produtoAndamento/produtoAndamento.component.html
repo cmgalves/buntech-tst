@@ -49,6 +49,12 @@
                                     <td *matCellDef='let row' mat-cell>
                                         {{row.descrProd}} </td>
                                 </ng-container>
+                                <ng-container matColumnDef="especificacao">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Especificação
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.especQuebra==null?'Não':'Sim'}} </td>
+                                </ng-container>
                                 <ng-container matColumnDef="quebra">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Quebra
                                     </th>
