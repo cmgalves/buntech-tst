@@ -100,13 +100,13 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Lote
                                     </th>
                                     <td *matCellDef='let row' mat-cell>
-                                        {{row.qtde_lote}} </td>
+                                        {{formatarNumero(row.qtde_lote)}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtde">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade
                                     </th>
                                     <td *matCellDef='let row' mat-cell>
-                                        {{row.qtde}} </td>
+                                        {{formatarNumero(row.qtde)}} </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto','Aprovado' : row.situacao === 'Aprovado','Rejeitado' : row.situacao === 'Rejeitado'}">
