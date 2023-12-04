@@ -43,8 +43,9 @@ export class ProdutoAndamentoComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   class: string = '';
   showOverlay = false;
-
-  finishLoading = () => { this.showOverlay = false; }
+  
+  finishLoading = () => {this.showOverlay = false; location.reload();
+  }
 
   constructor(
     public router: Router,

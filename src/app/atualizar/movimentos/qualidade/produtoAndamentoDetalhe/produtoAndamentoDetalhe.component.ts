@@ -37,7 +37,8 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
   filterPosAnalise: any = ['Todos', 'Andamento', 'Aguardando', 'Analisado'];
   filPosAnalise: string = 'Todos';
   showOverlay = false;
-  finishLoading = () => {this.showOverlay = false;}
+  finishLoading = () => {this.showOverlay = false; //location.reload();
+  }
 
   loteRegs: Observable<any>;
   displayedColumns: string[] = ['filial', 'op', 'produto', 'descrProd', 'qtde_lote', 'qtde'];
@@ -72,12 +73,11 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
 
     this.arrBusca = this.fj.buscaPrt('produtoAndamentoDetalhe', {produto: localStorage.getItem('produtoAndamentoDetalhe')});
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push(xy)
       });
-
+      console.log(this.arrDados);
       const resultado = this.arrDados.reduce((acc, elemento) => {
         const chave = `${elemento.filial}-${elemento.produto}-${elemento.op}`;
         const encontrado = acc.find(item => item.chave === chave);
@@ -216,6 +216,7 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
 
   processarLote() {
     this.showOverlay = true;
+    this.produto = this.arrDados[0].produto;
     this.fj.gerarLote({op:this.op, produto:this.produto}, this.finishLoading);
   }
 

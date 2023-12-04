@@ -191,23 +191,23 @@ export class funcsService {
   }
 
 
-  gerarLote(obj:any, func:Function)  {
+  async gerarLote(obj: any, func: Function) {
     let url = '';
     const dstUrla = ['10.3.0.49:885'];
 
     url = `http://${dstUrla}/geraLoteInfo`;
-    console.log(obj);
-    return this._http.post(url, { produto: '', op: '' })
+    let linhasAlteradas = [];
+    return this._http.post(url, {})
       .map((response: Response) => response.json()).subscribe(tabelas => {
         url = `http://${dstUrla}/geraLote`;
         let urlLote = `http://${dstUrla}/atualizaLote`;
-        //console.log(tabelas);
+        console.log(tabelas);
         let oppcfLote = tabelas.oppcfLote;
         if (obj.produto != "")
           oppcfLote = oppcfLote.filter(q => q.produto == obj.produto)
         if (obj.op != "")
           oppcfLote = oppcfLote.filter(q => q.op == obj.op);
-        //console.log(oppcfLote);
+        console.log(oppcfLote);
         let especificaGeral = tabelas.especifica;
         let lotesAtualizar = oppcfLote.sort((a, b) => {
           if (a.produto < b.produto) {
@@ -225,51 +225,55 @@ export class funcsService {
           }
         });
         lotesAtualizar = lotesAtualizar.filter(q => q.lote == '000000000');
-        if (lotesAtualizar.length == 0) return;
+        if (lotesAtualizar.length == 0) return func();
         let produtoAtual = lotesAtualizar[0].produto;
         let LoteAtual = [...oppcfLote].filter(q => q.produto == produtoAtual).sort((a, b) => parseInt(a) > parseInt(b) ? -1 : 1)[0];
-        let countLote = LoteAtual.stsLote != 'FECHADO' ? parseInt(LoteAtual.lote) : parseInt(LoteAtual.lote) + 1;
+        let countLote = LoteAtual.stsLote != 'F' ? parseInt(LoteAtual.lote) : parseInt(LoteAtual.lote) + 1;
         if (countLote == 0) countLote = 1;
         let especificaAtual = especificaGeral.filter(q => q.cabProduto == produtoAtual)[0];
-        let qtdLote = LoteAtual.stsLote != 'FECHADO' ? (LoteAtual.qtdeLote == undefined ? 0 : LoteAtual.qtdeLote) : 0;
+        let qtdLote = LoteAtual.stsLote != 'F' ? (LoteAtual.qtdeLote == undefined ? 0 : LoteAtual.qtdeLote) : 0;
         let opAtual = lotesAtualizar[0].op;
         let cicloAtual = this.dividirDiaEmPartes(new Date(lotesAtualizar[0].dtime), especificaAtual.cabQtdeQuebra)
         let analise = 1;
-        let intervaloInicial = LoteAtual.intervaloLote != null ? LoteAtual.intervaloLote.split('-')[0] :
+        let intervaloInicial = LoteAtual.intervaloLote != "" ? LoteAtual.intervaloLote.split('/')[0] :
           lotesAtualizar[0].dtime;
         let intervaloAtual = "";
 
-        lotesAtualizar.forEach((lote, index) => {
+        lotesAtualizar.forEach(async (lote, index) => {
           if (lote.produto != produtoAtual) {
             let intervalo = `${intervaloInicial}/${intervaloAtual}`;
-            this._http.post(urlLote, {
+             this._http.post(urlLote, {
               lote: countLote.toString().padStart(9, "0"),
               qtdeLote: qtdLote,
               intervaloLote: intervalo,
-              op: opAtual
+              op: opAtual,
+              produto: lote.produtoAtual,
+              status: 'F'
             }).subscribe(q => console.log(q));
 
             produtoAtual = lote.produto;
             LoteAtual = [...oppcfLote].filter(q => q.produto == produtoAtual).sort((a, b) => parseInt(a) > parseInt(b) ? -1 : 1)[0];
-            countLote = LoteAtual.stsLote != 'FECHADO' ? parseInt(LoteAtual.lote) : parseInt(LoteAtual.lote) + 1;
+            countLote = LoteAtual.stsLote != 'F' ? parseInt(LoteAtual.lote) : parseInt(LoteAtual.lote) + 1;
             if (countLote == 0) countLote = 1;
             especificaAtual = especificaGeral.filter(q => q.cabProduto.trim() == produtoAtual.trim())[0];
-            qtdLote = LoteAtual.stsLote != 'FECHADO' ? (LoteAtual.qtdeLote == undefined ? 0 : LoteAtual.qtdeLote) : 0;
+            qtdLote = LoteAtual.stsLote != 'F' ? (LoteAtual.qtdeLote == undefined ? 0 : LoteAtual.qtdeLote) : 0;
             opAtual = lote.op;
             cicloAtual = this.dividirDiaEmPartes(new Date(lote.dtime), especificaAtual.cabQtdeQuebra)
             analise = 1;
-            intervaloInicial = LoteAtual.intervaloLote != null ? LoteAtual.intervaloLote.split('-')[0] :
-            lote.dtime;
+            intervaloInicial = LoteAtual.intervaloLote != "" ? LoteAtual.intervaloLote.split('/')[0] :
+              lote.dtime;
             intervaloAtual = "";
           }
           if (especificaAtual.especQuebra == "QTDE") {
-            if ((qtdLote+lote.qtdeLote) >= especificaAtual.cabQtdeQuebra) {
+            if ((qtdLote + lote.qtdeLote) >= especificaAtual.cabQtdeQuebra) {
               let intervalo = `${intervaloInicial}/${intervaloAtual}`;
               this._http.post(urlLote, {
                 lote: countLote.toString().padStart(9, "0"),
                 qtdeLote: countLote.toString().padStart(9, "0"),
                 intervaloLote: intervalo,
-                op: opAtual
+                op: opAtual,
+                produto: produtoAtual,
+                status: 'F'
               }).subscribe(q => console.log(q));
 
               countLote++;
@@ -280,8 +284,7 @@ export class funcsService {
               lote: countLote.toString().padStart(9, "0"),
               analise: `A${(analise).toString().padStart(2, "0")}`,
               id: lote.id_num,
-              qtdeLote: qtdLote,
-            }).subscribe(q => q);
+            }).subscribe(q => q );
           }
           if (especificaAtual.especQuebra == "HORA") {
             if (lote.op != opAtual) {
@@ -290,7 +293,9 @@ export class funcsService {
                 lote: countLote.toString().padStart(9, "0"),
                 qtdeLote: qtdLote,
                 intervaloLote: intervalo,
-                op: opAtual
+                op: opAtual,
+                status: 'F',
+                produto: produtoAtual,
               }).subscribe(q => console.log(q));
 
               countLote++;
@@ -298,6 +303,7 @@ export class funcsService {
               analise = 1;
               cicloAtual = this.dividirDiaEmPartes(new Date(lote.dtime), especificaAtual.cabQtdeQuebra);
               opAtual = lote.op;
+              intervaloInicial = lote.dtime;
             }
             let analiseAtual = this.dividirDiaEmPartes(new Date(lote.dtime), especificaAtual.cabQtdeQuebra);
             if (analiseAtual != cicloAtual) {
@@ -308,7 +314,6 @@ export class funcsService {
               lote: countLote.toString().padStart(9, "0"),
               analise: `A${(analise).toString().padStart(2, "0")}`,
               id: lote.id_num,
-              qtdeLote: qtdLote,
               op: lote.op
             }).subscribe(q => q);
           }
@@ -320,8 +325,10 @@ export class funcsService {
           lote: countLote.toString().padStart(9, "0"),
           qtdeLote: qtdLote,
           intervaloLote: intervalo,
-          op: opAtual
-        }).subscribe(q => func());
+          op: opAtual,
+          status: 'F',
+          produto: produtoAtual
+        }).subscribe(q => { console.log(q); func(); });
 
       });
 
