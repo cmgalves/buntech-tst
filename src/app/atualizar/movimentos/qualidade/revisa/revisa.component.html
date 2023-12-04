@@ -276,7 +276,7 @@
                                 <ng-container matColumnDef="iteLaudo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Laudo </th>
                                     <td mat-cell *matCellDef="let row;">
-                                        <button (click)="especificar('L',row)" mat-raised-button type="button" matTooltip="Exclusão do Item" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="especificar('L',row)" mat-raised-button type="button" matTooltip="Laudo" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">{{row.iteLaudo == 'SIM' ? 'thumb_up': 'thumb_down'}}</i>
                                         </button>
                                     </td>
