@@ -22,11 +22,11 @@ table {
     color: rgb(250, 246, 244);
 }
 
-.Liberado {
+.comLaudo {
     background: rgb(230, 255, 230);
 }
 
-.Bloqueado {
+.semLaudo {
     background: rgb(255, 204, 204);
 }
 

@@ -277,7 +277,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Laudo </th>
                                     <td mat-cell *matCellDef="let row;">
                                         <button (click)="especificar('L',row)" mat-raised-button type="button" matTooltip="Exclusão do Item" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <i class="material-icons">{{row.iteLaudo == 'SIM' ? 'add': 'close'}}</i>
+                                            <i class="material-icons">{{row.iteLaudo == 'SIM' ? 'thumb_up': 'thumb_down'}}</i>
                                         </button>
                                     </td>
                                 </ng-container>
@@ -293,21 +293,19 @@
                                         <button *ngIf='editInd==i' (click)='editInd=null;' mat-raised-button type='button' class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class='material-icons'>cancel</i>
                                         </button>
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="iteExc">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Exclusão </th>
-                                    <td mat-cell *matCellDef="let row; let i = index;">
-                                        <button (click)="especificar('E',row)" mat-raised-button type="button" matTooltip="Exclusão do Item" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button *ngIf='editInd != i' (click)="especificar('E',row)" mat-raised-button type="button" matTooltip="Exclusão do Item" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">not_interested</i>
                                         </button>
                                     </td>
+
                                 </ng-container>
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                                <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                                </tr>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
+                                <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'comLaudo' : row.iteLaudo == 'SIM','semLaudo' : row.iteLaudo == 'NAO'}">
+                                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                    </tr>
                             </table>
                             <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
                         </div>
