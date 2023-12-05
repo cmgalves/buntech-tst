@@ -197,10 +197,13 @@ export class ProdutoAndamentoComponent implements OnInit {
     alert('Imprime Lote')
   }
 
-  processarLote() {
-    this.showOverlay = true;
-    this.fj.gerarLote({ op: "", produto: "" }, this.finishLoading);
-  }
+  // async processarLote() {
+  //   this.showOverlay = true;
+  //   await this.fj.gerarLote({op:"", produto:""}).then(q => {console.log("teste: ");console.log(q);});
+  //   // if(data.length > 0)
+  //   //   this.fj.atualizarLotes(data, this.finishLoading);
+  //   // else this.finishLoading();
+  // }
 
   detalhe(row) {
     localStorage.setItem('produtoAndamentoDetalhe', row.produto);

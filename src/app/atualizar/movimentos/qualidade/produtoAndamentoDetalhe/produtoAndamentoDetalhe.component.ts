@@ -37,7 +37,7 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
   filterPosAnalise: any = ['Todos', 'Andamento', 'Aguardando', 'Analisado'];
   filPosAnalise: string = 'Todos';
   showOverlay = false;
-  finishLoading = () => {this.showOverlay = false; //location.reload();
+  finishLoading = () => {this.showOverlay = false; location.reload();
   }
 
   loteRegs: Observable<any>;
@@ -75,7 +75,10 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
     this.arrBusca.subscribe(cada => {
       cada.forEach(xy => {
         ord++
-        this.arrDados.push(xy)
+        this.arrDados.push({
+          ...xy,
+          qtde_lote: xy.qtde_lote==null?0:xy.qtde_lote
+        })
       });
       console.log(this.arrDados);
       const resultado = this.arrDados.reduce((acc, elemento) => {
@@ -214,10 +217,13 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
     alert('Imprime Lote')
   }
 
-  processarLote() {
+  async processarLote() {
     this.showOverlay = true;
     this.produto = this.arrDados[0].produto;
     this.fj.gerarLote({op:this.op, produto:this.produto}, this.finishLoading);
+    // if(data.length > 0)
+    //   this.fj.atualizarLotes(data, this.finishLoading);
+    // else this.finishLoading();
   }
 
   comboboxOP(){

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import 'rxjs/add/operator/map';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 
 
@@ -191,72 +192,58 @@ export class funcsService {
   }
 
 
-  async gerarLote(obj: any, func: Function) {
+  gerarLote(obj: any, funcao: Function) {
     let url = '';
     const dstUrla = ['10.3.0.49:885'];
+    let novosLotes = [];
+    let finish = true;
+    const MAX_REQUISITIONS = 10;
 
     url = `http://${dstUrla}/geraLoteInfo`;
-    let linhasAlteradas = [];
-    return this._http.post(url, {})
+    this._http.post(url, obj)
       .map((response: Response) => response.json()).subscribe(tabelas => {
         url = `http://${dstUrla}/geraLote`;
-        let urlLote = `http://${dstUrla}/atualizaLote`;
-        console.log(tabelas);
         let oppcfLote = tabelas.oppcfLote;
-        if (obj.produto != "")
-          oppcfLote = oppcfLote.filter(q => q.produto == obj.produto)
-        if (obj.op != "")
-          oppcfLote = oppcfLote.filter(q => q.op == obj.op);
-        console.log(oppcfLote);
         let especificaGeral = tabelas.especifica;
-        let lotesAtualizar = oppcfLote.sort((a, b) => {
-          if (a.produto < b.produto) {
-            return -1;
-          } else if (a.produto > b.produto) {
-            return 1;
-          } else {
-            if (a.dtime < b.dtime) {
-              return -1;
-            } else if (a.dtime > b.dtime) {
-              return 1;
-            } else {
-              return 0;
-            }
-          }
-        });
-        lotesAtualizar = lotesAtualizar.filter(q => q.lote == '000000000');
-        if (lotesAtualizar.length == 0) return func();
+
+        let produtosAtualizados = [];
+        let requisicoes = [];
+        let lotesAtualizar = oppcfLote.filter(q => q.lote == '000000000').slice(0,200);
+        if (lotesAtualizar.length == 0) return funcao();
+        console.log(lotesAtualizar);
         let produtoAtual = lotesAtualizar[0].produto;
-        let LoteAtual = [...oppcfLote].filter(q => q.produto == produtoAtual).sort((a, b) => parseInt(a) > parseInt(b) ? -1 : 1)[0];
+        let LoteAtual = [...oppcfLote].filter(q => q.produto == produtoAtual).sort((a, b) => parseInt(a.lote) > parseInt(b.lote) ? -1 : 1)[0];
         let countLote = LoteAtual.stsLote != 'F' ? parseInt(LoteAtual.lote) : parseInt(LoteAtual.lote) + 1;
         if (countLote == 0) countLote = 1;
-        let especificaAtual = especificaGeral.filter(q => q.cabProduto == produtoAtual)[0];
-        let qtdLote = LoteAtual.stsLote != 'F' ? (LoteAtual.qtdeLote == undefined ? 0 : LoteAtual.qtdeLote) : 0;
+        let especificaAtual = especificaGeral.filter(q => q.cabProduto.trim() == produtoAtual.trim())[0];
+        let qtdLote = LoteAtual.stsLote != 'F' ? (LoteAtual.qtde_lote == undefined ? 0 : LoteAtual.qtde_lote) : 0;
         let opAtual = lotesAtualizar[0].op;
-        let cicloAtual = this.dividirDiaEmPartes(new Date(lotesAtualizar[0].dtime), especificaAtual.cabQtdeQuebra)
+        let cicloAtual = this.dividirDiaEmPartes(new Date(lotesAtualizar[0].dtime), especificaAtual.cabQtdeQuebra);
         let analise = 1;
         let intervaloInicial = LoteAtual.intervaloLote != "" ? LoteAtual.intervaloLote.split('/')[0] :
           lotesAtualizar[0].dtime;
         let intervaloAtual = "";
-
+        if(lotesAtualizar.length == 0){
+          funcao();
+        }
         lotesAtualizar.forEach(async (lote, index) => {
-          if (lote.produto != produtoAtual) {
+          if (lote.produto.trim() != produtoAtual.trim()) {
             let intervalo = `${intervaloInicial}/${intervaloAtual}`;
-             this._http.post(urlLote, {
+            novosLotes.push({
               lote: countLote.toString().padStart(9, "0"),
-              qtdeLote: qtdLote,
+              qtde_lote: qtdLote,
               intervaloLote: intervalo,
               op: opAtual,
-              produto: lote.produtoAtual,
+              produto: produtoAtual,
               status: 'F'
-            }).subscribe(q => console.log(q));
+            })
 
             produtoAtual = lote.produto;
             LoteAtual = [...oppcfLote].filter(q => q.produto == produtoAtual).sort((a, b) => parseInt(a) > parseInt(b) ? -1 : 1)[0];
             countLote = LoteAtual.stsLote != 'F' ? parseInt(LoteAtual.lote) : parseInt(LoteAtual.lote) + 1;
             if (countLote == 0) countLote = 1;
             especificaAtual = especificaGeral.filter(q => q.cabProduto.trim() == produtoAtual.trim())[0];
-            qtdLote = LoteAtual.stsLote != 'F' ? (LoteAtual.qtdeLote == undefined ? 0 : LoteAtual.qtdeLote) : 0;
+            qtdLote = LoteAtual.stsLote != 'F' ? (LoteAtual.qtde_lote == undefined ? 0 : LoteAtual.qtde_lote) : 0;
             opAtual = lote.op;
             cicloAtual = this.dividirDiaEmPartes(new Date(lote.dtime), especificaAtual.cabQtdeQuebra)
             analise = 1;
@@ -265,38 +252,46 @@ export class funcsService {
             intervaloAtual = "";
           }
           if (especificaAtual.especQuebra == "QTDE") {
-            if ((qtdLote + lote.qtdeLote) >= especificaAtual.cabQtdeQuebra) {
+            console.log(lote.qtde);
+            if ((qtdLote + lote.qtde) >= especificaAtual.cabQtdeQuebra) {
               let intervalo = `${intervaloInicial}/${intervaloAtual}`;
-              this._http.post(urlLote, {
+              novosLotes.push({
                 lote: countLote.toString().padStart(9, "0"),
-                qtdeLote: countLote.toString().padStart(9, "0"),
+                qtde_lote: qtdLote,
                 intervaloLote: intervalo,
-                op: opAtual,
+                op: undefined,
                 produto: produtoAtual,
                 status: 'F'
-              }).subscribe(q => console.log(q));
+              })
 
               countLote++;
               qtdLote = 0;
               analise = 1;
             }
-            this._http.post(url, {
+            finish = false;
+            var newProduto = {
               lote: countLote.toString().padStart(9, "0"),
               analise: `A${(analise).toString().padStart(2, "0")}`,
               id: lote.id_num,
-            }).subscribe(q => q );
+            }
+            produtosAtualizados.push(newProduto)
+            requisicoes.push(this._http.post(url, newProduto).pipe(catchError((error) => {
+              console.log(`Erro em produto: ${lote.id_num}`, error);
+              return of(null);
+            })));
           }
           if (especificaAtual.especQuebra == "HORA") {
             if (lote.op != opAtual) {
               let intervalo = `${intervaloInicial}/${intervaloAtual}`;
-              this._http.post(urlLote, {
+
+              novosLotes.push({
                 lote: countLote.toString().padStart(9, "0"),
-                qtdeLote: qtdLote,
+                qtde_lote: qtdLote,
                 intervaloLote: intervalo,
                 op: opAtual,
                 status: 'F',
                 produto: produtoAtual,
-              }).subscribe(q => console.log(q));
+              })
 
               countLote++;
               qtdLote = 0;
@@ -310,30 +305,52 @@ export class funcsService {
               analise++;
               cicloAtual = analiseAtual;
             }
-            this._http.post(url, {
+            var newProduto = {
               lote: countLote.toString().padStart(9, "0"),
               analise: `A${(analise).toString().padStart(2, "0")}`,
               id: lote.id_num,
-              op: lote.op
-            }).subscribe(q => q);
+            }
+            produtosAtualizados.push(newProduto)
+            requisicoes.push(this._http.post(url, newProduto).pipe(catchError((error) => {
+              console.log(`Erro em produto: ${lote.id_num}`, error);
+              return of(null);
+            })));
           }
           qtdLote += lote.qtde;
           intervaloAtual = lote.dtime;
+
+          if (index == lotesAtualizar.length - 1) {
+            let intervalo = `${intervaloInicial}/${intervaloAtual}`;
+
+            novosLotes.push({
+              lote: countLote.toString().padStart(9, "0"),
+              qtde_lote: qtdLote,
+              intervaloLote: intervalo,
+              op: especificaAtual.especQuebra == "HORA" ? opAtual : "",
+              status: 'A',
+              produto: produtoAtual
+            });
+            forkJoin(requisicoes.map(observable =>
+              observable.pipe(mergeMap(result => of(result), MAX_REQUISITIONS)
+              )
+            )
+            ).subscribe(q => { console.log(q); this.atualizarLotes(novosLotes, funcao); });
+          }
         });
-        let intervalo = `${intervaloInicial}/${intervaloAtual}`;
-        return this._http.post(urlLote, {
-          lote: countLote.toString().padStart(9, "0"),
-          qtdeLote: qtdLote,
-          intervaloLote: intervalo,
-          op: opAtual,
-          status: 'F',
-          produto: produtoAtual
-        }).subscribe(q => { console.log(q); func(); });
 
       });
 
   }
 
+  atualizarLotes(novosLotes: any[], funcao: Function) {
+    console.log(novosLotes);
+    const dstUrla = ['10.3.0.49:885'];
+    console.log("Atualizando Lotes");
+
+    novosLotes.forEach(q => {
+      this._http.post(`http://${dstUrla}/atualizaLote`, q).subscribe(q => funcao());
+    })
+  }
 
   dividirDiaEmPartes(data, numeroDeDivisoes) {
     const hora = data.getHours();
