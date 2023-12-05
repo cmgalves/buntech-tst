@@ -64,37 +64,30 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Lote </th>
                                     <td mat-cell *matCellDef="let row"> {{row.lote}} </td>
                                 </ng-container>
+                                <ng-container matColumnDef="analise">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Análise </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.analise}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdeLote">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Lote </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeLote}}
+                                    </td>
+                                </ng-container>
                                 <ng-container matColumnDef="loteAprov">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Status Lote </th>
                                     <td mat-cell *matCellDef="let row"> {{row.loteAprov}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="dtAprov">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Aprovação </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.dtAprov}} </td>
+                                <ng-container matColumnDef="dtAprovn1">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprov N1 </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtAprovn1}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="dtProd">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Produção </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.dtProd}} </td>
+                                <ng-container matColumnDef="dtAprovn2">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprov N2 </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtAprovn2}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="dtVenc">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Vencimento</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.dtVenc}}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="qtdeProd">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Produzida </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.qtdeProd}}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="quebra">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Quebra </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.quebra}}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="qtdeQuebra">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Quebra </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.qtdeQuebra}}
-                                    </td>
+                                <ng-container matColumnDef="dtAprovn3">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprov N3 </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtAprovn3}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="situacao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Situação </th>

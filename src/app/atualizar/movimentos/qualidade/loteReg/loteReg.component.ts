@@ -37,7 +37,7 @@ export class LoteRegComponent implements OnInit {
   filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'loteAprov', 'dtAprov', 'dtProd', 'dtVenc', 'qtdeProd', 'quebra', 'qtdeQuebra', 'situacao', 'analiseStatus', 'loteReg'];
+  displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dtAprovn1', 'dtAprovn2', 'dtAprovn3', 'situacao', 'analiseStatus', 'loteReg'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -76,24 +76,18 @@ export class LoteRegComponent implements OnInit {
           'produto': xy.produto,
           'descricao': xy.descricao,
           'lote': xy.lote,
+          'analise': xy.analise,
           'loteAprov': xy.loteAprov,
-          'dtAprov': xy.dtAprov,
-          'usrAprov': xy.usrAprov,
-          'usrProd': xy.usrProd,
-          'dtProd': this.fg.dtob(xy.dtProd),
-          'hrProd': xy.hrProd,
-          'dtVenc': this.fg.dtob(xy.dtVenc),
-          'qtdeProd': xy.qtdeProd,
-          'qtdeQuebra': xy.qtdeQuebra,
-          // 'qtdeTot': xy.qtdeTot,
-          'seqProd': xy.seqProd,
-          'quebra': xy.quebra,
-          'revisao': xy.revisao,
+          'dtAprovn1': xy.dtAprovn1,
+          'dtAprovn2': xy.dtAprovn2,
+          'dtAprovn3': xy.dtAprovn3,
+          'usrAprovn1': xy.usrAprovn1,
+          'usrAprovn2': xy.usrAprovn2,
+          'usrAprovn3': xy.usrAprovn3,
+          'qtdeLote': xy.qtdeLote,
           'situacao': xy.situacao,
-          // 'obs': xy.obs,
           'analiseStatus': xy.analiseStatus,
           'alcadaProd': xy.alcadaProd
-          // 'dtAnaliseStatus': xy.dtAnaliseStatus,
         })
       });
       this.filLoteReg = xcFil;
