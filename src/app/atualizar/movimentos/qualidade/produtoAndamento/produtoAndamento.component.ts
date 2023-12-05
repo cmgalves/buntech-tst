@@ -43,8 +43,9 @@ export class ProdutoAndamentoComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   class: string = '';
   showOverlay = false;
-  
-  finishLoading = () => {this.showOverlay = false; location.reload();
+
+  finishLoading = () => {
+    this.showOverlay = false; location.reload();
   }
 
   constructor(
@@ -197,13 +198,25 @@ export class ProdutoAndamentoComponent implements OnInit {
     alert('Imprime Lote')
   }
 
-  // async processarLote() {
-  //   this.showOverlay = true;
-  //   await this.fj.gerarLote({op:"", produto:""}).then(q => {console.log("teste: ");console.log(q);});
-  //   // if(data.length > 0)
-  //   //   this.fj.atualizarLotes(data, this.finishLoading);
-  //   // else this.finishLoading();
-  // }
+  processarLote() {
+    var time =  parseInt(window.prompt("Quanto tempo (em minutos)?"));
+    time = time*60000;
+    this.executaPeriodicamente(time);
+    console.log(time);
+  }
+
+  funcaoPeriodica(){
+    this.fj.gerarLote({op:"", produto:""}, ()=>{})
+  }
+
+  executaPeriodicamente(intervalo) {
+    this.funcaoPeriodica();
+    console.log('rodando');
+    const interval = setInterval(() => {
+      this.funcaoPeriodica();
+    }, intervalo);
+    return interval;
+  }
 
   detalhe(row) {
     localStorage.setItem('produtoAndamentoDetalhe', row.produto);

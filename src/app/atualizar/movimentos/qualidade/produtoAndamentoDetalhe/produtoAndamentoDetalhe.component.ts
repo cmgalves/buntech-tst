@@ -221,9 +221,6 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
     this.showOverlay = true;
     this.produto = this.arrDados[0].produto;
     this.fj.gerarLote({op:this.op, produto:this.produto}, this.finishLoading);
-    // if(data.length > 0)
-    //   this.fj.atualizarLotes(data, this.finishLoading);
-    // else this.finishLoading();
   }
 
   comboboxOP(){
