@@ -220,7 +220,7 @@ export class funcsService {
         let opAtual = lotesAtualizar[0].op;
         let cicloAtual = this.dividirDiaEmPartes(new Date(lotesAtualizar[0].dtime), especificaAtual.cabQtdeQuebra);
         let analise = 1;
-        let intervaloInicial = LoteAtual.intervaloLote != "" ? LoteAtual.intervaloLote.split('/')[0] :
+        let intervaloInicial = (LoteAtual.intervaloLote) ? LoteAtual.intervaloLote.split('/')[0] :
           lotesAtualizar[0].dtime;
         let intervaloAtual = "";
         if(lotesAtualizar.length == 0){
@@ -247,7 +247,7 @@ export class funcsService {
             opAtual = lote.op;
             cicloAtual = this.dividirDiaEmPartes(new Date(lote.dtime), especificaAtual.cabQtdeQuebra)
             analise = 1;
-            intervaloInicial = LoteAtual.intervaloLote != "" ? LoteAtual.intervaloLote.split('/')[0] :
+            intervaloInicial = (LoteAtual.intervaloAtual) ? LoteAtual.intervaloLote.split('/')[0] :
               lote.dtime;
             intervaloAtual = "";
           }

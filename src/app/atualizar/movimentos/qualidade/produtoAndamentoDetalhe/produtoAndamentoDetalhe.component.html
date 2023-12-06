@@ -42,7 +42,7 @@
                             <div class="card-body table-responsive col-md-3">
                                 <mat-form-field>
                                     <mat-label>OP</mat-label>
-                                    <mat-select [(ngModel)]="op">
+                                    <mat-select (selectionChange)="applyFilterOp(op)" [(ngModel)]="op">
                                         <mat-option value="">
                                             Todos
                                         </mat-option>
@@ -94,6 +94,15 @@
                                     </th>
                                     <td *matCellDef='let row' mat-cell>
                                         {{formatarNumero(row.qtde)}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="acoes">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ações
+                                    </th>
+                                    <td *matCellDef='let row' mat-cell>
+                                        <button (click)="processarLinha(row.op)" mat-raised-button type="button" matTooltip="Gerar lote para op {{row.op}}" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons md-48">card_travel</i>
+                                        </button>
+                                    </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto','Aprovado' : row.situacao === 'Aprovado','Rejeitado' : row.situacao === 'Rejeitado'}">

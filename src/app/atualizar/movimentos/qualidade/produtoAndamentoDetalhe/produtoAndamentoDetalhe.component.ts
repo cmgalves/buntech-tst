@@ -41,7 +41,7 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
   }
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'produto', 'descrProd', 'qtde_lote', 'qtde'];
+  displayedColumns: string[] = ['filial', 'op', 'produto', 'descrProd', 'qtde_lote', 'qtde', 'acoes'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -114,6 +114,14 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  applyFilterOp(event: string) {
+    this.dataSource.filter = event.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -215,6 +223,11 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
 
   imprimeLote() {
     alert('Imprime Lote')
+  }
+
+  processarLinha(op: string){
+    this.op = op;
+    this.processarLote();
   }
 
   async processarLote() {
