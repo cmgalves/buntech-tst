@@ -6,7 +6,7 @@
                     <a>VISUALIZAÇÃO DOS LOTES DE PRODUTOS</a>
                 </div>
                 <div class="row">
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Filial</mat-label>
                             <input matInput [(ngModel)]="filial" disabled>
@@ -18,7 +18,7 @@
                             <input matInput [(ngModel)]="produto" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-4">
+                    <div class="card-body table-responsive col-md-3">
                         <mat-form-field>
                             <mat-label>Descrição</mat-label>
                             <input matInput [(ngModel)]="descricao" disabled>
@@ -32,44 +32,14 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
+                            <mat-label>analise</mat-label>
+                            <input matInput [(ngModel)]="analise" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="card-body table-responsive col-md-2">
+                        <mat-form-field>
                             <mat-label>Quantidade</mat-label>
                             <input matInput [(ngModel)]="qtdeTot" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Revisão</mat-label>
-                            <input matInput [(ngModel)]="revisao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Data Produção</mat-label>
-                            <input matInput [(ngModel)]="dtProd" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Hora Produção</mat-label>
-                            <input matInput [(ngModel)]="hrProd" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Vencimento do Lote</mat-label>
-                            <input matInput [(ngModel)]="dtVenc" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Tipo Quebra</mat-label>
-                            <input matInput [(ngModel)]="quebra" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Qtde Quebra</mat-label>
-                            <input matInput [(ngModel)]="qtdeQuebra" disabled>
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-12">
@@ -112,17 +82,17 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> OP </th>
                                     <td *matCellDef='let row' mat-cell> {{row.op}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="produto">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Produto </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.produto}} </td>
+                                <ng-container matColumnDef="aponta">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Apontamento </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.aponta}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="descricao">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
+                                <ng-container matColumnDef="intervalo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Intervalo </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.intervalo}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="qtdeProd">
+                                <ng-container matColumnDef="qtdeLote">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Qtde Produção</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.qtdeProd}}
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeLote}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="situacao">
@@ -136,8 +106,7 @@
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [ngClass]="{'Ativo' : row.ativo === 'Sim','Inativo' : row.ativo === 'Não'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Ativo' : row.ativo === 'Sim','Inativo' : row.ativo === 'Não'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

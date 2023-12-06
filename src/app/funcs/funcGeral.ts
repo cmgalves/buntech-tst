@@ -158,4 +158,11 @@ export class funcGeral {
       return String(str).substring(iLen, iLen - n);
     }
   }
+  
+  formatarNumero(numero){
+    return  numero.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
 }

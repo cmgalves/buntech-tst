@@ -45,6 +45,7 @@ export class LoteAnalisaComponent implements OnInit {
   quebra: string = '';
   qtdeQuebra: string = '';
   lote: string = '';
+  analise: string = '';
   qtde: any = 0;
   qtdeTot: any = 0;
   usrAprov: any = '';
@@ -94,7 +95,8 @@ export class LoteAnalisaComponent implements OnInit {
     const obj = {
       'filial': this.aProd.filial,
       'produto': this.aProd.produto,
-      'lote': this.aProd.lote
+      'lote': this.aProd.lote,
+      'analisa': this.aProd.analisa,
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj);
     
@@ -126,23 +128,23 @@ export class LoteAnalisaComponent implements OnInit {
           'imprimeLaudo': xy.imprimeLaudo != ""?xy.imprimeLaudo:"SIM",
           'id_loteProd': xy.id_loteProd
         })
-        if (cNivel == '') {
-          if (xy.nivel == 'N1') {
-            cNivel = 'Nivel 01'
-          }
-          if (xy.nivel == 'N2') {
-            cNivel = 'Nivel 02'
-          }
-          if (xy.nivel == 'N3') {
-            cNivel = 'Nivel 03'
-          }
-        }
-        if (xy.orig != 'analise' || xy.situacao != 'Aprovado' || xy.sitFim == 'Aprovado') {
-          this.lAnalise = true
-        }
-        if (xy.sitFim == 'Aprovado') {
-          this.lEdit = true
-        }
+        // if (cNivel == '') {
+        //   if (xy.nivel == 'N1') {
+        //     cNivel = 'Nivel 01'
+        //   }
+        //   if (xy.nivel == 'N2') {
+        //     cNivel = 'Nivel 02'
+        //   }
+        //   if (xy.nivel == 'N3') {
+        //     cNivel = 'Nivel 03'
+        //   }
+        // }
+        // if (xy.orig != 'analise' || xy.situacao != 'Aprovado' || xy.sitFim == 'Aprovado') {
+        //   this.lAnalise = true
+        // }
+        // if (xy.sitFim == 'Aprovado') {
+        //   this.lEdit = true
+        // }
         this.filial = xy.filial
         this.produto = xy.produto
         this.descricao = xy.descricao
@@ -150,7 +152,6 @@ export class LoteAnalisaComponent implements OnInit {
         this.lote = xy.lote
         this.nivel = cNivel
         this.qtdeTot = xy.qtdeTot
-        this.dtVenc = this.fg.dtob(xy.dtVenc)
       })
       console.log(this.arrDados);
         this.dataSource = new MatTableDataSource(this.arrDados)
@@ -218,8 +219,6 @@ export class LoteAnalisaComponent implements OnInit {
   }
 
 
-
-
   editLinha(e, i) {
     this.editInd = i;
   }
@@ -250,8 +249,6 @@ export class LoteAnalisaComponent implements OnInit {
       }
 
     }
-
-
     const obj = {
       'filial': this.filial,
       'op': xcRow.op,
