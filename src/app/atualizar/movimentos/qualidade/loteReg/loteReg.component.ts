@@ -186,7 +186,7 @@ export class LoteRegComponent implements OnInit {
     if (aRow.situacao === 'Fechado') {
       alert('Lote já está Fechado')
     } else {
-      const _aProd = this.arrDados.filter(x => (x.produto === aRow.produto && x.lote === aRow.lote))[0];
+      const _aProd = this.arrDados.filter(x => (x.produto === aRow.produto && x.lote === aRow.lote && x.analise === aRow.analise))[0];
       localStorage.removeItem('loteAdianta');
       localStorage.setItem('loteAdianta', JSON.stringify(_aProd));
       this.router.navigate(['loteAdianta']);
@@ -195,13 +195,13 @@ export class LoteRegComponent implements OnInit {
 
 
   analisaLote(xcRow) {
-    const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
+    const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote && x.analise === xcRow.analise))[0];
     localStorage.removeItem('loteAnalisa');
     localStorage.setItem('loteAnalisa', JSON.stringify(_aProd));
     this.router.navigate(['loteAnalisa']);
   }
   aprovaLote(xcRow) {
-    const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
+    const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote && x.analise === xcRow.analise))[0];
     localStorage.removeItem('loteAprv');
     localStorage.setItem('loteAprv', JSON.stringify(_aProd));
     this.router.navigate(['loteAprova']);

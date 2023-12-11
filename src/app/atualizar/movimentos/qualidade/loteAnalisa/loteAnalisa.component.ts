@@ -88,7 +88,6 @@ export class LoteAnalisaComponent implements OnInit {
   // busca a relação de produtos com as loteções
   buscaLoteDetalhes() {
     let ord = 0;
-    let tot = 0;
     let codCaracteristica = '';
     this.lAnalise = false
     this.lEdit = false
@@ -102,10 +101,8 @@ export class LoteAnalisaComponent implements OnInit {
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         ord++
-        tot += xy.qtde
         if (codCaracteristica.indexOf(xy.codCarac) < 0) {
           codCaracteristica += xy.codCarac
           this.arrDados.push({
@@ -139,7 +136,7 @@ export class LoteAnalisaComponent implements OnInit {
             this.especAlcada = xy.especAlcada
           }
         }
-        this.qtdeTot = tot
+        this.qtdeTot = xy.qtde
 
       })
       this.dataSource = new MatTableDataSource(this.arrDados)
@@ -253,7 +250,6 @@ export class LoteAnalisaComponent implements OnInit {
       'just': '',
       'tipo': 'E',
     }
-    console.log(obj);
     this.fj.execProd('analisaAprovaLote', obj);
     //window.location.reload();
   }
@@ -282,7 +278,6 @@ export class LoteAnalisaComponent implements OnInit {
 
   alteraImprimeLaudo(row) {
     var obj = { id_loteProd: row.id_loteProd }
-    console.log(obj);
     this.fj.execProd('analisaAprovaLote', obj);
   }
 
