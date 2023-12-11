@@ -41,7 +41,7 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
   }
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'produto', 'descrProd', 'qtde_lote', 'qtde', 'acoes'];
+  displayedColumns: string[] = ['filial', 'op', 'produto', 'descrProd', 'qtde_lote', 'qtde'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

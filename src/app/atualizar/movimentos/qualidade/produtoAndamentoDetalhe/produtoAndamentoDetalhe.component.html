@@ -38,24 +38,6 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="card-body table-responsive col-md-3">
-                                <mat-form-field>
-                                    <mat-label>OP</mat-label>
-                                    <mat-select (selectionChange)="applyFilterOp(op)" [(ngModel)]="op">
-                                        <mat-option value="">
-                                            Todos
-                                        </mat-option>
-                                        <mat-option *ngFor="let p of comboboxOP()" [value]="p">
-                                            {{p}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="card-body table-responsive col-md-3">
-                                <button mat-raised-button class="btn btn-confirm" (click)="processarLote()">Processar Lote</button>
-                            </div>
-                        </div>
 
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
@@ -94,15 +76,6 @@
                                     </th>
                                     <td *matCellDef='let row' mat-cell>
                                         {{formatarNumero(row.qtde)}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="acoes">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ações
-                                    </th>
-                                    <td *matCellDef='let row' mat-cell>
-                                        <button (click)="processarLinha(row.op)" mat-raised-button type="button" matTooltip="Gerar lote para op {{row.op}}" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <i class="material-icons md-48">card_travel</i>
-                                        </button>
-                                    </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto','Aprovado' : row.situacao === 'Aprovado','Rejeitado' : row.situacao === 'Rejeitado'}">

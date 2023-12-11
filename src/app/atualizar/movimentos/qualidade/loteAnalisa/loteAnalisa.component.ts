@@ -94,7 +94,8 @@ export class LoteAnalisaComponent implements OnInit {
     const obj = {
       'filial': this.aProd.filial,
       'produto': this.aProd.produto,
-      'lote': this.aProd.lote
+      'lote': this.aProd.lote,
+      'analise': this.aProd.analise
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj);
     
@@ -112,12 +113,12 @@ export class LoteAnalisaComponent implements OnInit {
           'usrAprov': xy.usrAprov,
           'dtVenc': xy.dtVenc,
           'qtdeProd': xy.qtdeProd,
-          'qtdeTot': xy.qtdeTot,
+          'qtdeTot': xy.qtde,
           'revisao': xy.revisao,
           'codCarac': xy.codCarac,
-          'descCarac': xy.descCarac,
-          'itemin': xy.itemin?.toFixed(3),
-          'itemax': xy.itemax?.toFixed(3),
+          'descCarac': xy.descrProd,
+          'itemin': xy.iteMin?.toFixed(3),
+          'itemax': xy.iteMax?.toFixed(3),
           'itemeio': xy.itemeio,
           'itetxt': xy.itetxt,
           'result': xy.result?.toFixed(3),
@@ -145,11 +146,11 @@ export class LoteAnalisaComponent implements OnInit {
         }
         this.filial = xy.filial
         this.produto = xy.produto
-        this.descricao = xy.descricao
-        this.revisao = xy.revisao
+        this.descricao = xy.descrProd
+        this.revisao = xy.cabRevisao
         this.lote = xy.lote
         this.nivel = cNivel
-        this.qtdeTot = xy.qtdeTot
+        this.qtdeTot = xy.qtde
         this.dtVenc = this.fg.dtob(xy.dtVenc)
       })
       console.log(this.arrDados);
@@ -225,32 +226,25 @@ export class LoteAnalisaComponent implements OnInit {
   }
 
   editResult(xcRow) {
-    let sit: string = 'Aprovado';
+    let sit: string = '';
     let vResultxt: string = '';
     let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value;
-    let vResult: number = 0
-    let vResultt: string = ''
+    var nbm;
 
-    vResult = parseFloat(vNum)
-    vResultt = vNum
-    if (xcRow.itemin * 1 > 0 || xcRow.itemax * 1 > 0) {
-      if (vResult < xcRow.itemin * 1 || vResult > xcRow.itemax * 1) {
-        sit = 'Reprovado'
-      }
+
+    if(isNaN(parseFloat(vNum))){
+      if(vNum == 'N'){
+        sit = 'Reprovado';
+      } else if (vNum = 'S') sit = 'Aprovado';
+      else alert('Por favor, digite S ou N ou um valor numérico');
     } else {
-      if (vResultt == 'SIM' || vResultt == 'NAO') {
-        if (vResultt == 'SIM') {
-          sit = 'Aprovado'
-        }
-        if (vResultt == 'NAO') {
-          sit = 'Reprovado'
-        }
-      } else {
-        alert('Favor digitar SIM ou NAO')
-      }
-
+      nbm = parseFloat(vNum);
+      if(xcRow.itemin > 0 || xcRow.itemax > 0)
+        if(nbm < xcRow.itemin || nbm > xcRow.itemax)
+          sit = 'Reprovado';
+        else
+          sit = 'Aprovado';
     }
-
 
     const obj = {
       'filial': this.filial,
@@ -266,16 +260,17 @@ export class LoteAnalisaComponent implements OnInit {
       'codCarac': xcRow.codCarac,
       'itemin': xcRow.itemin,
       'itemax': xcRow.itemax,
-      'itemeio': xcRow.itemeio,
-      'itetxt': xcRow.itetxt,
-      'result': vResult,
+      'itemeio': xcRow.itemeio?xcRow.itemeio:0,
+      'itetxt': xcRow.itetxt?xcRow.itetxt:"",
+      'result': isNaN(parseFloat(vNum))?0:vNum,
       'resultxt': vResultxt,
       'situacao': sit,
       'just': '',
       'tipo': 'E',
     }
+    console.log(obj);
     this.fj.execProd('analisaAprovaLote', obj);
-    window.location.reload();
+    //window.location.reload();
   }
   exportExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
