@@ -100,14 +100,13 @@ export class funcsService {
   execProd(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.49:885'];
-
+    console.log(obj);
     url = `http://${dstUrla}/${_url}`
     console.log(url)
 
     $.ajaxSetup({ async: false });
 
     $.post(url, obj);
-
   }
 
 

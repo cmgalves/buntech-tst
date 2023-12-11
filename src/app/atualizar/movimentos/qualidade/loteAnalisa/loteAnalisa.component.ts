@@ -97,7 +97,7 @@ export class LoteAnalisaComponent implements OnInit {
       'filial': this.aProd.filial,
       'produto': this.aProd.produto,
       'lote': this.aProd.lote,
-      'analise': this.aProd.analise,
+      'analise': this.aProd.analise
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
@@ -212,30 +212,24 @@ export class LoteAnalisaComponent implements OnInit {
   }
 
   editResult(xcRow) {
-    let sit: string = 'Aprovado';
+    let sit: string = '';
     let vResultxt: string = '';
     let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value;
-    let vResult: number = 0
-    let vResultt: string = ''
+    var nbm;
 
-    vResult = parseFloat(vNum)
-    vResultt = vNum
-    if (xcRow.itemin * 1 > 0 || xcRow.itemax * 1 > 0) {
-      if (vResult < xcRow.itemin * 1 || vResult > xcRow.itemax * 1) {
-        sit = 'Reprovado'
-      }
+
+    if(isNaN(parseFloat(vNum))){
+      if(vNum == 'N'){
+        sit = 'Reprovado';
+      } else if (vNum = 'S') sit = 'Aprovado';
+      else alert('Por favor, digite S ou N ou um valor numérico');
     } else {
-      if (vResultt == 'SIM' || vResultt == 'NAO') {
-        if (vResultt == 'SIM') {
-          sit = 'Aprovado'
-        }
-        if (vResultt == 'NAO') {
-          sit = 'Reprovado'
-        }
-      } else {
-        alert('Favor digitar SIM ou NAO')
-      }
-
+      nbm = parseFloat(vNum);
+      if(xcRow.itemin > 0 || xcRow.itemax > 0)
+        if(nbm < xcRow.itemin || nbm > xcRow.itemax)
+          sit = 'Reprovado';
+        else
+          sit = 'Aprovado';
     }
     const obj = {
       'filial': this.filial,
@@ -249,18 +243,19 @@ export class LoteAnalisaComponent implements OnInit {
       'qtde': this.qtdeTot,
       'revisao': this.revisao,
       'codCarac': xcRow.codCarac,
-      'iteMin': xcRow.iteMin,
-      'iteMax': xcRow.iteMax,
-      'iteMeio': xcRow.iteMeio,
-      'itetxt': xcRow.itetxt,
-      'result': vResult,
+      'itemin': xcRow.itemin,
+      'itemax': xcRow.itemax,
+      'itemeio': xcRow.itemeio?xcRow.itemeio:0,
+      'itetxt': xcRow.itetxt?xcRow.itetxt:"",
+      'result': isNaN(parseFloat(vNum))?0:vNum,
       'resultxt': vResultxt,
       'situacao': sit,
       'just': '',
       'tipo': 'E',
     }
+    console.log(obj);
     this.fj.execProd('analisaAprovaLote', obj);
-    window.location.reload();
+    //window.location.reload();
   }
   exportExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
