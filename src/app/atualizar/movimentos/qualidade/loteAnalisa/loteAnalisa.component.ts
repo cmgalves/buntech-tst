@@ -99,7 +99,7 @@ export class LoteAnalisaComponent implements OnInit {
       'lote': this.aProd.lote,
       'analise': this.aProd.analise,
     };
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj);
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
     this.arrBusca.subscribe(cada => {
       console.log(cada);
