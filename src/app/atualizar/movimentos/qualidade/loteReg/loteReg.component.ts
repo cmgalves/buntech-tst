@@ -66,7 +66,6 @@ export class LoteRegComponent implements OnInit {
 
     this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil });
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -131,11 +130,9 @@ export class LoteRegComponent implements OnInit {
     if (this.filLoteReg != "Todos") {
       arrFiltrado = arrFiltrado.filter(x => x.situacao?.toUpperCase() == this.filLoteReg?.toUpperCase());
       this.dataSource = new MatTableDataSource(arrFiltrado);
-      console.log(arrFiltrado);
     } if (this.filPosAnalise != "Todos") {
       arrFiltrado = arrFiltrado.filter(x => x.analiseStatus?.toUpperCase() == this.filPosAnalise?.toUpperCase());
       this.dataSource = new MatTableDataSource(arrFiltrado);
-      console.log(arrFiltrado);
     }
     else if(this.filLoteReg == "Todos") {
       this.dataSource = new MatTableDataSource(this.arrDados);
