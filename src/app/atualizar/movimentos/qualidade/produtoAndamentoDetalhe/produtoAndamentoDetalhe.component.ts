@@ -245,11 +245,5 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
     this._location.back();
   }
 
-  formatarNumero(numero){
-    return  numero.toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  }
 
 }

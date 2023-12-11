@@ -43,6 +43,7 @@ export class LoteDetalheComponent implements OnInit {
   quebra: string = '';
   qtdeQuebra: string = '';
   lote: string = '';
+  analise: string = '';
   qtde: any = 0;
   qtdeTot: any = 0;
   dtProd: any = '';
@@ -53,7 +54,7 @@ export class LoteDetalheComponent implements OnInit {
   tpQuebra: string[] = ['Dia', 'Peso'];
   tpativo: string[] = ['Sim', 'Não'];
   lotes: Observable<any>;
-  displayedColumns: string[] = ['id_loteProd', 'op', 'produto', 'descricao', 'qtdeProd', 'situacao', 'fechamento'];
+  displayedColumns: string[] = ['id_loteProd', 'op', 'aponta', 'intervalo', 'qtdeLote', 'situacao', 'fechamento'];
   dataSource: MatTableDataSource<cadLote>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -75,11 +76,14 @@ export class LoteDetalheComponent implements OnInit {
     let ord = 0;
 
     const obj = {
+      'filial': this.aProd.filial,
       'produto': this.aProd.produto,
-      'lote': this.aProd.lote
+      'lote': this.aProd.lote,
+      'analise': this.aProd.analise,
     };
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteDetalhe', obj);
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteDetalhe', obj); //View_Relacao_Lote_Detalhe
     this.arrBusca.subscribe(cada => {
+      this.qtdeTot = 0
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -87,40 +91,29 @@ export class LoteDetalheComponent implements OnInit {
           'filial': xy.filial,
           'op': xy.op,
           'produto': xy.produto,
+          'aponta': xy.aponta,
+          'intervalo': xy.intervalo,
           'descricao': xy.descricao,
           'lote': xy.lote,
-          'loteAprov': xy.loteAprov,
-          'dtAprov': xy.dtAprov,
-          'usrAprov': xy.usrAprov,
-          'usrProd': xy.usrProd,
-          'dtProd': xy.dtProd,
-          'hrProd': xy.hrProd,
+          'analise': xy.analise,
+          'dtAprovn1': xy.dtAprovn1,
+          'dtAprovn2': xy.dtAprovn2,
+          'dtAprovn3': xy.dtAprovn3,
+          'usrAprovn1': xy.usrAprovn1,
+          'usrAprovn2': xy.usrAprovn2,
+          'usrAprovn3': xy.usrAprovn3,
           'dtVenc': xy.dtVenc,
-          'qtdeProd': xy.qtdeProd,
-          'qtdeQuebra': xy.qtdeQuebra,
-          'qtdeTot': xy.qtdeTot,
-          'seqProd': xy.seqProd,
-          'quebra': xy.quebra,
-          'revisao': xy.revisao,
+          'qtdeLote': xy.qtdeLote,
           'situacao': xy.situacao,
-          'fechamento': xy.fechamento,
-          'obs': xy.obs,
-          'xcFil': xy.xcFil,
         })
         this.filial = xy.filial
         this.produto = xy.produto
         this.descricao = xy.descricao
         this.revisao = xy.revisao
         this.lote = xy.lote
-        this.validade = xy.validade
-        this.quebra = xy.quebra
-        this.qtdeTot = xy.qtdeTot
-        this.dtProd = this.fg.dtob(xy.dtProd)
-        this.dtVenc = this.fg.dtob(xy.dtVenc)
-        this.hrProd = xy.hrProd
-        this.quebra = xy.quebra
-        this.qtdeQuebra = xy.qtdeQuebra
-        this.obs = xy.obs
+        this.analise = xy.analise
+        this.qtdeTot += xy.qtdeLote
+        
       });
 
       this.dataSource = new MatTableDataSource(this.arrDados)

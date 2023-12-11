@@ -37,7 +37,7 @@ export class LoteRegComponent implements OnInit {
   filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dtAprovn1', 'dtAprovn2', 'dtAprovn3', 'situacao', 'analiseStatus', 'loteReg'];
+  displayedColumns: string[] = ['filial', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dtAprovn1', 'dtAprovn2', 'dtAprovn3', 'situacao', 'analiseStatus', 'loteReg'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -72,7 +72,6 @@ export class LoteRegComponent implements OnInit {
         this.arrDados.push({
           'id_loteRegProd': xy.id_loteRegProd,
           'filial': xy.filial,
-          'op': xy.op,
           'produto': xy.produto,
           'descricao': xy.descricao,
           'lote': xy.lote,
@@ -170,7 +169,7 @@ export class LoteRegComponent implements OnInit {
   }
 
   detalheLote(xcRow) {
-    const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote))[0];
+    const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote && x.analise === xcRow.analise))[0];
     localStorage.removeItem('loteDetalhe');
     localStorage.setItem('loteDetalhe', JSON.stringify(_aProd));
     this.router.navigate(['loteDetalhe']);

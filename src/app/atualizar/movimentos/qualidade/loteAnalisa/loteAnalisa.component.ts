@@ -12,7 +12,7 @@ import { funcGeral } from 'app/funcs/funcGeral';
 export interface cadLote {
   seq: string;
   codigo: string;
-  descricao: string;
+  descrProd: string;
   tipo: string;
   unidade: string;
   grupo: string;
@@ -37,14 +37,15 @@ export class LoteAnalisaComponent implements OnInit {
   filial: string = '';
   op: string = '';
   produto: string = '';
-  descricao: string = '';
+  descrProd: string = '';
   revisao: string = '';
   seq: string = '';
-  nivel: string = '';
+  especAlcada: string = '';
   validade: any = 0;
   quebra: string = '';
   qtdeQuebra: string = '';
   lote: string = '';
+  analise: string = '';
   qtde: any = 0;
   qtdeTot: any = 0;
   usrAprov: any = '';
@@ -67,7 +68,7 @@ export class LoteAnalisaComponent implements OnInit {
   tpQuebra: string[] = ['Dia', 'Peso'];
   tpativo: string[] = ['Sim', 'Não'];
   lotes: Observable<any>;
-  displayedColumns: string[] = ['op', 'codCarac', 'descCarac', 'qtdeProd', 'itemin', 'itemax', 'itemeio', 'itetxt', 'result', 'situacao', 'editResult'];
+  displayedColumns: string[] = ['codCarac', 'descCarac', 'iteMin', 'iteMax', 'iteMeio', 'itetxt', 'result', 'situacao', 'editResult'];
   dataSource: MatTableDataSource<cadLote>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -87,7 +88,8 @@ export class LoteAnalisaComponent implements OnInit {
   // busca a relação de produtos com as loteções
   buscaLoteDetalhes() {
     let ord = 0;
-    let cNivel = '';
+    let tot = 0;
+    let codCaracteristica = '';
     this.lAnalise = false
     this.lEdit = false
 
@@ -98,65 +100,51 @@ export class LoteAnalisaComponent implements OnInit {
       'analise': this.aProd.analise
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj);
-    
+
     this.arrBusca.subscribe(cada => {
       console.log(cada);
       cada.forEach(xy => {
         ord++
-        this.arrDados.push({
-          'filial': xy.filial,
-          'op': xy.op,
-          'produto': xy.produto,
-          'descricao': xy.descricao,
-          'lote': xy.lote,
-          'dtAprov': xy.dtAprov,
-          'usrAprov': xy.usrAprov,
-          'dtVenc': xy.dtVenc,
-          'qtdeProd': xy.qtdeProd,
-          'qtdeTot': xy.qtde,
-          'revisao': xy.revisao,
-          'codCarac': xy.codCarac,
-          'descCarac': xy.descrProd,
-          'itemin': xy.iteMin?.toFixed(3),
-          'itemax': xy.iteMax?.toFixed(3),
-          'itemeio': xy.itemeio,
-          'itetxt': xy.itetxt,
-          'result': xy.result?.toFixed(3),
-          'situacao': xy.situacao,
-          'sitFim': xy.sitFim,
-          'imprimeLaudo': xy.imprimeLaudo != ""?xy.imprimeLaudo:"SIM",
-          'id_loteProd': xy.id_loteProd
-        })
-        if (cNivel == '') {
-          if (xy.nivel == 'N1') {
-            cNivel = 'Nivel 01'
-          }
-          if (xy.nivel == 'N2') {
-            cNivel = 'Nivel 02'
-          }
-          if (xy.nivel == 'N3') {
-            cNivel = 'Nivel 03'
+        tot += xy.qtde
+        if (codCaracteristica.indexOf(xy.codCarac) < 0) {
+          codCaracteristica += xy.codCarac
+          this.arrDados.push({
+            'id_num': xy.id_num,
+            'idEspecCab': xy.idEspecCab,
+            'idEspecItens': xy.idEspecItens,
+            'filial': xy.filial,
+            'produto': xy.produto,
+            'descrProd': xy.descrProd,
+            'lote': xy.lote,
+            'analise': xy.analise,
+            'qtde': xy.qtde,
+            'cabRevisao': xy.cabRevisao,
+            'dtVenc': xy.dtVenc,
+            'especAlcada': xy.especAlcada,
+            'iteCarac': xy.iteCarac,
+            'codCarac': xy.codCarac,
+            'descCarac': xy.descCarac,
+            'iteMin': xy.iteMin,
+            'iteMax': xy.iteMax,
+            'iteMeio': xy.iteMeio,
+            'itetxt': xy.itetxt,
+          })
+          if (ord === 1) {
+            this.filial = xy.filial
+            this.produto = xy.produto
+            this.lote = xy.lote
+            this.analise = xy.analise
+            this.descrProd = xy.descrProd
+            this.revisao = xy.cabRevisao
+            this.especAlcada = xy.especAlcada
           }
         }
-        if (xy.orig != 'analise' || xy.situacao != 'Aprovado' || xy.sitFim == 'Aprovado') {
-          this.lAnalise = true
-        }
-        if (xy.sitFim == 'Aprovado') {
-          this.lEdit = true
-        }
-        this.filial = xy.filial
-        this.produto = xy.produto
-        this.descricao = xy.descrProd
-        this.revisao = xy.cabRevisao
-        this.lote = xy.lote
-        this.nivel = cNivel
-        this.qtdeTot = xy.qtde
-        this.dtVenc = this.fg.dtob(xy.dtVenc)
+        this.qtdeTot = tot
+
       })
-      console.log(this.arrDados);
-        this.dataSource = new MatTableDataSource(this.arrDados)
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+      this.dataSource = new MatTableDataSource(this.arrDados)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 
@@ -167,7 +155,7 @@ export class LoteAnalisaComponent implements OnInit {
       'filial': this.filial,
       'op': ' ',
       'produto': this.produto,
-      'descricao': this.descricao,
+      'descrProd': this.descrProd,
       'lote': this.lote,
       'usrAprov': this.aUsr.codUser,
       'usrPerfil': nivAprov,
@@ -175,9 +163,9 @@ export class LoteAnalisaComponent implements OnInit {
       'qtde': this.qtdeTot,
       'revisao': this.revisao,
       'codCarac': ' ',
-      'itemin': 0,
-      'itemax': 0,
-      'itemeio': ' ',
+      'iteMin': 0,
+      'iteMax': 0,
+      'iteMeio': ' ',
       'itetxt': ' ',
       'result': 0,
       'resultxt': ' ',
@@ -219,8 +207,6 @@ export class LoteAnalisaComponent implements OnInit {
   }
 
 
-
-
   editLinha(e, i) {
     this.editInd = i;
   }
@@ -245,12 +231,11 @@ export class LoteAnalisaComponent implements OnInit {
         else
           sit = 'Aprovado';
     }
-
     const obj = {
       'filial': this.filial,
       'op': xcRow.op,
       'produto': this.produto,
-      'descricao': this.descricao,
+      'descrProd': this.descrProd,
       'lote': this.lote,
       'usrAprov': this.aUsr.codUser,
       'usrPerfil': this.aUsr.perfil,
@@ -295,8 +280,8 @@ export class LoteAnalisaComponent implements OnInit {
     this.router.navigate(['loteReg']);
   }
 
-  alteraImprimeLaudo(row){
-    var obj = {id_loteProd: row.id_loteProd}
+  alteraImprimeLaudo(row) {
+    var obj = { id_loteProd: row.id_loteProd }
     console.log(obj);
     this.fj.execProd('analisaAprovaLote', obj);
   }
