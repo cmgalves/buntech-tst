@@ -136,7 +136,7 @@ export class LoteAnalisaComponent implements OnInit {
             this.especAlcada = xy.especAlcada
           }
         }
-        this.qtdeTot = xy.qtde
+        this.qtdeTot = this.fg.formatarNumero(xy.qtde)
 
       })
       this.dataSource = new MatTableDataSource(this.arrDados)
