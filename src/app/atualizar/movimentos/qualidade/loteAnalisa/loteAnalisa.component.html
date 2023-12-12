@@ -113,7 +113,7 @@
                                 <ng-container matColumnDef="result">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Resultado </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
-                                        <p *ngIf='editInd!=i'>{{row.result}}</p>
+                                        <p *ngIf='editInd!=i'>{{row.result==0?row.resultxt:row.result}}</p>
                                         <input ng-maxlength="20" type='text' value={{row.result}} id="idResult" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>

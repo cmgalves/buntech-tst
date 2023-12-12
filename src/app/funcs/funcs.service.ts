@@ -29,7 +29,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.post(url, obj)
-      .map((response: Response) => response.json());
+      .map((response: Response) => {console.log(response); return response.json()});
 
   }
 

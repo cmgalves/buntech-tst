@@ -125,6 +125,9 @@ export class LoteAnalisaComponent implements OnInit {
             'iteMax': xy.iteMax,
             'iteMeio': xy.iteMeio,
             'iteTxt': xy.iteTxt,
+            'situacao': xy.situacao,
+            'result': xy.result,
+            'resultxt': xy.resultxt
           })
           if (ord === 1) {
             this.filial = xy.filial
@@ -212,46 +215,39 @@ export class LoteAnalisaComponent implements OnInit {
     let sit: string = '';
     let vResultxt: string = '';
     let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value;
-    var nbm;
+    var nbm = 0;
+    let dtAtual = new Date();
 
-
-    if(isNaN(parseFloat(vNum))){
-      if(vNum == 'N'){
+    if (isNaN(parseFloat(vNum))) {
+      vResultxt = vNum;
+      if (vNum == 'N') {
         sit = 'Reprovado';
       } else if (vNum = 'S') sit = 'Aprovado';
-      else alert('Por favor, digite S ou N ou um valor numérico');
+      else return alert('Por favor, digite S ou N ou um valor numérico');
     } else {
       nbm = parseFloat(vNum);
-      if(xcRow.itemin > 0 || xcRow.itemax > 0)
-        if(nbm < xcRow.itemin || nbm > xcRow.itemax)
+      console.log(xcRow.iteMin);
+      if (xcRow.iteMin > 0 || xcRow.iteMax > 0)
+        if (nbm < xcRow.iteMin || nbm > xcRow.iteMax)
           sit = 'Reprovado';
         else
           sit = 'Aprovado';
     }
     const obj = {
       'filial': this.filial,
-      'op': xcRow.op,
       'produto': this.produto,
-      'descrProd': this.descrProd,
       'lote': this.lote,
-      'usrAprov': this.aUsr.codUser,
-      'usrPerfil': this.aUsr.perfil,
-      'dtVenc': this.fg.btod(this.dtVenc),
-      'qtde': this.qtdeTot,
-      'revisao': this.revisao,
-      'codCarac': xcRow.codCarac,
-      'itemin': xcRow.itemin,
-      'itemax': xcRow.itemax,
-      'itemeio': xcRow.itemeio?xcRow.itemeio:0,
-      'iteTxt': xcRow.iteTxt?xcRow.iteTxt:"",
-      'result': isNaN(parseFloat(vNum))?0:vNum,
+      'analise': this.analise,
+      'carac': xcRow.codCarac,
+      'result': nbm,
+      'dtAnalise': dtAtual.toISOString().split('T')[0],
+      'hrAnalise': dtAtual.getHours(),
       'resultxt': vResultxt,
       'situacao': sit,
-      'just': '',
-      'tipo': 'E',
+      'usrAnalise': this.aUsr.codUser
     }
-    this.fj.execProd('analisaAprovaLote', obj);
-    //window.location.reload();
+    this.fj.execProd('aprovacaoLote', obj);
+    window.location.reload();
   }
   exportExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
