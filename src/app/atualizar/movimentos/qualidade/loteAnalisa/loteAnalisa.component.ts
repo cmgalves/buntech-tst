@@ -277,4 +277,24 @@ export class LoteAnalisaComponent implements OnInit {
     this.fj.execProd('analisaAprovaLote', obj);
   }
 
+  confirmar(){
+    var situacaoAnalise = '';
+
+    var rejeitado = this.arrDados.filter(q => q.situacao != 'Aprovado');
+    if(rejeitado.length != 0){
+      situacaoAnalise = 'ANDAMENTO';
+    } else situacaoAnalise = 'APROVADO';
+
+    var obj = {
+      filial: this.filial,
+      produto: this.produto,
+      lote: this.lote,
+      analise: this.analise,
+      loteAprov: situacaoAnalise,
+    }
+
+    this.fj.execProd('confirmaAnalise', obj);
+    window.location.reload();
+  }
+
 }

@@ -37,7 +37,7 @@ export class LoteRegComponent implements OnInit {
   filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dtAprovn1', 'dtAprovn2', 'dtAprovn3', 'situacao', 'analiseStatus', 'loteReg'];
+  displayedColumns: string[] = ['filial', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dtAprovn1', 'dtAprovn2', 'dtAprovn3', 'loteReg'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
