@@ -48,16 +48,13 @@ export class OpresumoComponent implements OnInit {
   aGrpB: any = [];
   aOpAndamentoResumo: any = [];
   aOpAnalitica: any = [];
-  arrOpresumo886: any = [];
-  arrOpresumo887: any = [];
-  arrOpresumo888: any = [];
   arrOpresumoTab: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
   situacoes = ["Sem Status", "Produção", "Liberada", "Planejada", "Interrompida", "Baixada", "Encerrada", "Cancelada"];
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'dtcria', 'edicao'];
+  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'dtcria', 'loteAprov', 'dtAprov', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -104,71 +101,13 @@ export class OpresumoComponent implements OnInit {
           'analise': xy.analise,
           'dtcria': xy.dtcria,
           'loteAprov': xy.loteAprov,
-          'dtAprovn1': xy.dtAprovn1,
-          'dtAprovn2': xy.dtAprovn2,
-          'dtAprovn3': xy.dtAprovn3,
-          'usrAprovn1': xy.usrAprovn1,
-          'usrAprovn2': xy.usrAprovn2,
-          'usrAprovn3': xy.usrAprovn3,
-          'qtdeLote': xy.qtdeLote,
-          'situacao': xy.situacao,
-          'analiseStatus': xy.analiseStatus,
-          'alcadaProd': xy.alcadaProd
+          'dtAprov': xy.dtcria,
         })
       });
       this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
-    
-    // this.arrOpAnd = JSON.parse(localStorage.getItem('opAndamento'));
-
-    // const obj = {
-    //   'filial': this.xcFilial,
-    //   'perfil': this.xcPerfil
-    // };
-    // let conta = 0
-
-    // this.aOpAndamentoResumo = this.fj.buscaPrt('opAndamentoResumo', obj);
-
-    // // filial;op;recurso;operacao;integrado;produto;producao;retrabalho;segundos;situacao;situDesc;dia;emissao;qtde;entregue;dtfim;final
-    // this.aOpAndamentoResumo.subscribe(cada => {
-    //   cada.forEach(xy => {
-    //     const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
-    //     let sitDesc = xy.final !== '' ? 'Integrada' : xy.situDesc
-    //     conta++
-    //     this.arrOpresumoTab.push({
-    //       'SEQ': conta,
-    //       'FILIAL': xy.filial,
-    //       'OP': xy.op,
-    //       'RECURSO': xy.recurso,
-    //       'OPERACAO': xy.operacao,
-    //       'EMISSAO': xy.emissao,
-    //       'FINAL': xy.final,
-    //       'ENTREGUE': xy.entregue,
-    //       'CODPROD': xy.produto,
-    //       'QTDEPRT': xy.qtde,
-    //       'QTDEPCF': xy.producao,
-    //       'RETRABALHO': xy.retrabalho,
-    //       'SEGUNDOS': xy.segundos,
-    //       'HORAS': this.fj.toHHMMSS(xy.segundos),
-    //       'SITUACAO': sitDesc,
-    //       'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
-    //     })
-    //     this.arrOpPcf.push({
-    //       'FILIAL': xy.filial,
-    //       'OP': xy.op,
-    //       'APT': xy.dia,
-    //     })
-
-    //   });
-    //   localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-    //   this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    //   this.applyFilter()
-
-    // });
 
   }
 
@@ -254,9 +193,7 @@ export class OpresumoComponent implements OnInit {
 
 
   visuOp(xcRow) {
-    const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
-    localStorage.setItem('op', JSON.stringify(filOP));
-    this.atuOP(filOP[0].FILIAL, filOP[0].OP)
+    localStorage.setItem('op', JSON.stringify(xcRow));
     this.router.navigate(['opVisualiza']);
   }
 
