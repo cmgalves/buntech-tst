@@ -279,7 +279,7 @@ export class LoteAnalisaComponent implements OnInit {
 
   confirmar(){
     var situacaoAnalise = '';
-
+    var dataAprovacao = '';
     var rejeitado = this.arrDados.filter(q => q.situacao != 'Aprovado');
     if(rejeitado.length != 0){
       situacaoAnalise = 'ANDAMENTO';
@@ -291,10 +291,11 @@ export class LoteAnalisaComponent implements OnInit {
       lote: this.lote,
       analise: this.analise,
       loteAprov: situacaoAnalise,
+      dataAprovacao: new Date().toISOString().split('T')[0]
     }
 
-    this.fj.execProd('confirmaAnalise', obj);
-    window.location.reload();
+    this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
+   // window.location.reload();
   }
 
 }
