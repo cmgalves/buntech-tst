@@ -71,8 +71,8 @@ export class OpresumoComponent implements OnInit {
       this.opFilter = this.numOP[0].OP
     }
 
+    this.buscaOpresumos();
     this.buscaGrupo();
-    this.buscaOpsAndamentoProtheus();
     this.buscaRecursos();
     this.buscaProdutos();
   }

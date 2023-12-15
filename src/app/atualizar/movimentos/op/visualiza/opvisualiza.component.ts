@@ -60,9 +60,7 @@ export class OpvisualizaComponent implements OnInit {
     this.buscaOpsAndamentoProtheus();
   }
 
-  voltaResumo() {
-    this.router.navigate(['opResumo']);
-  }
+
   buscaOpsAndamentoProtheus() {
 
     this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
@@ -158,7 +156,7 @@ export class OpvisualizaComponent implements OnInit {
 
   }
 
-
+  // exporta a tela de dados para o excel
   exportExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
     const sn = sheetName;
@@ -169,6 +167,7 @@ export class OpvisualizaComponent implements OnInit {
   }
 
 
+  // aplica o filtro informado pelo usuário
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -178,5 +177,8 @@ export class OpvisualizaComponent implements OnInit {
     }
   }
 
-
+  // volta para tela anterior
+  voltaResumo() {
+    this.router.navigate(['opResumo']);
+  }
 }
