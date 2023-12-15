@@ -48,16 +48,13 @@ export class OpresumoComponent implements OnInit {
   aGrpB: any = [];
   aOpAndamentoResumo: any = [];
   aOpAnalitica: any = [];
-  arrOpresumo886: any = [];
-  arrOpresumo887: any = [];
-  arrOpresumo888: any = [];
   arrOpresumoTab: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
   situacoes = ["Sem Status", "Produção", "Liberada", "Planejada", "Interrompida", "Baixada", "Encerrada", "Cancelada"];
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['SEQ', 'FILIAL', 'OP', 'RECURSO', 'OPERACAO', 'EMISSAO', 'FINAL', 'CODPROD', 'QTDEPCF', 'QTDEPRT', 'ENTREGUE', 'RETRABALHO', 'HORAS', 'SITUACAO', 'EDICAO'];
+  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'dtcria', 'loteAprov', 'dtAprov', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -79,6 +76,41 @@ export class OpresumoComponent implements OnInit {
     this.buscaRecursos();
     this.buscaProdutos();
   }
+
+  
+  // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
+  buscaOpresumos() {
+    let ord = 0;
+    const obj = {
+      'loteAprov': 'APROVADO',
+    };
+    this.arrOpresumoTab = [];
+
+    this.aOpAndamentoResumo = this.fj.buscaPrt('relacaoOpLote', obj);
+
+    this.aOpAndamentoResumo.subscribe(cada => {
+      cada.forEach(xy => {
+        ord++
+        this.arrOpresumoTab.push({
+          'id_loteRegProd': xy.id_loteRegProd,
+          'filial': xy.filial,
+          'op': xy.op,
+          'produto': xy.produto,
+          'descricao': xy.descricao,
+          'lote': xy.lote,
+          'analise': xy.analise,
+          'dtcria': xy.dtcria,
+          'loteAprov': xy.loteAprov,
+          'dtAprov': xy.dtcria,
+        })
+      });
+      this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+
+  }
+
 
   buscaGrupo() {
     this.aGrpA = this.fj.buscaPrt('agrupaRecursos', {});
@@ -160,63 +192,8 @@ export class OpresumoComponent implements OnInit {
   }
 
 
-  // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
-  buscaOpresumos() {
-    this.arrOpAnd = JSON.parse(localStorage.getItem('opAndamento'));
-
-    const obj = {
-      'filial': this.xcFilial,
-      'perfil': this.xcPerfil
-    };
-    let conta = 0
-
-    this.aOpAndamentoResumo = this.fj.buscaPrt('opAndamentoResumo', obj);
-
-    // filial;op;recurso;operacao;integrado;produto;producao;retrabalho;segundos;situacao;situDesc;dia;emissao;qtde;entregue;dtfim;final
-    this.aOpAndamentoResumo.subscribe(cada => {
-      cada.forEach(xy => {
-        const grp = this.aGrpB.filter(x => (x.recurso === xy.recurso));
-        let sitDesc = xy.final !== '' ? 'Integrada' : xy.situDesc
-        conta++
-        this.arrOpresumoTab.push({
-          'SEQ': conta,
-          'FILIAL': xy.filial,
-          'OP': xy.op,
-          'RECURSO': xy.recurso,
-          'OPERACAO': xy.operacao,
-          'EMISSAO': xy.emissao,
-          'FINAL': xy.final,
-          'ENTREGUE': xy.entregue,
-          'CODPROD': xy.produto,
-          'QTDEPRT': xy.qtde,
-          'QTDEPCF': xy.producao,
-          'RETRABALHO': xy.retrabalho,
-          'SEGUNDOS': xy.segundos,
-          'HORAS': this.fj.toHHMMSS(xy.segundos),
-          'SITUACAO': sitDesc,
-          'GRUPO': grp.length === 0 ? '' : grp[0].grupo,
-        })
-        this.arrOpPcf.push({
-          'FILIAL': xy.filial,
-          'OP': xy.op,
-          'APT': xy.dia,
-        })
-
-      });
-      localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-      this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.applyFilter()
-
-    });
-
-  }
-
   visuOp(xcRow) {
-    const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
-    localStorage.setItem('op', JSON.stringify(filOP));
-    this.atuOP(filOP[0].FILIAL, filOP[0].OP)
+    localStorage.setItem('op', JSON.stringify(xcRow));
     this.router.navigate(['opVisualiza']);
   }
 

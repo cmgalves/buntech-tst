@@ -46,63 +46,39 @@
                         </div>
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
-                                <ng-container matColumnDef="SEQ">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> SEQ </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.SEQ}} </td>
+                                <ng-container matColumnDef="id_loteRegProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.id_loteRegProd}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="FILIAL">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> FIL </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.FILIAL}} </td>
+                                <ng-container matColumnDef="filial">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Filial </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.filial}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="OP">
+                                <ng-container matColumnDef="op">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> OP </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.OP.substring(0,6)}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.op}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="RECURSO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> REC </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.RECURSO}} </td>
+                                <ng-container matColumnDef="lote">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Lote </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.lote}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="OPERACAO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> OPER </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.OPERACAO}} </td>
+                                <ng-container matColumnDef="analise">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Análise </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.analise}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="EMISSAO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> EMISSAO </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.EMISSAO}} </td>
+                                <ng-container matColumnDef="dtcria">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Emissão </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtcria}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="FINAL">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> FINAL </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.FINAL}} </td>
+                                <ng-container matColumnDef="loteAprov">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Situação </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.loteAprov}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="CODPROD">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> CODPROD </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.CODPROD}} </td>
+                                <ng-container matColumnDef="dtAprov">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Aprovação </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dtAprov}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="QTDEPCF">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> QTDEPCF </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.QTDEPCF}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="QTDEPRT">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> QTDEPRT </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.QTDEPRT}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="ENTREGUE">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ENTREGUE </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.ENTREGUE}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="RETRABALHO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> RET </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.RETRABALHO}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="HORAS">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> HORAS </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.HORAS}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="SITUACAO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> SITUACAO </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.SITUACAO}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="EDICAO">
+                                <ng-container matColumnDef="edicao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> EDIÇÃO </th>
                                     <td mat-cell *matCellDef="let row">
                                         <button (click)="visuOp(row)" mat-raised-button type="button" matTooltip="Visualizar" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
