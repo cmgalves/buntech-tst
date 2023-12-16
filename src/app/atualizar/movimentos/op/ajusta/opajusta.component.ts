@@ -298,10 +298,6 @@ export class OpajustaComponent implements OnInit {
   }
 
 
-  // tecla para retorno de tela
-  voltaResumo() {
-    this.router.navigate(['opResumo']);
-  }
 
   buscaOpsAndamentoProtheus() {
 
@@ -474,4 +470,9 @@ export class OpajustaComponent implements OnInit {
   }
 
 
+  // tecla para retorno de tela
+  voltaResumo() {
+    this.router.navigate(['opResumo']);
+  }
+  
 }
