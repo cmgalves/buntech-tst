@@ -57,46 +57,26 @@ export class OpvisualizaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buscaOpsAndamentoProtheus();
+    this.buscaOpvisualiza();
   }
 
 
-  buscaOpsAndamentoProtheus() {
-
-    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
-
-    this.arrOpAndA.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrOpAndB.push({
-          'filial': xy.FILIAL,
-          'op': xy.OP,
-          'emissao': xy.EMISSAO,
-          'qtde': xy.QTDE,
-          'entregue': xy.ENTREGUE,
-          'final': xy.FINAL,
-        })
-      });
-      this.buscaOpvisualiza();
-
-    });
-  }
-
-  buscaOpvisualiza() {
+  buscaOpvisualiza() { //View_Portal_OP
     let conta = 0;
     let secs = 0;
     let retr = 0;
     let grupo = '';
     let oper = '00';
-    let xcFilial = this.numOP[0].FILIAL;
-    let xcOp = this.numOP[0].OP;
+    let xcFilial = this.numOP.filial;
+    let xcOp = this.numOP.op;
     const obj = {
       filial: xcFilial,
       op: xcOp,
       tipo: 'tudo',
     };
-
-    const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
-    this.arrOpvisualiza = this.fj.buscaPrt('opAndamento', obj);
+    this.arrOpvisualiza = [];
+    // const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
+    this.arrOpvisualiza = this.fj.buscaPrt('pcpRelacaoLoteOpEmpenho', obj); //vw_pcp_relacao_lote_op_empenho
 
     this.arrOpvisualiza.subscribe(cada => {
       cada.forEach(xy => {
@@ -117,33 +97,9 @@ export class OpvisualizaComponent implements OnInit {
           conta++
           this.opFilial = xy.FILIAL;
           this.opCodigo = xy.OP;
-          this.opEmissao = filOP.emissao;
-          this.opFinal = filOP.final;
           this.opProduto = xy.PRODUTO;
           this.opDescricao = xy.DESCRICAO;
-          this.opQtde = filOP.qtde;
-          this.opEntregue = filOP.entregue;
-          this.numOP.forEach(ax => {
-            if (ax.OPERACAO >= oper) {
-              if (ax.GRUPO === '') {
-                this.opQtdePcf = ax.QTDEPCF
-              } else {
-                if (grupo === '') {
-                  this.opQtdePcf = ax.QTDEPCF
-                } else {
-                  if (grupo === ax.GRUPO) {
-                    this.opQtdePcf += ax.QTDEPCF
-                  } else {
-                    this.opQtdePcf = ax.QTDEPCF
-                  }
-                }
-              }
-              oper = ax.OPERACAO
-              grupo = ax.GRUPO
-            }
-            secs += ax.SEGUNDOS
-            retr = ax.RETRABALHO
-          });
+          this.opQtde = xy.QTDE
           this.opRetrabalho = String(retr)
           this.opHoras = this.fj.toHHMMSS(secs)
           oper = '00'

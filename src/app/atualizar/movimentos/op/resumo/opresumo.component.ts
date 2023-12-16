@@ -54,7 +54,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'dtcria', 'loteAprov', 'dtAprov', 'edicao'];
+  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'qtdeLote', 'dtcria', 'loteAprov', 'dtAprov', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -67,17 +67,10 @@ export class OpresumoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.numOP !== null) {
-      this.opFilter = this.numOP[0].OP
-    }
-
     this.buscaOpresumos();
-    this.buscaGrupo();
-    this.buscaRecursos();
-    this.buscaProdutos();
   }
 
-  
+
   // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
   buscaOpresumos() {
     let ord = 0;
@@ -86,7 +79,7 @@ export class OpresumoComponent implements OnInit {
     };
     this.arrOpresumoTab = [];
 
-    this.aOpAndamentoResumo = this.fj.buscaPrt('relacaoOpLote', obj);
+    this.aOpAndamentoResumo = this.fj.buscaPrt('relacaoOpLote', obj); //vw_pcp_relacao_op_lote
 
     this.aOpAndamentoResumo.subscribe(cada => {
       cada.forEach(xy => {
@@ -102,6 +95,7 @@ export class OpresumoComponent implements OnInit {
           'dtcria': xy.dtcria,
           'loteAprov': xy.loteAprov,
           'dtAprov': xy.dtcria,
+          'qtdeLote': xy.qtdeLote,
         })
       });
       this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
@@ -111,42 +105,6 @@ export class OpresumoComponent implements OnInit {
 
   }
 
-
-  buscaGrupo() {
-    this.aGrpA = this.fj.buscaPrt('agrupaRecursos', {});
-    this.aGrpA.subscribe(cada => {
-      cada.forEach(xy => {
-        this.aGrpB.push({
-          'recurso': xy.recurso,
-          'grupo': xy.grupo,
-        })
-      });
-    });
-  }
-
-  // busca os produtos no cadastro para utilizar os dados necessários
-  buscaProdutos() {
-    const obj = {
-      'produto': ''
-    };
-    this.arrProdB = [];
-    this.arrProdA = this.fj.buscaPrt('cadastroProdutos', obj);
-
-    this.arrProdA.subscribe(cada => {
-      cada.forEach(xy => {
-        if (xy.situacao === 'Liberado' && ('MP, PP, ME, MI, HR, GG, MO, PA, IN, LB, MK, MR, MT, PN, SP').indexOf(xy.tipo) > -1) {
-          this.arrProdB.push({
-            'codigo': xy.codigo,
-            'descricao': xy.descricao,
-            'unidade': xy.unidade,
-            'retrabalho': xy.retrabalho,
-            'mdo': xy.mdo,
-          })
-        }
-      });
-      localStorage.setItem('cadProd', JSON.stringify(this.arrProdB));
-    });
-  }
 
   // busca os produtos no cadastro para utilizar os dados necessários
   buscaOpsAndamentoProtheus() {
@@ -171,28 +129,8 @@ export class OpresumoComponent implements OnInit {
     });
   }
 
-  // busca a relação de recursos que podem ser usados na produção da OP
-  buscaRecursos() {
-    const obj = {
-      'filial': '',
-      'codigo': '',
-    };
-    this.arrRecA = this.fj.buscaPrt('cadRecursos', obj);
-
-    this.arrRecA.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrRecB.push({
-          'filial': xy.filial,
-          'codigo': xy.codigo,
-          'custo': xy.custo,
-        })
-      });
-      localStorage.setItem('recurso', JSON.stringify(this.arrRecB));
-    });
-  }
-
-
   visuOp(xcRow) {
+    
     localStorage.setItem('op', JSON.stringify(xcRow));
     this.router.navigate(['opVisualiza']);
   }
@@ -249,7 +187,7 @@ export class OpresumoComponent implements OnInit {
         }
       }
     }
-    return true
+    return false
   }
 
   // aplica o filtro na tabela de OPs
@@ -269,9 +207,9 @@ export class OpresumoComponent implements OnInit {
   }
 
   filterSituacao(filterValue) {
-    if(filterValue != undefined){
+    if (filterValue != undefined) {
       console.log(this.arrOpresumoTab);
-      const arrayFiltrado = this.arrOpresumoTab.filter(q => q.SITUACAO == this.situacoes[filterValue/10]);
+      const arrayFiltrado = this.arrOpresumoTab.filter(q => q.SITUACAO == this.situacoes[filterValue / 10]);
       this.dataSource = new MatTableDataSource(arrayFiltrado);
     } else {
       this.dataSource = new MatTableDataSource(this.arrOpresumoTab);
