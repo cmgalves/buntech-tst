@@ -66,6 +66,7 @@ export class LoteRegComponent implements OnInit {
 
     this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil });
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -85,8 +86,9 @@ export class LoteRegComponent implements OnInit {
           'qtdeLote': xy.qtdeLote,
           'situacao': xy.situacao,
           'analiseStatus': xy.analiseStatus,
-          'alcadaProd': xy.alcadaProd
-        })
+          'alcadaProd': xy.alcadaProd,
+          'podeAprovar': xy.podeAprovar=="true"
+        });
       });
       this.filLoteReg = xcFil;
       this.dataSource = new MatTableDataSource(this.arrDados)
