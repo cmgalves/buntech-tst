@@ -46,6 +46,7 @@ export class LoteDetalheComponent implements OnInit {
   analise: string = '';
   qtde: any = 0;
   qtdeTot: any = 0;
+  qtdeLabel:any = "";
   dtProd: any = '';
   hrProd: any = '';
   dtVenc: any = '';
@@ -113,9 +114,8 @@ export class LoteDetalheComponent implements OnInit {
         this.lote = xy.lote
         this.analise = xy.analise
         this.qtdeTot += xy.qtdeLote
-        
       });
-
+      this.qtdeLabel = this.fg.formatarNumero(this.qtdeTot);
       this.dataSource = new MatTableDataSource(this.arrDados)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

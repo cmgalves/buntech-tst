@@ -39,7 +39,7 @@
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Quantidade</mat-label>
-                            <input matInput [(ngModel)]="qtdeTot" disabled>
+                            <input matInput [(ngModel)]="qtdeLabel" disabled>
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-12">
@@ -92,7 +92,7 @@
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeLote">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Qtde Produção</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.qtdeLote}}
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeLote)}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="situacao">
