@@ -214,7 +214,7 @@ export class LoteAnalisaComponent implements OnInit {
   editResult(xcRow) {
     let sit: string = '';
     let vResultxt: string = '';
-    let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value;
+    let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value.toUpperCase();
     var nbm = 0;
     let dtAtual = new Date();
 
@@ -222,7 +222,7 @@ export class LoteAnalisaComponent implements OnInit {
       vResultxt = vNum;
       if (vNum == 'N') {
         sit = 'Reprovado';
-      } else if (vNum = 'S') sit = 'Aprovado';
+      } else if (vNum == 'S') sit = 'Aprovado';
       else return alert('Por favor, digite S ou N ou um valor numérico');
     } else {
       nbm = parseFloat(vNum);
