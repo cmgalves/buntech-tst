@@ -36,11 +36,14 @@ export class LoteAprovaComponent implements OnInit {
   aDados: any = [];
   Dados: any = [];
   filial: string = '';
+  op: string = '';
   produto: string = '';
-  descricao: string = '';
+  descrProd: string = '';
   revisao: string = '';
   seq: string = '';
   validade: any = 0;
+  especAlcada: string = '';
+  analise: string = '';
   quebra: string = '';
   qtdeQuebra: string = '';
   lote: string = '';
@@ -105,56 +108,66 @@ export class LoteAprovaComponent implements OnInit {
     });
   }
 
-  // busca a relação de produtos com as loteções
   buscaLoteDetalhes() {
-    this.arrBusca = {};
     let ord = 0;
+    let codCaracteristica = '';
 
     const obj = {
       'filial': this.aProd.filial,
       'produto': this.aProd.produto,
-      'lote': this.aProd.lote
+      'lote': this.aProd.lote,
+      'analise': this.aProd.analise
     };
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteAprova', obj);
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
+
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
-        this.arrDados.push({
-          'id_loteProd': xy.id_loteProd,
-          'filial': xy.filial,
-          'op': xy.op,
-          'produto': xy.produto,
-          'descricao': xy.descricao,
-          'lote': xy.lote,
-          'dtAprov': xy.dtAprov,
-          'usrAprov': xy.usrAprov,
-          'usrProd': xy.usrProd,
-          'dtVenc': xy.dtVenc,
-          'qtdeTot': xy.qtdeTot,
-          'revisao': xy.revisao,
-          'situacao': xy.situacao,
-          'descCarac': xy.descCarac,
-          'itemin': xy.itemin,
-          'itemax': xy.itemax,
-          'itemeio': xy.itemeio,
-          'justificativa': xy.justificativa,
-          'result': xy.result,
-        })
-        if (ord === 1) {
-
-          this.filial = xy.filial
-          this.produto = xy.produto
-          this.descricao = xy.descricao
-          this.revisao = xy.revisao
-          this.lote = xy.lote
-          this.quebra = xy.quebra
-          this.qtdeTot = xy.qtdeTot
-          this.nivel = xy.nivel
-          this.dtVenc = this.fg.dtob(xy.dtVenc)
+        if (codCaracteristica.indexOf(xy.codCarac) < 0) {
+          codCaracteristica += xy.codCarac
+          this.arrDados.push({
+            'id_num': xy.id_num,
+            'idEspecCab': xy.idEspecCab,
+            'idEspecItens': xy.idEspecItens,
+            'filial': xy.filial,
+            'produto': xy.produto,
+            'descrProd': xy.descrProd,
+            'lote': xy.lote,
+            'analise': xy.analise,
+            'qtde': xy.qtde,
+            'cabRevisao': xy.cabRevisao,
+            'dtVenc': xy.dtVenc,
+            'especAlcada': xy.especAlcada,
+            'iteCarac': xy.iteCarac,
+            'codCarac': xy.codCarac,
+            'descCarac': xy.descCarac,
+            'iteMin': xy.iteMin,
+            'iteMax': xy.iteMax,
+            'iteMeio': xy.iteMeio,
+            'iteTxt': xy.iteTxt,
+            'situacao': xy.situacao,
+            'result': xy.result,
+            'resultxt': xy.resultxt,
+            'op': xy.op
+          })
+          if (ord === 1) {
+            this.filial = xy.filial
+            this.produto = xy.produto
+            this.lote = xy.lote
+            this.analise = xy.analise
+            this.descrProd = xy.descrProd
+            this.revisao = xy.cabRevisao
+            this.nivel = xy.especAlcada
+            this.n1 = xy.dtAprovn1
+            this.n2 = xy.dtAprovn2
+            this.n3 = xy.dtAprovn3
+            this.dtVenc = xy.dtVenc
+          }
         }
+        this.qtdeTot = this.fg.formatarNumero(xy.qtde)
 
-      });
-
+      })
       this.dataSource = new MatTableDataSource(this.arrDados)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -192,7 +205,7 @@ export class LoteAprovaComponent implements OnInit {
             'filial': this.filial,
             'op': ' ',
             'produto': this.produto,
-            'descricao': this.descricao,
+            'descricao': this.descrProd,
             'lote': this.lote,
             'usrAprov': this.aUsr.codUser,
             'usrPerfil': nivAprov,
@@ -300,7 +313,7 @@ export class LoteAprovaComponent implements OnInit {
       'filial': this.filial,
       'op': ' ',
       'produto': this.produto,
-      'descricao': this.descricao,
+      'descricao': this.descrProd,
       'lote': this.lote,
       'usrAprov': this.aUsr.codUser,
       'usrPerfil': '',

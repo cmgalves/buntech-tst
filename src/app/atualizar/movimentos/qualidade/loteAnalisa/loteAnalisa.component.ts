@@ -121,7 +121,7 @@ export class LoteAnalisaComponent implements OnInit {
             'iteCarac': xy.iteCarac,
             'codCarac': xy.codCarac,
             'descCarac': xy.descCarac,
-            'iteMin': xy.iteMin,
+            'iteMin': xy.itemin,
             'iteMax': xy.iteMax,
             'iteMeio': xy.iteMeio,
             'iteTxt': xy.iteTxt,

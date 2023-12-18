@@ -21,7 +21,7 @@
                     <div class="card-body table-responsive col-md-4">
                         <mat-form-field>
                             <mat-label>Descrição</mat-label>
-                            <input matInput [(ngModel)]="descricao" disabled>
+                            <input matInput [(ngModel)]="descrProd" disabled>
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-2">
@@ -34,12 +34,6 @@
                         <mat-form-field>
                             <mat-label>Quantidade</mat-label>
                             <input matInput [(ngModel)]="qtdeTot" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Revisão</mat-label>
-                            <input matInput [(ngModel)]="revisao" disabled>
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-2">
@@ -116,17 +110,17 @@
                                 </ng-container>
                                 <ng-container matColumnDef="itemin">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Mínimo </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.itemin}}
+                                    <td mat-cell *matCellDef="let row"> {{row.iteMin}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="itemax">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Máximo </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.itemax}}
+                                    <td mat-cell *matCellDef="let row"> {{row.iteMax}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="itemeio">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Meio </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.itemeio}}
+                                    <td mat-cell *matCellDef="let row"> {{row.iteMeio}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="result">
