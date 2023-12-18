@@ -78,9 +78,7 @@ export class OpresumoComponent implements OnInit {
       'loteAprov': 'APROVADO',
     };
     this.arrOpresumoTab = [];
-
     this.aOpAndamentoResumo = this.fj.buscaPrt('relacaoOpLote', obj); //vw_pcp_relacao_op_lote
-
     this.aOpAndamentoResumo.subscribe(cada => {
       cada.forEach(xy => {
         ord++
@@ -105,32 +103,9 @@ export class OpresumoComponent implements OnInit {
 
   }
 
-
-  // busca os produtos no cadastro para utilizar os dados necessários
-  buscaOpsAndamentoProtheus() {
-
-    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
-
-    this.arrOpAndA.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrOpAndB.push({
-          'filial': xy.FILIAL,
-          'op': xy.OP,
-          'produto': xy.PRODUTO,
-          'emissao': xy.EMISSAO,
-          'qtde': xy.QTDE,
-          'entregue': xy.ENTREGUE,
-          'final': xy.FINAL,
-          'dtpon': xy.DTFIM,
-        })
-      });
-      localStorage.setItem('opAndamento', JSON.stringify(this.arrOpAndB));
-      this.buscaOpresumos();
-    });
-  }
-
+  // visualização da OP
   visuOp(xcRow) {
-    
+    this.atuOP(xcRow.filial, xcRow.op, 'v')
     localStorage.setItem('op', JSON.stringify(xcRow));
     this.router.navigate(['opVisualiza']);
   }
@@ -138,7 +113,7 @@ export class OpresumoComponent implements OnInit {
   ajustaOp(xcRow) {
     const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
     localStorage.setItem('op', JSON.stringify(filOP));
-    this.atuOP(filOP[0].FILIAL, filOP[0].OP)
+    this.atuOP(xcRow.filial, xcRow.op, 'a')
     this.router.navigate(['opAjusta']);
   }
 
@@ -146,16 +121,17 @@ export class OpresumoComponent implements OnInit {
     const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
     localStorage.setItem('op', JSON.stringify(filOP));
     console.log(filOP);
-    this.atuOP(filOP[0].FILIAL, filOP[0].OP)
+    this.atuOP(xcRow.filial, xcRow.op, 'c')
     this.router.navigate(['opConfirma']);
   }
 
-  atuOP(xcFil, xcOp) {
+  atuOP(xcFil, xcOp, xcTipo) {
     let obj = {
       'filial': xcFil,
       'op': xcOp,
+      'tipo': xcTipo,
     }
-    this.fj.execProd('atualiza_OP', obj);
+    this.fj.execProd('loteEmpenho', obj);  //PCP..sp_atualiza_OP
   }
 
 
@@ -179,7 +155,6 @@ export class OpresumoComponent implements OnInit {
         }
       }
     }
-
     if (tp === 'c') {
       if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
@@ -198,7 +173,6 @@ export class OpresumoComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-
     if (this.opFilter.length >= 10) {
       this.opFilter = ''
     }
@@ -223,12 +197,9 @@ export class OpresumoComponent implements OnInit {
 
 
   buscatblOutInteg() {
-
     if (('Administrador') == this.arrUserLogado.perfil) {
       let arrTab = []
-
       this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
-
       this.aOpAnalitica.subscribe(cada => {
         cada.forEach(xy => {
           arrTab.push({
@@ -247,7 +218,6 @@ export class OpresumoComponent implements OnInit {
             aponta: xy.aponta,
           })
         });
-
         this.dataExcel = new MatTableDataSource(arrTab)
         this.expExcel('tblOutInteg', 'ops')
       });

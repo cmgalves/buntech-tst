@@ -31,13 +31,15 @@ export class OpvisualizaComponent implements OnInit {
   arrOpvisualizaTab: any = [];
   arrOpAndA: any = [];
   arrOpAndB: any = [];
-  numOP = JSON.parse(localStorage.getItem('op'));
+  aOP = JSON.parse(localStorage.getItem('op'));
   opFilial: string = '';
   opCodigo: string = '';
   opEmissao: string = '';
   opFinal: string = '';
   opProduto: string = '';
   opDescricao: string = '';
+  opLote: string = '';
+  opAnalise: string = '';
   opCodant: string = '';
   opQtde: string = '';
   opEntregue: string = '';
@@ -46,7 +48,7 @@ export class OpvisualizaComponent implements OnInit {
   opHoras: string = '';
 
   opvisualizas: Observable<any>;
-  displayedColumns: string[] = ['COMPONENTE', 'DESCRIC', 'UNIDADE', 'QTDEORI', 'QTDECALC'];
+  displayedColumns: string[] = ['componente', 'descricao', 'qtdeEmp'];
   dataSource: MatTableDataSource<opVisualiza>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -60,15 +62,9 @@ export class OpvisualizaComponent implements OnInit {
     this.buscaOpvisualiza();
   }
 
-
   buscaOpvisualiza() { //View_Portal_OP
-    let conta = 0;
-    let secs = 0;
-    let retr = 0;
-    let grupo = '';
-    let oper = '00';
-    let xcFilial = this.numOP.filial;
-    let xcOp = this.numOP.op;
+    let xcFilial = this.aOP.filial;
+    let xcOp = this.aOP.op;
     const obj = {
       filial: xcFilial,
       op: xcOp,
@@ -82,29 +78,24 @@ export class OpvisualizaComponent implements OnInit {
       cada.forEach(xy => {
 
         this.arrOpvisualizaTab.push({
-          'COMPONENTE': xy.COMPONENTE,
-          'DESCRIC': xy.DESCRIC,
-          'QTDEORI': xy.QTDEORI,
-          'SALDO': xy.SALDO,
-          'ROTEIRO': xy.ROTEIRO,
-          'OPERACAO': xy.OPERACAO,
-          'UNIDADE': xy.UNIDADE,
-          'QTDECALC': xy.QTDECAL,
-          'SITUACA': xy.SITUDESC,
-          'TIPO': xy.TIPO,
+          componente: xy.componente,
+          descricao: xy.descricao,
+          qtdeEmp: xy.qtdeEmp,
+          qtdeEmpCalc: xy.qtdeEmpCalc,
+          saldo: xy.saldo,
+          tipo: xy.tipo,
+          situacao: xy.situacao,
         })
-        if (conta === 0) {
-          conta++
-          this.opFilial = xy.FILIAL;
-          this.opCodigo = xy.OP;
-          this.opProduto = xy.PRODUTO;
-          this.opDescricao = xy.DESCRICAO;
-          this.opQtde = xy.QTDE
-          this.opRetrabalho = String(retr)
-          this.opHoras = this.fj.toHHMMSS(secs)
-          oper = '00'
-        }
+
       });
+      this.opFilial = this.aOP.filial;
+      this.opCodigo = this.aOP.op;
+      this.opProduto = this.aOP.produto;
+      this.opDescricao = this.aOP.descricao;
+      this.opLote = this.aOP.lote;
+      this.opAnalise = this.aOP.analise;
+      this.opQtde = this.aOP.qtdeLote
+
       this.dataSource = new MatTableDataSource(this.arrOpvisualizaTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

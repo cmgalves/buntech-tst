@@ -27,46 +27,28 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="card-body table-responsive col-md-7">
+                        <div class="card-body table-responsive col-md-3">
                             <mat-form-field>
                                 <mat-label>Descrição</mat-label>
                                 <input matInput [(ngModel)]="opDescricao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Lote</mat-label>
+                                <input matInput [(ngModel)]="opLote" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Análise</mat-label>
+                                <input matInput [(ngModel)]="opAnalise" disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Quantidade Protheus</mat-label>
                                 <input matInput [(ngModel)]="opQtde" disabled>
-                            </mat-form-field>
-                        </div>
-                        <div class="card-body table-responsive col-md-2">
-                            <mat-form-field>
-                                <mat-label>Qtde PCF</mat-label>
-                                <input matInput [(ngModel)]="opQtdePcf" disabled>
-                            </mat-form-field>
-                        </div>
-                        <div class="card-body table-responsive col-md-2">
-                            <mat-form-field>
-                                <mat-label>Retrabalho</mat-label>
-                                <input matInput [(ngModel)]="opRetrabalho" disabled>
-                            </mat-form-field>
-                        </div>
-                        <div class="card-body table-responsive col-md-2">
-                            <mat-form-field>
-                                <mat-label>Horas</mat-label>
-                                <input matInput [(ngModel)]="opHoras" disabled>
-                            </mat-form-field>
-                        </div>
-                        <div class="card-body table-responsive col-md-2">
-                            <mat-form-field>
-                                <mat-label>Data Emissao</mat-label>
-                                <input matInput [(ngModel)]="opEmissao" disabled>
-                            </mat-form-field>
-                        </div>
-                        <div class="card-body table-responsive col-md-2">
-                            <mat-form-field>
-                                <mat-label>Data Finalização</mat-label>
-                                <input matInput [(ngModel)]="opFinal" disabled>
                             </mat-form-field>
                         </div>
                     </div>
@@ -95,35 +77,18 @@
 
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
-                                <ng-container matColumnDef="COMPONENTE">
+                                <ng-container matColumnDef="componente">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Componente </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.COMPONENTE}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.componente}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="DESCRIC">
+                                <ng-container matColumnDef="descricao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.DESCRIC}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="UNIDADE">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Unidade </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.UNIDADE}} </td>
+                                <ng-container matColumnDef="qtdeEmp">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeEmp}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="QTDEORI">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Original </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.QTDEORI}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="QTDECALC">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Calculada </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.QTDECALC}} </td>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="ROTEIRO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ROTEIRO </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.ROTEIRO}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="OPERACAO">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> OPERACAO </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.OPERACAO}} </td>
-                                </ng-container> -->
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                 <tr class="mat-row" *matNoDataRow>
