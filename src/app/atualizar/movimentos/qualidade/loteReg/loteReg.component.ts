@@ -64,7 +64,7 @@ export class LoteRegComponent implements OnInit {
     let ord = 0;
     this.arrDados = [];
 
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil });
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil }); //vw_pcp_relacao_lote_registro
     this.arrBusca.subscribe(cada => {
       console.log(cada);
       cada.forEach(xy => {
