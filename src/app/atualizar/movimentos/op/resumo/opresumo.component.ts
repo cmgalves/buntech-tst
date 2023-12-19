@@ -54,7 +54,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'qtdeLote', 'dtcria', 'loteAprov', 'dtAprov', 'edicao'];
+  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'qtdeLote', 'dtcria', 'loteAprov', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -92,7 +92,6 @@ export class OpresumoComponent implements OnInit {
           'analise': xy.analise,
           'dtcria': xy.dtcria,
           'loteAprov': xy.loteAprov,
-          'dtAprov': xy.dtcria,
           'qtdeLote': xy.qtdeLote,
         })
       });
@@ -182,7 +181,6 @@ export class OpresumoComponent implements OnInit {
 
   filterSituacao(filterValue) {
     if (filterValue != undefined) {
-      console.log(this.arrOpresumoTab);
       const arrayFiltrado = this.arrOpresumoTab.filter(q => q.SITUACAO == this.situacoes[filterValue / 10]);
       this.dataSource = new MatTableDataSource(arrayFiltrado);
     } else {

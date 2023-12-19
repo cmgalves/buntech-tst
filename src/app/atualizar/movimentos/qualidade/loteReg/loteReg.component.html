@@ -31,15 +31,6 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="card-body table-responsive col-md-2">
-                                <mat-form-field>
-                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro Posição Análise" [(ngModel)]="filPosAnalise">
-                                        <mat-option *ngFor="let optFilter of filterPosAnalise" [value]="optFilter">
-                                            {{optFilter}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
                         </div>
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
