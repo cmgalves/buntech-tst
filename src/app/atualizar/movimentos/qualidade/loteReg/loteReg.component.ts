@@ -32,7 +32,8 @@ export class LoteRegComponent implements OnInit {
   arrDados: any = [];
   arrCarac: any = [];
   filLoteReg: string = '';
-  filterLoteReg: any = ['Todos', 'Aberto', 'Fechado', 'Aprovado', 'Rejeitado'];
+  cFil: string = '';
+  filterLoteReg: any = ['TODOS', 'ABERTO', 'ANDAMENTO', 'APROVADO', 'REJEITADO'];
   filterPosAnalise: any = ['Todos', 'Andamento', 'Aguardando', 'Analisado'];
   filPosAnalise: string = 'Todos';
 
@@ -52,7 +53,7 @@ export class LoteRegComponent implements OnInit {
   ngOnInit(): void {
 
     if (('Administrador, Qualidade N1, Qualidade N2, Qualidade N3').indexOf(this.arrUserLogado.perfil) >= 0) {
-      this.buscaLoteRegs('Todos');
+      this.buscaLoteRegs('TODOS');
     } else {
       alert('Sem Acesso')
       this.router.navigate(['opResumo']);
@@ -64,7 +65,7 @@ export class LoteRegComponent implements OnInit {
     let ord = 0;
     this.arrDados = [];
 
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil }); //vw_pcp_relacao_lote_registro
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil });
     this.arrBusca.subscribe(cada => {
       console.log(cada);
       cada.forEach(xy => {
@@ -90,7 +91,6 @@ export class LoteRegComponent implements OnInit {
           'podeAprovar': xy.podeAprovar=="true"
         });
       });
-      this.filLoteReg = xcFil;
       this.dataSource = new MatTableDataSource(this.arrDados)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -127,19 +127,12 @@ export class LoteRegComponent implements OnInit {
     this.router.navigate(['loteRegGestao']);
   }
 
-  altFilter(xcEvento) {
-    let arrFiltrado = this.arrDados;
-    if (this.filLoteReg != "Todos") {
-      arrFiltrado = arrFiltrado.filter(x => x.situacao?.toUpperCase() == this.filLoteReg?.toUpperCase());
-      this.dataSource = new MatTableDataSource(arrFiltrado);
-    } if (this.filPosAnalise != "Todos") {
-      arrFiltrado = arrFiltrado.filter(x => x.analiseStatus?.toUpperCase() == this.filPosAnalise?.toUpperCase());
-      this.dataSource = new MatTableDataSource(arrFiltrado);
-    }
-    else if(this.filLoteReg == "Todos") {
-      this.dataSource = new MatTableDataSource(this.arrDados);
-    }
+  altFilter(xcFil) {
+    let fil = xcFil.value
+    this.buscaLoteRegs(fil)
   }
+
+
 
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
