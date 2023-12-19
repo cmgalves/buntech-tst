@@ -1,3 +1,7 @@
+.container-fluid {
+    margin-top: -6%;
+}
+
 .example-form {
     min-width: 150px;
     max-width: 500px;
