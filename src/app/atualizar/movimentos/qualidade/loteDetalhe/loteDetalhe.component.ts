@@ -55,7 +55,7 @@ export class LoteDetalheComponent implements OnInit {
   tpQuebra: string[] = ['Dia', 'Peso'];
   tpativo: string[] = ['Sim', 'Não'];
   lotes: Observable<any>;
-  displayedColumns: string[] = ['id_loteProd', 'op', 'aponta', 'intervalo', 'qtdeLote', 'situacao', 'fechamento'];
+  displayedColumns: string[] = ['id_loteProd', 'op', 'aponta', 'qtdeLote', 'situacao'];
   dataSource: MatTableDataSource<cadLote>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

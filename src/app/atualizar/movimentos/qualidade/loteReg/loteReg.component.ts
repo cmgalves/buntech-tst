@@ -38,7 +38,7 @@ export class LoteRegComponent implements OnInit {
   filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dtAprovn1', 'dtAprovn2', 'dtAprovn3', 'loteReg'];
+  displayedColumns: string[] = ['filial', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dt1', 'dt2', 'dt3', 'loteReg'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -65,7 +65,7 @@ export class LoteRegComponent implements OnInit {
     let ord = 0;
     this.arrDados = [];
 
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil });
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil }); //vw_pcp_relacao_lote_registro
     this.arrBusca.subscribe(cada => {
       console.log(cada);
       cada.forEach(xy => {
@@ -78,9 +78,9 @@ export class LoteRegComponent implements OnInit {
           'lote': xy.lote,
           'analise': xy.analise,
           'loteAprov': xy.loteAprov,
-          'dtAprovn1': xy.dtAprovn1,
-          'dtAprovn2': xy.dtAprovn2,
-          'dtAprovn3': xy.dtAprovn3,
+          'dt1': xy.dt1,
+          'dt2': xy.dt2,
+          'dt3': xy.dt3,
           'usrAprovn1': xy.usrAprovn1,
           'usrAprovn2': xy.usrAprovn2,
           'usrAprovn3': xy.usrAprovn3,
