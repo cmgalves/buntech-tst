@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { UntypedFormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -9,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { funcsService } from 'app/funcs/funcs.service';
-import { funcGeral } from 'app/funcs/funcGeral';
 
 export interface cadHistrevisa {
   seq: string;
@@ -36,13 +34,13 @@ export class HistrevisaComponent implements OnInit {
   descrProd: string = '';
   cabRevisao: string = '';
   dataAprov: string = '';
+  feitoPor: string = '';
   numEspec: string = '';
   cabSituacao: string = '';
   qualObsGeral: string = '';
   qualObsRevisao: string = '';
   aplicacao: string = '';
   embalagem: string = '';
-  feitoPor: string = '';
   aprovPor: string = '';
   iteProduto: string = '';
   iteRevisao: string = '';
@@ -86,8 +84,8 @@ export class HistrevisaComponent implements OnInit {
       'cabProduto': aProd.cabProduto,
       'cabRevisao': aProd.cabRevisao
     };
-    this.arrDb = this.fj.buscaPrt('relacaoHistoricoEspec', obj);
-
+    this.arrDb = this.fj.buscaPrt('relacaoHistoricoEspec', obj); //View_Relacao_Espec_Hist
+ 
     this.arrDb.subscribe(cada => {
       cada.forEach(xy => {
         seq++
@@ -104,7 +102,6 @@ export class HistrevisaComponent implements OnInit {
           'aplicacao': xy.aplicacao,
           'embalagem': xy.embalagem,
           'feitoPor': xy.feitoPor,
-          'aprovPor': xy.aprovPor,
           'iteProduto': xy.iteProduto,
           'iteRevisao': xy.iteRevisao,
           'iteCarac': xy.iteCarac,
@@ -117,6 +114,7 @@ export class HistrevisaComponent implements OnInit {
           this.iteProduto = xy.iteProduto;
           this.cabRevisao = xy.cabRevisao;
           this.dataAprov = xy.dataAprov;
+          this.feitoPor = xy.feitoPor;
           this.numEspec = xy.numEspec;
           this.cabSituacao = xy.situacao;
           this.aplicacao = xy.aplicacao;

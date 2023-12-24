@@ -6,7 +6,7 @@
                     <a>MANUTENÇÃO DAS ESPECIFICAÇÕES</a>
                 </div>
                 <div class="row">
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Produto Acabado</mat-label>
                             <input matInput [(ngModel)]="cabProduto" disabled>
@@ -18,22 +18,16 @@
                             <input matInput [(ngModel)]="descrProd" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Revisão</mat-label>
                             <input matInput [(ngModel)]="cabRevisao" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Revisão Temporária</mat-label>
                             <input type="number" matInput [(ngModel)]=cabRevisaoTemp>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Data Aprovação</mat-label>
-                            <input type="date" matInput [(ngModel)]="dataAprov">
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-2">
@@ -51,13 +45,13 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-4 ">
+                    <div class="card-body table-responsive col-md-2 ">
                         <mat-form-field>
                             <mat-label>Aplicação</mat-label>
                             <input matInput [(ngModel)]="aplicacao">
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2 ">
+                    <div class="card-body table-responsive col-md-1 ">
                         <mat-form-field>
                             <mat-label>Lote Atual</mat-label>
                             <input matInput [(ngModel)]="loteAtual">
@@ -80,7 +74,7 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-select placeholder="Análise em processo" [(ngModel)]="especAnalise">
+                            <mat-select placeholder="Análise Proc" [(ngModel)]="especAnalise">
                                 <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise">
                                     {{optAnalise}}
                                 </mat-option>
@@ -89,26 +83,26 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-select placeholder="Sequência de análise" [(ngModel)]="especSequencia">
+                            <mat-select placeholder="Seq análise" [(ngModel)]="especSequencia" disabled="{{especAnalise.substring(0,1) == 'N'}}">
                                 <mat-option *ngFor="let optSequencia of sEspecSequencia" [value]="optSequencia">
                                     {{optSequencia}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
-                            <mat-select placeholder="Quebra de análise" [(ngModel)]="especQuebra">
+                            <mat-select placeholder="Quebra de análise" [(ngModel)]="especQuebra" value="{{especAnalise.substring(0,1) === 'S' ? 'HORA' : 'QTDE'}}" disabled>
                                 <mat-option *ngFor="let optQuebra of sEspecQuebra" [value]="optQuebra">
                                     {{optQuebra}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Quantidade (h/Ton)</mat-label>
-                            <input type="number" matInput [(ngModel)]=cabQtdeQuebra>
+                            <input type="number" matInput [(ngModel)]=cabQtdeQuebra value="{{especSequencia=='1'?24:especSequencia=='2'?12:especSequencia=='3'?8:especSequencia=='4'?6:especSequencia=='6'?4:especSequencia=='8'?3:especSequencia=='12'?2:1}}" disabled="{{especAnalise.substring(0,1) == 'S'}}">
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-2">
@@ -271,8 +265,10 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Laudo </th>
                                     <td mat-cell *matCellDef="let row;">
                                         <button (click)="especificar('L',row)" mat-raised-button type="button" matTooltip="Laudo" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <i class="material-icons">{{row.iteLaudo == 'SIM' ? 'thumb_up': 'thumb_down'}}</i>
-                                        </button>
+                                        <span class="material-symbols-outlined">
+                                            <i class="material-icons">{{row.iteLaudo == 'SIM' ? 'expand_circle_down': 'block'}}</i>
+                                        </span>
+                                    </button>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteEdit">

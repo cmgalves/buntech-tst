@@ -27,7 +27,8 @@ export interface cadRevisa {
 
 export class RevisaComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
-  arrCarac = JSON.parse(localStorage.getItem('cadCarac'));
+  arrDados: any = [];
+  arrCarac = [];
   arrDb: any = [];
   aDb: any = [];
   arrRev: any = [];
@@ -67,14 +68,14 @@ export class RevisaComponent implements OnInit {
   btnLaudo: string = 'remove_done';
   laddCarac: boolean = true
   lForm: boolean = false;
+  lespecSequencia: boolean = false;
   editInd = null;
   revisas: Observable<any>;
   imprimeLaudo: string = null;
-  tempoMaximo: number = null;
 
   sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
-  sEspecAnalise: string[] = ['SIM', 'NÃO'];
-  sEspecSequencia: string[] = ['1', '2'];
+  sEspecAnalise: string[] = ['SIM', 'NAO'];
+  sEspecSequencia: string[] = ['1', '2', '3', '4', '6', '8', '12', '24'];
   sEspecQuebra: string[] = ['HORA', 'QTDE'];
 
 
@@ -100,13 +101,31 @@ export class RevisaComponent implements OnInit {
     public dialog: MatDialog
   ) { }
 
+  // carregamento inicial da tela de revisões
   ngOnInit(): void {
     this.buscaRevisas();
+    this.buscaCaracs();
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
   }
+
+  // monta um array via localstorage
+  buscaCaracs() {
+    this.arrCarac = [];
+    this.arrDados = this.fj.buscaPrt('relacaoCarac', {});
+    this.arrDados.subscribe(cada => {
+      cada.forEach(xy => {
+        this.arrCarac.push({
+          'codCarac': xy.codCarac,
+          'descCarac': xy.descCarac,
+        })
+      });
+      localStorage.setItem('cadCarac', JSON.stringify(this.arrCarac));
+    });
+  }
+
 
   especificar(xInc, aRow) {
     let obj = {}
@@ -175,7 +194,7 @@ export class RevisaComponent implements OnInit {
       }
     }
 
-    this.fj.execProd('incluiEspecItens', obj);
+    this.fj.execProd('incluiEspecItens', obj); //PCP..sp_incluiEspecItens
     window.location.reload();
   }
 
@@ -196,7 +215,6 @@ export class RevisaComponent implements OnInit {
       'cabProduto': this.cabProduto,
       'descrProd': this.descrProd,
       'cabRevisao': this.cabRevisao,
-      'dataAprov': this.dataAprov,
       'numEspec': this.numEspec,
       'situacao': this.cabSituacao,
       'qualObsGeral': this.qualObsGeral,
@@ -204,16 +222,15 @@ export class RevisaComponent implements OnInit {
       'aplicacao': this.aplicacao,
       'loteAtual': this.loteAtual,
       'embalagem': this.embalagem,
-      'feitoPor': this.feitoPor,
-      'aprovPor': this.aprovPor,
+      'feitoPor': this.arrUserLogado.codUser,
+      'aprovPor': this.arrUserLogado.codUser,
       'especAlcada': this.especAlcada,
-      'especAnalise': this.especAnalise,
+      'especAnalise': this.especAnalise.substring(0,1),
       'especSequencia': this.especSequencia,
       'especQuebra': this.especQuebra,
       'cTipo': cTipo,
       'cabQtdeQuebra': this.cabQtdeQuebra,
-      'imprimeLaudo': this.imprimeLaudo,
-      'tempoMaximo': this.tempoMaximo
+      'imprimeLaudo': this.imprimeLaudo.substring(0,1),
     }
     this.fj.execProd('incluiEspec', obj);
     window.location.reload();
@@ -252,7 +269,7 @@ export class RevisaComponent implements OnInit {
     const obj = {
       'cabProduto': this.cabProduto
     };
-    this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj);
+    this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj); //PCP..View_Relacao_Espec
 
     this.arrDb.subscribe(cada => {
       cada.forEach(xy => {
@@ -287,7 +304,6 @@ export class RevisaComponent implements OnInit {
           'especQuebra': xy.especQuebra,
           'cabQtdeQuebra': xy.cabQtdeQuebra,
           'imprimeLaudo': xy.imprimeLaudo,
-          'tempoMaximo': xy.tempoMaximo,
         })
         if (seq === 1) {
           this.iteProduto = xy.iteProduto;
@@ -306,7 +322,6 @@ export class RevisaComponent implements OnInit {
           this.especQuebra = xy.especQuebra;
           this.cabQtdeQuebra = xy.cabQtdeQuebra;
           this.imprimeLaudo = xy.imprimeLaudo;
-          this.tempoMaximo = xy.tempoMaximo;
         }
       });
 

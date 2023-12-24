@@ -305,7 +305,7 @@ export class OpconfirmaComponent implements OnInit {
             'nivel': this.ltcnivel,
             'qtde': this.opQtdeParcial,
             'obs': this.ltcobs,
-            'usuario': this.aUsr.codUser,
+            'caracGeral': this.aUsr.codUser,
             'cTipo': 'P',
           }
           const retProd = this.fj.prodOP(obj);

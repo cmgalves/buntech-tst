@@ -49,27 +49,12 @@ export class EspecificaComponent implements OnInit {
   ngOnInit(): void {
     if (this.arrUserLogado.perfil === 'Administrador') {
       this.buscaEspecificas('Todos');
-      this.buscaCaracs();
     } else {
       alert('Sem Acesso')
       this.router.navigate(['opResumo']);
     }
   }
 
-  // monta um array via localstorage
-  buscaCaracs() {
-    this.arrCarac = [];
-    this.arrDados = this.fj.buscaPrt('relacaoCarac', {});
-    this.arrDados.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrCarac.push({
-          'codCarac': xy.codCarac,
-          'descCarac': xy.descCarac,
-        })
-      });
-      localStorage.setItem('cadCarac', JSON.stringify(this.arrCarac));
-    });
-  }
 
   altFilter(xcEvento) {
     this.buscaEspecificas(xcEvento.value)
@@ -80,7 +65,7 @@ export class EspecificaComponent implements OnInit {
     let seq = 0;
     this.arrEspecificaTab = [];
 
-    this.arrEspecifica = this.fj.buscaPrt('cadastroProdutosQualidade', { 'xcFil': xcFil });
+    this.arrEspecifica = this.fj.buscaPrt('cadastroProdutosQualidade', { 'xcFil': xcFil }); //View_Portal_Cadastro_Produto_Qualidade
     this.arrEspecifica.subscribe(xd => {
       xd.forEach(xy => {
         seq++
