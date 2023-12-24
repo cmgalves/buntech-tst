@@ -29,7 +29,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.post(url, obj)
-      .map((response: Response) => {console.log(response); return response.json()});
+      .map((response: Response) => { console.log(response); return response.json() });
 
   }
 
@@ -207,7 +207,7 @@ export class funcsService {
 
         let produtosAtualizados = [];
         let requisicoes = [];
-        let lotesAtualizar = oppcfLote.filter(q => q.lote == '000000000').slice(0,200);
+        let lotesAtualizar = oppcfLote.filter(q => q.lote == '000000000').slice(0, 200);
         if (lotesAtualizar.length == 0) return funcao();
         console.log(lotesAtualizar);
         let produtoAtual = lotesAtualizar[0].produto;
@@ -222,7 +222,7 @@ export class funcsService {
         let intervaloInicial = (LoteAtual.intervaloLote) ? LoteAtual.intervaloLote.split('/')[0] :
           lotesAtualizar[0].dtime;
         let intervaloAtual = "";
-        if(lotesAtualizar.length == 0){
+        if (lotesAtualizar.length == 0) {
           funcao();
         }
         lotesAtualizar.forEach(async (lote, index) => {
@@ -368,4 +368,38 @@ export class funcsService {
   }
 
 
+  enviarLoteProteus(loteItem) {
+    var dataValidade = new Date(loteItem.dtime);
+    dataValidade.setFullYear(loteItem.dtime.getFullYear() + 1);
+
+    if (loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") {
+      const obj = {
+        'filial': loteItem.filial,
+        'produto': loteItem.produto,
+        'lote': loteItem.lote,
+        'analise': loteItem.analise
+      };
+      let arrItens = this.buscaPrt('relacaoLoteAnalisa', obj);
+
+      arrItens.forEach(item => {
+        var obj2 = {
+          "cLFilial": loteItem.filial,
+          "cProduto": loteItem.produto,
+          "cOP": loteItem.op,
+          "cLote": loteItem.lote,
+          "cAnalise": loteItem.analise,
+          "nQuantidade": loteItem.qtde,
+          "cCaracteristica": item.id_num,
+          "cResultado": item.situacao,
+          "dValidade": dataValidade,
+          "dFabricacao": loteItem.dtime,
+          "cValMin": item.iteMin,
+          "cValMax": item.iteMax,
+          "cStatus": loteItem.status
+        };
+
+        this.enviarLoteProteus(obj);
+      });
+    } else alert("Lote ainda não aprovado");
+  }
 }

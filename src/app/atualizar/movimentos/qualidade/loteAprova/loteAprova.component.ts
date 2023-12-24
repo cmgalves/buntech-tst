@@ -78,6 +78,7 @@ export class LoteAprovaComponent implements OnInit {
   ngOnInit(): void {
     this.buscaLoteDetalhes();
     this.nivelAprovado(1);
+    console.log(this.aUsr)
   }
 
   nivelAprovado(nEnt) {
@@ -163,6 +164,7 @@ export class LoteAprovaComponent implements OnInit {
             this.n2 = xy.dtAprovn2
             this.n3 = xy.dtAprovn3
             this.dtVenc = xy.dtVenc
+            this.op = xy.op
           }
         }
         this.qtdeTot = this.fg.formatarNumero(xy.qtde)
@@ -178,63 +180,92 @@ export class LoteAprovaComponent implements OnInit {
     let nivAprov = '';
     let sitAprov = '';
     let txtAprov = '';
+    var tipoAprovn1 = ''
+    var tipoAprovn2 = ''
+    var tipoAprovn3 = ''
+    var dtAprovn1
+    var dtAprovn2
+    var dtAprovn3
+    var usrAprovn1 = ''
+    var usrAprovn2 = ''
+    var usrAprovn3 = ''
+    var justificativa1 = ''
+    var justificativa2 = ''
+    var justificativa3 = ''
+    const DataAtual = new Date().toISOString().split('T')[0];
 
-    switch (this.aUsr.perfil) {
-      case 'Qualidade N1':
-        nivAprov = 'N1'
-        break
-      case 'Qualidade N2':
-        nivAprov = 'N2'
-        break
-      case 'Qualidade N3':
-        nivAprov = 'N3'
-        break
-      default:
-        nivAprov = 'XX';
+    if(this.justificativa == "" || this.justificativa == null)
+      return alert("Justificativa é obrigatória");
+
+    // switch (this.aUsr.perfil) {
+    //   case 'Qualidade N1':
+    //     nivAprov = 'N1'
+    //     break
+    //   case 'Qualidade N2':
+    //     nivAprov = 'N2'
+    //     break
+    //   case 'Qualidade N3':
+    //     nivAprov = 'N3'
+    //     break
+    //   default:
+    //     nivAprov = 'XX';
+    // }
+
+    if ((this.nivel.includes('N1') && this.aUsr.perfil.includes('N1')) || this.aUsr.perfil.includes('Administrador')) {
+      usrAprovn1 = this.aUsr.codUser;
+      dtAprovn1 = DataAtual;
+      tipoAprovn1 = tipo;
+      nivAprov = 'N1';
+      justificativa1 = this.justificativa;
     }
 
+    if ((this.nivel.includes('N2') && this.aUsr.perfil.includes('N2')) || this.aUsr.perfil.includes('Administrador')) {
+      usrAprovn2 = this.aUsr.codUser;
+      dtAprovn2 = DataAtual;
+      tipoAprovn2 = tipo;
+      nivAprov = 'N2';
+      justificativa2 = this.justificativa;
+    }
 
-    if (!(nivAprov == 'XX')) {
-      if (nivAprov > this.nivel) {
-        alert('Não precisa aprovar, até o Nível: ' + this.nivel)
-      } else {
-        if (this.temJustificativa()) {
-          sitAprov = tipo === 'A' ? 'Aprovado' : 'Rejeitado'
-          txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
-          const obj = {
-            'filial': this.filial,
-            'op': ' ',
-            'produto': this.produto,
-            'descricao': this.descrProd,
-            'lote': this.lote,
-            'usrAprov': this.aUsr.codUser,
-            'usrPerfil': nivAprov,
-            'dtVenc': this.fg.btod(this.dtVenc),
-            'qtde': this.qtdeTot,
-            'revisao': this.revisao,
-            'codCarac': ' ',
-            'itemin': 0,
-            'itemax': 0,
-            'itemeio': ' ',
-            'itetxt': ' ',
-            'result': 0,
-            'resultxt': ' ',
-            'situacao': sitAprov,
-            'just': this.justificativa,
-            'tipo': tipo,
-          }
+    if ((this.nivel.includes('N3') && this.aUsr.perfil.includes('N3')) || this.aUsr.perfil.includes('Administrador')) {
+      usrAprovn3 = this.aUsr.codUser;
+      dtAprovn3 = DataAtual;
+      tipoAprovn3 = tipo;
+      nivAprov = 'N3';
+      justificativa3 = this.justificativa;
+    }
 
-          if (confirm(txtAprov)) {
-            this.fj.execProd('analisaAprovaLote', obj);
-            this.nivelAprovado(2);
-          }
+    if (nivAprov != '') {
+      if (this.temJustificativa()) {
+        sitAprov = tipo === 'A' ? 'Aprovado' : 'Rejeitado'
+        txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
 
+        const obj = {
+          produto: this.produto,
+          usrAprovn1: usrAprovn1,
+          usrAprovn2: usrAprovn2,
+          usrAprovn3: usrAprovn3,
+          dtAprovn1: dtAprovn1,
+          dtAprovn2: dtAprovn2,
+          dtAprovn3: dtAprovn3,
+          tipoAprovn1: tipoAprovn1,
+          tipoAprovn2: tipoAprovn2,
+          tipoAprovn3: tipoAprovn3,
+          lote: this.lote,
+          op: this.op,
+          analise: this.analise,
+          filial: this.filial
+        }
+
+        if (confirm(txtAprov)) {
+          this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
+          this.nivelAprovado(2);
         }
       }
-    } else {
-      alert('Usuário sem perfil de aprovação')
-    }
+    } else alert("USUÁRIO NÃO TEM NÍVEL PARA APROVAÇÃO");
   }
+
+
 
   confAprov() {
     let cResult: string = '';
