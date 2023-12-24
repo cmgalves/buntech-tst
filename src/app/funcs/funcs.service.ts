@@ -369,9 +369,10 @@ export class funcsService {
 
 
   enviarLoteProteus(loteItem) {
-    var dataValidade = new Date(loteItem.dtime);
-    dataValidade.setFullYear(loteItem.dtime.getFullYear() + 1);
+    var dataValidade = new Date(loteItem.dtime); //pega a data de fabricação e soma um ano 
+    dataValidade.setFullYear(loteItem.dtime.getFullYear() + 1); // para data de validade
 
+    //verifica se o lote está aprovado
     if (loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") {
       const obj = {
         'filial': loteItem.filial,
@@ -379,10 +380,11 @@ export class funcsService {
         'lote': loteItem.lote,
         'analise': loteItem.analise
       };
-      let arrItens = this.buscaPrt('relacaoLoteAnalisa', obj);
+      let arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
 
       arrItens.forEach(item => {
-        var obj2 = {
+        //percorre todos os dados do loteAnalise
+        let obj2 = { //cria objeto para enviar ao proteus
           "cLFilial": loteItem.filial,
           "cProduto": loteItem.produto,
           "cOP": loteItem.op,
@@ -398,8 +400,8 @@ export class funcsService {
           "cStatus": loteItem.status
         };
 
-        this.enviarLoteProteus(obj);
+        this.prodLote(obj2); //Envia para o proteus
       });
-    } else alert("Lote ainda não aprovado");
+    } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }
 }
