@@ -32,7 +32,7 @@ export class HistoricoComponent implements OnInit {
   arrCarac: any = [];
 
   historicos: Observable<any>;
-  displayedColumns: string[] = ['seq', 'cabProduto', 'descrProd', 'cabRevisao', 'dataAprov', 'situacao', 'revisa'];
+  displayedColumns: string[] = ['seq', 'cabProduto', 'descrProd', 'cabRevisao', 'feitoPor', 'dataAprov', 'situacao', 'revisa'];
   dataSource: MatTableDataSource<cadHistorico>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -57,7 +57,7 @@ export class HistoricoComponent implements OnInit {
   buscaHistoricos() {
     let seq = 0;
 
-    this.arrHistorico = this.fj.buscaPrt('relacaoHistorico', {});
+    this.arrHistorico = this.fj.buscaPrt('relacaoHistorico', {}); //vw_pcp_historico_revisoes
     this.arrHistorico.subscribe(cada => {
       cada.forEach(xy => {
         seq++
@@ -66,12 +66,11 @@ export class HistoricoComponent implements OnInit {
           'cabProduto': xy.cabProduto,
           'descrProd': xy.descrProd,
           'cabRevisao': xy.cabRevisao,
-          'dataAprov': xy.dataAprov,
           'situacao': xy.situacao,
           'qualObsGeral': xy.qualObsGeral,
           'qualObsRevisao': xy.qualObsRevisao,
-          'aplicacao': xy.aplicacao,
-          'embalagem': xy.embalagem
+          'feitoPor': xy.feitoPor,
+          'dataAprov': xy.dataAprov
         })
       });
 
