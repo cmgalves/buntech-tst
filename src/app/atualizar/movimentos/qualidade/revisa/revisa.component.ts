@@ -343,7 +343,7 @@ export class RevisaComponent implements OnInit {
           this.qualObsRevisao = xy.qualObsRevisao;
           this.qualObsGeral = xy.qualObsGeral;
           this.especAlcada = xy.especAlcada;
-          this.especAnalise = xy.especAnalise;
+          this.especAnalise = xy.especAnalise == 'S' ? 'SIM' : 'NAO';
           this.especSequencia = xy.especSequencia;
           this.especQuebra = xy.especQuebra;
           this.cabQtdeQuebra = xy.cabQtdeQuebra;
