@@ -4,7 +4,8 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorVerde ">
-                        <h4 style="color:White" class="card-title">Ajuste dos Dados da OP</h4>
+                        <h4 style="color:White" class="card-title">Ajuste dos Dados da OP - {{arrUserLogado.nome}} Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
+                        </h4>
                     </div>
                     <div class="row">
                         <div class="card-body table-responsive col-md-1">
@@ -79,7 +80,8 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorVerde ">
-                        <h4 class="card-title">Adiciona Item no Empenho"</h4>
+                        <h4 class="card-title">Adiciona Item no Empenho" - {{arrUserLogado.nome}} Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
+                        </h4>
 
                         <!-- <p class="card-category">Complete your usuario</p> -->
                     </div>
@@ -124,9 +126,12 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorAzul">
-                        <a>Relação dos Itens do Empenho da Ordem de Produção<button
-                                (click)="exportExcel('Empenho OP', 'Empenho')" mat-raised-button type="button"
-                                matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                        <a>Relação dos Itens do Empenho da Ordem de
+                            Produção<button
+                                (click)="exportExcel('Empenho OP', 'Empenho')"
+                                mat-raised-button type="button"
+                                matTooltip="Exporta Excel"
+                                [matTooltipPosition]="'above'"
                                 class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     file_download
@@ -145,19 +150,23 @@
                             <table mat-table [dataSource]="dataSource" matSort>
                                 <ng-container matColumnDef="COMPONENTE">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Componente </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.COMPONENTE}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.COMPONENTE}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="DESCRIC">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.DESCRIC}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.DESCRIC}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="UNIDADE">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> UM </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.UNIDADE}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.UNIDADE}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="QTDEORI">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Orig </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.QTDEORI}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.QTDEORI}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="QTDCALCULADA">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Calc </th>
@@ -168,7 +177,8 @@
                                 </ng-container>
                                 <ng-container matColumnDef="SITUACA">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> SITUAÇÃO </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.SITUACA}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.SITUACA}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="EDICAO">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
@@ -189,7 +199,8 @@
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns; let sld" [ngClass]="{'saldoL' : sld.SALDO >= sld.QTDEORI ,'saldoB' : sld.QTDEORI > sld.SALDO}"> -->
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"
+                                    </td>
                                 </tr>
                             </table>
                             <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
