@@ -56,7 +56,7 @@ export class HistrevisaComponent implements OnInit {
   lForm: boolean = false;
   editInd = null;
   histrevisas: Observable<any>;
-  displayedColumns: string[] = ['seq', 'iteCarac', 'descCarac', 'iteMin', 'iteMax'];
+  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'itetxt', 'iteMeio', 'iteLaudo'];
   dataSource: MatTableDataSource<cadHistrevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -90,7 +90,7 @@ export class HistrevisaComponent implements OnInit {
       cada.forEach(xy => {
         seq++
         this.arrRev.push({
-          'seq': seq,
+          'idEspecItens': xy.idEspecItens,
           'cabProduto': xy.cabProduto,
           'descrProd': xy.descrProd,
           'cabRevisao': xy.cabRevisao,
@@ -111,7 +111,7 @@ export class HistrevisaComponent implements OnInit {
         })
         if (seq === 1) {
           this.descrProd = xy.descrProd;
-          this.iteProduto = xy.iteProduto;
+          this.cabProduto = xy.cabProduto;
           this.cabRevisao = xy.cabRevisao;
           this.dataAprov = xy.dataAprov;
           this.feitoPor = xy.feitoPor;

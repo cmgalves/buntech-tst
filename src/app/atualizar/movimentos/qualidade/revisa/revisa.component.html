@@ -74,7 +74,7 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-select placeholder="Análise Proc" [(ngModel)]="especAnalise">
+                            <mat-select placeholder="Análise Proc" [(ngModel)]="especAnalise" (selectionChange)="analiseProc($event, 'analise')">
                                 <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise">
                                     {{optAnalise}}
                                 </mat-option>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-select placeholder="Seq análise" [(ngModel)]="especSequencia" disabled="{{especAnalise.substring(0,1) == 'N'}}">
+                            <mat-select placeholder="Seq análise" [(ngModel)]="especSequencia" (selectionChange)="analiseProc($event, 'qtde')" disabled="{{especAnalise.substring(0,1) == 'N'}}">
                                 <mat-option *ngFor="let optSequencia of sEspecSequencia" [value]="optSequencia">
                                     {{optSequencia}}
                                 </mat-option>
@@ -92,17 +92,14 @@
                     </div>
                     <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
-                            <mat-select placeholder="Quebra de análise" [(ngModel)]="especQuebra" value="{{especAnalise.substring(0,1) === 'S' ? 'HORA' : 'QTDE'}}" disabled>
-                                <mat-option *ngFor="let optQuebra of sEspecQuebra" [value]="optQuebra">
-                                    {{optQuebra}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-label>Quebra de análise</mat-label>
+                            <input matInput [(ngModel)]=especQuebra disabled>
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Quantidade (h/Ton)</mat-label>
-                            <input type="number" matInput [(ngModel)]=cabQtdeQuebra value="{{especSequencia=='1'?24:especSequencia=='2'?12:especSequencia=='3'?8:especSequencia=='4'?6:especSequencia=='6'?4:especSequencia=='8'?3:especSequencia=='12'?2:1}}" disabled="{{especAnalise.substring(0,1) == 'S'}}">
+                            <input type="number" matInput [(ngModel)]=cabQtdeQuebra disabled="{{especAnalise.substring(0,1) == 'S'}}">
                         </mat-form-field>
                     </div>
                     <div class="card-body table-responsive col-md-2">

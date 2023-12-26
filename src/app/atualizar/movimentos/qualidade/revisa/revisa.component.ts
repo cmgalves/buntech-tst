@@ -111,6 +111,32 @@ export class RevisaComponent implements OnInit {
     );
   }
 
+  // avalia os valores recebidos da análise.
+  analiseProc(cVal, cTipo) {
+    let anTipo = cVal.value
+    let vlTipo = 0
+    let vlQtde = 0
+
+    if (cTipo === 'analise') {
+      if (anTipo === 'SIM') {
+        this.especQuebra = 'HORA';
+        this.especSequencia = '6'
+        this.cabQtdeQuebra = '4'
+      }
+      if (anTipo === 'NAO') {
+        this.especQuebra = 'QTDE';
+        this.especSequencia = '0'
+        this.cabQtdeQuebra = '0'
+      }
+    }
+    if (cTipo === 'qtde') {
+      vlTipo = parseInt(anTipo);
+      vlQtde = 24 / vlTipo;
+      this.cabQtdeQuebra = vlQtde.toString()
+    }
+
+  }
+
   // monta um array via localstorage
   buscaCaracs() {
     this.arrCarac = [];
@@ -225,12 +251,12 @@ export class RevisaComponent implements OnInit {
       'feitoPor': this.arrUserLogado.codUser,
       'aprovPor': this.arrUserLogado.codUser,
       'especAlcada': this.especAlcada,
-      'especAnalise': this.especAnalise.substring(0,1),
+      'especAnalise': this.especAnalise.substring(0, 1),
       'especSequencia': this.especSequencia,
       'especQuebra': this.especQuebra,
       'cTipo': cTipo,
       'cabQtdeQuebra': this.cabQtdeQuebra,
-      'imprimeLaudo': this.imprimeLaudo.substring(0,1),
+      'imprimeLaudo': this.imprimeLaudo.substring(0, 1),
     }
     this.fj.execProd('incluiEspec', obj);
     window.location.reload();

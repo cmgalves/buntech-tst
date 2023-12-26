@@ -12,13 +12,13 @@
                             <input matInput [(ngModel)]="cabProduto" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-3">
                         <mat-form-field>
                             <mat-label>Descrição</mat-label>
                             <input matInput [(ngModel)]="descrProd" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-2">
+                    <div class="card-body table-responsive col-md-1">
                         <mat-form-field>
                             <mat-label>Revisão</mat-label>
                             <input matInput [(ngModel)]="cabRevisao" disabled>
@@ -38,12 +38,6 @@
                     </div>
                     <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
-                            <mat-label>Num Especificação</mat-label>
-                            <input matInput [(ngModel)]="numEspec" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
                             <mat-label>Situação</mat-label>
                             <input matInput [(ngModel)]="cabSituacao" disabled>
                         </mat-form-field>
@@ -54,19 +48,19 @@
                             <input matInput [(ngModel)]="aplicacao" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-5">
+                    <div class="card-body table-responsive col-md-2">
                         <mat-form-field>
                             <mat-label>Embalagem</mat-label>
                             <input matInput [(ngModel)]="embalagem" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-5">
+                    <div class="card-body table-responsive col-md-4">
                         <mat-form-field>
                             <mat-label>Observações da Revisão</mat-label>
                             <input matInput [(ngModel)]="qualObsRevisao" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="card-body table-responsive col-md-12">
+                    <div class="card-body table-responsive col-md-4">
                         <mat-form-field>
                             <mat-label>Observações Gerais</mat-label>
                             <input matInput [(ngModel)]="qualObsGeral" disabled>
@@ -80,7 +74,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorAzul">
-                        <a>CADASTRO DE ESPECIFICAÇÕES
+                        <a>MANUTENÇÃO DAS CARACTERÍSTICAS DO PRODUTO  --> {{cabProduto}}
                             <button (click)="exportExcel('Especificas', 'Especifica')" mat-raised-button type="button"
                                 matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
                                 class="btn btn-primary btn-link btn-sm btn-just-icon">
@@ -91,33 +85,78 @@
                         </a>
                     </div>
                     <div class="card-body table-responsive">
+                        <div class="row">
+                            <div class="card-body table-responsive col-md-5">
+                                <mat-form-field>
+                                    <mat-label>Filtro</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtrando Ordem Produção" #input>
+                                </mat-form-field>
+                            </div>
+                            <button (click)="incCarac()" mat-raised-button type="button" matTooltip="Inclusão de Características" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                <span class="material-icons">
+                                    add_to_photos
+                                </span>
+                            </button>
+                        </div>
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
-                                <ng-container matColumnDef="seq">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Seq </th>
-                                    <td *matCellDef='let row' class={{row.situacao}} mat-cell> {{row.seq}} </td>
+                                <ng-container matColumnDef="idEspecItens">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                    <td *matCellDef='let row' mat-cell> {{row.idEspecItens}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteCarac">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
-                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.iteCarac}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.iteCarac}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="descCarac">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.descCarac}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.descCarac}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMin">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Mínimo </th>
-                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.iteMin}} </td>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='editInd!=i'>{{row.iteMin}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.iteMin}} id="idMin" *ngIf='editInd==i'>
+                                    </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMax">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Máximo </th>
-                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.iteMax}} </td>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='editInd!=i'>{{row.iteMax}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.iteMax}} id="idMax" *ngIf='editInd==i'>
+                                    </td>
                                 </ng-container>
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                                <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                                </tr>
+                                <ng-container matColumnDef="itetxt">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Parâmetro </th>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='editInd!=i'>{{row.itetxt}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.itetxt}} id="idtxt" *ngIf='editInd==i'>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="iteMeio">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Meio </th>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='editInd!=i'>{{row.iteMeio}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.iteMeio}} id="idMeio" *ngIf='editInd==i'>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="iteLaudo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Laudo </th>
+                                    <td mat-cell *matCellDef="let row;">
+                                        <button mat-raised-button type="button" matTooltip="Laudo" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon" disabled>
+                                        <span class="material-symbols-outlined">
+                                            <i class="material-icons">{{row.iteLaudo == 'SIM' ? 'expand_circle_down': 'block'}}</i>
+                                        </span>
+                                    </button>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
+                                <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'comLaudo' : row.iteLaudo == 'SIM','semLaudo' : row.iteLaudo == 'NAO'}">
+                                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                    </tr>
                             </table>
                             <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
                         </div>
