@@ -148,39 +148,39 @@
 
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
-                                <ng-container matColumnDef="COMPONENTE">
+                                <ng-container matColumnDef="componente">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Componente </th>
                                     <td mat-cell *matCellDef="let row">
-                                        {{row.COMPONENTE}} </td>
+                                        {{row.componente}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="DESCRIC">
+                                <ng-container matColumnDef="descEmp">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
                                     <td mat-cell *matCellDef="let row">
-                                        {{row.DESCRIC}} </td>
+                                        {{row.descEmp}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="UNIDADE">
+                                <ng-container matColumnDef="unidade">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> UM </th>
                                     <td mat-cell *matCellDef="let row">
-                                        {{row.UNIDADE}} </td>
+                                        {{row.unidade}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="QTDEORI">
+                                <ng-container matColumnDef="qtdeEmp">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Orig </th>
                                     <td mat-cell *matCellDef="let row">
-                                        {{row.QTDEORI}} </td>
+                                        {{row.qtdeEmp}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="QTDCALCULADA">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Calc </th>
+                                <ng-container matColumnDef="qtdeEmpCalc">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Usada </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='enableEditIndex!=i'>{{row.QTDECALC}}</p>
                                         <input ng-maxlength="20" type='text' value={{row.QTDECALC}} class="editQtd" id="editQtd" *ngIf='enableEditIndex==i'>
                                     </td>
                                 </ng-container>
-                                <ng-container matColumnDef="SITUACA">
+                                <ng-container matColumnDef="situaca">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> SITUAÇÃO </th>
                                     <td mat-cell *matCellDef="let row">
-                                        {{row.SITUACA}} </td>
+                                        {{row.situaca}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="EDICAO">
+                                <ng-container matColumnDef="edicao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
                                         <button *ngIf='enableEditIndex != i' (click)="enableEditUser($event, i)" [disabled]="btnEditDisable(row)" mat-raised-button type="button" matTooltip="Edição" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

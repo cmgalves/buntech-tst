@@ -79,7 +79,6 @@ export class LoteAprovaComponent implements OnInit {
   ngOnInit(): void {
     this.buscaLoteDetalhes();
     this.nivelAprovado(1);
-    console.log(this.aUsr)
   }
 
   nivelAprovado(nEnt) {
@@ -123,7 +122,6 @@ export class LoteAprovaComponent implements OnInit {
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         ord++
         if (codCaracteristica.indexOf(xy.codCarac) < 0) {
@@ -259,7 +257,7 @@ export class LoteAprovaComponent implements OnInit {
         }
 
         if (confirm(txtAprov)) {
-          this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
+          this.fj.buscaPrt('aprovalote', obj).subscribe();
           this.nivelAprovado(2);
         }
       }

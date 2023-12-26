@@ -227,7 +227,6 @@ export class LoteAnalisaComponent implements OnInit {
       else return alert('Por favor, digite S ou N ou um valor numérico');
     } else {
       nbm = parseFloat(vNum);
-      console.log(xcRow.iteMin);
       if (xcRow.iteMin > 0 || xcRow.iteMax > 0)
         if (nbm < xcRow.iteMin || nbm > xcRow.iteMax)
           sit = 'Reprovado';
@@ -295,7 +294,7 @@ export class LoteAnalisaComponent implements OnInit {
       dataAprovacao: new Date().toISOString().split('T')[0]
     }
 
-    this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
+    this.fj.buscaPrt('confirmaAnalise', obj).subscribe();
    // window.location.reload();
   }
 

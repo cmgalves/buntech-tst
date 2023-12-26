@@ -68,8 +68,6 @@ export class OpresumoComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscaOpresumos();
-    console.log("User:")
-    console.log(this.arrUserLogado);
   }
 
 
@@ -111,17 +109,23 @@ export class OpresumoComponent implements OnInit {
     this.router.navigate(['opVisualiza']);
   }
 
+  // visualização da OP
   ajustaOp(xcRow) {
-    const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
-    localStorage.setItem('op', JSON.stringify(filOP));
     this.atuOP(xcRow.filial, xcRow.op, 'a')
+    localStorage.setItem('op', JSON.stringify(xcRow));
     this.router.navigate(['opAjusta']);
   }
+
+  // ajustaOp(xcRow) {
+  //   const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
+  //   localStorage.setItem('op', JSON.stringify(filOP));
+  //   this.atuOP(xcRow.filial, xcRow.op, 'a')
+  //   this.router.navigate(['opAjusta']);
+  // }
 
   confirmaOp(xcRow) {
     const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
     localStorage.setItem('op', JSON.stringify(filOP));
-    console.log(filOP);
     this.atuOP(xcRow.filial, xcRow.op, 'c')
     this.router.navigate(['opConfirma']);
   }
@@ -132,7 +136,7 @@ export class OpresumoComponent implements OnInit {
       'op': xcOp,
       'tipo': xcTipo,
     }
-    this.fj.execProd('loteEmpenho', obj);  //PCP..sp_atualiza_OP
+    this.fj.execProd('loteEmpenho', obj);  //PCP..spcp_lote_empenho
   }
 
 

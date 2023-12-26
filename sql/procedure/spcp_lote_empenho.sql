@@ -4,7 +4,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-alter procedure [dbo].[spcp_lote_empenho] 
+ALTER procedure [dbo].[spcp_lote_empenho] 
 	@filial VARCHAR(3), 
 	@op VARCHAR(11), 
 	@tipo VARCHAR(1)
@@ -19,7 +19,7 @@ SELECT * FROM PCP..oppcfLoteEmpenho
 */
 
 
-if @tipo = 'v'
+if @tipo in ('v', 'a')
 	begin
 		
 		insert into PCP..oppcfLoteEmpenho (filial, op, produto, qtdeOP, emissao, componente, qtdeEmp)
@@ -202,5 +202,4 @@ if @tipo = 'v'
 -- 			AND OP = @OP
 -- 	END	
 -- GO
-
-
+GO
