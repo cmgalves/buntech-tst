@@ -68,6 +68,8 @@ export class OpresumoComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscaOpresumos();
+    console.log("User:")
+    console.log(this.arrUserLogado);
   }
 
 
