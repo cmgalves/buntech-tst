@@ -107,6 +107,7 @@ export class HistrevisaComponent implements OnInit {
           'iteCarac': xy.iteCarac,
           'iteMin': xy.iteMin,
           'iteMax': xy.iteMax,
+          'iteLaudo': xy.iteLaudo,
           'descCarac': xy.descCarac,
         })
         if (seq === 1) {

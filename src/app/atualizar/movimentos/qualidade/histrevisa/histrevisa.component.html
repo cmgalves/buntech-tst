@@ -92,11 +92,7 @@
                                     <input matInput (keyup)="applyFilter($event)" placeholder="Filtrando Ordem Produção" #input>
                                 </mat-form-field>
                             </div>
-                            <button (click)="incCarac()" mat-raised-button type="button" matTooltip="Inclusão de Características" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                <span class="material-icons">
-                                    add_to_photos
-                                </span>
-                            </button>
+
                         </div>
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
