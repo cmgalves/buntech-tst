@@ -45,14 +45,17 @@
                 <div class="card">
                     <div class="card-header card-header divCorAzul">
                         <a>CADASTRO DE GRUPOS DE RESUMOS
-                            <button (click)="exportExcel('GrupoRecursos', 'GrupoRecurso')" mat-raised-button
-                                type="button" matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                            <button
+                                (click)="exportExcel('GrupoRecursos', 'GrupoRecurso')"
+                                mat-raised-button
+                                type="button" matTooltip="Exporta Excel"
+                                [matTooltipPosition]="'above'"
                                 class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     file_download
                                 </span>
                             </button>
-                        </a> {{arrUserLogado.nome}} - {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}}
+                        </a>
                     </div>
                     <div class="card-body table-responsive">
                         <div class="row">
@@ -72,19 +75,23 @@
                             <table mat-table [dataSource]="dataSource" matSort>
                                 <ng-container matColumnDef="idGrupo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID Grupo </th>
-                                    <td *matCellDef='let row' mat-cell> {{row.idGrupo}} </td>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.idGrupo}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="recurso">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Recurso </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.recurso}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.recurso}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="grupo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Grupo </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.grupo}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.grupo}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="ativo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Ativo </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.ativo}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.ativo}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="edicao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Alterar </th>
@@ -97,7 +104,8 @@
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                 <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"
+                                    </td>
                                 </tr>
                             </table>
                             <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>
