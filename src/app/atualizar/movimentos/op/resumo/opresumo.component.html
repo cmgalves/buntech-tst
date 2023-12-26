@@ -19,7 +19,7 @@
                                     language
                                 </span>
                             </button>
-                        </a> {{arrUserLogado.nome}} - {{arrUserLogado.dataLogin.split("T")[0]}}
+                        </a> {{arrUserLogado.nome}} - {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}}
                     </div>
                     <div class="card-body table-responsive">
                         <div class="row">
