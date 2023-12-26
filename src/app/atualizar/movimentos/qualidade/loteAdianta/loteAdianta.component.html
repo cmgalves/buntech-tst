@@ -1,101 +1,106 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="col-lg-12 col-md-12">
-            <div class="card">
-                <div class="card-header card-header divCorVerde ">
-                    <a>VISUALIZAÇÃO DOS LOTES DE PRODUTOS</a>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorVerde ">
+                        <a>VISUALIZAÇÃO DOS LOTES DE PRODUTOS</a>
+                    </div>
+                    <div class="row">
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Filial</mat-label>
+                                <input matInput [(ngModel)]="filial" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Produto Acabado</mat-label>
+                                <input matInput [(ngModel)]="produto" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-4">
+                            <mat-form-field>
+                                <mat-label>Descrição</mat-label>
+                                <input matInput [(ngModel)]="descricao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote</mat-label>
+                                <input matInput [(ngModel)]="lote" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Quantidade</mat-label>
+                                <input matInput [(ngModel)]=qtdeProd tdeProd disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Revisão</mat-label>
+                                <input matInput [(ngModel)]="revisao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Data Produção</mat-label>
+                                <input matInput [(ngModel)]="dtProd" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Hora Produção</mat-label>
+                                <input matInput [(ngModel)]="hrProd" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Vencimento do Lote</mat-label>
+                                <input matInput [(ngModel)]="dtVenc" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Tipo Quebra</mat-label>
+                                <input matInput [(ngModel)]="quebra" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Qtde Quebra</mat-label>
+                                <input matInput [(ngModel)]="qtdeQuebra" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-12">
+                            <mat-form-field>
+                                <mat-label>Justificativa: Antecipar Fechamento
+                                </mat-label>
+                                <input matInput [(ngModel)]=justificativa>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Filial</mat-label>
-                            <input matInput [(ngModel)]="filial" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Produto Acabado</mat-label>
-                            <input matInput [(ngModel)]="produto" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-4">
-                        <mat-form-field>
-                            <mat-label>Descrição</mat-label>
-                            <input matInput [(ngModel)]="descricao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Lote</mat-label>
-                            <input matInput [(ngModel)]="lote" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Quantidade</mat-label>
-                            <input matInput [(ngModel)]=qtdeProd tdeProd disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Revisão</mat-label>
-                            <input matInput [(ngModel)]="revisao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Data Produção</mat-label>
-                            <input matInput [(ngModel)]="dtProd" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Hora Produção</mat-label>
-                            <input matInput [(ngModel)]="hrProd" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Vencimento do Lote</mat-label>
-                            <input matInput [(ngModel)]="dtVenc" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Tipo Quebra</mat-label>
-                            <input matInput [(ngModel)]="quebra" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Qtde Quebra</mat-label>
-                            <input matInput [(ngModel)]="qtdeQuebra" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-12">
-                        <mat-form-field>
-                            <mat-label>Justificativa: Antecipar Fechamento</mat-label>
-                            <input matInput [(ngModel)]=justificativa>
-                        </mat-form-field>
-                    </div>
-                </div>
+                <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaLote()">Voltar</button>
+                <button mat-raised-button type="submit" class="btn btn-warning" (click)=antecipaFecha()>Antecipar</button>
             </div>
-            <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaLote()">Voltar</button>
-            <button mat-raised-button type="submit" class="btn btn-warning" (click)=antecipaFecha()>Antecipar</button>
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorAzul">
                         <a>RELAÇÃO DOS LOTES DO PRODUTO --> {{produto}}
-                            <button (click)="exportExcel('Lotes', 'Lote')" mat-raised-button type="button"
-                                matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                            <button (click)="exportExcel('Lotes', 'Lote')"
+                                mat-raised-button type="button"
+                                matTooltip="Exporta Excel"
+                                [matTooltipPosition]="'above'"
                                 class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     file_download
                                 </span>
                             </button>
-                        </a>
+                        </a> - {{arrUserLogado.nome}} Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
                     </div>
                     <div class="card-body table-responsive">
                         <mat-form-field>
@@ -107,40 +112,48 @@
                                 'id_loteProd'
                                 <ng-container matColumnDef="id_loteProd">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID Registro </th>
-                                    <td *matCellDef='let row' mat-cell> {{row.id_loteProd}} </td>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.id_loteProd}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="op">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> OP </th>
-                                    <td *matCellDef='let row' mat-cell> {{row.op}} </td>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.op}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="produto">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Produto </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.produto}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.produto}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="descricao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.descricao}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeProd">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Qtde Produção</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.qtdeProd}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.qtdeProd}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="situacao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Situação </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.situacao}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.situacao}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="fechamento">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> fechamento </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.fechamento}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.fechamento}}
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Ativo' : row.ativo === 'Sim','Inativo' : row.ativo === 'Não'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"
+                                    </td>
                                 </tr>
                             </table>
                             <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>

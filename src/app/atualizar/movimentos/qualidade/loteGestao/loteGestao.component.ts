@@ -32,6 +32,7 @@ export interface cadLote {
 
 export class LoteGestaoComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
+  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   aProd: any = JSON.parse(localStorage.getItem('loteProd'));
   cProd: string = this.aProd.produto
   arrLote: any = [];

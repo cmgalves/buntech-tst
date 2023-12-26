@@ -25,6 +25,7 @@ export interface opConfirma {
 
 export class OpconfirmaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
+  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   numOP = JSON.parse(localStorage.getItem('op'));
   opPcf = JSON.parse(localStorage.getItem('opPcf'));
   parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.numOP[0].SITUACAO) > -1;

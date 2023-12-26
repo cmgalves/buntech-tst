@@ -32,6 +32,7 @@ export class OpvisualizaComponent implements OnInit {
   arrOpAndA: any = [];
   arrOpAndB: any = [];
   aOP = JSON.parse(localStorage.getItem('op'));
+  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   opFilial: string = '';
   opCodigo: string = '';
   opEmissao: string = '';

@@ -1,88 +1,94 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="col-lg-12 col-md-12">
-            <div class="card">
-                <div class="card-header card-header divCorVerde ">
-                    <a>VISUALIZAÇÃO DAS ESPECIFICAÇÕES</a>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorVerde">
+                        <a>VISUALIZAÇÃO DAS ESPECIFICAÇÕES</a>
+                    </div>
+                    <div class="row">
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Produto Acabado</mat-label>
+                                <input matInput [(ngModel)]="cabProduto" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-3">
+                            <mat-form-field>
+                                <mat-label>Descrição</mat-label>
+                                <input matInput [(ngModel)]="descrProd" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Revisão</mat-label>
+                                <input matInput [(ngModel)]="cabRevisao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Data Revisão</mat-label>
+                                <input type="text" matInput [(ngModel)]="dataAprov" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Usuário</mat-label>
+                                <input type="text" matInput [(ngModel)]="feitoPor" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Situação</mat-label>
+                                <input matInput [(ngModel)]="cabSituacao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Aplicação</mat-label>
+                                <input matInput [(ngModel)]="aplicacao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Embalagem</mat-label>
+                                <input matInput [(ngModel)]="embalagem" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-4">
+                            <mat-form-field>
+                                <mat-label>Observações da Revisão</mat-label>
+                                <input matInput [(ngModel)]="qualObsRevisao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-4">
+                            <mat-form-field>
+                                <mat-label>Observações Gerais</mat-label>
+                                <input matInput [(ngModel)]="qualObsGeral" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Produto Acabado</mat-label>
-                            <input matInput [(ngModel)]="cabProduto" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-3">
-                        <mat-form-field>
-                            <mat-label>Descrição</mat-label>
-                            <input matInput [(ngModel)]="descrProd" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-1">
-                        <mat-form-field>
-                            <mat-label>Revisão</mat-label>
-                            <input matInput [(ngModel)]="cabRevisao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Data Revisão</mat-label>
-                            <input type="text" matInput [(ngModel)]="dataAprov" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Usuário</mat-label>
-                            <input type="text" matInput [(ngModel)]="feitoPor" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Situação</mat-label>
-                            <input matInput [(ngModel)]="cabSituacao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Aplicação</mat-label>
-                            <input matInput [(ngModel)]="aplicacao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Embalagem</mat-label>
-                            <input matInput [(ngModel)]="embalagem" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-4">
-                        <mat-form-field>
-                            <mat-label>Observações da Revisão</mat-label>
-                            <input matInput [(ngModel)]="qualObsRevisao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-4">
-                        <mat-form-field>
-                            <mat-label>Observações Gerais</mat-label>
-                            <input matInput [(ngModel)]="qualObsGeral" disabled>
-                        </mat-form-field>
-                    </div>
-                </div>
+                <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaHist()">Voltar</button>
             </div>
-            <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaHist()">Voltar</button>
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorAzul">
-                        <a>MANUTENÇÃO DAS CARACTERÍSTICAS DO PRODUTO  --> {{cabProduto}}
-                            <button (click)="exportExcel('Especificas', 'Especifica')" mat-raised-button type="button"
-                                matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                        <a>MANUTENÇÃO DAS CARACTERÍSTICAS DO PRODUTO -->
+                            {{cabProduto}}
+                            <button
+                                (click)="exportExcel('Especificas', 'Especifica')"
+                                mat-raised-button type="button"
+                                matTooltip="Exporta Excel"
+                                [matTooltipPosition]="'above'"
                                 class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     file_download
                                 </span>
                             </button>
-                        </a>
+                        </a> - {{arrUserLogado.nome}} Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
                     </div>
                     <div class="card-body table-responsive">
                         <div class="row">
@@ -102,15 +108,18 @@
                             <table mat-table [dataSource]="dataSource" matSort>
                                 <ng-container matColumnDef="idEspecItens">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                                    <td *matCellDef='let row' mat-cell> {{row.idEspecItens}} </td>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.idEspecItens}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteCarac">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.iteCarac}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.iteCarac}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="descCarac">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.descCarac}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.descCarac}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMin">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Mínimo </th>
@@ -144,10 +153,15 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Laudo </th>
                                     <td mat-cell *matCellDef="let row;">
                                         <button mat-raised-button type="button" matTooltip="Laudo" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon" disabled>
-                                        <span class="material-symbols-outlined">
-                                            <i class="material-icons">{{row.iteLaudo == 'SIM' ? 'expand_circle_down': 'block'}}</i>
-                                        </span>
-                                    </button>
+                                            <span
+                                                class="material-symbols-outlined">
+                                                <i
+                                                    class="material-icons">{{row.iteLaudo
+                                                    == 'SIM' ?
+                                                    'expand_circle_down':
+                                                    'block'}}</i>
+                                            </span>
+                                        </button>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
@@ -155,7 +169,8 @@
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'comLaudo' : row.iteLaudo == 'SIM','semLaudo' : row.iteLaudo == 'NAO'}">
                                     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
                                     <tr class="mat-row" *matNoDataRow>
-                                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"
+                                        </td>
                                     </tr>
                             </table>
                             <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>

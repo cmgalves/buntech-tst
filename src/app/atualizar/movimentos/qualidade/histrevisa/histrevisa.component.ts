@@ -152,4 +152,8 @@ export class HistrevisaComponent implements OnInit {
   voltaHist() {
     this.router.navigate(['histor']);
   }
+
+  incCarac(){
+    
+  }
 }

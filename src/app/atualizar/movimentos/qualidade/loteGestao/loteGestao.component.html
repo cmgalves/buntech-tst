@@ -1,90 +1,94 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="col-lg-12 col-md-12">
-            <div class="card">
-                <div class="card-header card-header divCorVerde ">
-                    <a>MANUTENÇÃO DOS LOTES DE PRODUTOS</a>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header divCorVerde ">
+                        <a>MANUTENÇÃO DOS LOTES DE PRODUTOS</a>
+                    </div>
+                    <div class="row">
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Produto Acabado</mat-label>
+                                <input matInput [(ngModel)]="produto" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-4">
+                            <mat-form-field>
+                                <mat-label>Descrição</mat-label>
+                                <input matInput [(ngModel)]="descricao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Revisão</mat-label>
+                                <input matInput [(ngModel)]="revisao" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Lote</mat-label>
+                                <input (change)=altLote($event) matInput [(ngModel)]=lote>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-select placeholder="Nível para Aprovação" [(ngModel)]=nivel>
+                                    <mat-option *ngFor="let optNivel of tpNivel" [value]=optNivel>
+                                        {{optNivel}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Validade Meses</mat-label>
+                                <input type="number" matInput [(ngModel)]="validade">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-select placeholder="Tipo de Quebra" [(ngModel)]="quebra">
+                                    <mat-option *ngFor="let optQuebra of tpQuebra" [value]="optQuebra">
+                                        {{optQuebra}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Quantidade</mat-label>
+                                <input type="number" matInput [(ngModel)]="qtde">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-8">
+                            <mat-form-field>
+                                <mat-label>Observações Gerais</mat-label>
+                                <input matInput [(ngModel)]="obs">
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Produto Acabado</mat-label>
-                            <input matInput [(ngModel)]="produto" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-4">
-                        <mat-form-field>
-                            <mat-label>Descrição</mat-label>
-                            <input matInput [(ngModel)]="descricao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Revisão</mat-label>
-                            <input matInput [(ngModel)]="revisao" disabled>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-label>Lote</mat-label>
-                            <input (change)=altLote($event) matInput [(ngModel)]=lote>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-select placeholder="Nível para Aprovação" [(ngModel)]=nivel>
-                                <mat-option *ngFor="let optNivel of tpNivel" [value]=optNivel>
-                                    {{optNivel}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-1">
-                        <mat-form-field>
-                            <mat-label>Validade Meses</mat-label>
-                            <input type="number" matInput [(ngModel)]="validade">
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-2">
-                        <mat-form-field>
-                            <mat-select placeholder="Tipo de Quebra" [(ngModel)]="quebra">
-                                <mat-option *ngFor="let optQuebra of tpQuebra" [value]="optQuebra">
-                                    {{optQuebra}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-1">
-                        <mat-form-field>
-                            <mat-label>Quantidade</mat-label>
-                            <input type="number" matInput [(ngModel)]="qtde">
-                        </mat-form-field>
-                    </div>
-                    <div class="card-body table-responsive col-md-8">
-                        <mat-form-field>
-                            <mat-label>Observações Gerais</mat-label>
-                            <input matInput [(ngModel)]="obs">
-                        </mat-form-field>
-                    </div>
-                </div>
+                <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaLote()">Voltar</button>
+                <button *ngIf=lBtnConf mat-raised-button type="submit" class="btn btn-success" (click)="confLote('I')">Confirmar</button>
+                <button *ngIf=lBtnRev mat-raised-button type="submit" class="btn btn-warning" (click)="confLote('R')">Revisar</button>
             </div>
-            <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaLote()">Voltar</button>
-            <button *ngIf=lBtnConf mat-raised-button type="submit" class="btn btn-success" (click)="confLote('I')">Confirmar</button>
-            <button *ngIf=lBtnRev mat-raised-button type="submit" class="btn btn-warning" (click)="confLote('R')">Revisar</button>
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorAzul">
                         <a>RELAÇÃO DOS LOTES DO PRODUTO --> {{produto}}
-                            <button (click)="exportExcel('Lotes', 'Lote')" mat-raised-button type="button"
-                                matTooltip="Exporta Excel" [matTooltipPosition]="'above'"
+                            <button (click)="exportExcel('Lotes', 'Lote')"
+                                mat-raised-button type="button"
+                                matTooltip="Exporta Excel"
+                                [matTooltipPosition]="'above'"
                                 class="btn btn-primary btn-link btn-sm btn-just-icon">
                                 <span class="material-icons">
                                     file_download
                                 </span>
                             </button>
-                        </a>
+                        </a> {{arrUserLogado.nome}} Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
                     </div>
                     <div class="card-body table-responsive">
                         <mat-form-field>
@@ -95,66 +99,79 @@
                             <table mat-table [dataSource]="dataSource" matSort>
                                 <ng-container matColumnDef="ord">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Ordem </th>
-                                    <td *matCellDef='let row' mat-cell> {{row.ord}} </td>
+                                    <td *matCellDef='let row' mat-cell>
+                                        {{row.ord}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="produto">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.produto}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.produto}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="descricao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.descricao}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="revisao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Revisão</th>
-                                    <td mat-cell *matCellDef="let row"> {{row.revisao}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.revisao}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="lote">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Lote </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.lote}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.lote}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="validade">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Validade </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.validade}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.validade}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="ativo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Ativo </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.ativo}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.ativo}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="nivel">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Nível </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.nivel}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.nivel}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="quebra">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Quebra </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.quebra}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.quebra}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtde">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.qtde}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.qtde}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="diaRevisao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Data </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.diaRevisao}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.diaRevisao}}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="obs">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Obs </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.obs}}
+                                    <td mat-cell *matCellDef="let row">
+                                        {{row.obs}}
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Ativo' : row.ativo === 'SIM','Inativo' : row.ativo === 'NAO'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"
+                                    </td>
                                 </tr>
                             </table>
                             <mat-paginator [pageSizeOptions]="[12, 25, 50]"></mat-paginator>

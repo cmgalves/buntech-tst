@@ -30,6 +30,7 @@ export interface cadLote {
 
 export class LoteAdiantaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
+  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   aProd = JSON.parse(localStorage.getItem('loteAdianta'));
   arrBusca: any = [];
   arrDados: any = [];
