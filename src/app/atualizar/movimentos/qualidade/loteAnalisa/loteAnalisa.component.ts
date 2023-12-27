@@ -286,12 +286,12 @@ export class LoteAnalisaComponent implements OnInit {
     const aprovado = this.arrDados.filter(q => q.situacao.toUpperCase() === 'APROVADO');
     let confirmText = "";
     //Se algum em branco necessário aprovar todos, se não, aprovação segue normalmente
-    if (emBranco.length > 0) confirmText = "CONFIRMAR APROVAÇÃO DE TODOS OS REGISTROS?";
+    if (emBranco.length > 0) confirmText = "CONFIRMAR APROVAÇÃO DO LOTE?";
     else confirmText = "CONFIRMAR APROVAÇÃO"
     //se existe algum rejeitado lote será segregado
     if (rejeitado.length > 0) {
       situacaoAnalise = 'SEGREGADO';
-      confirmText = "ITEM(S) FORA DO INTERVALO. CONFIRMAR A SEGREGAÇÃO DO LOTE?";
+      confirmText = "EXISTE(M) ITEM(S) FORA DO INTERVALO. CONFIRMAR A SEGREGAÇÃO DO LOTE?";
     }
     //Se existir algum aprovado, lote será aprovado
     else if (aprovado.length > 0)
