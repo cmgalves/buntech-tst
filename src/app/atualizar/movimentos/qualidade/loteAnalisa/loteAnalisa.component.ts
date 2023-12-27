@@ -126,7 +126,7 @@ export class LoteAnalisaComponent implements OnInit {
             'iteMax': xy.iteMax,
             'iteMeio': xy.iteMeio,
             'iteTxt': xy.iteTxt,
-            'situacao': xy.situacao,
+            'situacao': xy.situacao.charAt(0).toUpperCase() + xy.situacao.slice(1).toLowerCase(),
             'result': xy.result,
             'resultxt': xy.resultxt
           })
@@ -170,7 +170,7 @@ export class LoteAnalisaComponent implements OnInit {
       'iteTxt': ' ',
       'result': 0,
       'resultxt': ' ',
-      'situacao': 'Aprovado',
+      'situacao': 'APROVADO',
       'just': 'Aprovação automática pela análise',
       'tipo': tipo,
     }
@@ -219,20 +219,15 @@ export class LoteAnalisaComponent implements OnInit {
     var nbm = 0;
     let dtAtual = new Date();
 
-    if (isNaN(parseFloat(vNum))) {
-      vResultxt = vNum;
-      if (vNum == 'N') {
-        sit = 'Reprovado';
-      } else if (vNum == 'S') sit = 'Aprovado';
-      else return alert('Por favor, digite S ou N ou um valor numérico');
+    if (isNaN(parseFloat(vNum))) /*Checa se o valor inserido é numérico*/ {
+      return alert('Por favor, digite um valor numérico');
     } else {
       nbm = parseFloat(vNum);
-      console.log(xcRow.iteMin);
-      if (xcRow.iteMin > 0 || xcRow.iteMax > 0)
-        if (nbm < xcRow.iteMin || nbm > xcRow.iteMax)
-          sit = 'Reprovado';
+      if (xcRow.iteMin > 0 || xcRow.iteMax > 0) //Checa se o intervalo existe
+        if (nbm < xcRow.iteMin || nbm > xcRow.iteMax) //Checa se o valor está no intervalo
+          sit = 'REPROVADO';
         else
-          sit = 'Aprovado';
+          sit = 'APROVADO';
     }
     const obj = {
       'filial': this.filial,
@@ -245,9 +240,13 @@ export class LoteAnalisaComponent implements OnInit {
       'hrAnalise': dtAtual.getHours(),
       'resultxt': vResultxt,
       'situacao': sit,
-      'usrAnalise': this.aUsr.codUser
+      'usrAnalise': this.aUsr.codUser,
+      'loteAprov': 'ANDAMENTO',
+      'dataAprovacao':''
     }
+
     this.fj.execProd('aprovacaoLote', obj);
+    this.fj.execProd('confirmaAnalise', obj);
     window.location.reload();
   }
   exportExcel(fileName, sheetName) {
@@ -278,15 +277,28 @@ export class LoteAnalisaComponent implements OnInit {
     this.fj.execProd('analisaAprovaLote', obj);
   }
 
-  confirmar(){
-    var situacaoAnalise = '';
-    var dataAprovacao = '';
-    var rejeitado = this.arrDados.filter(q => q.situacao != 'Aprovado');
-    if(rejeitado.length != 0){
-      situacaoAnalise = 'ANDAMENTO';
-    } else situacaoAnalise = 'APROVADO';
+  confirmar() {
+    let situacaoAnalise = '';
+    //Checar a situacao de todos os itens
+    const rejeitado = this.arrDados.filter(q => q.situacao.toUpperCase() === 'REPROVADO');
+    console.log(rejeitado);
+    const emBranco = this.arrDados.filter(q => q.situacao.toUpperCase() === '');
+    const aprovado = this.arrDados.filter(q => q.situacao.toUpperCase() === 'APROVADO');
+    let confirmText = "";
+    //Se algum em branco necessário aprovar todos, se não, aprovação segue normalmente
+    if (emBranco.length > 0) confirmText = "CONFIRMAR APROVAÇÃO DE TODOS OS REGISTROS?";
+    else confirmText = "CONFIRMAR APROVAÇÃO"
+    //se existe algum rejeitado lote será segregado
+    if (rejeitado.length > 0) {
+      situacaoAnalise = 'SEGREGADO';
+      confirmText = "ITEM(S) FORA DO INTERVALO. CONFIRMAR A SEGREGAÇÃO DO LOTE?";
+    }
+    //Se existir algum aprovado, lote será aprovado
+    else if (aprovado.length > 0)
+      situacaoAnalise = 'APROVADO';
 
-    var obj = {
+    //Gera objeto para confirmação
+    const obj = {
       filial: this.filial,
       produto: this.produto,
       lote: this.lote,
@@ -294,9 +306,10 @@ export class LoteAnalisaComponent implements OnInit {
       loteAprov: situacaoAnalise,
       dataAprovacao: new Date().toISOString().split('T')[0]
     }
-
-    this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
-   // window.location.reload();
+    if (confirm(confirmText)) /* espera confirmação do usuário */{
+      this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q)); //envia para backend
+      //window.location.reload(); //reinicia a tela
+    }
   }
 
 }

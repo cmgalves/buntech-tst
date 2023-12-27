@@ -33,7 +33,7 @@ export class LoteRegComponent implements OnInit {
   arrCarac: any = [];
   filLoteReg: string = '';
   cFil: string = '';
-  filterLoteReg: any = ['TODOS', 'ABERTO', 'ANDAMENTO', 'APROVADO', 'REJEITADO'];
+  filterLoteReg: any = ['TODOS', 'ABERTO', 'ANDAMENTO', 'APROVADO', 'REJEITADO', 'SEGREGADO'];
   filterPosAnalise: any = ['Todos', 'Andamento', 'Aguardando', 'Analisado'];
   filPosAnalise: string = 'Todos';
 
