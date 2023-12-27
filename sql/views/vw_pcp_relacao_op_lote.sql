@@ -1,12 +1,8 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER view [dbo].[vw_pcp_relacao_op_lote] as
+--ALTER view [dbo].[vw_pcp_relacao_op_lote] as
 
 select
-	convert(varchar(20), dtcria, 113) dtcria, max(id_loteProd) id_loteRegProd,
-	filial, produto, op, lote, analise, 
+	convert(varchar(10), dtcria, 103) + ' ' +convert(varchar(08), dtcria, 108) dtcria, 
+	filial, produto, op, lote, 
 	descricao, 
 	case 
 		when loteAprov = ''
@@ -15,15 +11,15 @@ select
 	end loteAprov,  
 	usrAprovn1,usrAprovn2,usrAprovn3,
 	dtAprovn1,dtAprovn2,dtAprovn3,
-	sum(qtdeLote)qtdeLote,
+	sum(qtdeLote) qtdeLote,
 	situacao, analiseStatus, alcadaProd
 from
 	(
 	select
-		id_num id_loteProd, filial, 
+		filial, 
 		produto, op, intervalo, dtcria,
 		isnull(lote, '') lote, 
-		isnull(analise, '') analise, descrProd descricao,
+		descrProd descricao,
 		isnull(loteAprov,'') loteAprov, 
 		isnull(dtAprovn1, '')dtAprovn1, 
 		isnull(dtAprovn2, '')dtAprovn2, 
@@ -39,17 +35,19 @@ from
 	from
 		oppcfLote a inner JOIN
 		qualEspecCab b ON
-		a.produto = b.cabProduto COLLATE Latin1_General_BIN
+		a.produto = b.cabProduto 
 	where
 		1 = 1
 		and lote > '000000000'
         and isnull(qtde, 0) > 0
 		and b.situacao <> 'Encerrada'
 )x
+-- where lote = '000000084'
 group by
-	filial, produto, op, lote, analise, 
+	filial, produto, op, lote, 
 	descricao, dtcria, loteAprov,  
 	usrAprovn1, usrAprovn2, usrAprovn3,
 	dtAprovn1, dtAprovn2, dtAprovn3, 
 	situacao, analiseStatus, alcadaProd
 GO
+

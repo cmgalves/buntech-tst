@@ -54,7 +54,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['id_loteRegProd', 'filial', 'op', 'lote', 'analise', 'qtdeLote', 'dtcria', 'loteAprov', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'dtcria', 'loteAprov', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -83,13 +83,11 @@ export class OpresumoComponent implements OnInit {
       cada.forEach(xy => {
         ord++
         this.arrOpresumoTab.push({
-          'id_loteRegProd': xy.id_loteRegProd,
           'filial': xy.filial,
           'op': xy.op,
           'produto': xy.produto,
           'descricao': xy.descricao,
           'lote': xy.lote,
-          'analise': xy.analise,
           'dtcria': xy.dtcria,
           'loteAprov': xy.loteAprov,
           'qtdeLote': xy.qtdeLote,
@@ -109,19 +107,12 @@ export class OpresumoComponent implements OnInit {
     this.router.navigate(['opVisualiza']);
   }
 
-  // visualização da OP
+  // ajusta da OP
   ajustaOp(xcRow) {
     this.atuOP(xcRow.filial, xcRow.op, 'a')
     localStorage.setItem('op', JSON.stringify(xcRow));
     this.router.navigate(['opAjusta']);
   }
-
-  // ajustaOp(xcRow) {
-  //   const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
-  //   localStorage.setItem('op', JSON.stringify(filOP));
-  //   this.atuOP(xcRow.filial, xcRow.op, 'a')
-  //   this.router.navigate(['opAjusta']);
-  // }
 
   confirmaOp(xcRow) {
     const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);

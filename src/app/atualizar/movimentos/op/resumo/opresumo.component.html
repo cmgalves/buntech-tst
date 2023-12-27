@@ -32,10 +32,6 @@
                         </div>
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>
-                                <ng-container matColumnDef="id_loteRegProd">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.id_loteRegProd}} </td>
-                                </ng-container>
                                 <ng-container matColumnDef="filial">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Filial </th>
                                     <td mat-cell *matCellDef="let row"> {{row.filial}} </td>
@@ -47,10 +43,6 @@
                                 <ng-container matColumnDef="lote">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Lote </th>
                                     <td mat-cell *matCellDef="let row"> {{row.lote}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="analise">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Análise </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.analise}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeLote">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde </th>
@@ -65,7 +57,7 @@
                                     <td mat-cell *matCellDef="let row"> {{row.loteAprov}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="edicao">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> EDIÇÃO </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row">
                                         <button (click)="visuOp(row)" mat-raised-button type="button" matTooltip="Visualizar" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">visibility</i>
