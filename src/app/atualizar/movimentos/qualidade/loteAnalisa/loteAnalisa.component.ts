@@ -283,7 +283,6 @@ export class LoteAnalisaComponent implements OnInit {
     let situacaoAnalise = '';
     //Checar a situacao de todos os itens
     const rejeitado = this.arrDados.filter(q => q.situacao.toUpperCase() === 'REPROVADO');
-    console.log(rejeitado);
     const emBranco = this.arrDados.filter(q => q.situacao.toUpperCase() === '');
     const aprovado = this.arrDados.filter(q => q.situacao.toUpperCase() === 'APROVADO');
     let confirmText = "";
@@ -308,11 +307,14 @@ export class LoteAnalisaComponent implements OnInit {
       loteAprov: situacaoAnalise,
       dataAprovacao: new Date().toISOString().split('T')[0]
     }
-    if (confirm(confirmText)) /* espera confirmação do usuário */ {
-      this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
-      if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
-      this.router.navigate(['loteReg']);
-    }
+    /* espera confirmação do usuário */
+    this.fj.confirmDialog(confirmText).subscribe(q => {
+      if (q) {
+        this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
+        if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
+        this.router.navigate(['loteReg']);
+      }
+    });
   }
 
 
@@ -325,9 +327,9 @@ export class LoteAnalisaComponent implements OnInit {
       dtAprovn1: new Date().toISOString().split('T')[0],
       dtAprovn2: new Date().toISOString().split('T')[0],
       dtAprovn3: new Date().toISOString().split('T')[0],
-      justificativa1:"Aprovado automaticamente pela Análise das Características.",
-      justificativa2:"Aprovado automaticamente pela Análise das Características.",
-      justificativa3:"Aprovado automaticamente pela Análise das Características.",
+      justificativa1: "Aprovado automaticamente pela Análise das Características.",
+      justificativa2: "Aprovado automaticamente pela Análise das Características.",
+      justificativa3: "Aprovado automaticamente pela Análise das Características.",
       tipoAprovn1: "A",
       tipoAprovn2: "A",
       tipoAprovn3: "A",
