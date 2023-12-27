@@ -38,12 +38,12 @@ INTO @filial, @cabProduto
 WHILE @@FETCH_STATUS = 0  
 BEGIN
     INSERT into oppcfLote
-        (filial,	op,					  produto,     qtde,   dtime,				dtcria,					codRecurso, qtdeImp, lote,     origem, stsLote, analise, intervaloLote, qtde_lote, loteAprov, dtAprov, dtProd, dtVenc, qtdeQuebra, quebra, situacao, analiseStatus, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo)
+        (filial,	op,					  produto,     qtde,   dtime,				dtcria,					codRecurso, qtdeImp, lote,     origem, stsLote, analise, intervaloLote, qtde_lote, loteAprov, dtAprov, dtProd, dtVenc, qtdeQuebra, quebra, situacao, loteAprov, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo)
     values(@filial, left('102' + @cabProduto, 11), @cabProduto, 0.882, CURRENT_TIMESTAMP, '2023-12-07 11:07:50.000', 'CLAUDI',	 0,		'000000000', 'S',  '',       'A00',   '',            0,         '',        '',      '',      '',    0,           0,      '',        '',            0,         0,         0,           '',        '',       '',              '')
 	 
 		
     -- PRINT @filial + '-' + @cabProduto
-    -- PRINT '-------- produtos para produção --------';
+    -- PRINT '-------- produtos para produï¿½ï¿½o --------';
 
     FETCH NEXT FROM itens_prod   
     INTO @filial, @cabProduto
@@ -52,7 +52,7 @@ END
 CLOSE itens_prod;
 DEALLOCATE itens_prod;
 
---id_num, filial, op, produto, qtde, dtime, dtcria, codRecurso, qtdeImp, lote, origem, stsLote, analise, intervaloLote, qtde_lote, loteAprov, dtAprov, dtProd, dtVenc, qtdeQuebra, quebra, situacao, analiseStatus, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo
+--id_num, filial, op, produto, qtde, dtime, dtcria, codRecurso, qtdeImp, lote, origem, stsLote, analise, intervaloLote, qtde_lote, loteAprov, dtAprov, dtProd, dtVenc, qtdeQuebra, quebra, situacao, loteAprov, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo
 GO
 
 

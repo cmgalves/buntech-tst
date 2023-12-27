@@ -17,7 +17,7 @@
 		isnull(dtVenc, '')dtVenc, 
 		isnull(qtde, 0) qtdeLote, 
 		isnull(a.situacao, '') situacao, 
-		isnull(analiseStatus, '') analiseStatus, 
+		isnull(loteAprov, '') loteAprov, 
 		especAlcada alcadaProd
 	from
 		oppcfLote a inner JOIN

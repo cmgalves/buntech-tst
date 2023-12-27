@@ -12,7 +12,7 @@ select
 	usrAprovn1,usrAprovn2,usrAprovn3,
 	dtAprovn1,dtAprovn2,dtAprovn3,
 	sum(qtdeLote) qtdeLote,
-	situacao, analiseStatus, alcadaProd
+	situacao, loteAprov, alcadaProd
 from
 	(
 	select
@@ -30,7 +30,7 @@ from
 		isnull(dtVenc, '')dtVenc, 
 		isnull(qtde, 0) qtdeLote, 
 		isnull(a.situacao, '') situacao, 
-		isnull(analiseStatus, '') analiseStatus, 
+		isnull(loteAprov, '') loteAprov, 
 		especAlcada alcadaProd
 	from
 		oppcfLote a inner JOIN
@@ -48,6 +48,6 @@ group by
 	descricao, dtcria, loteAprov,  
 	usrAprovn1, usrAprovn2, usrAprovn3,
 	dtAprovn1, dtAprovn2, dtAprovn3, 
-	situacao, analiseStatus, alcadaProd
+	situacao, loteAprov, alcadaProd
 GO
 
