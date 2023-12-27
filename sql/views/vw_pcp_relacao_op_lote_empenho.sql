@@ -1,8 +1,4 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER VIEW [dbo].[vw_pcp_relacao_op_lote_empenho] as --View_Portal_Op_Transf
+--ALTER VIEW [dbo].[vw_pcp_relacao_op_lote_empenho] as --View_Portal_Op_Transf
 SELECT 
 	ipEmp, filial, op, 
     rtrim(produto) produto, 
@@ -13,6 +9,7 @@ SELECT
     b.B1_DESC descEmp,
 	qtdeEmp, 
     isnull(qtdeEmpCalc, 0) qtdeEmpCalc, 
+    isnull(qtdeInformada, 0) qtdeInformada, 
     isnull(saldo, 0) saldo, 
     isnull(tipo, '') tipo, 
     isnull(situacao, '') situacao, 
@@ -36,7 +33,3 @@ FROM
 
 
 GO
-
--- SELECT * from vw_pcp_relacao_op_lote_empenho
---SELECT  filial, op, produto, qtdeOP, emissao, unidade,  componente, RTRIM(descEmp) descEmp, qtdeEmp FROM      vw_pcp_relacao_op_lote_empenho WHERE    1 = 1   AND filial =  '101'     AND op =  '00003101001' 
---SELECT  filial, op, produto, qtdeOP, emissao, unidade,  componente, descEmp, qtdeEmp FROM       vw_pcp_relacao_op_lote_empenho WHERE    1 = 1   AND filial =  '101'     AND op =  '00003101001' 

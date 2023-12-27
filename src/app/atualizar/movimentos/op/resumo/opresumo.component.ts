@@ -7,6 +7,7 @@ import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
+import { funcGeral } from 'app/funcs/funcGeral';
 
 // tslint:disable-next-line:class-name
 export interface opResumo {
@@ -54,7 +55,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'dtcria', 'loteAprov', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'diabr', 'loteAprov', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -62,6 +63,7 @@ export class OpresumoComponent implements OnInit {
 
   constructor(
     public router: Router,
+    private fg: funcGeral,
     private fj: funcsService,
     public dialog: MatDialog
   ) { }
@@ -89,6 +91,7 @@ export class OpresumoComponent implements OnInit {
           'descricao': xy.descricao,
           'lote': xy.lote,
           'dtcria': xy.dtcria,
+          'diabr': xy.diabr,
           'loteAprov': xy.loteAprov,
           'qtdeLote': xy.qtdeLote,
         })

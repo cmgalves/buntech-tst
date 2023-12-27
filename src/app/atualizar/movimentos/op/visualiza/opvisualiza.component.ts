@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
+import { funcGeral } from 'app/funcs/funcGeral';
 
 // tslint:disable-next-line:class-name
 export interface opVisualiza {
@@ -48,13 +49,14 @@ export class OpvisualizaComponent implements OnInit {
   opHoras: string = '';
 
   opvisualizas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada'];
   dataSource: MatTableDataSource<opVisualiza>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     public router: Router,
+    private fg: funcGeral,
     private fj: funcsService,
   ) { }
 
@@ -80,6 +82,7 @@ export class OpvisualizaComponent implements OnInit {
           unidade: xy.unidade,
           qtdeEmp: xy.qtdeEmp,
           qtdeEmpCalc: xy.qtdeEmpCalc,
+          qtdeInformada: xy.qtdeInformada,
           saldo: xy.saldo,
           tipo: xy.tipo,
           situacao: xy.situacao,
