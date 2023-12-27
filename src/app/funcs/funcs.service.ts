@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'app/components/confirm-dialog/confirm-dialog.component';
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { catchError, mergeMap } from 'rxjs/operators';
@@ -12,7 +14,7 @@ import { catchError, mergeMap } from 'rxjs/operators';
 
 export class funcsService {
 
-  constructor(private _http: Http) { }
+  constructor(private _http: Http, public dialog: MatDialog) { }
 
   execPar(_url, obj) {
     let url = '';
@@ -395,5 +397,14 @@ export class funcsService {
         this.prodLote(obj2); //Envia para o proteus
       });
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
+  }
+
+
+  confirmDialog(confirmText:string): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {text:confirmText},
+    })
+
+    return dialogRef.afterClosed();
   }
 }

@@ -20,7 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
@@ -57,7 +57,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AppComponent,
     AdminLayoutComponent,
   ],
-  providers: [AuthService],
+  providers: [AuthService, {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   // exports: [MatAutocompleteModule, MatInputModule,],
   bootstrap: [AppComponent]
 })

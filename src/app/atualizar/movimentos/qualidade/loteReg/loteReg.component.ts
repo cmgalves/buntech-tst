@@ -7,6 +7,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { funcsService } from '../../../../funcs/funcs.service';
 import { funcGeral } from 'app/funcs/funcGeral';
+import { MatDialog } from '@angular/material/dialog';
+
 
 export interface cadLoteReg {
   seq: string;
@@ -48,6 +50,7 @@ export class LoteRegComponent implements OnInit {
     public router: Router,
     private fg: funcGeral,
     private fj: funcsService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -205,5 +208,6 @@ export class LoteRegComponent implements OnInit {
   imprimeLote() {
     alert('Imprime Lote')
   }
+
 
 }
