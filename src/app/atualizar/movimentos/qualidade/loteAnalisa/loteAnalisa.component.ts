@@ -249,7 +249,7 @@ export class LoteAnalisaComponent implements OnInit {
 
     this.fj.execProd('aprovacaoLote', obj);
     this.fj.execProd('confirmaAnalise', obj);
-    this.router.navigate(['loteReg']);
+    location.reload();
   }
   exportExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
@@ -311,7 +311,7 @@ export class LoteAnalisaComponent implements OnInit {
     if (confirm(confirmText)) /* espera confirmação do usuário */ {
       this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
       if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
-      //window.location.reload();
+      this.router.navigate(['loteReg']);
     }
   }
 
