@@ -69,7 +69,7 @@ table {
     color: DarkSalmon
 }
 
-
-/* td {
-    text-align: right;
-} */
+.tdNumero {
+    text-align: center;
+    margin-left: 5em;
+}

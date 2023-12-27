@@ -24,3 +24,8 @@ table {
 .divCorVerde {
     background: rgba(3, 173, 162)
 }
+
+.tdNumero {
+    text-align: center;
+    margin-left: 5em;
+}

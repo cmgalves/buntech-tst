@@ -90,3 +90,8 @@ table {
 .spinner-big {
     font-size: 100px !important;
 }
+
+.tdNumero {
+    text-align: center;
+    margin-left: 5em;
+}

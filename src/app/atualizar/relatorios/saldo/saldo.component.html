@@ -45,11 +45,11 @@
                                 </ng-container>
                                 <ng-container matColumnDef="saldo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo em Estoque </th>
-                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.saldo}} </td>
+                                    <td class="tdNumero" mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.saldo}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="empenhado">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Empenhado </th>
-                                    <td mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.empenhado}} </td>
+                                    <td class="tdNumero" mat-cell *matCellDef="let row" class={{row.situacao}}> {{row.empenhado}} </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

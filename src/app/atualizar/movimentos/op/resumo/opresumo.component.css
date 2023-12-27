@@ -72,3 +72,8 @@ table {
     color: orangered;
     text-align: center;
 }
+
+.tdNumero {
+    text-align: center;
+    margin-left: 5em;
+}

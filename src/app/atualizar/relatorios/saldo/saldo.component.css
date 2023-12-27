@@ -40,3 +40,8 @@ table {
 .textoVermelho {
     color: DarkSalmon
 }
+
+.tdNumero {
+    text-align: center;
+    margin-left: 5em;
+}
