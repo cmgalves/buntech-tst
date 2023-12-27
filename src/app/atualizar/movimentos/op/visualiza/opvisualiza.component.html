@@ -91,11 +91,15 @@
                                     <td mat-cell *matCellDef="let row"> {{row.unidade}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeEmp">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quant Original </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Original </th>
                                     <td mat-cell *matCellDef="let row"> {{row.qtdeEmp}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeEmpCalc">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quant Calculada </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Calculada </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.qtdeEmpCalc}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdeInformada">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Informada </th>
                                     <td mat-cell *matCellDef="let row"> {{row.qtdeEmpCalc}} </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
