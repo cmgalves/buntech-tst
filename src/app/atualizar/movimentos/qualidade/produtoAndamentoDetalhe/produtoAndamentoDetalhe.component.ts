@@ -80,7 +80,6 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
           qtde_lote: xy.qtde_lote==null?0:xy.qtde_lote
         })
       });
-      console.log(this.arrDados);
       const resultado = this.arrDados.reduce((acc, elemento) => {
         const chave = `${elemento.filial}-${elemento.produto}-${elemento.op}`;
         const encontrado = acc.find(item => item.chave === chave);
@@ -145,11 +144,9 @@ export class ProdutoAndamentoDetalheComponent implements OnInit {
     if (this.filLoteReg != "Todos") {
       arrFiltrado = arrFiltrado.filter(x => x.situacao?.toUpperCase() == this.filLoteReg?.toUpperCase());
       this.dataSource = new MatTableDataSource(arrFiltrado);
-      console.log(arrFiltrado);
     } if (this.filPosAnalise != "Todos") {
       arrFiltrado = arrFiltrado.filter(x => x.analiseStatus?.toUpperCase() == this.filPosAnalise?.toUpperCase());
       this.dataSource = new MatTableDataSource(arrFiltrado);
-      console.log(arrFiltrado);
     }
     else if(this.filLoteReg == "Todos") {
       this.dataSource = new MatTableDataSource(this.arrDados);

@@ -228,7 +228,6 @@ export class DocdetComponent implements OnInit {
   enableEditUser(e, i) {
     this.enableEditIndex = i;
     // (<HTMLInputElement>(document.getElementById("editQtd"))).focus()
-    console.log(i, e)
   }
 
   // edita a quantidade do empenho da OP

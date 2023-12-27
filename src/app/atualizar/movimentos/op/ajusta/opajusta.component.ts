@@ -27,6 +27,7 @@ export interface opAjusta {
 
 export class OpajustaComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
+  aOP = JSON.parse(localStorage.getItem('op'));
   numOP = JSON.parse(localStorage.getItem('op'));
   arrRecurso = JSON.parse(localStorage.getItem('recurso'));
   arrProd = JSON.parse(localStorage.getItem('cadProd'));
@@ -76,7 +77,7 @@ export class OpajustaComponent implements OnInit {
   editQtd: any = 0;
 
   opajustas: Observable<any>;
-  displayedColumns: string[] = ['COMPONENTE', 'DESCRIC', 'UNIDADE', 'QTDEORI', 'QTDCALCULADA', 'SITUACA', 'EDICAO'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'situaca', 'edicao'];
   dataSource: MatTableDataSource<opAjusta>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -90,7 +91,8 @@ export class OpajustaComponent implements OnInit {
   ngOnInit(): void {
     this.mostraInc = false
     if (('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1) {
-      this.buscaOpsAndamentoProtheus();
+      this.buscaOpajusta();
+      // this.buscaOpsAndamentoProtheus();
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value))
@@ -300,9 +302,7 @@ export class OpajustaComponent implements OnInit {
 
 
   buscaOpsAndamentoProtheus() {
-
     this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
-
     this.arrOpAndA.subscribe(cada => {
       cada.forEach(xy => {
         this.arrOpAndB.push({
@@ -314,12 +314,45 @@ export class OpajustaComponent implements OnInit {
           'final': xy.FINAL,
         })
       });
-      this.buscaOpajusta();
-
     });
   }
 
-  buscaOpajusta() {
+  buscaOpajusta() { //View_Portal_OP
+    let xcFilial = this.aOP.filial;
+    let xcOp = this.aOP.op;
+    const obj = {
+      filial: xcFilial,
+      op: xcOp,
+    };
+    this.arrOpajusta = [];
+    this.arrOpajusta = this.fj.buscaPrt('pcpRelacaoLoteOpEmpenho', obj); //vw_pcp_relacao_lote_op_empenho
+
+    this.arrOpajusta.subscribe(cada => {
+      cada.forEach(xy => {
+        this.arrOpajustaTab.push({
+          componente: xy.componente,
+          descEmp: xy.descEmp,
+          unidade: xy.unidade,
+          qtdeEmp: xy.qtdeEmp,
+          qtdeEmpCalc: xy.qtdeEmpCalc,
+          saldo: xy.saldo,
+          tipo: xy.tipo,
+          situacao: xy.situacao,
+        })
+      });
+      this.opFilial = this.aOP.filial;
+      this.opCodigo = this.aOP.op;
+      this.opProduto = this.aOP.produto;
+      this.opDescricao = this.aOP.descricao;
+      this.opQtde = this.aOP.qtdeLote
+
+      this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+
+  }
+  buscaOpajustas() {
     let conta = 0
     let secs = 0;
     let retr = 0;
@@ -330,7 +363,6 @@ export class OpajustaComponent implements OnInit {
     const obj = {
       filial: xcFilial,
       op: xcOp,
-      tipo: 'tudo',
     };
 
     const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
@@ -397,7 +429,6 @@ export class OpajustaComponent implements OnInit {
   enableEditUser(e, i) {
     this.enableEditIndex = i;
     // (<HTMLInputElement>(document.getElementById("editQtd"))).focus()
-    console.log(i, e)
   }
 
   // edita a quantidade do empenho da OP

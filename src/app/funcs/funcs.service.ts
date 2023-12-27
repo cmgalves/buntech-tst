@@ -29,7 +29,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.post(url, obj)
-      .map((response: Response) => { console.log(response); return response.json() });
+      .map((response: Response) => { return response.json() });
 
   }
 
@@ -100,9 +100,7 @@ export class funcsService {
   execProd(_url, obj) {
     let url = '';
     const dstUrla = ['10.3.0.49:885'];
-    console.log(obj);
     url = `http://${dstUrla}/${_url}`
-    console.log(url)
 
     $.ajaxSetup({ async: false });
 
@@ -209,7 +207,6 @@ export class funcsService {
         let requisicoes = [];
         let lotesAtualizar = oppcfLote.filter(q => q.lote == '000000000').slice(0, 200);
         if (lotesAtualizar.length == 0) return funcao();
-        console.log(lotesAtualizar);
         let produtoAtual = lotesAtualizar[0].produto;
         let LoteAtual = [...oppcfLote].filter(q => q.produto == produtoAtual).sort((a, b) => parseInt(a.lote) > parseInt(b.lote) ? -1 : 1)[0];
         let countLote = LoteAtual.stsLote != 'F' ? parseInt(LoteAtual.lote) : parseInt(LoteAtual.lote) + 1;
@@ -251,7 +248,6 @@ export class funcsService {
             intervaloAtual = "";
           }
           if (especificaAtual.especQuebra == "QTDE") {
-            console.log(lote.qtde);
             if ((qtdLote + lote.qtde) >= especificaAtual.cabQtdeQuebra) {
               let intervalo = `${intervaloInicial}/${intervaloAtual}`;
               novosLotes.push({
@@ -275,7 +271,6 @@ export class funcsService {
             }
             produtosAtualizados.push(newProduto)
             requisicoes.push(this._http.post(url, newProduto).pipe(catchError((error) => {
-              console.log(`Erro em produto: ${lote.id_num}`, error);
               return of(null);
             })));
           }
@@ -311,7 +306,6 @@ export class funcsService {
             }
             produtosAtualizados.push(newProduto)
             requisicoes.push(this._http.post(url, newProduto).pipe(catchError((error) => {
-              console.log(`Erro em produto: ${lote.id_num}`, error);
               return of(null);
             })));
           }
@@ -333,7 +327,7 @@ export class funcsService {
               observable.pipe(mergeMap(result => of(result), MAX_REQUISITIONS)
               )
             )
-            ).subscribe(q => { console.log(q); this.atualizarLotes(novosLotes, funcao); });
+            ).subscribe(q => { this.atualizarLotes(novosLotes, funcao); });
           }
         });
 
@@ -342,9 +336,7 @@ export class funcsService {
   }
 
   atualizarLotes(novosLotes: any[], funcao: Function) {
-    console.log(novosLotes);
     const dstUrla = ['10.3.0.49:885'];
-    console.log("Atualizando Lotes");
 
     novosLotes.forEach(q => {
       this._http.post(`http://${dstUrla}/atualizaLote`, q).subscribe(q => funcao());

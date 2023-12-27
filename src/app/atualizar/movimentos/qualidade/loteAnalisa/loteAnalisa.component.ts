@@ -242,7 +242,7 @@ export class LoteAnalisaComponent implements OnInit {
       'situacao': sit,
       'usrAnalise': this.aUsr.codUser,
       'loteAprov': 'ANDAMENTO',
-      'dataAprovacao':''
+      'dataAprovacao': ''
     }
 
     this.fj.execProd('aprovacaoLote', obj);
@@ -306,10 +306,12 @@ export class LoteAnalisaComponent implements OnInit {
       loteAprov: situacaoAnalise,
       dataAprovacao: new Date().toISOString().split('T')[0]
     }
-    if (confirm(confirmText)) /* espera confirmação do usuário */{
-      this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q)); //envia para backend
-      //window.location.reload(); //reinicia a tela
+    if (confirm(confirmText)) /* espera confirmação do usuário */ {
+      this.fj.buscaPrt('confirmaAnalise', obj).subscribe();
+      window.location.reload();
     }
+
+
   }
 
 }

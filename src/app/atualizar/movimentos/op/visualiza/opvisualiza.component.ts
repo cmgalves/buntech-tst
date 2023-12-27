@@ -9,12 +9,11 @@ import * as XLSX from 'xlsx';
 
 // tslint:disable-next-line:class-name
 export interface opVisualiza {
-  COMPONENTE: string;
-  DESCRIC: string;
-  QTDEORI: string;
-  SALDO: string;
-  ROTEIRO: string;
-  OPERACAO: string;
+  componente: string;
+  descricao: string;
+  unidade: string;
+  qtdeEmp: string;
+
 }
 
 @Component({
@@ -49,7 +48,7 @@ export class OpvisualizaComponent implements OnInit {
   opHoras: string = '';
 
   opvisualizas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descricao', 'qtdeEmp'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc'];
   dataSource: MatTableDataSource<opVisualiza>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -69,25 +68,22 @@ export class OpvisualizaComponent implements OnInit {
     const obj = {
       filial: xcFilial,
       op: xcOp,
-      tipo: 'tudo',
     };
     this.arrOpvisualiza = [];
-    // const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
     this.arrOpvisualiza = this.fj.buscaPrt('pcpRelacaoLoteOpEmpenho', obj); //vw_pcp_relacao_lote_op_empenho
 
     this.arrOpvisualiza.subscribe(cada => {
       cada.forEach(xy => {
-
         this.arrOpvisualizaTab.push({
           componente: xy.componente,
-          descricao: xy.descricao,
+          descEmp: xy.descEmp,
+          unidade: xy.unidade,
           qtdeEmp: xy.qtdeEmp,
           qtdeEmpCalc: xy.qtdeEmpCalc,
           saldo: xy.saldo,
           tipo: xy.tipo,
           situacao: xy.situacao,
         })
-
       });
       this.opFilial = this.aOP.filial;
       this.opCodigo = this.aOP.op;
