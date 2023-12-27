@@ -80,7 +80,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="centro"> M A N U T E N Ç Ã O
                                     </th>
                                     <td mat-cell *matCellDef="let row">
-                                        <button (click)="detalheLote(row)" [disabled]="row.loteAprov != 'APROVADO'" mat-raised-button type="button" matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="detalheLote(row)" mat-raised-button type="button" matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">explore</i>
                                         </button>
                                         <button (click)="analisaLote(row)" [disabled]="row.loteAprov != 'ABERTO' && row.loteAprov != 'ANDAMENTO'" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
