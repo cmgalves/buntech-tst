@@ -102,6 +102,7 @@ export class LoteAnalisaComponent implements OnInit {
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         if (codCaracteristica.indexOf(xy.codCarac) < 0) {
@@ -138,6 +139,7 @@ export class LoteAnalisaComponent implements OnInit {
             this.descrProd = xy.descrProd
             this.revisao = xy.cabRevisao
             this.especAlcada = xy.especAlcada
+            this.op = xy.op;
           }
         }
         this.qtdeTot = this.fg.formatarNumero(xy.qtde)
@@ -247,7 +249,7 @@ export class LoteAnalisaComponent implements OnInit {
 
     this.fj.execProd('aprovacaoLote', obj);
     this.fj.execProd('confirmaAnalise', obj);
-    window.location.reload();
+    this.router.navigate(['loteReg']);
   }
   exportExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
@@ -307,11 +309,34 @@ export class LoteAnalisaComponent implements OnInit {
       dataAprovacao: new Date().toISOString().split('T')[0]
     }
     if (confirm(confirmText)) /* espera confirmação do usuário */ {
-      this.fj.buscaPrt('confirmaAnalise', obj).subscribe();
-      window.location.reload();
+      this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
+      if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
+      //window.location.reload();
     }
+  }
 
 
+  aprovacaoAutomatica() {
+    const obj = {
+      produto: this.produto,
+      usrAprovn1: this.arrUserLogado.codUser,
+      usrAprovn2: this.arrUserLogado.codUser,
+      usrAprovn3: this.arrUserLogado.codUser,
+      dtAprovn1: new Date().toISOString().split('T')[0],
+      dtAprovn2: new Date().toISOString().split('T')[0],
+      dtAprovn3: new Date().toISOString().split('T')[0],
+      justificativa1:"Aprovado automaticamente pela Análise das Características.",
+      justificativa2:"Aprovado automaticamente pela Análise das Características.",
+      justificativa3:"Aprovado automaticamente pela Análise das Características.",
+      tipoAprovn1: "A",
+      tipoAprovn2: "A",
+      tipoAprovn3: "A",
+      lote: this.lote,
+      op: this.op,
+      analise: this.analise,
+      filial: this.filial
+    }
+    this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
   }
 
 }

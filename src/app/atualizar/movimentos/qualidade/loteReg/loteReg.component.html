@@ -80,16 +80,16 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="centro"> M A N U T E N Ç Ã O
                                     </th>
                                     <td mat-cell *matCellDef="let row">
-                                        <button (click)="detalheLote(row)" mat-raised-button type="button" matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="detalheLote(row)" [disabled]="row.loteAprov != 'APROVADO'" mat-raised-button type="button" matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">explore</i>
                                         </button>
                                         <button (click)="analisaLote(row)" [disabled]="row.loteAprov != 'ABERTO' && row.loteAprov != 'ANDAMENTO'" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">gps_fixed</i>
                                         </button>
-                                        <button (click)="aprovaLote(row)" [disabled]="!row.podeAprovar" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="aprovaLote(row)" [disabled]="!row.podeAprovar || row.loteAprov == 'APROVADO'" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">center_focus_weak</i>
                                         </button>
-                                        <button (click)="imprimeLote(row)" mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="imprimeLote(row)" [disabled]="row.loteAprov == 'APROVADO'" mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">apps</i>
                                         </button>
                                     </td>

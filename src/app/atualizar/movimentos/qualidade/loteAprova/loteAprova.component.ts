@@ -146,7 +146,7 @@ export class LoteAprovaComponent implements OnInit {
             'iteMax': xy.iteMax,
             'iteMeio': xy.iteMeio,
             'iteTxt': xy.iteTxt,
-            'situacao': xy.situacao,
+            'situacao': xy.situacao.charAt(0).toUpperCase() + xy.situacao.slice(1).toLowerCase(),
             'result': xy.result,
             'resultxt': xy.resultxt,
             'op': xy.op
