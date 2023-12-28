@@ -70,7 +70,7 @@ export class LoteRegComponent implements OnInit {
 
     this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil }); //vw_pcp_relacao_lote_registro
     this.arrBusca.subscribe(cada => {
-      (cada);
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -80,7 +80,7 @@ export class LoteRegComponent implements OnInit {
           'descricao': xy.descricao,
           'lote': xy.lote,
           'analise': xy.analise,
-          'loteAprov': xy.loteAprov,
+          'loteAprov': xy.loteAprov.replace(' ', ''),
           'dtAprovn1': xy.dtAprovn1,
           'dtAprovn2': xy.dtAprovn2,
           'dtAprovn3': xy.dtAprovn3,
@@ -90,6 +90,9 @@ export class LoteRegComponent implements OnInit {
           'usrAprovn1': xy.usrAprovn1,
           'usrAprovn2': xy.usrAprovn2,
           'usrAprovn3': xy.usrAprovn3,
+          'justificativa1': xy.justificativa1,
+          'justificativa2': xy.justificativa2,
+          'justificativa3': xy.justificativa3,
           'qtdeLote': xy.qtdeLote,
           'situacao': xy.situacao,
           'analiseStatus': xy.analiseStatus,

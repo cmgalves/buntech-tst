@@ -400,11 +400,17 @@ export class funcsService {
   }
 
 
-  confirmDialog(confirmText:string): Observable<boolean> {
+  confirmDialog(confirmText: string): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {text:confirmText},
+      data: { text: confirmText },
     })
 
     return dialogRef.afterClosed();
+  }
+
+  acessoUsuario(usuario, acesso) {
+    if (usuario.perfil.includes('Administrador'))
+      return true;
+    return usuario.perfil.includes(acesso);
   }
 }

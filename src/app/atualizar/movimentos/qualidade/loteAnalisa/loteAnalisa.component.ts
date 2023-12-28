@@ -319,6 +319,7 @@ export class LoteAnalisaComponent implements OnInit {
 
 
   aprovacaoAutomatica() {
+    console.log('Aprovacao Automatica')
     const obj = {
       produto: this.produto,
       usrAprovn1: this.arrUserLogado.codUser,
@@ -336,7 +337,8 @@ export class LoteAnalisaComponent implements OnInit {
       lote: this.lote,
       op: this.op,
       analise: this.analise,
-      filial: this.filial
+      filial: this.filial,
+      loteAprov: 'APROVADO'
     }
     this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
   }

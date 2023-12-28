@@ -49,6 +49,9 @@ export class LoteAprovaComponent implements OnInit {
   qtdeQuebra: string = '';
   lote: string = '';
   justificativa: string = '';
+  justificativa1: string = '';
+  justificativa2: string = '';
+  justificativa3: string = '';
   nivel: string = '';
   n1: string = '';
   n2: string = '';
@@ -152,6 +155,7 @@ export class LoteAprovaComponent implements OnInit {
             'op': xy.op
           })
           if (ord === 1) {
+            console.log(this.aProd)
             this.filial = xy.filial
             this.produto = xy.produto
             this.lote = xy.lote
@@ -164,6 +168,9 @@ export class LoteAprovaComponent implements OnInit {
             this.n3 = xy.dtAprovn3
             this.dtVenc = xy.dtVenc
             this.op = xy.op
+            this.justificativa1 = this.aProd.justificativa1,
+              this.justificativa2 = this.aProd.justificativa2,
+              this.justificativa3 = this.aProd.justificativa3
           }
         }
         this.qtdeTot = this.fg.formatarNumero(xy.qtde)
@@ -179,88 +186,100 @@ export class LoteAprovaComponent implements OnInit {
     let nivAprov = '';
     let sitAprov = '';
     let txtAprov = '';
-    var tipoAprovn1 = ''
-    var tipoAprovn2 = ''
-    var tipoAprovn3 = ''
-    var dtAprovn1
-    var dtAprovn2
-    var dtAprovn3
-    var usrAprovn1 = ''
-    var usrAprovn2 = ''
-    var usrAprovn3 = ''
-    var justificativa1 = ''
-    var justificativa2 = ''
-    var justificativa3 = ''
-    const DataAtual = new Date().toISOString().split('T')[0];
+    var tipoAprovn1 = this.aProd.tipoAprova1;
+    var tipoAprovn2 = this.aProd.tipoAprova2;
+    var tipoAprovn3 = this.aProd.tipoAprova3;
+    var dtAprovn1 = this.aProd.dtAprovn1;
+    var dtAprovn2 = this.aProd.dtAprovn2;
+    var dtAprovn3 = this.aProd.dtAprovn3;   //Valores anteriores / valores padrão
+    var usrAprovn1 = this.aProd.usrAprovn1;
+    var usrAprovn2 = this.aProd.usrAprovn2;
+    var usrAprovn3 = this.aProd.usrAprovn3;
+    var justificativa1 = this.justificativa1;
+    var justificativa2 = this.justificativa2;
+    var justificativa3 = this.justificativa3;
+    var loteAprov;
 
-    if(this.justificativa == "" || this.justificativa == null)
+    var aprovaTodos = false;
+    var aprovaN3 = false;
+    const DataAtual = new Date().toISOString().split('T')[0]; //A data de hoje
+
+    if (!this.nivel.includes('N3')) aprovaN3 = true;
+
+    if (this.justificativa == "") {
+      console.log(this.justificativa)
       return alert("Justificativa é obrigatória");
+    } // Checa se tem justificativa
 
-    // switch (this.aUsr.perfil) {
-    //   case 'Qualidade N1':
-    //     nivAprov = 'N1'
-    //     break
-    //   case 'Qualidade N2':
-    //     nivAprov = 'N2'
-    //     break
-    //   case 'Qualidade N3':
-    //     nivAprov = 'N3'
-    //     break
-    //   default:
-    //     nivAprov = 'XX';
-    // }
+    if (!(this.fj.acessoUsuario(this.aUsr, this.nivel)))
+      return alert("Você não tem a permissão necessária para aprovar esse item"); //Checa se o usuário tem o perfil
+    //que coincide com a alcada do lote
 
-    if ((this.nivel.includes('N1') && this.aUsr.perfil.includes('N1')) || this.aUsr.perfil.includes('Administrador')) {
-      usrAprovn1 = this.aUsr.codUser;
+    if (this.aProd.loteAprov == 'SEGREGADO') { //Se a alcada conter N1 e for momento de
+      usrAprovn1 = this.aUsr.codUser;                                       //de aprovar o N1 (lote Segregado)      
       dtAprovn1 = DataAtual;
       tipoAprovn1 = tipo;
+      if (tipo == 'A') {
+        aprovaTodos = true; //Se o N1 aprova, aprova todos os níveis
+        loteAprov = 'APROVADO' //Altera o status do lote para aprovado
+      }
+      else
+        loteAprov = 'REAVALIACAO N2' //Se não, passa para o N1 Reavaliar
       nivAprov = 'N1';
       justificativa1 = this.justificativa;
     }
 
-    if ((this.nivel.includes('N2') && this.aUsr.perfil.includes('N2')) || this.aUsr.perfil.includes('Administrador')) {
-      usrAprovn2 = this.aUsr.codUser;
-      dtAprovn2 = DataAtual;
+    if (this.aProd.loteAprov == 'REAVALIACAON2' || aprovaTodos) { //Se é possível aprovar
+      usrAprovn2 = this.aUsr.codUser;                             //N2 ou se tudo será
+      dtAprovn2 = DataAtual;                                      //aprovado
       tipoAprovn2 = tipo;
+      loteAprov = aprovaN3 ? 'REAVALIACAO' : 'REAVALIACAO N3'; //passa para o N3 reavaliar ou finaliza
       nivAprov = 'N2';
       justificativa2 = this.justificativa;
     }
 
-    if ((this.nivel.includes('N3') && this.aUsr.perfil.includes('N3')) || this.aUsr.perfil.includes('Administrador')) {
-      usrAprovn3 = this.aUsr.codUser;
-      dtAprovn3 = DataAtual;
+    if (this.aProd.loteAprov == 'REAVALIACAON3' || aprovaTodos || aprovaN3) { //Se é possível aprovar
+      usrAprovn3 = this.aUsr.codUser;                                         //N3 ou se tudo será
+      dtAprovn3 = DataAtual;                                                  //aprovado
       tipoAprovn3 = tipo;
+      loteAprov = aprovaN3 ? loteAprov : 'REAVALIACAO' //O que ocorre após o N3 aprovar? ¯\_(ツ)_/¯
       nivAprov = 'N3';
       justificativa3 = this.justificativa;
     }
 
+    if(tipoAprovn1 == 'R' && tipoAprovn2 == 'R' && tipoAprovn3 == 'R')
+      loteAprov = 'REJEITADO'; //Se todos rejeitarem, muda para rejeitado
+
     if (nivAprov != '') {
-      if (this.temJustificativa()) {
-        sitAprov = tipo === 'A' ? 'Aprovado' : 'Rejeitado'
-        txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
+      txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
 
-        const obj = {
-          produto: this.produto,
-          usrAprovn1: usrAprovn1,
-          usrAprovn2: usrAprovn2,
-          usrAprovn3: usrAprovn3,
-          dtAprovn1: dtAprovn1,
-          dtAprovn2: dtAprovn2,
-          dtAprovn3: dtAprovn3,
-          tipoAprovn1: tipoAprovn1,
-          tipoAprovn2: tipoAprovn2,
-          tipoAprovn3: tipoAprovn3,
-          lote: this.lote,
-          op: this.op,
-          analise: this.analise,
-          filial: this.filial
-        }
+      const obj = {
+        produto: this.produto,
+        usrAprovn1: usrAprovn1,
+        usrAprovn2: usrAprovn2,
+        usrAprovn3: usrAprovn3, //Cria um objeto com todas os campos que serão alterados
+        dtAprovn1: dtAprovn1,
+        dtAprovn2: dtAprovn2,
+        dtAprovn3: dtAprovn3,
+        tipoAprovn1: tipoAprovn1,
+        tipoAprovn2: tipoAprovn2,
+        tipoAprovn3: tipoAprovn3,
+        justificativa1: justificativa1,
+        justificativa2: justificativa2,
+        justificativa3: justificativa3,
+        lote: this.lote,
+        op: this.op,
+        analise: this.analise,
+        filial: this.filial,
+        loteAprov: aprovaTodos?"APROVADO":loteAprov,
+      }
 
-        if (confirm(txtAprov)) {
-          this.fj.buscaPrt('aprovalote', obj).subscribe();
+      this.fj.confirmDialog(txtAprov).subscribe(q => {
+        if (q) {
+          this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
           this.nivelAprovado(2);
         }
-      }
+      });
     } else alert("USUÁRIO NÃO TEM NÍVEL PARA APROVAÇÃO");
   }
 

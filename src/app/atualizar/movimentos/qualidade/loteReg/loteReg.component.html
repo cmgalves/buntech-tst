@@ -86,7 +86,7 @@
                                         <button (click)="analisaLote(row)" [disabled]="row.loteAprov != 'ABERTO' && row.loteAprov != 'ANDAMENTO'" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">gps_fixed</i>
                                         </button>
-                                        <button (click)="aprovaLote(row)" [disabled]="!row.podeAprovar || row.loteAprov == 'APROVADO'" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="aprovaLote(row)" [disabled]="row.loteAprov != 'SEGREGADO' && !row.loteAprov.includes('REAVALIACAO')" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">center_focus_weak</i>
                                         </button>
                                         <button (click)="imprimeLote(row)" [disabled]="row.loteAprov == 'APROVADO'" mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
