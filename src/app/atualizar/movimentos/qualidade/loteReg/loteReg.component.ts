@@ -80,10 +80,17 @@ export class LoteRegComponent implements OnInit {
           'descricao': xy.descricao,
           'lote': xy.lote,
           'analise': xy.analise,
+<<<<<<< HEAD
           'loteAprov': xy.loteAprov.replace(' ', ''),
           'dtAprovn1': xy.dtAprovn1,
           'dtAprovn2': xy.dtAprovn2,
           'dtAprovn3': xy.dtAprovn3,
+=======
+          'loteAprov': xy.loteAprov,
+          'dt1': xy.dt1,
+          'dt2': xy.dt2,
+          'dt3': xy.dt3,
+>>>>>>> c863fafb8b72844457d1e610bb964f0bd975d915
           'tipoAprova1': xy.tipoAprova1,
           'tipoAprova2': xy.tipoAprova2,
           'tipoAprova3': xy.tipoAprova3,
@@ -95,7 +102,6 @@ export class LoteRegComponent implements OnInit {
           'justificativa3': xy.justificativa3,
           'qtdeLote': xy.qtdeLote,
           'situacao': xy.situacao,
-          'analiseStatus': xy.analiseStatus,
           'alcadaProd': xy.alcadaProd,
           'podeAprovar': xy.podeAprovar=="true"
         });
@@ -126,7 +132,7 @@ export class LoteRegComponent implements OnInit {
 
   checarAcesso(row) {
     const podeAcessar = (`Administrador, ${row.alcadaProd ? row.alcadaProd : ''}`).indexOf(this.arrUserLogado.perfil) >= 0
-    return row.analiseStatus != 'analisado' || row.situacao != 'Fechado' || !podeAcessar
+    return row.loteAprov != 'analisado' || row.situacao != 'Fechado' || !podeAcessar
   }
 
   acessoLoteReg(xcRow) {
@@ -146,7 +152,7 @@ export class LoteRegComponent implements OnInit {
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
     if (tp == 'aprova') {
-      if (aRow.analiseStatus != 'analisado') {
+      if (aRow.loteAprov != 'analisado') {
         return false
       }
     }

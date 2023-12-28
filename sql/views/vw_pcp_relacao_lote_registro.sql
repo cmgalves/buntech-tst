@@ -21,7 +21,7 @@ select distinct
 	dtAprovn1,dtAprovn2,dtAprovn3,
 	tipoAprova1, tipoAprova2, tipoAprova3,
 	sum(qtdeLote)qtdeLote,
-	x.situacao, analiseStatus, alcadaProd, 
+	x.situacao, loteAprov, alcadaProd, 
 	CASE 
 		WHEN isnull(qtde, 0) = 0
 		THEN 'true'
@@ -47,7 +47,7 @@ from
 		isnull(dtVenc, '')dtVenc, 
 		isnull(qtde, 0) qtdeLote, 
 		isnull(a.situacao, '') situacao, 
-		isnull(analiseStatus, '') analiseStatus, 
+		isnull(loteAprov, '') loteAprov, 
 		especAlcada alcadaProd
 	from
 		oppcfLote a inner JOIN
@@ -76,7 +76,7 @@ group by
 	usrAprovn1, usrAprovn2, usrAprovn3,
 	dtAprovn1, dtAprovn2, dtAprovn3,
 	tipoAprova1, tipoAprova2, tipoAprova3, 
-	x.situacao, analiseStatus, alcadaProd
+	x.situacao, loteAprov, alcadaProd
 
 
 GO

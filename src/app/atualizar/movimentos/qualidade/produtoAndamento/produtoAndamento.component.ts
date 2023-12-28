@@ -102,7 +102,7 @@ export class ProdutoAndamentoComponent implements OnInit {
 
   checarAcesso(row) {
     const podeAcessar = (`Administrador, ${row.alcadaProd ? row.alcadaProd : ''}`).indexOf(this.arrUserLogado.perfil) >= 0
-    return row.analiseStatus != 'analisado' || row.situacao != 'Fechado' || !podeAcessar
+    return row.loteAprov != 'analisado' || row.situacao != 'Fechado' || !podeAcessar
   }
 
   acessoLoteReg(xcRow) {
@@ -118,7 +118,7 @@ export class ProdutoAndamentoComponent implements OnInit {
       arrFiltrado = arrFiltrado.filter(x => x.situacao?.toUpperCase() == this.filLoteReg?.toUpperCase());
       this.dataSource = new MatTableDataSource(arrFiltrado);
     } if (this.filPosAnalise != "Todos") {
-      arrFiltrado = arrFiltrado.filter(x => x.analiseStatus?.toUpperCase() == this.filPosAnalise?.toUpperCase());
+      arrFiltrado = arrFiltrado.filter(x => x.loteAprov?.toUpperCase() == this.filPosAnalise?.toUpperCase());
       this.dataSource = new MatTableDataSource(arrFiltrado);
     }
     else if (this.filLoteReg == "Todos") {
@@ -129,7 +129,7 @@ export class ProdutoAndamentoComponent implements OnInit {
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
     if (tp == 'aprova') {
-      if (aRow.analiseStatus != 'analisado') {
+      if (aRow.loteAprov != 'analisado') {
         return false
       }
     }

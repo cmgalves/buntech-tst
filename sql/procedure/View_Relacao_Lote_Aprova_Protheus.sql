@@ -209,7 +209,7 @@ if @cTipo = 'E' --Incluir, editar / alterar caracteristica do lote Analise de lo
 		update 
 			loteProd 
 		set 
-			analiseStatus = situac,
+			loteAprov = situac,
 			dtAnaliseStatus = (select convert(varchar(8), getdate(), 112))
 		from 
 			loteProd a inner join 
@@ -219,7 +219,7 @@ if @cTipo = 'E' --Incluir, editar / alterar caracteristica do lote Analise de lo
 			and a.op = b.op
 			and a.produto = b.produto
 			and a.lote = b.lote
-	--	where a.analiseStatus <> situac
+	--	where a.loteAprov <> situac
 	end
 	--alter table loteProd add dtAnaliseStatus varchar(8)
 
