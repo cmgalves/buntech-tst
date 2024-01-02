@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { funcsService } from 'app/funcs/funcs.service';
+import { funcGeral } from 'app/funcs/funcGeral';
 // tslint:disable-next-line:class-name
 export interface opAjusta {
   COMPONENTE: string;
@@ -77,13 +78,15 @@ export class OpajustaComponent implements OnInit {
   editQtd: any = 0;
 
   opajustas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'situaca', 'edicao'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'situaca', 'edicao'];
+  // displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'situaca', 'edicao'];
   dataSource: MatTableDataSource<opAjusta>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     public router: Router,
+    private fg: funcGeral,
     private fj: funcsService,
     public dialog: MatDialog
   ) { }
@@ -101,6 +104,52 @@ export class OpajustaComponent implements OnInit {
       alert('Sem Acesso')
       this.router.navigate(['opResumo']);
     }
+
+  }
+
+  buscaOpajusta() { //View_Portal_OP
+    let x = 0;
+    let xcFilial = this.aOP.filial;
+    let xcOp = this.aOP.op;
+    const obj = {
+      filial: xcFilial,
+      op: xcOp,
+    };
+    this.arrOpajusta = [];
+    this.arrOpajusta = this.fj.buscaPrt('pcpRelacaoLoteOpEmpenho', obj); //vw_pcp_relacao_lote_op_empenho
+
+    this.arrOpajusta.subscribe(cada => {
+      cada.forEach(xy => {
+        x = x + 1
+        this.arrOpajustaTab.push({
+          componente: xy.componente,
+          descEmp: xy.descEmp,
+          unidade: xy.unidade,
+          emissao: xy.emissao,
+          vencimento: xy.vencimento,
+          qtdeEmp: xy.qtdeEmp,
+          qtdeEmpCalc: xy.qtdeEmpCalc,
+          qtdeInformada: xy.qtdeEmpCalc,
+          qtdeConsumida: xy.qtdeConsumida,
+          saldo: xy.saldo,
+          tipo: xy.tipo,
+          situacao: xy.situacao,
+        })
+        if (x === 1) {
+          this.opFilial = this.aOP.filial;
+          this.opCodigo = this.aOP.op;
+          this.opProduto = this.aOP.produto;
+          this.opDescricao = this.aOP.descricao;
+          this.opQtdePcf = this.aOP.qtdeLote;
+          this.opEmissao = xy.emissao;
+          this.opFinal = xy.vencimento;
+        }
+        });
+
+      this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
 
   }
 
@@ -145,8 +194,6 @@ export class OpajustaComponent implements OnInit {
 
   // cálculo da op utilizando a nova quantidade produzida
   calcOp() {
-
-    let conta = 0
     const obj = {
       filial: this.numOP[0].FILIAL,
       op: this.numOP[0].OP,
@@ -317,7 +364,7 @@ export class OpajustaComponent implements OnInit {
     });
   }
 
-  buscaOpajusta() { //View_Portal_OP
+  buscaOpajustas() { //View_Portal_OP
     let xcFilial = this.aOP.filial;
     let xcOp = this.aOP.op;
     const obj = {
@@ -352,7 +399,7 @@ export class OpajustaComponent implements OnInit {
     });
 
   }
-  buscaOpajustas() {
+  buscaOpajustasxx() {
     let conta = 0
     let secs = 0;
     let retr = 0;
@@ -505,5 +552,5 @@ export class OpajustaComponent implements OnInit {
   voltaResumo() {
     this.router.navigate(['opResumo']);
   }
-  
+
 }

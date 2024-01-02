@@ -49,7 +49,7 @@ export class OpvisualizaComponent implements OnInit {
   opHoras: string = '';
 
   opvisualizas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida'];
   dataSource: MatTableDataSource<opVisualiza>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -82,7 +82,8 @@ export class OpvisualizaComponent implements OnInit {
           unidade: xy.unidade,
           qtdeEmp: xy.qtdeEmp,
           qtdeEmpCalc: xy.qtdeEmpCalc === '0' ? 0 : xy.qtdeEmpCalc,
-          qtdeInformada: xy.qtdeInformada === '0' ? 0 : xy.qtdeEmpCalc,
+          qtdeInformada: xy.qtdeInformada === '0' ? 0 : xy.qtdeInformada,
+          qtdeConsumida: xy.qtdeConsumida === '0' ? 0 : xy.qtdeConsumida,
           saldo: xy.saldo,
           tipo: xy.tipo,
           situacao: xy.situacao,
