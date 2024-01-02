@@ -97,7 +97,7 @@ export class LoteRegComponent implements OnInit {
           'situacao': xy.situacao,
           'analiseStatus': xy.analiseStatus,
           'alcadaProd': xy.alcadaProd,
-          'podeAprovar': xy.podeAprovar=="true"
+          'podeAprovar': xy.podeAprovar == "true"
         });
       });
       this.dataSource = new MatTableDataSource(this.arrDados)
@@ -212,5 +212,12 @@ export class LoteRegComponent implements OnInit {
     alert('Imprime Lote')
   }
 
+  classeItem(row) {
+    return row.loteAprov.charAt(0).toUpperCase() + row.loteAprov.slice(1).toLowerCase();
+  }
+
+  formatarData(data){
+    return data.split('-').reverse().join('/');
+  }
 
 }

@@ -66,15 +66,15 @@
                                 </ng-container>
                                 <ng-container matColumnDef="dt1">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprov N1 </th>
-                                    <td mat-cell *matCellDef="let row" [title]="'Data aprovação: ' + row.dtAprovn1"> {{row.tipoAprova1}} </td>
+                                    <td mat-cell *matCellDef="let row" [title]="'Data aprovação: ' + formatarData(row.dtAprovn1)"> {{row.tipoAprova1}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="dt2">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprov N2 </th>
-                                    <td mat-cell *matCellDef="let row" [title]="'Data aprovação: ' + row.dtAprovn2"> {{row.tipoAprova2}} </td>
+                                    <td mat-cell *matCellDef="let row" [title]="'Data aprovação: ' + formatarData(row.dtAprovn2)"> {{row.tipoAprova2}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="dt3">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprov N3 </th>
-                                    <td mat-cell *matCellDef="let row" [title]="'Data aprovação: ' + row.dtAprovn3"> {{row.tipoAprova3}} </td>
+                                    <td mat-cell *matCellDef="let row" [title]="'Data aprovação: ' + formatarData(row.dtAprovn3)"> {{row.tipoAprova3}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="loteReg">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="centro"> M A N U T E N Ç Ã O
@@ -96,7 +96,7 @@
                                 </ng-container>
 
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'Fechado' : row.situacao === 'Fechado','Aberto' : row.situacao === 'Aberto','Aprovado' : row.situacao === 'Aprovado','Rejeitado' : row.situacao === 'Rejeitado'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="classeItem(row)">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

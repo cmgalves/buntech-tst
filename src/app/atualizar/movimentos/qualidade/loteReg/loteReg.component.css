@@ -29,11 +29,15 @@ table {
     background: rgba(3, 173, 162)
 }
 
-.Liberado {
-    background: rgb(230, 255, 230);
+.Andamento {
+    background: rgb(154, 205, 237);
 }
 
-.Bloqueado {
+.Reavaliacao {
+    background: LightSteelBlue;
+}
+
+.Segregado {
     background: rgb(255, 204, 204);
 }
 
@@ -45,16 +49,12 @@ table {
     background: rgb(171, 175, 228)
 }
 
-.Fechado {
-    background: rgb(160, 173, 196)
-}
-
 .Aberto {
     background: rgb(196, 189, 160)
 }
 
 .Aprovado {
-    background: rgb(176, 218, 168)
+    background: rgb(194, 255, 235)
 }
 
 .Rejeitado {
