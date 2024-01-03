@@ -200,11 +200,13 @@ export class LoteAprovaComponent implements OnInit {
     var justificativa3 = this.justificativa3;
     var loteAprov;
 
-    var aprovaTodos = false;
+    var rejeitaTodos = false;
     var aprovaN3 = false;
+    var aprovaN2 = false;
     const DataAtual = new Date().toISOString().split('T')[0]; //A data de hoje
 
     if (!this.nivel.includes('N3')) aprovaN3 = true;
+    if (!this.nivel.includes('N2')) aprovaN2 = true;
 
     if (this.justificativa == "") {
       console.log(this.justificativa)
@@ -215,40 +217,42 @@ export class LoteAprovaComponent implements OnInit {
       return alert("Você não tem a permissão necessária para aprovar esse item"); //Checa se o usuário tem o perfil
     //que coincide com a alcada do lote
 
-    if (this.aProd.loteAprov == 'SEGREGADO') { //Se a alcada conter N1 e for momento de
+    if (tipo != 'A') {
+      rejeitaTodos = true; //Se o N1 aprova, aprova todos os níveis
+      loteAprov = 'REJEITADO' //Altera o status do lote para aprovado
+    }
+
+    if (this.aProd.loteAprov == 'SEGREGADO' || rejeitaTodos) { //Se a alcada conter N1 e for momento de
       usrAprovn1 = this.aUsr.codUser;                                       //de aprovar o N1 (lote Segregado)      
       dtAprovn1 = DataAtual;
       tipoAprovn1 = tipo;
-      if (tipo == 'A') {
-        aprovaTodos = true; //Se o N1 aprova, aprova todos os níveis
-        loteAprov = 'APROVADO' //Altera o status do lote para aprovado
-      }
-      else
-        loteAprov = 'REAVALIACAO N2' //Se não, passa para o N1 Reavaliar
+      loteAprov = tipo == 'A' ? 'REAVALIACAO N2' : 'REJEITADO' //passa para o N2 Reavaliar ou rejeita
       nivAprov = 'N1';
       justificativa1 = this.justificativa;
     }
 
-    if (this.aProd.loteAprov == 'REAVALIACAON2' || aprovaTodos) { //Se é possível aprovar
+    if (this.aProd.loteAprov == 'REAVALIACAON2' || rejeitaTodos || aprovaN2) { //Se é possível aprovar
       usrAprovn2 = this.aUsr.codUser;                             //N2 ou se tudo será
       dtAprovn2 = DataAtual;                                      //aprovado
       tipoAprovn2 = tipo;
-      loteAprov = aprovaN3 ? 'REAVALIACAO' : 'REAVALIACAO N3'; //passa para o N3 reavaliar ou finaliza
+      if (tipo == 'A')
+        loteAprov = aprovaN3 ? 'REAVALIACAO' : 'REAVALIACAO N3'; //passa para o N3 reavaliar ou finaliza
       nivAprov = 'N2';
       justificativa2 = this.justificativa;
     }
 
-    if (this.aProd.loteAprov == 'REAVALIACAON3' || aprovaTodos || aprovaN3) { //Se é possível aprovar
+    if (this.aProd.loteAprov == 'REAVALIACAON3' || rejeitaTodos || aprovaN3) { //Se é possível aprovar
       usrAprovn3 = this.aUsr.codUser;                                         //N3 ou se tudo será
       dtAprovn3 = DataAtual;                                                  //aprovado
       tipoAprovn3 = tipo;
-      loteAprov = aprovaN3 ? loteAprov : 'REAVALIACAO' //O que ocorre após o N3 aprovar? ¯\_(ツ)_/¯
+      if (tipo = 'A')
+        loteAprov = aprovaN3 ? loteAprov : 'REAVALIACAO' //O que ocorre após o N3 aprovar? ¯\_(ツ)_/¯
       nivAprov = 'N3';
       justificativa3 = this.justificativa;
     }
 
-    if(tipoAprovn1 == 'R' && tipoAprovn2 == 'R' && tipoAprovn3 == 'R')
-      loteAprov = 'REJEITADO'; //Se todos rejeitarem, muda para rejeitado
+    if (tipoAprovn1 == 'A' && tipoAprovn2 == 'A' && tipoAprovn3 == 'A')
+      loteAprov = 'APROVADO'; //Se todos aprovarem, muda para aprovado
 
     if (nivAprov != '') {
       txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
@@ -271,13 +275,14 @@ export class LoteAprovaComponent implements OnInit {
         op: this.op,
         analise: this.analise,
         filial: this.filial,
-        loteAprov: aprovaTodos?"APROVADO":loteAprov,
+        loteAprov: loteAprov,
       }
 
       this.fj.confirmDialog(txtAprov).subscribe(q => {
         if (q) {
           this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
           this.nivelAprovado(2);
+          this.router.navigate(['loteReg']);
         }
       });
     } else alert("USUÁRIO NÃO TEM NÍVEL PARA APROVAÇÃO");
