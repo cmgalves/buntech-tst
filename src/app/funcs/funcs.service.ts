@@ -362,40 +362,40 @@ export class funcsService {
   }
 
 
-  enviarLoteProteus(loteItem) {
-    var dataValidade = new Date(loteItem.dtime); //pega a data de fabricação e soma um ano 
-    dataValidade.setFullYear(loteItem.dtime.getFullYear() + 1); // para data de validade
+  enviarLoteProteus(loteItem, reclassifica = false) {
+    const dataValidade = new Date(loteItem.dtime); //pega a data de fabricação e soma um ano 
+    dataValidade.setFullYear(dataValidade.getFullYear() + 1); // para data de validade
 
     //verifica se o lote está aprovado
-    if (loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") {
+    if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
       const obj = {
         'filial': loteItem.filial,
         'produto': loteItem.produto,
         'lote': loteItem.lote,
         'analise': loteItem.analise
       };
-      let arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
-
-      arrItens.forEach(item => {
+      const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
+      console.log(arrItens);
+      arrItens.subscribe(cada => cada.forEach(item => {
         //percorre todos os dados do loteAnalise
-        let obj2 = { //cria objeto para enviar ao proteus
+        const obj2 = { //cria objeto para enviar ao proteus
           "cLFilial": loteItem.filial,
           "cProduto": loteItem.produto,
           "cOP": loteItem.op,
           "cLote": loteItem.lote,
           "cAnalise": loteItem.analise,
-          "nQuantidade": loteItem.qtde,
-          "cCaracteristica": item.id_num,
+          "nQuantidade": loteItem.qtdeLote,
+          "cCaracteristica": item.codCarac,
           "cResultado": item.situacao,
-          "dValidade": dataValidade,
+          "dValidade": dataValidade.toISOString(),
           "dFabricacao": loteItem.dtime,
           "cValMin": item.iteMin,
           "cValMax": item.iteMax,
-          "cStatus": loteItem.status
+          "cStatus": loteItem.loteAprov
         };
-
-        this.prodLote(obj2); //Envia para o proteus
-      });
+        console.log(obj2);
+        //this.prodLote(obj2); //Envia para o proteus
+      }));
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }
 

@@ -35,7 +35,7 @@ export class LoteRegComponent implements OnInit {
   arrCarac: any = [];
   filLoteReg: string = '';
   cFil: string = '';
-  filterLoteReg: any = ['TODOS', 'ABERTO', 'ANDAMENTO', 'APROVADO', 'REJEITADO', 'SEGREGADO'];
+  filterLoteReg: any = ['TODOS', 'ABERTO', 'ANDAMENTO', 'APROVADO', 'REPROVADO', 'SEGREGADO', 'REAVALIAÇÃO'];
   filterPosAnalise: any = ['Todos', 'Andamento', 'Aguardando', 'Analisado'];
   filPosAnalise: string = 'Todos';
 
@@ -70,7 +70,6 @@ export class LoteRegComponent implements OnInit {
 
     this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil }); //vw_pcp_relacao_lote_registro
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -97,7 +96,9 @@ export class LoteRegComponent implements OnInit {
           'situacao': xy.situacao,
           'analiseStatus': xy.analiseStatus,
           'alcadaProd': xy.alcadaProd,
-          'podeAprovar': xy.podeAprovar == "true"
+          'podeAprovar': xy.podeAprovar == "true",
+          'dtime': xy.dtime,
+          'op': xy.op
         });
       });
       this.dataSource = new MatTableDataSource(this.arrDados)

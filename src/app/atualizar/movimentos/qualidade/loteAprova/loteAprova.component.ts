@@ -219,14 +219,14 @@ export class LoteAprovaComponent implements OnInit {
 
     if (tipo != 'A') {
       rejeitaTodos = true; //Se o N1 aprova, aprova todos os níveis
-      loteAprov = 'REJEITADO' //Altera o status do lote para aprovado
+      loteAprov = 'REPROVADO' //Altera o status do lote para aprovado
     }
 
     if (this.aProd.loteAprov == 'SEGREGADO' || rejeitaTodos) { //Se a alcada conter N1 e for momento de
       usrAprovn1 = this.aUsr.codUser;                                       //de aprovar o N1 (lote Segregado)      
       dtAprovn1 = DataAtual;
       tipoAprovn1 = tipo;
-      loteAprov = tipo == 'A' ? 'REAVALIACAO N2' : 'REJEITADO' //passa para o N2 Reavaliar ou rejeita
+      loteAprov = tipo == 'A' ? 'REAVALIACAO N2' : 'REPROVADO' //passa para o N2 Reavaliar ou rejeita
       nivAprov = 'N1';
       justificativa1 = this.justificativa;
     }
@@ -457,6 +457,14 @@ export class LoteAprovaComponent implements OnInit {
   // tecla para retorno de tela
   voltaLote() {
     this.router.navigate(['loteReg']);
+  }
+
+  reclassifica(mesmaOp: string) {
+    const lote = this.aProd;
+    lote.loteAprov = "RECLASSIFICA " + mesmaOp;
+    console.log(lote);
+
+    this.fj.enviarLoteProteus(lote, true);
   }
 
 }
