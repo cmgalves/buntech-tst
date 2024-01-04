@@ -106,18 +106,18 @@ export class CaracteristicaComponent implements OnInit {
 
     if (nOpt === 2) {
       let obj = {
-        'tipoCarac': 'I',
+        'tipoCarac': 1,
         'codCarac': this.codCarac,
         'descCarac': this.descCarac,
       }
-      this.fj.execProd('incluiAlteraCaracteristica', obj);
+      this.fj.buscaPrt('incluiAlteraCaracteristica', obj).subscribe(q => console.log(q));
       this.lForm = !this.lForm;
       window.location.reload();
     }
 
     if (nOpt === 3) {
       let obj = {
-        'tipoCarac': 'A',
+        'tipoCarac': 2,
         'codCarac': this.codCarac,
         'descCarac': this.descCarac,
       }
