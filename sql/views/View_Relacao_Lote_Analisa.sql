@@ -14,7 +14,7 @@ from
 		'analise' orig, filial, op, produto, descricao, lote, nivel, 
 		dtAprov, usrAprov, hrAprov, dtAnalise, hrAnalise, usrAnalise, 
 		dtVenc, qtdeProd, qtdeTot, revisao, a.codCarac, descCarac, itemin, itemax, itemeio, 
-		result, situacao, itetxt, resultxt, sitFim
+		result, situacao, iteTxt, resultxt, sitFim
 	from 
 		loteAnalise a inner join 
 		qualCarac b on
@@ -28,12 +28,12 @@ from
 		'produc' orig, filial, op, produto, descricao, lote, nivel,
 		dtAprov, usrAprov, '' hrAprov, '' dtAnalise, '' hrAnalise, 0 usrAnalise, 
 		dtVenc, qtdeProd, qtdeTot, revisao, codCarac, descCarac, iteMin itemin, iteMax itemax, iteMeio itemeio,
-		'' result, situacao, itetxt, '' resultxt, '' sitFim
+		'' result, situacao, iteTxt, '' resultxt, '' sitFim
 	from 
 		loteProd a left join
 		(
 			select 
-				cabProduto, cabRevisao, codCarac, iteCarac, descCarac, iteMin, iteMax, iteMeio, itetxt
+				cabProduto, cabRevisao, codCarac, iteCarac, descCarac, iteMin, iteMax, iteMeio, iteTxt
 			from 
 				qualEspecCab a inner join 
 				qualEspecItens b on

@@ -10,7 +10,7 @@ SELECT
 	especAnalise,especQuebra,especSequencia,
     isnull(iteProduto, '') iteProduto, isnull(iteRevisao, '') iteRevisao,
     isnull(iteCarac, '') iteCarac, isnull(iteMin, 0) iteMin,
-    isnull(iteMax, 0) iteMax, isnull(iteMeio, '') iteMeio, isnull(itetxt, '') itetxt, 
+    isnull(iteMax, 0) iteMax, isnull(iteMeio, '') iteMeio, isnull(iteTxt, '') iteTxt, 
     isnull(codCarac, '') codCarac, isnull(descCarac, '') descCarac, cabQtdeQuebra, imprimeLaudo, isnull(tempoMaximo,0) tempoMaximo
 FROM
     PCP..qualEspecCab a inner join

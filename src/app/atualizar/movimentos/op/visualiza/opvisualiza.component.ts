@@ -43,6 +43,8 @@ export class OpvisualizaComponent implements OnInit {
   opAnalise: string = '';
   opCodant: string = '';
   opQtde: string = '';
+  opEnv: string = '';
+  opSaldo: string = '';
   opEntregue: string = '';
   opQtdePcf: string = '';
   opRetrabalho: string = '';
@@ -96,6 +98,8 @@ export class OpvisualizaComponent implements OnInit {
       this.opLote = this.aOP.lote;
       this.opAnalise = this.aOP.analise;
       this.opQtde = this.aOP.qtdeLote
+      this.opEnv = this.aOP.qtdeEnv
+      this.opSaldo = this.aOP.qtdeSaldo
 
       this.dataSource = new MatTableDataSource(this.arrOpvisualizaTab)
       this.dataSource.paginator = this.paginator;

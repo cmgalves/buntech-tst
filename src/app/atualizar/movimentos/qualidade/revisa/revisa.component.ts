@@ -83,7 +83,7 @@ export class RevisaComponent implements OnInit {
   especSit: string[] = ['Andamento', 'Concluida', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
-  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'itetxt', 'iteMeio', 'iteLaudo', 'iteEdit'];
+  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'iteTxt', 'iteMeio', 'iteLaudo', 'iteEdit'];
   dataSource: MatTableDataSource<cadRevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -110,6 +110,83 @@ export class RevisaComponent implements OnInit {
       map(value => this._filter(value))
     );
   }
+
+// busca os dados das especificaçãoes ativas para mostrar na tela PCP..View_Relacao_Espec
+  buscaRevisas() {
+    let seq = 0;
+    let aProd: any = JSON.parse(localStorage.getItem('especProd'));
+    this.cabProduto = aProd.codigo;
+    this.descrProd = aProd.descricao;
+    this.cabRevisao = '000';
+    this.loteAtual = '000000000';
+    this.cabSituacao = 'Andamento';
+    const obj = {
+      'cabProduto': this.cabProduto
+    };
+    this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj); //PCP..View_Relacao_Espec
+
+    this.arrDb.subscribe(cada => {
+      cada.forEach(xy => {
+        seq++
+        this.arrRev.push({
+          'idEspecItens': xy.idEspecItens,
+          'cabProduto': xy.cabProduto,
+          'descrProd': xy.descrProd,
+          'cabRevisao': xy.cabRevisao,
+          'dataAprov': xy.dataAprov,
+          'numEspec': xy.numEspec,
+          'situacao': xy.situacao,
+          'qualObsGeral': xy.qualObsGeral,
+          'qualObsRevisao': xy.qualObsRevisao,
+          'aplicacao': xy.aplicacao,
+          'loteAtual': xy.loteAtual,
+          'embalagem': xy.embalagem,
+          'feitoPor': xy.feitoPor,
+          'aprovPor': xy.aprovPor,
+          'iteProduto': xy.iteProduto,
+          'iteRevisao': xy.iteRevisao,
+          'iteCarac': xy.iteCarac,
+          'iteMin': xy.iteMin.toFixed(3),
+          'iteMax': xy.iteMax.toFixed(3),
+          'iteTxt': xy.iteTxt,
+          'iteLaudo': xy.iteLaudo,
+          'iteMeio': xy.iteMeio,
+          'descCarac': xy.descCarac,
+          'especAlcada': xy.especAlcada,
+          'especAnalise': xy.especAnalise,
+          'especSequencia': xy.especSequencia,
+          'especQuebra': xy.especQuebra,
+          'cabQtdeQuebra': xy.cabQtdeQuebra,
+          'imprimeLaudo': xy.imprimeLaudo,
+        })
+        if (seq === 1) {
+          this.iteProduto = xy.iteProduto;
+          this.cabRevisao = xy.cabRevisao;
+          this.dataAprov = xy.dataAprov;
+          this.numEspec = xy.numEspec;
+          this.cabSituacao = xy.situacao;
+          this.aplicacao = xy.aplicacao;
+          this.loteAtual = xy.loteAtual;
+          this.embalagem = xy.embalagem;
+          this.qualObsRevisao = xy.qualObsRevisao;
+          this.qualObsGeral = xy.qualObsGeral;
+          this.especAlcada = xy.especAlcada;
+          this.especAnalise = xy.especAnalise == 'S' ? 'SIM' : 'NAO';
+          this.especSequencia = xy.especSequencia;
+          this.especQuebra = xy.especQuebra;
+          this.cabQtdeQuebra = xy.cabQtdeQuebra;
+          this.imprimeLaudo = xy.imprimeLaudo;
+        }
+      });
+
+      this.dataSource = new MatTableDataSource(this.arrRev)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+
+
+  }
+
 
   // avalia os valores recebidos da análise.
   analiseProc(cVal, cTipo) {
@@ -165,7 +242,7 @@ export class RevisaComponent implements OnInit {
         'iteMin': this.novoCarMin,
         'iteMax': this.novoCarMax,
         'iteMeio': this.novoCarMeio,
-        'itetxt': this.novoCarTxt,
+        'iteTxt': this.novoCarTxt,
         'iteLaudo': 'SIM',
         'iteTp': 'I'
       }
@@ -174,7 +251,7 @@ export class RevisaComponent implements OnInit {
       let vMin = (<HTMLInputElement>(document.getElementById("idMin"))).value.replace(',', '.')
       let vMax = (<HTMLInputElement>(document.getElementById("idMax"))).value.replace(',', '.')
       let cMeio = (<HTMLInputElement>(document.getElementById("idMeio"))).value.replace(',', '.')
-      let ctxt = (<HTMLInputElement>(document.getElementById("idtxt"))).value
+      let ctxt = (<HTMLInputElement>(document.getElementById("idTxt"))).value
 
       obj = {
         'idEspecItens': aRow.idEspecItens,
@@ -184,7 +261,7 @@ export class RevisaComponent implements OnInit {
         'iteMin': vMin,
         'iteMax': vMax,
         'iteMeio': cMeio,
-        'itetxt': ctxt,
+        'iteTxt': ctxt,
         'iteLaudo': aRow.iteCarac,
         'iteTp': 'A'
       }
@@ -199,7 +276,7 @@ export class RevisaComponent implements OnInit {
         'iteMin': 0,
         'iteMax': 0,
         'iteMeio': '',
-        'itetxt': '',
+        'iteTxt': '',
         'iteLaudo': '',
         'iteTp': 'E'
       }
@@ -214,7 +291,7 @@ export class RevisaComponent implements OnInit {
         'iteMin': aRow.iteCarac,
         'iteMax': aRow.iteCarac,
         'iteMeio': aRow.iteCarac,
-        'itetxt': aRow.iteCarac,
+        'iteTxt': aRow.iteCarac,
         'iteLaudo': aRow.iteLaudo == 'SIM' ? 'NAO' : 'SIM',
         'iteTp': 'L'
       }
@@ -282,81 +359,6 @@ export class RevisaComponent implements OnInit {
       this.novoCarMax = '0'
       this.novoCarMeio = ' '
     }
-  }
-
-  buscaRevisas() {
-    let seq = 0;
-    let aProd: any = JSON.parse(localStorage.getItem('especProd'));
-    this.cabProduto = aProd.codigo;
-    this.descrProd = aProd.descricao;
-    this.cabRevisao = '000';
-    this.loteAtual = '000000000';
-    this.cabSituacao = 'Andamento';
-    const obj = {
-      'cabProduto': this.cabProduto
-    };
-    this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj); //PCP..View_Relacao_Espec
-
-    this.arrDb.subscribe(cada => {
-      cada.forEach(xy => {
-        seq++
-        this.arrRev.push({
-          'idEspecItens': xy.idEspecItens,
-          'cabProduto': xy.cabProduto,
-          'descrProd': xy.descrProd,
-          'cabRevisao': xy.cabRevisao,
-          'dataAprov': xy.dataAprov,
-          'numEspec': xy.numEspec,
-          'situacao': xy.situacao,
-          'qualObsGeral': xy.qualObsGeral,
-          'qualObsRevisao': xy.qualObsRevisao,
-          'aplicacao': xy.aplicacao,
-          'loteAtual': xy.loteAtual,
-          'embalagem': xy.embalagem,
-          'feitoPor': xy.feitoPor,
-          'aprovPor': xy.aprovPor,
-          'iteProduto': xy.iteProduto,
-          'iteRevisao': xy.iteRevisao,
-          'iteCarac': xy.iteCarac,
-          'iteMin': xy.iteMin.toFixed(3),
-          'iteMax': xy.iteMax.toFixed(3),
-          'itetxt': xy.itetxt,
-          'iteLaudo': xy.iteLaudo,
-          'iteMeio': xy.iteMeio,
-          'descCarac': xy.descCarac,
-          'especAlcada': xy.especAlcada,
-          'especAnalise': xy.especAnalise,
-          'especSequencia': xy.especSequencia,
-          'especQuebra': xy.especQuebra,
-          'cabQtdeQuebra': xy.cabQtdeQuebra,
-          'imprimeLaudo': xy.imprimeLaudo,
-        })
-        if (seq === 1) {
-          this.iteProduto = xy.iteProduto;
-          this.cabRevisao = xy.cabRevisao;
-          this.dataAprov = xy.dataAprov;
-          this.numEspec = xy.numEspec;
-          this.cabSituacao = xy.situacao;
-          this.aplicacao = xy.aplicacao;
-          this.loteAtual = xy.loteAtual;
-          this.embalagem = xy.embalagem;
-          this.qualObsRevisao = xy.qualObsRevisao;
-          this.qualObsGeral = xy.qualObsGeral;
-          this.especAlcada = xy.especAlcada;
-          this.especAnalise = xy.especAnalise == 'S' ? 'SIM' : 'NAO';
-          this.especSequencia = xy.especSequencia;
-          this.especQuebra = xy.especQuebra;
-          this.cabQtdeQuebra = xy.cabQtdeQuebra;
-          this.imprimeLaudo = xy.imprimeLaudo;
-        }
-      });
-
-      this.dataSource = new MatTableDataSource(this.arrRev)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-
-
   }
 
   exportExcel(fileName, sheetName) {

@@ -11,7 +11,7 @@ ALTER procedure [dbo].[sp_incluiEspecItens]
     @iteMin float,
     @iteMax float,
     @iteMeio varchar(100),
-    @itetxt varchar(35),
+    @iteTxt varchar(35),
     @iteTp varchar(01)
 as
 
@@ -59,9 +59,9 @@ else
 				if @existEspec = 0
 					begin
 						insert into PCP..qualEspecItens  
-							(iteProduto, iteRevisao, iteCarac, iteMin, iteMax, itetxt, iteMeio)
+							(iteProduto, iteRevisao, iteCarac, iteMin, iteMax, iteTxt, iteMeio)
 						values
-							(@iteProduto, @iteRevisao, @iteCarac, @iteMin, @iteMax, @itetxt, @iteMeio)
+							(@iteProduto, @iteRevisao, @iteCarac, @iteMin, @iteMax, @iteTxt, @iteMeio)
 					end
 				if @existEspec > 0
 					begin
@@ -70,7 +70,7 @@ else
 						set
 							iteMin = @iteMin, 
 							iteMax = @iteMax,
-							itetxt = @itetxt,
+							iteTxt = @iteTxt,
 							iteMeio = @iteMeio
 						where
 							1 = 1

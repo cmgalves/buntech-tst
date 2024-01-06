@@ -17,7 +17,7 @@ ALTER procedure [dbo].[sp_manuLoteAnalisaAprova]
     @itemin float,
     @itemax float,
     @itemeio varchar(50),
-    @itetxt varchar(35),
+    @iteTxt varchar(35),
     @result float,
     @resultxt varchar(10),
     @situacao varchar(15),
@@ -202,9 +202,9 @@ if @cTipo = 'E' --Incluir, editar / alterar caracteristica do lote Analise de lo
 		if @existReg = 0
 			begin
 				insert into PCP..loteAnalise  
-					(filial, op, produto, descricao, lote, nivel, dtAprov, hrAprov, dtAnalise, hrAnalise, usrAprov, usrAnalise, dtVenc, qtdeProd, qtdeTot, revisao, codCarac, itemin, itemax, itemeio, result, situacao, itetxt, resultxt)
+					(filial, op, produto, descricao, lote, nivel, dtAprov, hrAprov, dtAnalise, hrAnalise, usrAprov, usrAnalise, dtVenc, qtdeProd, qtdeTot, revisao, codCarac, itemin, itemax, itemeio, result, situacao, iteTxt, resultxt)
 				values
-					(@filial, @op, @produto, @descricao, @lote, @nivel, @dtAprov, @hrAprov, @dtAnalise, @hrAnalise, 0, @usr, @dtVenc, @qtdeProd, @qtde, @revisao, @codCarac, @itemin, @itemax, @itemeio, @result, @situacao, @itetxt, @resultxt)
+					(@filial, @op, @produto, @descricao, @lote, @nivel, @dtAprov, @hrAprov, @dtAnalise, @hrAnalise, 0, @usr, @dtVenc, @qtdeProd, @qtde, @revisao, @codCarac, @itemin, @itemax, @itemeio, @result, @situacao, @iteTxt, @resultxt)
 			end
 		update 
 			loteProd 
