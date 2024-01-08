@@ -36,3 +36,11 @@ table {
 .editInput {
     width: 20px;
 }
+
+td {
+    text-align: center;
+}
+
+tr {
+    text-align: center;
+}

@@ -78,7 +78,7 @@ export class OpconfirmaComponent implements OnInit {
 
   opconfirmas: Observable<any>;
   // displayedColumns: string[] = ['COMPONENTE', 'DESCRIC', 'UNIDADE', 'QTDEORI', 'QTDCALCULADA', 'SITUACA', 'EDICAO', 'SALDO', 'TIPO'];
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'situaca', 'edicao'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'edicao'];
   dataSource: MatTableDataSource<opConfirma>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -97,7 +97,7 @@ export class OpconfirmaComponent implements OnInit {
       alert('Sem Acesso');
       this.router.navigate(['opResumo']);
     }
-
+    console.log(this.aOP);
   }
 
   buscaOpconfirma() {
@@ -141,6 +141,8 @@ export class OpconfirmaComponent implements OnInit {
           this.opFinal = xy.vencimento;
         }
         });
+
+        console.log(this.arrOpconfirmaTab)
 
       this.dataSource = new MatTableDataSource(this.arrOpconfirmaTab)
       this.dataSource.paginator = this.paginator;
