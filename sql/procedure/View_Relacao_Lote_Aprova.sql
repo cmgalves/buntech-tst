@@ -9,7 +9,7 @@ select
 	a.qtdeQuebra, a.qtdeTot, a.quebra, a.nivel, a.revisao, b.situacao, 
 	a.fechamento, a.obs, a.resultado, a.justificativa, a.userJusti,
 	b.orig, b.dtAnalise, b.hrAnalise, b.usrAnalise, b.codCarac, b.descCarac, b.itemin, b.itemax, b.itemeio, 
-	b.result, b.itetxt, b.resultxt
+	b.result, b.iteTxt, b.resultxt
 from 
 	loteProd a inner join 
 	View_Relacao_Lote_Analisa b

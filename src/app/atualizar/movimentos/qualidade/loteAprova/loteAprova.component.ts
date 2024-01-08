@@ -378,7 +378,7 @@ export class LoteAprovaComponent implements OnInit {
       'itemin': 0,
       'itemax': 0,
       'itemeio': ' ',
-      'itetxt': ' ',
+      'iteTxt': ' ',
       'result': 0,
       'resultxt': ' ',
       'situacao': sitAprov,

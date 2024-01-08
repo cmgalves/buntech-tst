@@ -84,7 +84,7 @@ if @cTipo = 'R'
 			values
 				(@cabProduto, @descrProd, @novaRev, @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @loteAtual, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra, @imprimeLaudo, @tempoMaximo)
 
-			insert into PCP..qualEspecItens select iteProduto, @novaRev iteRevisao, iteCarac, iteMin, iteMax, iteMeio, itetxt from PCP..qualEspecItens where iteRevisao = @rev3digi and iteProduto = @cabProduto
+			insert into PCP..qualEspecItens select iteProduto, @novaRev iteRevisao, iteCarac, iteMin, iteMax, iteMeio, iteTxt from PCP..qualEspecItens where iteRevisao = @rev3digi and iteProduto = @cabProduto
 		end 
 
 if @cTipo = 'I'
@@ -112,7 +112,7 @@ if @cTipo = 'I'
 			values
 				(@cabProduto, @descrProd, @rev3digi, @dataAprov, @numEspec, @situacao, @qualObsGeral, @qualObsRevisao, @aplicacao, @loteAtual, @embalagem, @feitoPor, @aprovPor,@especAlcada,@especAnalise,@especSequencia,@especQuebra,@cabQtdeQuebra, @imprimeLaudo, @tempoMaximo)
 
-			insert into PCP..qualEspecItens select iteProduto, @rev3digi iteRevisao, iteCarac, iteMin, iteMax, iteMeio, itetxt from PCP..qualEspecItens a inner join (select iteProduto prod, max(iteRevisao) revis from PCP..qualEspecItens group by iteProduto) b on iteProduto = prod and iteRevisao = revis where iteProduto = @cabProduto
+			insert into PCP..qualEspecItens select iteProduto, @rev3digi iteRevisao, iteCarac, iteMin, iteMax, iteMeio, iteTxt from PCP..qualEspecItens a inner join (select iteProduto prod, max(iteRevisao) revis from PCP..qualEspecItens group by iteProduto) b on iteProduto = prod and iteRevisao = revis where iteProduto = @cabProduto
 		end 
 
 if @cTipo = 'A'

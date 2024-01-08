@@ -1,10 +1,10 @@
 
-insert into PCP..qualEspecItens (iteProduto, iteRevisao, iteCarac, iteMin, iteMax, iteMeio, itetxt, iteLaudo )
+insert into PCP..qualEspecItens (iteProduto, iteRevisao, iteCarac, iteMin, iteMax, iteMeio, iteTxt, iteLaudo )
 
 
 
 select 
-	'PAN01051' iteProduto, '001' iteRevisao , iteCarac, iteMin, iteMax, iteMeio, itetxt, 'S' iteLaudo 
+	'PAN01051' iteProduto, '001' iteRevisao , iteCarac, iteMin, iteMax, iteMeio, iteTxt, 'S' iteLaudo 
 from 
 	PCP..qualEspecCab inner join
 	PCP..qualEspecItens on
@@ -36,12 +36,12 @@ where
 	/*
 
 
-insert into PCP..qualEspecItens (iteProduto, iteRevisao, iteCarac, iteMin, iteMax, iteMeio, itetxt, iteLaudo )
+insert into PCP..qualEspecItens (iteProduto, iteRevisao, iteCarac, iteMin, iteMax, iteMeio, iteTxt, iteLaudo )
 
 
 
 select 
-	'PAN00844' iteProduto, '002' iteRevisao , iteCarac, iteMin, iteMax, iteMeio, itetxt, 'S' iteLaudo 
+	'PAN00844' iteProduto, '002' iteRevisao , iteCarac, iteMin, iteMax, iteMeio, iteTxt, 'S' iteLaudo 
 from 
 	PCP..qualEspecCab inner join
 	PCP..qualEspecItens on

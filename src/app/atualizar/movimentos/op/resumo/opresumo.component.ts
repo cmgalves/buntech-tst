@@ -55,7 +55,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'diabr', 'loteAprov', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'diabr', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -73,14 +73,12 @@ export class OpresumoComponent implements OnInit {
   }
 
 
-  // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
+  // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo - vw_pcp_relacao_op_lote
   buscaOpresumos() {
     let ord = 0;
-    const obj = {
-      'loteAprov': 'APROVADO',
-    };
+    
     this.arrOpresumoTab = [];
-    this.aOpAndamentoResumo = this.fj.buscaPrt('relacaoOpLote', obj); //vw_pcp_relacao_op_lote
+    this.aOpAndamentoResumo = this.fj.buscaPrt('relacaoOpLote', {}); //vw_pcp_relacao_op_lote
     this.aOpAndamentoResumo.subscribe(cada => {
       cada.forEach(xy => {
         ord++
@@ -94,6 +92,8 @@ export class OpresumoComponent implements OnInit {
           'diabr': xy.diabr,
           'loteAprov': xy.loteAprov,
           'qtdeLote': xy.qtdeLote,
+          'qtdeEnv': xy.qtdeEnv,
+          'qtdeSaldo': xy.qtdeSaldo,
         })
       });
       this.dataSource = new MatTableDataSource(this.arrOpresumoTab)

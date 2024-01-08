@@ -45,16 +45,20 @@
                                     <td mat-cell *matCellDef="let row"> {{row.lote}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeLote">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Produzida </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeLote)}}</td>
                                 </ng-container>
-                                <ng-container matColumnDef="diabr">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Emissão </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.diabr}} </td>
+                                <ng-container matColumnDef="qtdeEnv">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Transmitida </th>
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeEnv)}}</td>
                                 </ng-container>
-                                <ng-container matColumnDef="loteAprov">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Situação </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.loteAprov}} </td>
+                                <ng-container matColumnDef="qtdeSaldo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo </th>
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeSaldo)}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="diabr">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Emissão OP</th>
+                                    <td mat-cell *matCellDef="let row"> {{row.diabr}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="edicao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> E D I Ç Ã O </th>

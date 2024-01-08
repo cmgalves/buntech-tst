@@ -57,7 +57,7 @@ export class LoteAnalisaComponent implements OnInit {
   itemin: any = '';
   itemax: any = '';
   itemeio: any = '';
-  itetxt: any = '';
+  iteTxt: any = '';
   result: any = '';
   situacao: any = '';
   dtVenc: any = '';

@@ -63,6 +63,8 @@ export class OpajustaComponent implements OnInit {
   opQtde: string = '';
   opEntregue: string = '';
   opQtdePcf: string = '';
+  opQtdeEnv: string = '';
+  opQtdeSaldo: string = '';
   opRetrabalho: any = 0;
   opHoras: string = '';
   // itens novos
@@ -107,7 +109,8 @@ export class OpajustaComponent implements OnInit {
 
   }
 
-  buscaOpajusta() { //View_Portal_OP
+  // Busca todos os dados para ajustar as OPs - vw_pcp_relacao_lote_op_empenho
+  buscaOpajusta() { 
     let x = 0;
     let xcFilial = this.aOP.filial;
     let xcOp = this.aOP.op;
@@ -141,6 +144,8 @@ export class OpajustaComponent implements OnInit {
           this.opProduto = this.aOP.produto;
           this.opDescricao = this.aOP.descricao;
           this.opQtdePcf = this.fg.formatarNumero(this.aOP.qtdeLote);
+          this.opQtdeEnv =  this.fg.formatarNumero(this.aOP.qtdeEnv);
+          this.opQtdeSaldo =  this.fg.formatarNumero(this.aOP.qtdeSaldo);
           this.opEmissao = xy.emissao;
           this.opFinal = xy.vencimento;
         }

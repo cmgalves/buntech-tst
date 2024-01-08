@@ -56,7 +56,7 @@ export class HistrevisaComponent implements OnInit {
   lForm: boolean = false;
   editInd = null;
   histrevisas: Observable<any>;
-  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'itetxt', 'iteMeio', 'iteLaudo'];
+  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'iteTxt', 'iteMeio', 'iteLaudo'];
   dataSource: MatTableDataSource<cadHistrevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

@@ -131,11 +131,11 @@
                                         <input ng-maxlength="20" type='text' value={{row.iteMax}} id="idMax" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
-                                <ng-container matColumnDef="itetxt">
+                                <ng-container matColumnDef="iteTxt">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Parâmetro </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
-                                        <p *ngIf='editInd!=i'>{{row.itetxt}}</p>
-                                        <input ng-maxlength="20" type='text' value={{row.itetxt}} id="idtxt" *ngIf='editInd==i'>
+                                        <p *ngIf='editInd!=i'>{{row.iteTxt}}</p>
+                                        <input ng-maxlength="20" type='text' value={{row.iteTxt}} id="idtxt" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMeio">
