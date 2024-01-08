@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { funcsService } from 'app/funcs/funcs.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
+import { funcGeral } from 'app/funcs/funcGeral';
 
 // tslint:disable-next-line:class-name
 export interface opConfirma {
@@ -26,9 +27,9 @@ export interface opConfirma {
 export class OpconfirmaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
-  numOP = JSON.parse(localStorage.getItem('op'));
+  aOP = JSON.parse(localStorage.getItem('op'));
   opPcf = JSON.parse(localStorage.getItem('opPcf'));
-  parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.numOP[0].SITUACAO) > -1;
+  parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.aOP[0].SITUACAO) > -1;
   arrOpAndA: any = [];
   arrOpAndB: any = [];
   a01: any = [];
@@ -57,6 +58,8 @@ export class OpconfirmaComponent implements OnInit {
   opEntregue: string = '';
   opQtdeEntregue: string = '';
   opQtdePcf: string = '';
+  opQtdeEnv: string = '';
+  opQtdeSaldo: string = '';
   opQtdeParcial: number = 0;
   opMaxQtd: number = 0;
   opRetrabalho: string = '';
@@ -74,7 +77,8 @@ export class OpconfirmaComponent implements OnInit {
   btnParcial: boolean = true;
 
   opconfirmas: Observable<any>;
-  displayedColumns: string[] = ['COMPONENTE', 'DESCRIC', 'UNIDADE', 'QTDEORI', 'QTDCALCULADA', 'SITUACA', 'EDICAO', 'SALDO', 'TIPO'];
+  // displayedColumns: string[] = ['COMPONENTE', 'DESCRIC', 'UNIDADE', 'QTDEORI', 'QTDCALCULADA', 'SITUACA', 'EDICAO', 'SALDO', 'TIPO'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'situaca', 'edicao'];
   dataSource: MatTableDataSource<opConfirma>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -82,16 +86,66 @@ export class OpconfirmaComponent implements OnInit {
   constructor(
     public router: Router,
     private fj: funcsService,
+    private fg: funcGeral,
   ) { }
 
   ngOnInit(): void {
     if (('Administrador | Conferente | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
-      this.buscaOpsAndamentoProtheus();
-      this.confirmaLote();
+      this.buscaOpconfirma();
+      // this.confirmaLote();
     } else {
       alert('Sem Acesso');
       this.router.navigate(['opResumo']);
     }
+
+  }
+
+  buscaOpconfirma() {
+    let x = 0;
+    let xaOp = this.aOP[0]
+    let xcFilial = xaOp.filial;
+    let xcOp = xaOp.op;
+    const obj = {
+      filial: xcFilial,
+      op: xcOp,
+    };
+    this.arrOpconfirma = [];
+    this.arrOpconfirma = this.fj.buscaPrt('pcpRelacaoLoteOpEmpenho', obj); //vw_pcp_relacao_lote_op_empenho
+
+    this.arrOpconfirma.subscribe(cada => {
+      cada.forEach(xy => {
+        x = x + 1
+        this.arrOpconfirmaTab.push({
+          componente: xy.componente,
+          descEmp: xy.descEmp,
+          unidade: xy.unidade,
+          emissao: xy.emissao,
+          vencimento: xy.vencimento,
+          qtdeEmp: xy.qtdeEmp,
+          qtdeEmpCalc: xy.qtdeEmpCalc,
+          qtdeInformada: xy.qtdeEmpCalc,
+          qtdeConsumida: xy.qtdeConsumida,
+          saldo: xy.saldo,
+          tipo: xy.tipo,
+          situacao: xy.situacao,
+        })
+        if (x === 1) {
+          this.opFilial = xaOp.filial;
+          this.opCodigo = xaOp.op;
+          this.opProduto = xaOp.produto;
+          this.opDescricao = xaOp.descricao;
+          this.opQtdePcf = this.fg.formatarNumero(xaOp.qtdeLote);
+          this.opQtdeEnv =  this.fg.formatarNumero(xaOp.qtdeEnv);
+          this.opQtdeSaldo =  this.fg.formatarNumero(xaOp.qtdeSaldo);
+          this.opEmissao = xy.emissao;
+          this.opFinal = xy.vencimento;
+        }
+        });
+
+      this.dataSource = new MatTableDataSource(this.arrOpconfirmaTab)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
 
   }
 
@@ -139,93 +193,7 @@ export class OpconfirmaComponent implements OnInit {
     });
   }
 
-  buscaOpconfirma() {
-    let conta = 0;
-    let secs = 0;
-    let retr = 0;
-    let oper = '00';
-    let grupo = '';
-    let xcFilial = this.numOP[0].FILIAL;
-    let xcOp = this.numOP[0].OP;
-
-    const obj = {
-      filial: xcFilial,
-      op: xcOp,
-      tipo: 'tudo',
-    };
-
-    this.arrOpconfirma = this.fj.buscaPrt('opAndamento', obj);
-
-    const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
-
-
-    this.arrOpconfirma.subscribe(x => {
-      x.forEach(xy => {
-        this.arrOpconfirmaTab.push({
-          'COMPONENTE': xy.COMPONENTE,
-          'DESCRIC': xy.DESCRIC,
-          'UNIDADE': xy.UNIDADE,
-          'QTDEORI': xy.QTDEORI,
-          'QTDECALC': xy.QTDECAL,
-          'SALDO': xy.SALDO,
-          'SITUACA': xy.SITUDESC,
-          'TIPO': xy.TIPO,
-          'OPERACAO': xy.OPERACAO,
-
-        })
-        if (conta === 0) {
-          conta++
-          this.opFilial = xy.FILIAL;
-          this.opCodigo = xy.OP;
-          this.opEmissao = filOP.emissao;
-          this.opFinal = filOP.final;
-          this.opProduto = xy.PRODUTO;
-          this.opDescricao = xy.DESCRICAO;
-          this.opOperacao = this.numOP[0].OPERACAO;
-          this.opRecurso = this.numOP[0].RECURSO;
-          this.opQtde = filOP.qtde;
-          this.opQtdeEntregue = filOP.entregue;
-
-          this.numOP.forEach(ax => {
-            if (ax.OPERACAO >= oper) {
-              if (ax.GRUPO === '') {
-                this.opQtdePcf = ax.QTDEPCF
-              } else {
-                if (grupo === '') {
-                  this.opQtdePcf = ax.QTDEPCF
-                } else {
-                  if (grupo === ax.GRUPO) {
-                    this.opQtdePcf += ax.QTDEPCF
-                  } else {
-                    this.opQtdePcf = ax.QTDEPCF
-                  }
-                }
-              }
-              oper = ax.OPERACAO
-              grupo = ax.GRUPO
-
-            }
-            secs += ax.SEGUNDOS
-            retr = ax.RETRABALHO
-
-
-          });
-          if (parseFloat(this.opQtdePcf) > 0) {
-            this.opQtdeParcial = Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000
-            // this.opQtdeParcial = parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue);
-            this.opMaxQtd = parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue);
-          }
-          this.opRetrabalho = String(retr)
-          this.opHoras = this.fj.toHHMMSS(secs)
-          oper = '00'
-        }
-      });
-      this.dataSource = new MatTableDataSource(this.arrOpconfirmaTab)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-
-  }
+  
 
   enableEditUser(e, i) {
     this.enableEditIndex = i;
@@ -240,7 +208,7 @@ export class OpconfirmaComponent implements OnInit {
 
   // verifica se tem lote para o produto selecionado
   confirmaLote() {
-    this.arrLote = this.fj.buscaPrt('relacaoProdLote', { 'produto': this.numOP[0].CODPROD });
+    this.arrLote = this.fj.buscaPrt('relacaoProdLote', { 'produto': this.aOP[0].CODPROD });
     this.arrLoteTab = []
     this.temLote = false
 
@@ -262,7 +230,7 @@ export class OpconfirmaComponent implements OnInit {
 
 
   prodParcialOp() {
-    const nQtdeLen = this.numOP.length - 1
+    const nQtdeLen = this.aOP.length - 1
     let cLoc: string = this.opFilial === '108' ? '99' : '01';
     const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
     this.parcialAtivo = false;
@@ -279,8 +247,8 @@ export class OpconfirmaComponent implements OnInit {
             nC2QtdAjst: this.opQtdePcf,
             cTipoProd: 'P',
             nQtdEntrg: this.opQtdeParcial,
-            cOperacao: this.numOP[nQtdeLen].OPERACAO,
-            cRecurso: this.numOP[nQtdeLen].RECURSO,
+            cOperacao: this.aOP[nQtdeLen].OPERACAO,
+            cRecurso: this.aOP[nQtdeLen].RECURSO,
             dDataApt: datApt[0].APT,
             ItensD4: []
           };
@@ -350,16 +318,16 @@ export class OpconfirmaComponent implements OnInit {
 
   prodTotalOp() {
     let temSaldo = true
-    let ajustado = true
+    let confirmado = true
     let arrItens = []
-    const nQtdeLen = this.numOP.length - 1
+    const nQtdeLen = this.aOP.length - 1
     let cLoc: string = this.opFilial === '108' ? '99' : '01';;
     this.arrOpconfirmaTab.forEach(xl => {
       if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
         temSaldo = false
       }
-      if (xl.SITUACA !== 'Ajustada') {
-        ajustado = false
+      if (xl.SITUACA !== 'confirmada') {
+        confirmado = false
       }
       if ((xl.QTDEORI == 0 && xl.QTDECALC > 0) || (xl.QTDEORI > 0 && xl.QTDECALC == 0) || (xl.QTDEORI != 0 && xl.QTDECALC != 0)) {
         arrItens.push({
@@ -374,7 +342,7 @@ export class OpconfirmaComponent implements OnInit {
     });
 
     if (this.temLote) {
-      if (ajustado) {
+      if (confirmado) {
         if (temSaldo) {
           const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
 
@@ -388,8 +356,8 @@ export class OpconfirmaComponent implements OnInit {
             nC2QtdAjst: this.opQtdePcf,
             cTipoProd: 'T',
             nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000,
-            cOperacao: this.numOP[nQtdeLen].OPERACAO,
-            cRecurso: this.numOP[nQtdeLen].RECURSO,
+            cOperacao: this.aOP[nQtdeLen].OPERACAO,
+            cRecurso: this.aOP[nQtdeLen].RECURSO,
             dDataApt: datApt[0].APT,
             ItensD4: arrItens
           };
@@ -421,7 +389,7 @@ export class OpconfirmaComponent implements OnInit {
           const retProd = this.fj.prodOP(obj);
           retProd.subscribe(x => {
             alert(x.Sucesso.substring(2, 60))
-            if (x.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
+            if (x.Sucesso === "T/Documento confirmado e apontado com Sucesso!") {
               this.fj.execProd('produzOP', this.objTotal)
               if (this.opFilial == '108') {
                 this.fj.execProd('manuLote', this.objLote);
