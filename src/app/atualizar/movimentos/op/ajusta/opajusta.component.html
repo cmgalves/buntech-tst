@@ -173,11 +173,6 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Empenho consumido </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeConsumida)}} </td>
                                 </ng-container>
-                                <ng-container matColumnDef="situaca">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Situação </th>
-                                    <td mat-cell *matCellDef="let row">
-                                        {{row.situaca}} </td>
-                                </ng-container>
                                 <ng-container matColumnDef="edicao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
                                     <td mat-cell *matCellDef="let row; let i = index;">
