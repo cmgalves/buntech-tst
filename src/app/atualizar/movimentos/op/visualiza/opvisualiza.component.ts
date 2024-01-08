@@ -97,9 +97,9 @@ export class OpvisualizaComponent implements OnInit {
       this.opDescricao = this.aOP.descricao;
       this.opLote = this.aOP.lote;
       this.opAnalise = this.aOP.analise;
-      this.opQtde = this.aOP.qtdeLote
-      this.opEnv = this.aOP.qtdeEnv
-      this.opSaldo = this.aOP.qtdeSaldo
+      this.opQtde = this.fg.formatarNumero(this.aOP.qtdeLote);
+      this.opEnv = this.fg.formatarNumero( this.aOP.qtdeEnv);
+      this.opSaldo = this.fg.formatarNumero( this.aOP.qtdeSaldo);
 
       this.dataSource = new MatTableDataSource(this.arrOpvisualizaTab)
       this.dataSource.paginator = this.paginator;

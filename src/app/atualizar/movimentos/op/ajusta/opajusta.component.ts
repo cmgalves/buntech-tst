@@ -143,9 +143,9 @@ export class OpajustaComponent implements OnInit {
           this.opCodigo = this.aOP.op;
           this.opProduto = this.aOP.produto;
           this.opDescricao = this.aOP.descricao;
-          this.opQtdePcf = this.aOP.qtdeLote;
-          this.opQtdeEnv = this.aOP.qtdeEnv;
-          this.opQtdeSaldo = this.aOP.qtdeSaldo;
+          this.opQtdePcf = this.fg.formatarNumero(this.aOP.qtdeLote);
+          this.opQtdeEnv =  this.fg.formatarNumero(this.aOP.qtdeEnv);
+          this.opQtdeSaldo =  this.fg.formatarNumero(this.aOP.qtdeSaldo);
           this.opEmissao = xy.emissao;
           this.opFinal = xy.vencimento;
         }
