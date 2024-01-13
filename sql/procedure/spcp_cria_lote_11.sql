@@ -2,8 +2,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-SET NOCOUNT ON
-GO
+
 
 ALTER procedure [dbo].[spcp_cria_lote_11] as
 
@@ -34,7 +33,7 @@ declare produtoLote cursor for
 		and b.situacao = 'Concluida'
 		and b.especQuebra = 'QTDE'
 		--and filial = '101'
-		and produto = 'PAN00001'
+		-- and produto = 'PAN00136'
 		and lote = '000000000'
 
 open produtoLote
