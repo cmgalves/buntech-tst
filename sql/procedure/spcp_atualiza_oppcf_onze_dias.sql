@@ -1,4 +1,12 @@
---ALTER procedure [dbo].[spcp_atualiza_oppcf_onze_dias] as
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Esta procedure tem como objetico trazer todos os dados referentes às OPs criadas nos últimos onze dias dias
+de acordo com o parâmetro @dias
+*/
+ALTER procedure [dbo].[spcp_atualiza_oppcf_onze_dias] as
 
 declare 
 	@dias int,
@@ -9,13 +17,16 @@ set @inc = 0
 set @fim = 4
 /*
 	spcp_atualiza_oppcf_onze_dias
-	select * FROM oppcf order by dtcria desc
-	DELETE FROM oppcf
+	select * FROM oppcf order by dtime desc
+	SELECT * FROM oppcf ORDER BY dtcria
+	select * FROM oppcf
+	select * FROM oppcfLote
+	truncate table oppcfLote
+
 */
 
 
 while @inc <= (@dias - @fim)
-
 	begin
 		
 		--boa vista
@@ -23,7 +34,7 @@ while @inc <= (@dias - @fim)
 		DELETE FROM PCP..oppcf WHERE convert(varchar(8), cast(dtcria as date), 112) = convert(varchar(8), getdate() - (@dias - @inc), 112)
 
 		--LIMPA DADOS TEMP
-		TRUNCATE TABLE oppcf011
+		TRUNCATE TABLE PCP..oppcf011
 
 		--PEGA DADOS NOVOS
 		insert into PCP..oppcf011
@@ -64,7 +75,46 @@ while @inc <= (@dias - @fim)
 		
 		set @inc = @inc + 1
 	end
+	
+
+if @inc >0 
+	begin
+		--insere os dados novos na oppcfLote
+		insert into PCP..oppcfLote
+			(
+				a.idEv, filial, op, produto, qtde, dtime, dtcria,
+				codRecurso, qtdeImp, lote, origem, stsLote, analise, intervaloLote,
+				qtde_lote, loteAprov, dtAprov, dtProd, dtVenc, qtdeQuebra, quebra, situacao,
+				usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3,
+				intervalo, recurso, codOpera, segundos, dataAprovacao, tipoAprova1, tipoAprova2,
+				tipoAprova3, justificativa1, justificativa2, justificativa3, regTipo
+
+			)
+		SELECT
+			a.idEv, left(op,3) filial, substring(op, 4, 11) op, substring(produto, 4, 15) produto, qtde, dtime, dtcria,
+			codRecurso, 0 qtdeImp, '000000000' lote, 'S' origem, '' stsLote, 'A00' analise, ' ' intervaloLote,
+			0 qtde_lote, ' ' loteAprov, ' ' dtAprov, '' dtProd, '' dtVenc, 0 qtdeQuebra, 0 quebra, situacao,
+			0 usrAprovn1, 0 usrAprovn2, 0 usrAprovn3, '' dtAprovn1, '' dtAprovn2, '' dtAprovn3,
+			'' intervalo, recurso, codOpera, segundos, ''dataAprovacao, '' tipoAprova1, '' tipoAprova2,
+			'' tipoAprova3, '' justificativa1, '' justificativa2, '' justificativa3, 'S' regTipo
+		-- into PCP..oppcfLote
+		-- drop table PCP..oppcfLote
+		FROM
+			PCP..vw_pcp_registros_saldo a
+		WHERE
+			not exists
+				(
+					select
+						*
+					from
+						PCP..oppcfLote b
+		-- truncate table PCP..oppcfLote 
+		-- select * from PCP..oppcfLote b
+		-- select * from PCP..vw_pcp_registros_saldo b
+					where
+						1 = 1
+						and a.idEv = b.idEv
+			)
+	end
 
 GO
-
-
