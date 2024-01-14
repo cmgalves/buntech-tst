@@ -33,8 +33,9 @@ declare produtoLote cursor for
 		and b.situacao = 'Concluida'
 		and b.especQuebra = 'QTDE'
 		--and filial = '101'
-		-- and produto = 'PAN00136'
-		and lote = '000000000'
+		-- and a.produto = 'PAN00136'
+		and a.lote = '000000000'
+		and a.regTipo = 'S'
 
 open produtoLote
 fetch next from produtoLote   
