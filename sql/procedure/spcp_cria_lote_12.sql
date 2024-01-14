@@ -50,11 +50,11 @@ declare prodQtde cursor for
 		oppcfLote
 	where
 		1 = 1
-		and filial = '108'
-		and produto = 'PAN00136'
+		-- and filial = '108'
+		-- and produto = 'PAN00136'
 		-- and op = '04756401001'
-		-- and filial = @filial
-		-- and produto = @produto
+		and filial = @filial
+		and produto = @produto
 		and lote = '000000000'
 		and regTipo = 'S'
 	order by
