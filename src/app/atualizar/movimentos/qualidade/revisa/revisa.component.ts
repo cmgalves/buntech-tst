@@ -83,7 +83,7 @@ export class RevisaComponent implements OnInit {
   especSit: string[] = ['Andamento', 'Concluida', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
-  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'iteTxt', 'iteMeio', 'iteLaudo', 'iteEdit'];
+  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'iteMeio', 'iteLaudo', 'iteEdit'];
   dataSource: MatTableDataSource<cadRevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -242,7 +242,6 @@ export class RevisaComponent implements OnInit {
         'iteMin': this.novoCarMin,
         'iteMax': this.novoCarMax,
         'iteMeio': this.novoCarMeio,
-        'iteTxt': this.novoCarTxt,
         'iteLaudo': 'SIM',
         'iteTp': 'I'
       }
@@ -261,7 +260,6 @@ export class RevisaComponent implements OnInit {
         'iteMin': vMin,
         'iteMax': vMax,
         'iteMeio': cMeio,
-        'iteTxt': ctxt,
         'iteLaudo': aRow.iteCarac,
         'iteTp': 'A'
       }
@@ -276,7 +274,6 @@ export class RevisaComponent implements OnInit {
         'iteMin': 0,
         'iteMax': 0,
         'iteMeio': '',
-        'iteTxt': '',
         'iteLaudo': '',
         'iteTp': 'E'
       }
@@ -291,7 +288,6 @@ export class RevisaComponent implements OnInit {
         'iteMin': aRow.iteCarac,
         'iteMax': aRow.iteCarac,
         'iteMeio': aRow.iteCarac,
-        'iteTxt': aRow.iteCarac,
         'iteLaudo': aRow.iteLaudo == 'SIM' ? 'NAO' : 'SIM',
         'iteTp': 'L'
       }

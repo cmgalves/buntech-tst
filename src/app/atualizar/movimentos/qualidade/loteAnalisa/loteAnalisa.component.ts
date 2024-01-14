@@ -57,7 +57,6 @@ export class LoteAnalisaComponent implements OnInit {
   itemin: any = '';
   itemax: any = '';
   itemeio: any = '';
-  iteTxt: any = '';
   result: any = '';
   situacao: any = '';
   dtVenc: any = '';
@@ -69,7 +68,7 @@ export class LoteAnalisaComponent implements OnInit {
   tpQuebra: string[] = ['Dia', 'Peso'];
   tpativo: string[] = ['Sim', 'Não'];
   lotes: Observable<any>;
-  displayedColumns: string[] = ['codCarac', 'descCarac', 'iteMin', 'iteMax', 'iteMeio', 'iteTxt', 'result', 'situacao', 'editResult'];
+  displayedColumns: string[] = ['codCarac', 'descCarac', 'iteMin', 'iteMax', 'iteMeio', 'result', 'situacao', 'editResult'];
   dataSource: MatTableDataSource<cadLote>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -126,7 +125,6 @@ export class LoteAnalisaComponent implements OnInit {
             'iteMin': xy.iteMin,
             'iteMax': xy.iteMax,
             'iteMeio': xy.iteMeio,
-            'iteTxt': xy.iteTxt,
             'situacao': xy.situacao.charAt(0).toUpperCase() + xy.situacao.slice(1).toLowerCase(),
             'result': xy.result,
             'resultxt': xy.resultxt
@@ -169,7 +167,6 @@ export class LoteAnalisaComponent implements OnInit {
       'iteMin': 0,
       'iteMax': 0,
       'iteMeio': ' ',
-      'iteTxt': ' ',
       'result': 0,
       'resultxt': ' ',
       'situacao': 'APROVADO',
