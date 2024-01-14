@@ -148,7 +148,6 @@ export class RevisaComponent implements OnInit {
           'iteCarac': xy.iteCarac,
           'iteMin': xy.iteMin.toFixed(3),
           'iteMax': xy.iteMax.toFixed(3),
-          'iteTxt': xy.iteTxt,
           'iteLaudo': xy.iteLaudo,
           'iteMeio': xy.iteMeio,
           'descCarac': xy.descCarac,
