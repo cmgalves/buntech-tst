@@ -200,6 +200,11 @@ export class LoteAprovaComponent implements OnInit {
     var justificativa3 = this.justificativa3;
     var loteAprov;
 
+    const nivel = this.aProd.loteAprov == 'SEGREGADO'?'N1':(this.aProd.loteAprov=='REAVALIACAON2'
+    &&this.nivel.includes('N2')?'N2':this.nivel.includes('N3')?'N3':'');
+
+    console.log(nivel);
+
     var rejeitaTodos = false;
     var aprovaN3 = false;
     var aprovaN2 = false;
@@ -212,14 +217,13 @@ export class LoteAprovaComponent implements OnInit {
       console.log(this.justificativa)
       return alert("Justificativa é obrigatória");
     } // Checa se tem justificativa
-
-    if (!(this.fj.acessoUsuario(this.aUsr, this.nivel)))
+    if (!(this.fj.acessoUsuario(this.aUsr, nivel)))
       return alert("Você não tem a permissão necessária para aprovar esse item"); //Checa se o usuário tem o perfil
     //que coincide com a alcada do lote
 
     if (tipo != 'A') {
-      rejeitaTodos = true; //Se o N1 aprova, aprova todos os níveis
-      loteAprov = 'REPROVADO' //Altera o status do lote para aprovado
+      rejeitaTodos = true; //Se o N1 reprova, reprova todos os níveis
+      loteAprov = 'REPROVADO' //Altera o status do lote para reprovado
     }
 
     if (this.aProd.loteAprov == 'SEGREGADO' || rejeitaTodos) { //Se a alcada conter N1 e for momento de
@@ -233,7 +237,7 @@ export class LoteAprovaComponent implements OnInit {
 
     if (this.aProd.loteAprov == 'REAVALIACAON2' || rejeitaTodos || aprovaN2) { //Se é possível aprovar
       usrAprovn2 = this.aUsr.codUser;                             //N2 ou se tudo será
-      dtAprovn2 = DataAtual;                                      //aprovado
+      dtAprovn2 = DataAtual;                                      //reprovado
       tipoAprovn2 = tipo;
       if (tipo == 'A')
         loteAprov = aprovaN3 ? 'REAVALIACAO' : 'REAVALIACAO N3'; //passa para o N3 reavaliar ou finaliza
@@ -243,7 +247,7 @@ export class LoteAprovaComponent implements OnInit {
 
     if (this.aProd.loteAprov == 'REAVALIACAON3' || rejeitaTodos || aprovaN3) { //Se é possível aprovar
       usrAprovn3 = this.aUsr.codUser;                                         //N3 ou se tudo será
-      dtAprovn3 = DataAtual;                                                  //aprovado
+      dtAprovn3 = DataAtual;                                                  //reprovado
       tipoAprovn3 = tipo;
       if (tipo = 'A')
         loteAprov = aprovaN3 ? loteAprov : 'REAVALIACAO' //O que ocorre após o N3 aprovar? ¯\_(ツ)_/¯
