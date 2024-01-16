@@ -71,7 +71,7 @@ export class RevisaComponent implements OnInit {
   lespecSequencia: boolean = false;
   editInd = null;
   revisas: Observable<any>;
-  imprimeLaudo: string = null;
+  imprimeLaudo: string = "NAO";
 
   sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
   sEspecAnalise: string[] = ['SIM', 'NAO'];
@@ -124,8 +124,9 @@ export class RevisaComponent implements OnInit {
       'cabProduto': this.cabProduto
     };
     this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj); //PCP..View_Relacao_Espec
-
+   
     this.arrDb.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         seq++
         this.arrRev.push({
@@ -331,7 +332,7 @@ export class RevisaComponent implements OnInit {
       'imprimeLaudo': this.imprimeLaudo.substring(0, 1),
     }
     this.fj.execProd('incluiEspec', obj);
-    window.location.reload();
+    //window.location.reload();
   }
 
 

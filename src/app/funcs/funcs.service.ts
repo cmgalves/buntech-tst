@@ -386,7 +386,7 @@ export class funcsService {
           "cAnalise": loteItem.analise,
           "nQuantidade": loteItem.qtdeLote,
           "cCaracteristica": item.codCarac,
-          "cResultado": item.situacao,
+          "cResultado": item.result,
           "dValidade": dataValidade.toISOString(),
           "dFabricacao": loteItem.dtime,
           "cValMin": item.iteMin,

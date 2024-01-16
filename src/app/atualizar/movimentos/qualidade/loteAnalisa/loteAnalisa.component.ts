@@ -215,15 +215,17 @@ export class LoteAnalisaComponent implements OnInit {
     let sit: string = '';
     let vResultxt: string = '';
     let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value.toUpperCase();
+    const max = xcRow.iteMax == 0? Number.MAX_VALUE : xcRow.iteMax;
     var nbm = 0;
     let dtAtual = new Date();
 
     if (isNaN(parseFloat(vNum))) /*Checa se o valor inserido é numérico*/ {
       return alert('Por favor, digite um valor numérico');
     } else {
+      
       nbm = parseFloat(vNum);
-      if (xcRow.iteMin > 0 || xcRow.iteMax > 0) //Checa se o intervalo existe
-        if (nbm < xcRow.iteMin || nbm > xcRow.iteMax) //Checa se o valor está no intervalo
+      if (xcRow.iteMin > 0 || max > 0) //Checa se o intervalo existe
+        if (nbm < xcRow.iteMin || nbm > max) //Checa se o valor está no intervalo
           sit = 'REPROVADO';
         else
           sit = 'APROVADO';

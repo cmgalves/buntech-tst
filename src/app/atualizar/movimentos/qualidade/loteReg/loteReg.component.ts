@@ -40,7 +40,7 @@ export class LoteRegComponent implements OnInit {
   filPosAnalise: string = 'Todos';
 
   loteRegs: Observable<any>;
-  displayedColumns: string[] = ['filial', 'produto', 'descricao', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dt1', 'dt2', 'dt3', 'loteReg'];
+  displayedColumns: string[] = ['filial', 'produto', 'descricao', 'op', 'lote', 'analise', 'qtdeLote', 'loteAprov', 'dt1', 'dt2', 'dt3', 'loteReg'];
   dataSource: MatTableDataSource<cadLoteReg>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -217,7 +217,7 @@ export class LoteRegComponent implements OnInit {
     return row.loteAprov.charAt(0).toUpperCase() + row.loteAprov.slice(1).toLowerCase();
   }
 
-  formatarData(data){
+  formatarData(data) {
     return data.split('-').reverse().join('/');
   }
 

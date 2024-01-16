@@ -463,12 +463,26 @@ export class LoteAprovaComponent implements OnInit {
     this.router.navigate(['loteReg']);
   }
 
-  reclassifica(mesmaOp: string) {
+  reclassifica() {
     const lote = this.aProd;
-    lote.loteAprov = "RECLASSIFICA " + mesmaOp;
+    lote.loteAprov = "RECLASSIFICA";
     console.log(lote);
 
     this.fj.enviarLoteProteus(lote, true);
+  }
+
+  reclassificaMesmaOp(){
+    const obj = {
+      filial: this.aProd.filial,
+      op: this.aProd.op,
+      produto: this.aProd.produto,
+      lote: this.aProd.lote,
+      qtd: 0,
+      analise: this.aProd.analise
+    }
+
+    this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => console.log(q));
+    this.fj.buscaPrt('reclassificaNovaOp', obj).subscribe(q => console.log(q));
   }
 
 }
