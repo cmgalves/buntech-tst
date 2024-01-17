@@ -214,7 +214,7 @@ export class LoteRegComponent implements OnInit {
   }
 
   classeItem(row) {
-    return row.loteAprov.charAt(0).toUpperCase() + row.loteAprov.slice(1).toLowerCase();
+    return (row.loteAprov.charAt(0).toUpperCase() + row.loteAprov.slice(1).toLowerCase()).replace(' ', '').replace('.', '');
   }
 
   formatarData(data) {

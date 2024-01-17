@@ -50,6 +50,9 @@ export class LoteDetalheComponent implements OnInit {
   dtProd: any = '';
   hrProd: any = '';
   dtVenc: any = '';
+  justificativa1: string = '';
+  justificativa2: string = '';
+  justificativa3: string = '';
   obs: any = '';
   cTipo: any = 0;
   tpQuebra: string[] = ['Dia', 'Peso'];
@@ -75,7 +78,7 @@ export class LoteDetalheComponent implements OnInit {
   // busca a relação de produtos com as loteções
   buscaLoteDetalhes() {
     let ord = 0;
-
+    console.log(this.aProd);
     const obj = {
       'filial': this.aProd.filial,
       'produto': this.aProd.produto,
@@ -106,7 +109,11 @@ export class LoteDetalheComponent implements OnInit {
           'dtVenc': xy.dtVenc,
           'qtdeLote': xy.qtdeLote,
           'situacao': xy.situacao,
-        })
+          'justificativa1': xy.justificativa1,
+          'justificativa2': xy.justificativa2,
+          'justificativa3': xy.justificativa3,
+        });
+        console.log(xy);
         this.filial = xy.filial
         this.produto = xy.produto
         this.descricao = xy.descricao
@@ -114,6 +121,9 @@ export class LoteDetalheComponent implements OnInit {
         this.lote = xy.lote
         this.analise = xy.analise
         this.qtdeTot += xy.qtdeLote
+        this.justificativa1 = xy.justificativa1;
+        this.justificativa2 = xy.justificativa2;
+        this.justificativa3 = xy.justificativa3;
       });
       this.qtdeLabel = this.fg.formatarNumero(this.qtdeTot);
       this.dataSource = new MatTableDataSource(this.arrDados)

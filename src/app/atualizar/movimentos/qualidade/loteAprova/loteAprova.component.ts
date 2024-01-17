@@ -479,14 +479,19 @@ export class LoteAprovaComponent implements OnInit {
       lote: this.aProd.lote,
       qtd: this.aProd.qtdeLote,
       analise: this.aProd.analise,
+      analiseNova: "",
       usr: this.aUsr.codUser,
-      
+      tipoAprov: 'C'
     }
+    console.log(obj);
 
-    this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => console.log(q));
-    this.fj.buscaPrt('reclassificaNovaOp', obj).subscribe(q => console.log(q));
+    this.fj.buscaPrt('reclassificaNovaOp', obj).subscribe(q => {
+      obj.analiseNova = q[0].analise;
+      this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => q);
+    });
+   
 
-    window.location.reload();
+    this.router.navigate(['loteReg']);
   }
 
 }
