@@ -198,8 +198,8 @@ export class LoteAprovaComponent implements OnInit {
     var justificativa3 = this.justificativa3;
     var loteAprov;
 
-    const nivel = this.aProd.loteAprov == 'SEGREGADO'?'N1':(this.aProd.loteAprov=='REAVALIACAON2'
-    &&this.nivel.includes('N2')?'N2':this.nivel.includes('N3')?'N3':'');
+    const nivel = this.aProd.loteAprov == 'SEGREGADO' ? 'N1' : (this.aProd.loteAprov == 'REAVALIACAON2'
+      && this.nivel.includes('N2') ? 'N2' : this.nivel.includes('N3') ? 'N3' : '');
 
     console.log(nivel);
 
@@ -470,7 +470,7 @@ export class LoteAprovaComponent implements OnInit {
     this.fj.enviarLoteProteus(lote, true);
   }
 
-  reclassificaMesmaOp(){
+  reclassificaMesmaOp() {
     const obj = {
       filial: this.aProd.filial,
       op: this.aProd.op,
@@ -480,17 +480,16 @@ export class LoteAprovaComponent implements OnInit {
       analise: this.aProd.analise,
       analiseNova: "",
       usr: this.aUsr.codUser,
-      tipoAprov: 'C'
+      tipoAprov: 'C',
     }
-    console.log(obj);
 
     this.fj.buscaPrt('reclassificaNovaOp', obj).subscribe(q => {
-      obj.analiseNova = q[0].analise;
-      this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => q);
+      console.log(q);
+      if (q[0].analise != undefined) {
+        obj.analiseNova = q[0].analise;
+        this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => /*this.router.navigate(['loteReg'])*/console.log(q));
+      }
     });
-   
-
-    this.router.navigate(['loteReg']);
   }
 
 }
