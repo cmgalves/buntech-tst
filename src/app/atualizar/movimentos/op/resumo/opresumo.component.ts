@@ -32,12 +32,12 @@ export interface opResumo {
 
 
 export class OpresumoComponent implements OnInit {
-  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
+  aUsr = JSON.parse(localStorage.getItem('user'))[0];
   arrOpAnd: any = []; //JSON.parse(localStorage.getItem('user'))[0];
   arrOpPcf: any = []; //JSON.parse(localStorage.getItem('user'))[0];
-  xcFilial: any = this.arrUserLogado.empresa
-  xcPerfil: any = this.arrUserLogado.perfil
-  numOP = JSON.parse(localStorage.getItem('op'));
+  xcFilial: any = this.aUsr.empresa
+  xcPerfil: any = this.aUsr.perfil
+  aOp = JSON.parse(localStorage.getItem('op'));
   opFilter: any = ''
   arrRecA: any = [];
   arrRecB: any = [];
@@ -56,7 +56,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeProd', 'saldoProd', 'qtdeEnv', 'qtdeSaldo', 'diabr', 'situacao', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'qtdeProd', 'saldoProd', 'diabr', 'situacao', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -90,15 +90,18 @@ export class OpresumoComponent implements OnInit {
           'descricao': xy.descricao,
           'lote': xy.lote,
           'dtcria': xy.dtcria,
+          'dtime': xy.dtime,
           'diabr': xy.diabr,
           'loteAprov': xy.loteAprov,
           'qtdeLote': xy.qtdeLote,
-          'qtdeProd': xy.qtdeLote,
-          'saldoProd': xy.qtdeLote,
+          'qtdeProd': xy.qtdeProd,
+          'saldoProd': xy.saldoProd,
           'qtdeEnv': xy.qtdeEnv,
           'qtdeSaldo': xy.qtdeSaldo,
           'codSitu': xy.codSitu,
           'situacao': xy.situacao,
+          'codRecurso': xy.codRecurso,
+          'codOpera': xy.codOpera,
         })
         if (!this.situacoes.includes(xy.situacao)) {
           this.situacoes.push(xy.situacao)
@@ -110,6 +113,9 @@ export class OpresumoComponent implements OnInit {
     });
 
   }
+
+
+  
 
   // visualização da OP
   visuOp(xcRow) {
@@ -157,7 +163,7 @@ export class OpresumoComponent implements OnInit {
   btnDisable(aRow, tp) {
     if (tp === 'a') {
       if (!(("Baixada ").indexOf(aRow.situacao) > -1)) {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
+        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
           return true;
         }
       }
@@ -196,7 +202,7 @@ export class OpresumoComponent implements OnInit {
 
 
   // buscatblOutInteg() {
-  //   if (('Administrador') == this.arrUserLogado.perfil) {
+  //   if (('Administrador') == this.aUsr.perfil) {
   //     let arrTab = []
   //     this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
   //     this.aOpAnalitica.subscribe(cada => {
