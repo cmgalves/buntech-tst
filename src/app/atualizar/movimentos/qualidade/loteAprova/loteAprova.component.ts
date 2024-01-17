@@ -255,7 +255,10 @@ export class LoteAprovaComponent implements OnInit {
     }
 
     if (tipoAprovn1 == 'A' && tipoAprovn2 == 'A' && tipoAprovn3 == 'A')
+    {
       loteAprov = 'APROVADO'; //Se todos aprovarem, muda para aprovado
+      aprovaTodos = true;
+    }
 
     if (nivAprov != '') {
       txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
@@ -286,9 +289,10 @@ export class LoteAprovaComponent implements OnInit {
           this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
             if (rejeitaTodos || aprovaTodos)
               this.fj.enviarLoteProteus(q[0]);
+
+              this.router.navigate(['loteReg']);
           });
           this.nivelAprovado(2);
-          this.router.navigate(['loteReg']);
         }
       });
     } else alert("USUÁRIO NÃO TEM NÍVEL PARA APROVAÇÃO");
