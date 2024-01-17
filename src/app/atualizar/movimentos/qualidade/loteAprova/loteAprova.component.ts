@@ -30,7 +30,6 @@ export interface cadLote {
 
 export class LoteAprovaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
-  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   aProd = JSON.parse(localStorage.getItem('loteAprv'));
   arrBusca: any = [];
   arrDados: any = [];
@@ -468,6 +467,7 @@ export class LoteAprovaComponent implements OnInit {
     lote.loteAprov = "RECLASSIFICA";
     console.log(lote);
 
+    // this.fj.enviarProdParcial(lote, true);
     this.fj.enviarLoteProteus(lote, true);
   }
 
@@ -477,8 +477,10 @@ export class LoteAprovaComponent implements OnInit {
       op: this.aProd.op,
       produto: this.aProd.produto,
       lote: this.aProd.lote,
-      qtd: 0,
-      analise: this.aProd.analise
+      qtd: this.aProd.qtdeLote,
+      analise: this.aProd.analise,
+      usr: this.aUsr.codUser,
+      
     }
 
     this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => console.log(q));

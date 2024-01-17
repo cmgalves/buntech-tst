@@ -393,9 +393,9 @@ export class OpconfirmaComponent implements OnInit {
             alert(x.Sucesso.substring(2, 60))
             if (x.Sucesso === "T/Documento confirmado e apontado com Sucesso!") {
               this.fj.execProd('produzOP', this.objTotal)
-              if (this.opFilial == '108') {
-                this.fj.execProd('manuLote', this.objLote);
-              }
+              // if (this.opFilial == '108') {
+              //   this.fj.execProd('manuLote', this.objLote);
+              // }
             }
             
             window.location.reload();

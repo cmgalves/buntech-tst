@@ -394,7 +394,7 @@ export class funcsService {
           "cStatus": loteItem.loteAprov
         };
         console.log(obj2);
-        //this.prodLote(obj2); //Envia para o proteus
+        this.prodLote(obj2); //Envia para o proteus
       }));
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }

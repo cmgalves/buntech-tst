@@ -45,20 +45,32 @@
                                     <td mat-cell *matCellDef="let row"> {{row.lote}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeLote">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Produzida </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde PCF </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeLote)}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdeProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Produzida </th>
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeProd)}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="saldoProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo a Produzir </th>
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.saldoProd)}}</td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeEnv">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Transmitida </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeEnv)}}</td>
                                 </ng-container>
                                 <ng-container matColumnDef="qtdeSaldo">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo a Transmitir </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeSaldo)}}</td>
                                 </ng-container>
                                 <ng-container matColumnDef="diabr">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Emissão OP</th>
                                     <td mat-cell *matCellDef="let row"> {{row.diabr}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="situacao">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Situacao</th>
+                                    <td mat-cell *matCellDef="let row"> {{row.situacao}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="edicao">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> E D I Ç Ã O </th>
@@ -69,13 +81,13 @@
                                         <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a')" mat-raised-button type="button" matTooltip="Ajustar Empenho" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">build</i>
                                         </button>
-                                        <button (click)="confirmaOp(row)" [disabled]="btnDisable(row, 'c')" mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <!-- <button (click)="confirmaOp(row)" [disabled]="btnDisable(row, 'c')" mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">verified</i>
-                                        </button>
+                                        </button> -->
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'sts00' : row.SITUACAO === 'Sem Status','sts10' : row.SITUACAO === 'Produção','sts20' : row.SITUACAO === 'Liberada','sts30' : row.SITUACAO === 'Planejada','sts40' : row.SITUACAO === 'Interrompida','sts50' : row.SITUACAO === 'Baixada','sts60' : row.SITUACAO === 'Encerrada','sts70' : row.SITUACAO === 'Cancelada','sts80' : row.SITUACAO === 'Integrada'}">
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'sts00' : row.situacao === 'Sem Status','sts10' : row.situacao === 'Produção','sts20' : row.situacao === 'Liberada','sts30' : row.situacao === 'Planejada','sts40' : row.situacao === 'Interrompida','sts50' : row.situacao === 'Baixada','sts60' : row.situacao === 'Encerrada','sts70' : row.situacao === 'Cancelada','sts80' : row.situacao === 'Integrada'}">
                                 </tr>
                                 <tr class="mat-row" *matNoDataRow>
                                     <td class="mat-cell" colspan="4">No data matching the filter "{{input?.value}}"</td>

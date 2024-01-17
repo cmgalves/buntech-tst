@@ -36,7 +36,7 @@ declare
 	@analise varchar(3),
 	@analiseOp varchar(3),
 	@analiseProx varchar(3),
-	@analiseSituacao varchar(3),
+	@analiseSituacao varchar(15),
 	@lote varchar(9),
 	@loteOp varchar(9),
 	@loteMax varchar(9),
@@ -87,8 +87,8 @@ while @@FETCH_STATUS = 0
 						set @analiseSituacao = (select max(loteAprov) from oppcfLote where filial = @filial and op = @op and lote = @lote and analise = @analise)
 						if @analiseSituacao <> 'ABERTO'
 							begin 
-								set @analise = 'A' + right('00' + convert(varchar(2), cast(right(@analise, 2) as int) + 1), 2)
-								set @qtdeLote = 0
+								-- set @analise = 'A' + right('00' + convert(varchar(2), cast(right(@analise, 2) as int) + 1), 2)
+								set @qtdeLote = @qtdeQuebra
 							end
 						else
 							begin 

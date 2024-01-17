@@ -24,7 +24,7 @@
                             </div>
                             <div class="card-body table-responsive col-md-2">
                                 <mat-form-field>
-                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro Status Lote" [(ngModel)]="filLoteReg">
+                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro Status Lote/Análise" [(ngModel)]="filLoteReg">
                                         <mat-option *ngFor="let optFilter of filterLoteReg" [value]="optFilter">
                                             {{optFilter}}
                                         </mat-option>
@@ -65,7 +65,7 @@
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="loteAprov">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Status Lote </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Status Análise </th>
                                     <td mat-cell *matCellDef="let row"> {{row.loteAprov}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="dt1">
@@ -93,7 +93,7 @@
                                         <button (click)="aprovaLote(row)" [disabled]="row.loteAprov != 'SEGREGADO' && !row.loteAprov.includes('REAVALIACAO')" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">center_focus_weak</i>
                                         </button>
-                                        <button (click)="imprimeLote(row)" [disabled]="row.loteAprov == 'APROVADO'" mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="imprimeLote(row)" [disabled] = 'true' mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">apps</i>
                                         </button>
                                     </td>

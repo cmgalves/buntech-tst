@@ -20,7 +20,7 @@ export interface opResumo {
   EMISSAO: string;
   FINAL: string;
   ENTREGUE: string;
-  SITUACAO: string;
+  situacao: string;
 
 }
 
@@ -50,12 +50,13 @@ export class OpresumoComponent implements OnInit {
   aOpAndamentoResumo: any = [];
   aOpAnalitica: any = [];
   arrOpresumoTab: any = [];
+  situacoes: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
-  situacoes = ["Sem Status", "Produção", "Liberada", "Planejada", "Interrompida", "Baixada", "Encerrada", "Cancelada"];
+  // situacoes = ["Sem Status", "Produção", "Liberada", "Planejada", "Interrompida", "Baixada", "Encerrada", "Cancelada"];
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'diabr', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeProd', 'saldoProd', 'qtdeEnv', 'qtdeSaldo', 'diabr', 'situacao', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -76,7 +77,7 @@ export class OpresumoComponent implements OnInit {
   // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo - vw_pcp_relacao_op_lote
   buscaOpresumos() {
     let ord = 0;
-    
+
     this.arrOpresumoTab = [];
     this.aOpAndamentoResumo = this.fj.buscaPrt('relacaoOpLote', {}); //vw_pcp_relacao_op_lote
     this.aOpAndamentoResumo.subscribe(cada => {
@@ -92,9 +93,16 @@ export class OpresumoComponent implements OnInit {
           'diabr': xy.diabr,
           'loteAprov': xy.loteAprov,
           'qtdeLote': xy.qtdeLote,
+          'qtdeProd': xy.qtdeLote,
+          'saldoProd': xy.qtdeLote,
           'qtdeEnv': xy.qtdeEnv,
           'qtdeSaldo': xy.qtdeSaldo,
+          'codSitu': xy.codSitu,
+          'situacao': xy.situacao,
         })
+        if (!this.situacoes.includes(xy.situacao)) {
+          this.situacoes.push(xy.situacao)
+        }
       });
       this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
       this.dataSource.paginator = this.paginator;
@@ -148,16 +156,9 @@ export class OpresumoComponent implements OnInit {
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
     if (tp === 'a') {
-      if ((("Baixada ").indexOf(aRow.SITUACAO) > -1)) {
+      if (!(("Baixada ").indexOf(aRow.situacao) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
-          return false;
-        }
-      }
-    }
-    if (tp === 'c') {
-      if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1)) {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
-          return false;
+          return true;
         }
       }
     }
@@ -181,7 +182,7 @@ export class OpresumoComponent implements OnInit {
 
   filterSituacao(filterValue) {
     if (filterValue != undefined) {
-      const arrayFiltrado = this.arrOpresumoTab.filter(q => q.SITUACAO == this.situacoes[filterValue / 10]);
+      const arrayFiltrado = this.arrOpresumoTab.filter(q => q.situacao == this.situacoes[filterValue / 10]);
       this.dataSource = new MatTableDataSource(arrayFiltrado);
     } else {
       this.dataSource = new MatTableDataSource(this.arrOpresumoTab);
@@ -194,35 +195,35 @@ export class OpresumoComponent implements OnInit {
   }
 
 
-  buscatblOutInteg() {
-    if (('Administrador') == this.arrUserLogado.perfil) {
-      let arrTab = []
-      this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
-      this.aOpAnalitica.subscribe(cada => {
-        cada.forEach(xy => {
-          arrTab.push({
-            filial: xy.filial,
-            op: xy.op,
-            recurso: xy.recurso,
-            operacao: xy.operacao,
-            integrado: xy.integrado,
-            produto: xy.produto,
-            producao: xy.producao,
-            retrabalho: xy.retrabalho,
-            segundos: xy.segundos,
-            situacao: xy.situacao,
-            situDesc: xy.situDesc,
-            criacao: xy.criacao,
-            aponta: xy.aponta,
-          })
-        });
-        this.dataExcel = new MatTableDataSource(arrTab)
-        this.expExcel('tblOutInteg', 'ops')
-      });
-    } else {
-      alert('sem acesso')
-    }
-  }
+  // buscatblOutInteg() {
+  //   if (('Administrador') == this.arrUserLogado.perfil) {
+  //     let arrTab = []
+  //     this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
+  //     this.aOpAnalitica.subscribe(cada => {
+  //       cada.forEach(xy => {
+  //         arrTab.push({
+  //           filial: xy.filial,
+  //           op: xy.op,
+  //           recurso: xy.recurso,
+  //           operacao: xy.operacao,
+  //           integrado: xy.integrado,
+  //           produto: xy.produto,
+  //           producao: xy.producao,
+  //           retrabalho: xy.retrabalho,
+  //           segundos: xy.segundos,
+  //           situacao: xy.situacao,
+  //           situDesc: xy.situDesc,
+  //           criacao: xy.criacao,
+  //           aponta: xy.aponta,
+  //         })
+  //       });
+  //       this.dataExcel = new MatTableDataSource(arrTab)
+  //       this.expExcel('tblOutInteg', 'ops')
+  //     });
+  //   } else {
+  //     alert('sem acesso')
+  //   }
+  // }
 
   // exporta os dados para o excel
   expExcel(fileName, sheetName) {
