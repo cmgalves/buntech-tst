@@ -311,14 +311,13 @@ export class LoteAnalisaComponent implements OnInit {
       if (q) {
         this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
         if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
-        this.router.navigate(['loteReg']);
+        //this.router.navigate(['loteReg']);
       }
     });
   }
 
 
   aprovacaoAutomatica() {
-    console.log('Aprovacao Automatica')
     const obj = {
       produto: this.produto,
       usrAprovn1: this.arrUserLogado.codUser,
@@ -339,7 +338,9 @@ export class LoteAnalisaComponent implements OnInit {
       filial: this.filial,
       loteAprov: 'APROVADO'
     }
-    this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
+    this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
+      this.fj.enviarLoteProteus(q[0]);
+    });
   }
 
 }

@@ -365,7 +365,7 @@ export class funcsService {
   enviarLoteProteus(loteItem, reclassifica = false) {
     const dataValidade = new Date(loteItem.dtime); //pega a data de fabricação e soma um ano 
     dataValidade.setFullYear(dataValidade.getFullYear() + 1); // para data de validade
-
+    console.log(loteItem);
     //verifica se o lote está aprovado
     if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
       const obj = {
@@ -394,7 +394,7 @@ export class funcsService {
           "cStatus": loteItem.loteAprov,
           "cImprime": item.imprimeLaudo
         };
-        console.log([obj2]);
+        console.log([obj2])
         this.prodLote([obj2]).subscribe(q => console.log(q)); //Envia para o proteus
       }));
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado

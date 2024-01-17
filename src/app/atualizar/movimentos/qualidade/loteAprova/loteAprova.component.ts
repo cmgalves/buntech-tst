@@ -282,7 +282,10 @@ export class LoteAprovaComponent implements OnInit {
 
       this.fj.confirmDialog(txtAprov).subscribe(q => {
         if (q) {
-          this.fj.buscaPrt('aprovalote', obj).subscribe(q => console.log(q));
+          this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
+            
+
+          });
           this.nivelAprovado(2);
           this.router.navigate(['loteReg']);
         }
