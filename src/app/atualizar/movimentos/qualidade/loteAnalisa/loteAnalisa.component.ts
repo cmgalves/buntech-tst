@@ -311,7 +311,7 @@ export class LoteAnalisaComponent implements OnInit {
       if (q) {
         this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
         if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
-        //this.router.navigate(['loteReg']);
+        this.router.navigate(['loteReg']);
       }
     });
   }
