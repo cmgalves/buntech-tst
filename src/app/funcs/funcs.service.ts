@@ -420,7 +420,7 @@ export class funcsService {
 
   acessoUsuario(usuario, acesso) {
     const perfil = usuario.perfil.replace("Qualidade ", "");
-    // if (usuario.perfil.includes('Administrador')) return true;
+    if (usuario.perfil.includes('Administrador')) return true;
     return perfil.includes(acesso) || acesso.includes(perfil);
   }
 }
