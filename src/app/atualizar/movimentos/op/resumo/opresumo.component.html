@@ -48,14 +48,6 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde PCF </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeLote)}}</td>
                                 </ng-container>
-                                <ng-container matColumnDef="qtdeProd">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Produzida </th>
-                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeProd)}}</td>
-                                </ng-container>
-                                <ng-container matColumnDef="saldoProd">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo a Produzir </th>
-                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.saldoProd)}}</td>
-                                </ng-container>
                                 <ng-container matColumnDef="qtdeEnv">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Transmitida </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeEnv)}}</td>
@@ -63,6 +55,14 @@
                                 <ng-container matColumnDef="qtdeSaldo">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo a Transmitir </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeSaldo)}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="qtdeProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Produzida </th>
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeProd)}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="saldoProd">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo a Produzir </th>
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.saldoProd)}}</td>
                                 </ng-container>
                                 <ng-container matColumnDef="diabr">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Emissão OP</th>
@@ -81,7 +81,7 @@
                                         <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a')" mat-raised-button type="button" matTooltip="Ajustar Empenho" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">build</i>
                                         </button>
-                                        <button (click)="confirmaOp(row)" [disabled] mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="fg.prodParcialOp(row)" [disabled] mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">add</i>
                                         </button>
                                     </td>

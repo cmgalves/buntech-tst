@@ -56,7 +56,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeProd', 'saldoProd', 'qtdeEnv', 'qtdeSaldo', 'diabr', 'situacao', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'qtdeProd', 'saldoProd', 'diabr', 'situacao', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -90,15 +90,18 @@ export class OpresumoComponent implements OnInit {
           'descricao': xy.descricao,
           'lote': xy.lote,
           'dtcria': xy.dtcria,
+          'dtime': xy.dtime,
           'diabr': xy.diabr,
           'loteAprov': xy.loteAprov,
           'qtdeLote': xy.qtdeLote,
-          'qtdeProd': xy.qtdeLote,
-          'saldoProd': xy.qtdeLote,
+          'qtdeProd': xy.qtdeProd,
+          'saldoProd': xy.saldoProd,
           'qtdeEnv': xy.qtdeEnv,
           'qtdeSaldo': xy.qtdeSaldo,
           'codSitu': xy.codSitu,
           'situacao': xy.situacao,
+          'codRecurso': xy.codRecurso,
+          'codOpera': xy.codOpera,
         })
         if (!this.situacoes.includes(xy.situacao)) {
           this.situacoes.push(xy.situacao)
@@ -110,6 +113,9 @@ export class OpresumoComponent implements OnInit {
     });
 
   }
+
+
+  
 
   // visualização da OP
   visuOp(xcRow) {

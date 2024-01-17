@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import * as XLSX from 'xlsx';
+import { funcsService } from './funcs.service';
 
 
 @Injectable({
@@ -9,7 +10,9 @@ import * as XLSX from 'xlsx';
 
 export class funcGeral {
 
-  constructor() { }
+  constructor(
+    private fj: funcsService,
+  ) { }
 
   retNumber() {
     let xd = new Date()
@@ -158,11 +161,56 @@ export class funcGeral {
       return String(str).substring(iLen, iLen - n);
     }
   }
-  
-  formatarNumero(numero){
-    return  numero.toLocaleString('pt-BR', {
+
+  formatarNumero(numero) {
+    return numero.toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
   }
+
+
+  // efetua a produção parcial da op 
+  prodParcialOp(aOp) {
+    let cArm = ''
+    let qtdeProd = 0
+    const claudio = 1
+    const nQtdeLen = aOp.length - 1
+
+    qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
+    cArm = '05'
+    const objEnv = {
+      cFilialOp: aOp.filial,
+      cNumOp: aOp.op,
+      cC2Prod: qtdeProd,
+      cC2Local: aOp.produto,
+      cDocAjst: 'DOCPARCI',
+      nC2QtdOri: aOp.qtdeLote,
+      nC2QtdAjst: qtdeProd,
+      cTipoProd: 'P',
+      nQtdEntrg: qtdeProd,
+      cOperacao: aOp.codOpera,
+      cRecurso: aOp.codRecurso,
+      dDataApt: aOp.dtime,
+      ItensD4: []
+    };
+    const objAponta = {
+      filial: aOp.filial,
+      op: aOp.op,
+      lote: aOp.lote,
+      qtde: qtdeProd,
+      tipo: 'P',
+    };
+
+    this.fj.prodOP(objEnv).subscribe(x => {
+      alert(x.Sucesso.substring(2, 60))
+      if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+        this.fj.execProd('spcp_produz_op', objAponta);
+      }
+      window.location.reload();
+    });
+  };
+
+
+
 }

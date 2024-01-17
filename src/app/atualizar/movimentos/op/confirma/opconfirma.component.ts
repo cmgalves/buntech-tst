@@ -284,9 +284,9 @@ export class OpconfirmaComponent implements OnInit {
             alert(x.Sucesso.substring(2, 60))
             if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
               this.fj.execProd('produzOP', this.objParcial);
-              // if (this.opFilial == '108') {
-              //   this.fj.execProd('manuLote', this.objLote);
-              // }
+              if (this.opFilial == '108') {
+                this.fj.execProd('manuLote', this.objLote);
+              }
               this.parcialAtivo = true;
             }
 
