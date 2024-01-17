@@ -32,12 +32,12 @@ export interface opResumo {
 
 
 export class OpresumoComponent implements OnInit {
-  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
+  aUsr = JSON.parse(localStorage.getItem('user'))[0];
   arrOpAnd: any = []; //JSON.parse(localStorage.getItem('user'))[0];
   arrOpPcf: any = []; //JSON.parse(localStorage.getItem('user'))[0];
-  xcFilial: any = this.arrUserLogado.empresa
-  xcPerfil: any = this.arrUserLogado.perfil
-  numOP = JSON.parse(localStorage.getItem('op'));
+  xcFilial: any = this.aUsr.empresa
+  xcPerfil: any = this.aUsr.perfil
+  aOp = JSON.parse(localStorage.getItem('op'));
   opFilter: any = ''
   arrRecA: any = [];
   arrRecB: any = [];
@@ -157,7 +157,7 @@ export class OpresumoComponent implements OnInit {
   btnDisable(aRow, tp) {
     if (tp === 'a') {
       if (!(("Baixada ").indexOf(aRow.situacao) > -1)) {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
+        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
           return true;
         }
       }
@@ -196,7 +196,7 @@ export class OpresumoComponent implements OnInit {
 
 
   // buscatblOutInteg() {
-  //   if (('Administrador') == this.arrUserLogado.perfil) {
+  //   if (('Administrador') == this.aUsr.perfil) {
   //     let arrTab = []
   //     this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
   //     this.aOpAnalitica.subscribe(cada => {

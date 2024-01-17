@@ -183,7 +183,6 @@ export class LoteAprovaComponent implements OnInit {
 
   aprovaLote(tipo: string) {
     let nivAprov = '';
-    let sitAprov = '';
     let txtAprov = '';
     var tipoAprovn1 = this.aProd.tipoAprova1;
     var tipoAprovn2 = this.aProd.tipoAprova2;
@@ -213,7 +212,7 @@ export class LoteAprovaComponent implements OnInit {
     if (!this.nivel.includes('N2')) aprovaN2 = true;
 
     if (this.justificativa == "") {
-      console.log(this.justificativa)
+      // console.log(this.justificativa)
       return alert("Justificativa é obrigatória");
     } // Checa se tem justificativa
     if (!(this.fj.acessoUsuario(this.aUsr, nivel)))

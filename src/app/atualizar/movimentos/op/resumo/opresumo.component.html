@@ -19,7 +19,7 @@
                                     language
                                 </span>
                             </button>
-                        </a> {{arrUserLogado.nome}} Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
+                        </a> {{aUsr.nome}} Logado desde: {{aUsr.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{aUsr.dataLogin.split('T')[1].split('.')[0]}}
                     </div>
                     <div class="card-body table-responsive">
                         <div class="row">
@@ -81,9 +81,9 @@
                                         <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a')" mat-raised-button type="button" matTooltip="Ajustar Empenho" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">build</i>
                                         </button>
-                                        <!-- <button (click)="confirmaOp(row)" [disabled]="btnDisable(row, 'c')" mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <i class="material-icons md-48">verified</i>
-                                        </button> -->
+                                        <button (click)="confirmaOp(row)" [disabled] mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons md-48">add</i>
+                                        </button>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]='divCorVerde'></tr>
