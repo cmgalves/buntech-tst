@@ -204,6 +204,7 @@ export class LoteAprovaComponent implements OnInit {
     console.log(nivel);
 
     var rejeitaTodos = false;
+    var aprovaTodos = false;
     var aprovaN3 = false;
     var aprovaN2 = false;
     const DataAtual = new Date().toISOString().split('T')[0]; //A data de hoje
@@ -283,8 +284,8 @@ export class LoteAprovaComponent implements OnInit {
       this.fj.confirmDialog(txtAprov).subscribe(q => {
         if (q) {
           this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
-            
-
+            if (rejeitaTodos || aprovaTodos)
+              this.fj.enviarLoteProteus(q[0]);
           });
           this.nivelAprovado(2);
           this.router.navigate(['loteReg']);
