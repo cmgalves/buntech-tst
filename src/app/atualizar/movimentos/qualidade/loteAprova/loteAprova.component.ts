@@ -464,7 +464,6 @@ export class LoteAprovaComponent implements OnInit {
   reclassifica() {
     const lote = this.aProd;
     lote.loteAprov = "RECLASSIFICA";
-    console.log(lote);
 
     // this.fj.enviarProdParcial(lote, true);
     this.fj.enviarLoteProteus(lote, true);

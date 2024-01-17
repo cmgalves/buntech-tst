@@ -375,7 +375,7 @@ export class funcsService {
         'analise': loteItem.analise
       };
       const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
-      console.log(arrItens);
+      
       arrItens.subscribe(cada => cada.forEach(item => {
         //percorre todos os dados do loteAnalise
         const obj2 = { //cria objeto para enviar ao proteus
@@ -386,15 +386,16 @@ export class funcsService {
           "cAnalise": loteItem.analise,
           "nQuantidade": loteItem.qtdeLote,
           "cCaracteristica": item.codCarac,
-          "cResultado": item.result,
-          "dValidade": dataValidade.toISOString(),
-          "dFabricacao": loteItem.dtime,
-          "cValMin": item.iteMin,
-          "cValMax": item.iteMax,
-          "cStatus": loteItem.loteAprov
+          "cResultado": item.result.toString(),
+          "dValidade": dataValidade.toLocaleDateString('en-GB'),
+          "dFabricacao": new Date(loteItem.dtime).toLocaleDateString('en-GB'),
+          "cValMin": item.iteMin.toString(),
+          "cValMax": item.iteMax.toString(),
+          "cStatus": loteItem.loteAprov,
+          "cImprime": item.imprimeLaudo
         };
-        console.log(obj2);
-        this.prodLote(obj2); //Envia para o proteus
+        console.log([obj2]);
+        this.prodLote([obj2]).subscribe(q => console.log(q)); //Envia para o proteus
       }));
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }
