@@ -487,7 +487,7 @@ export class LoteAprovaComponent implements OnInit {
       console.log(q);
       if (q[0].analise != undefined) {
         obj.analiseNova = q[0].analise;
-        this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => /*this.router.navigate(['loteReg'])*/console.log(q));
+        this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => this.router.navigate(['loteReg']));
       }
     });
   }
