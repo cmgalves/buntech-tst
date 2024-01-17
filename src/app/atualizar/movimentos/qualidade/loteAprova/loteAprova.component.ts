@@ -477,12 +477,14 @@ export class LoteAprovaComponent implements OnInit {
       op: this.aProd.op,
       produto: this.aProd.produto,
       lote: this.aProd.lote,
-      qtd: 0,
+      qtd: this.qtde,
       analise: this.aProd.analise
     }
 
     this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => console.log(q));
     this.fj.buscaPrt('reclassificaNovaOp', obj).subscribe(q => console.log(q));
+
+    window.location.reload();
   }
 
 }
