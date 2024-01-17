@@ -27,9 +27,8 @@ export interface opAjusta {
 })
 
 export class OpajustaComponent implements OnInit {
-  arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
-  aOP = JSON.parse(localStorage.getItem('op'));
-  numOP = JSON.parse(localStorage.getItem('op'));
+  aUsr = JSON.parse(localStorage.getItem('user'))[0];
+  aOp = JSON.parse(localStorage.getItem('op'));
   arrRecurso = JSON.parse(localStorage.getItem('recurso'));
   arrProd = JSON.parse(localStorage.getItem('cadProd'));
 
@@ -95,7 +94,7 @@ export class OpajustaComponent implements OnInit {
 
   ngOnInit(): void {
     this.mostraInc = false
-    if (('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1) {
+    if (('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
       this.buscaOpajusta();
       // this.buscaOpsAndamentoProtheus();
       this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -110,10 +109,10 @@ export class OpajustaComponent implements OnInit {
   }
 
   // Busca todos os dados para ajustar as OPs - vw_pcp_relacao_lote_op_empenho
-  buscaOpajusta() { 
+  buscaOpajusta() {
     let x = 0;
-    let xcFilial = this.aOP.filial;
-    let xcOp = this.aOP.op;
+    let xcFilial = this.aOp.filial;
+    let xcOp = this.aOp.op;
     const obj = {
       filial: xcFilial,
       op: xcOp,
@@ -139,17 +138,17 @@ export class OpajustaComponent implements OnInit {
           situacao: xy.situacao,
         })
         if (x === 1) {
-          this.opFilial = this.aOP.filial;
-          this.opCodigo = this.aOP.op;
-          this.opProduto = this.aOP.produto;
-          this.opDescricao = this.aOP.descricao;
-          this.opQtdePcf = this.fg.formatarNumero(this.aOP.qtdeLote);
-          this.opQtdeEnv =  this.fg.formatarNumero(this.aOP.qtdeEnv);
-          this.opQtdeSaldo =  this.fg.formatarNumero(this.aOP.qtdeSaldo);
+          this.opFilial = this.aOp.filial;
+          this.opCodigo = this.aOp.op;
+          this.opProduto = this.aOp.produto;
+          this.opDescricao = this.aOp.descricao;
+          this.opQtdePcf = this.fg.formatarNumero(this.aOp.qtdeLote);
+          this.opQtdeEnv = this.fg.formatarNumero(this.aOp.qtdeEnv);
+          this.opQtdeSaldo = this.fg.formatarNumero(this.aOp.qtdeSaldo);
           this.opEmissao = xy.emissao;
           this.opFinal = xy.vencimento;
         }
-        });
+      });
 
       this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
       this.dataSource.paginator = this.paginator;
@@ -200,12 +199,11 @@ export class OpajustaComponent implements OnInit {
   // cálculo da op utilizando a nova quantidade produzida
   calcOp() {
     const obj = {
-      filial: this.numOP[0].FILIAL,
-      op: this.numOP[0].OP,
+      filial: this.aOp.filial,
+      op: this.aOp.op,
       tipo: 'tudo',
     };
-    this.arrCalcOP = this.fj.buscaPrt('opAndamento', obj);
-    this.arrCalcOP.subscribe(cada => {
+    this.fj.buscaPrt('opAndamento', obj).subscribe(cada => {
       cada.forEach(xy => {
         this.calculaMod = xy.XMOD
         if (xy.SITUACA === 'W' || xy.SITUACA === 'V' || xy.SITUACA === 'P') {
@@ -226,11 +224,11 @@ export class OpajustaComponent implements OnInit {
           this.fj.execProd('calcOP', objProc);
         }
       });
-      if (this.opRetrabalho > 0) {
-        this.calcRet();
-      }
+      // if (this.opRetrabalho > 0) {
+      //   this.calcRet();
+      // }
       if (this.calculaMod !== '0') {
-        this.calcMod();
+        // this.calcMod();
       } else {
         window.location.reload();
       }
@@ -269,7 +267,7 @@ export class OpajustaComponent implements OnInit {
     let completaCusto = '';
     // let idxMod = 0;
     this.arrMod = [];
-    this.numOP.forEach(ax => {
+    this.aOp.forEach(ax => {
       const y = this.arrRecurso.filter(x => x.filial === ax.FILIAL && x.codigo === ax.RECURSO);
 
       if (completaCusto.indexOf(y[0].custo) === -1) {
@@ -370,8 +368,8 @@ export class OpajustaComponent implements OnInit {
   }
 
   buscaOpajustas() { //View_Portal_OP
-    let xcFilial = this.aOP.filial;
-    let xcOp = this.aOP.op;
+    let xcFilial = this.aOp.filial;
+    let xcOp = this.aOp.op;
     const obj = {
       filial: xcFilial,
       op: xcOp,
@@ -392,11 +390,11 @@ export class OpajustaComponent implements OnInit {
           situacao: xy.situacao,
         })
       });
-      this.opFilial = this.aOP.filial;
-      this.opCodigo = this.aOP.op;
-      this.opProduto = this.aOP.produto;
-      this.opDescricao = this.aOP.descricao;
-      this.opQtde = this.aOP.qtdeLote
+      this.opFilial = this.aOp.filial;
+      this.opCodigo = this.aOp.op;
+      this.opProduto = this.aOp.produto;
+      this.opDescricao = this.aOp.descricao;
+      this.opQtde = this.aOp.qtdeLote
 
       this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
       this.dataSource.paginator = this.paginator;
@@ -410,8 +408,8 @@ export class OpajustaComponent implements OnInit {
     let retr = 0;
     let grupo = '';
     let oper = '00';
-    let xcFilial = this.numOP[0].FILIAL;
-    let xcOp = this.numOP[0].OP;
+    let xcFilial = this.aOp.FILIAL;
+    let xcOp = this.aOp.OP;
     const obj = {
       filial: xcFilial,
       op: xcOp,
@@ -444,7 +442,7 @@ export class OpajustaComponent implements OnInit {
           this.opDescricao = xy.DESCRICAO;
           this.opQtde = filOP.qtde;
           this.opEntregue = filOP.entregue;
-          this.numOP.forEach(ax => {
+          this.aOp.forEach(ax => {
             if (ax.OPERACAO >= oper) {
               if (ax.GRUPO === '') {
                 this.opQtdePcf = ax.QTDEPCF
@@ -536,14 +534,14 @@ export class OpajustaComponent implements OnInit {
       lRet = ("Baixada ").indexOf(aRow.SITUACAO) > -1;
     }
     if (tp === 'a') {
-      lRet = lRet === false ? lRet : (('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
+      lRet = lRet === false ? lRet : (('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1);
     }
     if (tp === 'c') {
-      lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
+      lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1);
     }
     if (tp === 'd') {
       lRet = ("Liberada ").indexOf(aRow.SITUACAO) > -1;
-      lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1);
+      lRet = lRet === false ? lRet : (('Administrador | Conferente | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1);
     }
     return !lRet
   }

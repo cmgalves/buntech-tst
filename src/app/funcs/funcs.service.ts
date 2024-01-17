@@ -5,6 +5,7 @@ import { ConfirmDialogComponent } from 'app/components/confirm-dialog/confirm-di
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { catchError, mergeMap } from 'rxjs/operators';
+import { funcGeral } from './funcGeral';
 
 
 
@@ -14,7 +15,11 @@ import { catchError, mergeMap } from 'rxjs/operators';
 
 export class funcsService {
 
-  constructor(private _http: Http, public dialog: MatDialog) { }
+  constructor(
+    private fg: funcGeral,
+    private _http: Http, 
+    public dialog: MatDialog
+    ) { }
 
   execPar(_url, obj) {
     let url = '';
@@ -375,7 +380,7 @@ export class funcsService {
         'analise': loteItem.analise
       };
       const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
-      
+
       arrItens.subscribe(cada => cada.forEach(item => {
         //percorre todos os dados do loteAnalise
         const obj2 = { //cria objeto para enviar ao proteus
@@ -395,7 +400,11 @@ export class funcsService {
           "cImprime": item.imprimeLaudo
         };
         console.log([obj2])
-        this.prodLote([obj2]).subscribe(q => console.log(q)); //Envia para o proteus
+        this.prodLote([obj2]).subscribe(q => {
+          console.log(q);
+          this.fg.prodParcialOp(obj2, 'env')
+        });
+        //Envia para o proteus
       }));
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }

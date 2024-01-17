@@ -71,6 +71,7 @@ export class OpresumoComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscaOpresumos();
+    this.buscaProdutos();
   }
 
 
@@ -115,7 +116,7 @@ export class OpresumoComponent implements OnInit {
   }
 
 
-  
+
 
   // visualização da OP
   visuOp(xcRow) {
@@ -200,37 +201,6 @@ export class OpresumoComponent implements OnInit {
     window.location.reload();
   }
 
-
-  // buscatblOutInteg() {
-  //   if (('Administrador') == this.aUsr.perfil) {
-  //     let arrTab = []
-  //     this.aOpAnalitica = this.fj.buscaPrt('opsAnaliticas', {});
-  //     this.aOpAnalitica.subscribe(cada => {
-  //       cada.forEach(xy => {
-  //         arrTab.push({
-  //           filial: xy.filial,
-  //           op: xy.op,
-  //           recurso: xy.recurso,
-  //           operacao: xy.operacao,
-  //           integrado: xy.integrado,
-  //           produto: xy.produto,
-  //           producao: xy.producao,
-  //           retrabalho: xy.retrabalho,
-  //           segundos: xy.segundos,
-  //           situacao: xy.situacao,
-  //           situDesc: xy.situDesc,
-  //           criacao: xy.criacao,
-  //           aponta: xy.aponta,
-  //         })
-  //       });
-  //       this.dataExcel = new MatTableDataSource(arrTab)
-  //       this.expExcel('tblOutInteg', 'ops')
-  //     });
-  //   } else {
-  //     alert('sem acesso')
-  //   }
-  // }
-
   // exporta os dados para o excel
   expExcel(fileName, sheetName) {
     const fn = fileName + '.xlsx';
@@ -240,5 +210,30 @@ export class OpresumoComponent implements OnInit {
     XLSX.utils.book_append_sheet(workBook, workSheet, sn);
     XLSX.writeFile(workBook, fn);
   }
+
+  // busca os produtos no cadastro para utilizar os dados necessários
+  buscaProdutos() {
+    const obj = {
+      'produto': ''
+    };
+    this.arrProdB = [];
+    this.arrProdA = this.fj.buscaPrt('cadastroProdutos', obj);
+
+    this.arrProdA.subscribe(cada => {
+      cada.forEach(xy => {
+        if (xy.situacao === 'Liberado' && ('MP, PP, ME, MI, HR, GG, MO, PA, IN, LB, MK, MR, MT, PN, SP').indexOf(xy.tipo) > -1) {
+          this.arrProdB.push({
+            'codigo': xy.codigo,
+            'descricao': xy.descricao,
+            'unidade': xy.unidade,
+            'retrabalho': xy.retrabalho,
+            'mdo': xy.mdo,
+          })
+        }
+      });
+      localStorage.setItem('cadProd', JSON.stringify(this.arrProdB));
+    });
+  }
+
 
 }
