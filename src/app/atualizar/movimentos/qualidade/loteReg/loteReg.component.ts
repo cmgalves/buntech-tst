@@ -30,6 +30,7 @@ export interface cadLoteReg {
 
 export class LoteRegComponent implements OnInit {
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
+  arrProd = JSON.parse(localStorage.getItem('loteReg'));
   arrBusca: any = [];
   arrDados: any = [];
   arrCarac: any = [];
@@ -68,8 +69,13 @@ export class LoteRegComponent implements OnInit {
     let ord = 0;
     this.arrDados = [];
 
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', { 'xcFil': xcFil }); //vw_pcp_relacao_lote_registro
+    this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', {
+      'xcFil': xcFil, 'filial': this.arrProd.filial,
+      'produto': this.arrProd.produto,
+      'lote': this.arrProd.lote
+    }); //vw_pcp_relacao_lote_registro
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -219,6 +225,10 @@ export class LoteRegComponent implements OnInit {
 
   formatarData(data) {
     return data.split('-').reverse().join('/');
+  }
+
+  voltaLote(){
+    this.router.navigate(['loteAgrupa']);
   }
 
 }

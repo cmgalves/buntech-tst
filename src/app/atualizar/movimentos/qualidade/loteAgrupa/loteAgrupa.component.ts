@@ -158,7 +158,8 @@ export class LoteAgrupaComponent implements OnInit {
     }
   }
 
-  acessoLoteReg() {
+  acessoLoteReg(row) {
+    localStorage.setItem('loteReg', JSON.stringify(row));
     this.router.navigate(['loteReg']);
   }
   // exporta os dados para o excel
@@ -173,6 +174,10 @@ export class LoteAgrupaComponent implements OnInit {
 
   classeItem(row) {
     return (row.situacao.charAt(0).toUpperCase() + row.situacao.slice(1).toLowerCase()).replace(' ', '').replace('.', '');
+  }
+
+  imprimeLote() {
+    alert('Imprime Lote')
   }
 
 }
