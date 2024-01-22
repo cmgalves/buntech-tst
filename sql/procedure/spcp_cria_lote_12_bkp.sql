@@ -1,8 +1,12 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
+USE [PCP]
 GO
 
+/****** Object:  StoredProcedure [dbo].[spcp_cria_lote_12]    Script Date: 21/01/2024 20:34:42 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 
 ALTER procedure [dbo].[spcp_cria_lote_12]
@@ -54,7 +58,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 -- select max(lote) from oppcfLote where lote <> '000000000' and produto = 'PAN00775'
 -- */
 -- while @@FETCH_STATUS = 0
-		-- defini√ß√£o do lote
+		-- definiÁ„o do lote
 	while @qtdes > 0
 		begin 
 			set @loteEspec = (select loteAtual from PCP..qualEspecCab where cabProduto = @produto and situacao = 'Concluida')
@@ -68,6 +72,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 								begin
 									set @lote = right('000000000' + convert(varchar(9), cast(@loteEspec as int) + 1), 9)
 									set @analise = 'A01'
+									print 1
 									insert PCP..oppcfLote (
 										filial, produto, 
 										qtde, qtdeLote, qtdeAnalise, 
@@ -84,7 +89,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 										max(codRecurso), @lote, 
 										'S' origem, ' ' stsLote, 
 										@analise, 'ABERTO' loteAprov,
-										@qtdeQuebraAnalise, @qtdeQuebraAnalise, 
+										@qtdeQuebraLote, @qtdeQuebraAnalise, 
 										max(recurso), max(codOpera), 0 segundos, 'L' regTipo
 									from
 										PCP..oppcfLote
@@ -103,6 +108,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 										begin
 											set @lote = right('000000000' + convert(varchar(9), cast(@loteProduto as int) + 1), 9)
 											set @analise = 'A01'
+											print 2
 											insert PCP..oppcfLote (
 												filial, produto, 
 												qtde, qtdeLote, qtdeAnalise, 
@@ -119,7 +125,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 												max(codRecurso), @lote, 
 												'S' origem, ' ' stsLote, 
 												@analise, 'ABERTO' loteAprov,
-												@qtdeQuebraAnalise, @qtdeQuebraAnalise, 
+												@qtdeQuebraLote, @qtdeQuebraAnalise, 
 												max(recurso), max(codOpera), 0 segundos, 'L' regTipo
 											from
 												PCP..oppcfLote
@@ -136,6 +142,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 										begin
 											set @lote = right('000000000' + convert(varchar(9), cast(@loteEspec as int) + 1), 9)
 											set @analise = 'A01'
+											print 3
 											insert PCP..oppcfLote (
 												filial, produto, 
 												qtde, qtdeLote, qtdeAnalise, 
@@ -152,7 +159,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 												max(codRecurso), @lote, 
 												'S' origem, ' ' stsLote, 
 												@analise, 'ABERTO' loteAprov,
-												@qtdeQuebraAnalise, @qtdeQuebraAnalise, 
+												@qtdeQuebraLote, @qtdeQuebraAnalise, 
 												max(recurso), max(codOpera), 0 segundos, 'L' regTipo
 											from
 												PCP..oppcfLote
@@ -170,14 +177,17 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 				begin 
 					set @analise = (select max(analise) from PCP..oppcfLote where filial = @filial and produto = @produto and lote = @loteFilial )
 					set @qtdeLote = (select sum(qtdeLote) from PCP..oppcfLote where filial = @filial and produto = @produto and lote = @loteFilial )
-					set @qtdeAnalise = (select sum(qtdeAnalise) from PCP..oppcfLote where filial = @filial and produto = @produto and lote = @loteFilial and analise = @analise)
-					
-					if @qtdeQuebraLote > @qtdeLote
+					if @qtdeLote < @qtdeQuebraLote
 						begin 
+							set @saldoLote = @qtdeQuebraLote - @qtdeLote
+							set @qtdeAnalise = (select sum(qtdeAnalise) from PCP..oppcfLote where filial = @filial and produto = @produto and lote = @loteFilial and analise = @analise)
+							
+							--print '@qtdeLote < @qtdeQuebraLote'
+							
 							if @qtdeQuebraAnalise > @qtdeAnalise
 								begin 
+									--print '@qtdeQuebraAnalise > @qtdeAnalise'
 									set @saldoAnalise = @qtdeQuebraAnalise - @qtdeAnalise
-									print @saldoAnalise
 								end
 							else
 								begin 
@@ -185,7 +195,9 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 									set @saldoAnalise = @qtdeQuebraAnalise
 									if @saldoLote > @saldoAnalise
 										begin 
+											--print '@saldoLote > @saldoAnalise'
 											set @analise = 'A' + right('00' + convert(varchar(2), cast(right(@analise, 2) as int) + 1), 2)
+											print 4
 											insert PCP..oppcfLote (
 												filial, produto, 
 												qtde, qtdeLote, qtdeAnalise, 
@@ -211,14 +223,22 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 											group by
 												origem, stsLote
 											set @qtdes = @qtdes - @saldoAnalise
+											set @saldoAnalise = 0
 										end
-
-									print @qtdes
-									print @saldoLote
+									else
+										begin 
+											print 6
+										
+										end 
+									
 								end
 							-- set @saldoAnalise = @qtdeQuebraAnalise - @qtdeAnalise
 						end
-					
+					else
+						begin 
+							set @qtdes = @qtdes - 100
+						end
+					set @qtdes = @qtdes - 200
 				end
 
 			-- set @qtdes = @qtdes - 200
@@ -247,7 +267,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 			-- 				set @analise = 'A01'
 			-- 			end
 			-- 	end
-				-- fim da defini√ß√£o do lote
+				-- fim da definiÁ„o do lote
 			
 		end
 	
@@ -266,7 +286,7 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 	-- 		begin
 	-- 			set @loteOp = (isnull((select max(lote) from oppcfLote where op = @op and lote <> '000000000'), '000000000'));
 				
-	-- 			-- caso j√° exista algum lote para esta OP 
+	-- 			-- caso j· exista algum lote para esta OP 
 	-- 			if @loteOp <> '000000000'
 	-- 				begin
 	-- 					set @lote = @loteOp
@@ -420,11 +440,9 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 	-- 					update PCP..oppcfLote set regTipo = 'N', qtde_lote = qtde where id_num = @id_num
 	-- 		end 
 		
-	-- 	-- verifica√ß√£o da mudan√ßa de op
+	-- 	-- verificaÁ„o da mudanÁa de op
 	-- 	if @opAtual <> @op
 	-- 		begin 
-	-- 			print @op
-	-- 			print @opAtual
 	-- 	-- set @qtdeAponta = 0
 	-- 		end 
 	-- end
@@ -451,13 +469,6 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 -- 							end
 
 -- 					end
--- 				-- print @analise
--- 				-- print @qtdeAponta
--- 				-- -- print @id_num
--- 				-- -- print @lote
--- 				-- print @op
--- 				-- -- print @qtdes
--- 				-- -- print @dtime
 -- 				-- set @qtdeAponta = @qtdeAponta + 1	
 -- 			end 
 -- 	end 
@@ -465,3 +476,5 @@ set @qtdes = (select sum(qtde) qtdes from oppcfLote where filial = @filial and p
 -- sp_help 'oppcfLote'
 
 GO
+
+

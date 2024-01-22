@@ -176,7 +176,7 @@ export class funcGeral {
     let qtdeProd = 0
 
     qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
-    cArm = '05'
+    cArm = '01'
     const objEnv = {
       cFilialOp: aOp.filial,
       cNumOp: aOp.op,

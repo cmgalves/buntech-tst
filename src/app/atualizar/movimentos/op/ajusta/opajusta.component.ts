@@ -64,6 +64,8 @@ export class OpajustaComponent implements OnInit {
   opQtdePcf: string = '';
   opQtdeEnv: string = '';
   opQtdeSaldo: string = '';
+  opQtdeProd: string = '';
+  opSaldoProd: string = '';
   opRetrabalho: any = 0;
   opHoras: string = '';
   // itens novos
@@ -145,6 +147,8 @@ export class OpajustaComponent implements OnInit {
           this.opQtdePcf = this.fg.formatarNumero(this.aOp.qtdeLote);
           this.opQtdeEnv = this.fg.formatarNumero(this.aOp.qtdeEnv);
           this.opQtdeSaldo = this.fg.formatarNumero(this.aOp.qtdeSaldo);
+          this.opQtdeProd = this.fg.formatarNumero(this.aOp.qtdeProd);
+          this.opSaldoProd = this.fg.formatarNumero(this.aOp.saldoProd);
           this.opEmissao = xy.emissao;
           this.opFinal = xy.vencimento;
         }

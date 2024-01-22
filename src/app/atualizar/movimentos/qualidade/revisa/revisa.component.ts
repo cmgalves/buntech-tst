@@ -41,6 +41,7 @@ export class RevisaComponent implements OnInit {
   especSequencia: string = '';
   especQuebra: string = '';
   cabQtdeQuebra: string = '';
+  qtdeAnalise: string = '';
   cabRevisaoTemp: string = '';
   dataAprov: string = '';
   numEspec: string = '';
@@ -157,6 +158,7 @@ export class RevisaComponent implements OnInit {
           'especSequencia': xy.especSequencia,
           'especQuebra': xy.especQuebra,
           'cabQtdeQuebra': xy.cabQtdeQuebra,
+          'qtdeAnalise': xy.qtdeAnalise,
           'imprimeLaudo': xy.imprimeLaudo,
         })
         if (seq === 1) {
@@ -175,6 +177,7 @@ export class RevisaComponent implements OnInit {
           this.especSequencia = xy.especSequencia;
           this.especQuebra = xy.especQuebra;
           this.cabQtdeQuebra = xy.cabQtdeQuebra;
+          this.qtdeAnalise = xy.qtdeAnalise;
           this.imprimeLaudo = xy.imprimeLaudo;
         }
       });
@@ -199,11 +202,13 @@ export class RevisaComponent implements OnInit {
         this.especQuebra = 'HORA';
         this.especSequencia = '6'
         this.cabQtdeQuebra = '4'
+        this.qtdeAnalise = '0'
       }
       if (anTipo === 'NAO') {
         this.especQuebra = 'QTDE';
         this.especSequencia = '0'
         this.cabQtdeQuebra = '0'
+        this.qtdeAnalise = '0'
       }
     }
     if (cTipo === 'qtde') {
@@ -297,7 +302,7 @@ export class RevisaComponent implements OnInit {
     window.location.reload();
   }
 
-  alterar(cTipo) {
+  manutRevisa(cTipo) {
 
     if (this.validarHoras()) return
     if (this.validarTipos(cTipo)) return
@@ -329,10 +334,11 @@ export class RevisaComponent implements OnInit {
       'especQuebra': this.especQuebra,
       'cTipo': cTipo,
       'cabQtdeQuebra': this.cabQtdeQuebra,
+      'qtdeAnalise': this.qtdeAnalise,
       'imprimeLaudo': this.imprimeLaudo.substring(0, 1),
     }
     this.fj.execProd('incluiEspec', obj);
-    //window.location.reload();
+    window.location.reload();
   }
 
 
@@ -391,31 +397,45 @@ export class RevisaComponent implements OnInit {
   // validação das horas digitadas na quebra dos lotes
   validarHoras() {
     let tpQuebra = this.especQuebra
-    let qtdeQubra = parseFloat(this.cabQtdeQuebra)
+    let qtdeQuebra = parseFloat(this.cabQtdeQuebra)
+    let qAnalise = parseFloat(this.qtdeAnalise)
     if (tpQuebra == 'HORA') {
-      if (qtdeQubra == 0) {
+      if (qtdeQuebra == 0) {
         alert('A quebra por HORA está ZERO. Horas possíveis: (1,2,4,6,8,12)');
         this.cabQtdeQuebra = '0'
         return true;
       };
-      if (qtdeQubra > 24) {
+      if (qtdeQuebra > 24) {
         alert('A quebra por HORA deve ser de, no máximo, 24 horas. Horas possíveis: (1,2,4,6,8,12)');
         this.cabQtdeQuebra = '0'
         return true;
       };
-      if (24 % qtdeQubra > 0) {
+      if (24 % qtdeQuebra > 0) {
         alert('A quebra por HORA deve ser múltiplo de 24. Horas possíveis: (1,2,4,6,8,12)');
         this.cabQtdeQuebra = '0'
         return true;
       };
-    }
-    if (tpQuebra == 'QTDE') {
-      if (qtdeQubra == 0) {
+    }else if (tpQuebra == 'QTDE') {
+      if (qtdeQuebra == 0) {
         alert('A quebra por QTDE está ZERO.');
         this.cabQtdeQuebra = '0'
         return true;
       };
+      if (qtdeQuebra < qAnalise ) {
+        alert('A quebra por Análise está maior que a por QTDE.');
+        this.cabQtdeQuebra = '0'
+        this.qtdeAnalise = '0'
+        return true;
+      };
+      if (qAnalise == 0 ) {
+        alert('A quebra por Análise está ZERO.');
+        this.qtdeAnalise = '0'
+        return true;
+      };
 
+    }else{
+      alert('Sem Quebra por Análise selecionada.');
+      return true;
     }
     return false
   }

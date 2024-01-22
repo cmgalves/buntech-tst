@@ -16,10 +16,9 @@ import { funcGeral } from './funcGeral';
 export class funcsService {
 
   constructor(
-    private fg: funcGeral,
-    private _http: Http, 
-    public dialog: MatDialog
-    ) { }
+    private _http: Http,
+    public dialog: MatDialog,
+  ) { }
 
   execPar(_url, obj) {
     let url = '';
@@ -368,6 +367,7 @@ export class funcsService {
 
 
   enviarLoteProteus(loteItem, reclassifica = false) {
+    let nVai = 0
     const dataValidade = new Date(loteItem.dtime); //pega a data de fabricação e soma um ano 
     dataValidade.setFullYear(dataValidade.getFullYear() + 1); // para data de validade
     console.log(loteItem);
@@ -399,13 +399,16 @@ export class funcsService {
           "cStatus": loteItem.loteAprov,
           "cImprime": item.imprimeLaudo
         };
-        console.log([obj2])
+        // console.log([obj2])
         this.prodLote([obj2]).subscribe(q => {
           console.log(q);
-          this.fg.prodParcialOp(obj2, 'env')
+
+          // 
         });
+        // this.prodParcialOp(loteItem, 'env')
         //Envia para o proteus
       }));
+
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }
 
@@ -423,4 +426,62 @@ export class funcsService {
     if (usuario.perfil.includes('Administrador')) return true;
     return perfil.includes(acesso) || acesso.includes(perfil);
   }
+
+
+
+  // efetua a produção parcial da op 
+  prodParcialOp(aOp, cOrig) {
+    let cArm = ''
+    let qtdeProd = 0
+    if (cOrig == 'pcp') {
+      qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
+    } else qtdeProd = aOp.qtde > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
+
+    if (aOp.loteAprov == 'APROVADO') {
+      cArm = '01'
+    } else if (aOp.loteAprov == 'REPROVADO') {
+      cArm = '97'
+    }else{
+      cArm = '44'
+    }
+    const objEnv = {
+      cFilialOp: aOp.filial,
+      cNumOp: aOp.op,
+      cC2Prod: aOp.produto,
+      cC2Local: cArm,
+      cDocAjst: 'DOCPARCI',
+      nC2QtdOri: 1, //aOp.qtdeLote,
+      nC2QtdAjst: aOp.qtdeLote,
+      cTipoProd: 'P',
+      nQtdEntrg: qtdeProd, // qtde utilizada para a produção
+      cOperacao: aOp.codOpera,
+      cRecurso: aOp.codRecurso,
+      dDataApt: aOp.dtime,
+      ItensD4: []
+    };
+
+    const objAponta = {
+      filial: aOp.filial,
+      op: aOp.op,
+      lote: aOp.lote,
+      qtde: qtdeProd,
+      tipo: 'P',
+    };
+
+    // this.prodOP(objEnv).subscribe(x => {
+    //   alert(x.Sucesso.substring(2, 60))
+    //   if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+    //     // alert(x.Sucesso.substring(2, 60))
+    //     this.execProd('spcp_produz_op', objAponta);
+    //     console.log(x.Sucesso)
+    //     if (cOrig == 'pcp') {
+    //       alert(x.Sucesso.substring(2, 60))
+    //       // window.location.reload();
+    //     }
+    //   } else {
+    //     console.log(x.Sucesso)
+    //   }
+    // });
+  };
+
 }
