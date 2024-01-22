@@ -4,7 +4,9 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header divCorVerde ">
-                        <h4 class="card-title" style="color:white">Visualização dos Dados da OP - {{arrUserLogado.nome}} Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} - {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
+                        <h4 class="card-title" style="color:white">Visualização dos Dados da OP - {{arrUserLogado.nome}}
+                            Logado desde: {{arrUserLogado.dataLogin.split("T")[0].split("-").reverse().join("/")}} -
+                            {{arrUserLogado.dataLogin.split('T')[1].split('.')[0]}}
                         </h4>
                         <!-- <p class="card-category">Complete your usuario</p> -->
                     </div>
@@ -56,6 +58,18 @@
                             <mat-form-field>
                                 <mat-label>Saldo a Transmitir</mat-label>
                                 <input matInput [(ngModel)]="opSaldo" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Qtde Produzida</mat-label>
+                                <input matInput [(ngModel)]="opQtdeProd" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Saldo a Produzir</mat-label>
+                                <input matInput [(ngModel)]="opSaldoProd" disabled>
                             </mat-form-field>
                         </div>
                     </div>

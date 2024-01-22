@@ -171,14 +171,12 @@ export class funcGeral {
 
 
   // efetua a produção parcial da op 
-  prodParcialOp(aOp) {
+  prodParcialOp(aOp, cOrig) {
     let cArm = ''
     let qtdeProd = 0
-    const claudio = 1
-    const nQtdeLen = aOp.length - 1
 
     qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
-    cArm = '05'
+    cArm = '01'
     const objEnv = {
       cFilialOp: aOp.filial,
       cNumOp: aOp.op,

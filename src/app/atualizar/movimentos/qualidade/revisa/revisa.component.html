@@ -82,7 +82,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-2">
+                        <div class="card-body table-responsive col-md-1">
                             <mat-form-field>
                                 <mat-select placeholder="Seq análise" [(ngModel)]="especSequencia" (selectionChange)="analiseProc($event, 'qtde')" disabled="{{especAnalise.substring(0,1) == 'N'}}">
                                     <mat-option *ngFor="let optSequencia of sEspecSequencia" [value]="optSequencia">
@@ -99,8 +99,14 @@
                         </div>
                         <div class="card-body table-responsive col-md-1">
                             <mat-form-field>
-                                <mat-label>Quantidade (h/Ton)</mat-label>
+                                <mat-label>Qtde Lote (Hora/Ton)</mat-label>
                                 <input type="number" matInput [(ngModel)]=cabQtdeQuebra disabled="{{especAnalise.substring(0,1) == 'S'}}">
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-1">
+                            <mat-form-field>
+                                <mat-label>Qtde Análise (Toneladas)</mat-label>
+                                <input type="number" matInput [(ngModel)]=qtdeAnalise disabled="{{especAnalise.substring(0,1) == 'S'}}">
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">
@@ -127,9 +133,9 @@
                     </div>
                 </div>
                 <button mat-raised-button type="submit" class="btn btn-danger" (click)="voltaEspec()">Voltar</button>
-                <button mat-raised-button type="submit" class="btn btn-success" (click)="alterar('A')">Alterar</button>
-                <button mat-raised-button type="submit" class="btn btn-warning" (click)="alterar('R')">Revisar</button>
-                <button mat-raised-button type="submit" class="btn btn-info" (click)="alterar('I')">Incluir</button>
+                <button mat-raised-button type="submit" class="btn btn-success" (click)="manutRevisa('A')">Alterar</button>
+                <button mat-raised-button type="submit" class="btn btn-warning" (click)="manutRevisa('R')">Revisar</button>
+                <button mat-raised-button type="submit" class="btn btn-info" (click)="manutRevisa('I')">Incluir</button>
             </div>
         </div>
         <div class="row" *ngIf="lForm">

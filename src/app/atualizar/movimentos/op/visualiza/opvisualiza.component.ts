@@ -47,6 +47,8 @@ export class OpvisualizaComponent implements OnInit {
   opSaldo: string = '';
   opEntregue: string = '';
   opQtdePcf: string = '';
+  opQtdeProd: string = '';
+  opSaldoProd: string = '';
   opRetrabalho: string = '';
   opHoras: string = '';
 
@@ -100,6 +102,8 @@ export class OpvisualizaComponent implements OnInit {
       this.opQtde = this.fg.formatarNumero(this.aOP.qtdeLote);
       this.opEnv = this.fg.formatarNumero( this.aOP.qtdeEnv);
       this.opSaldo = this.fg.formatarNumero( this.aOP.qtdeSaldo);
+      this.opQtdeProd = this.fg.formatarNumero( this.aOP.qtdeProd);
+      this.opSaldoProd = this.fg.formatarNumero( this.aOP.saldoProd);
 
       this.dataSource = new MatTableDataSource(this.arrOpvisualizaTab)
       this.dataSource.paginator = this.paginator;

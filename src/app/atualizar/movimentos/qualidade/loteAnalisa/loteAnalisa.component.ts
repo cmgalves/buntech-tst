@@ -101,7 +101,7 @@ export class LoteAnalisaComponent implements OnInit {
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
+      // console.log(cada);
       cada.forEach(xy => {
         ord++
         if (codCaracteristica.indexOf(xy.codCarac) < 0) {
@@ -215,14 +215,14 @@ export class LoteAnalisaComponent implements OnInit {
     let sit: string = '';
     let vResultxt: string = '';
     let vNum = (<HTMLInputElement>(document.getElementById("idResult"))).value.toUpperCase();
-    const max = xcRow.iteMax == 0? Number.MAX_VALUE : xcRow.iteMax;
+    const max = xcRow.iteMax == 0 ? Number.MAX_VALUE : xcRow.iteMax;
     var nbm = 0;
     let dtAtual = new Date();
 
     if (isNaN(parseFloat(vNum))) /*Checa se o valor inserido é numérico*/ {
       return alert('Por favor, digite um valor numérico');
     } else {
-      
+
       nbm = parseFloat(vNum);
       if (xcRow.iteMin > 0 || max > 0) //Checa se o intervalo existe
         if (nbm < xcRow.iteMin || nbm > max) //Checa se o valor está no intervalo
@@ -309,7 +309,9 @@ export class LoteAnalisaComponent implements OnInit {
     /* espera confirmação do usuário */
     this.fj.confirmDialog(confirmText).subscribe(q => {
       if (q) {
-        this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => console.log(q));
+        this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => {
+          // console.log(q)
+        });
         if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
         this.router.navigate(['loteReg']);
       }
@@ -340,6 +342,7 @@ export class LoteAnalisaComponent implements OnInit {
     }
     this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
       this.fj.enviarLoteProteus(q[0]);
+      this.fj.prodParcialOp(q[0], 'env')
     });
   }
 
