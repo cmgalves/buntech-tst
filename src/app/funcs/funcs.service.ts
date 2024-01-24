@@ -400,7 +400,7 @@ export class funcsService {
           "cStatus": loteItem.loteAprov,
           "cImprime": item.imprimeLaudo
         };
-        // console.log([obj2])
+         console.log([obj2])
         this.prodLote([obj2]).subscribe(q => {
           console.log(q);
           // caracEnviadas++;
