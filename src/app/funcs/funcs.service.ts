@@ -403,12 +403,12 @@ export class funcsService {
         // console.log([obj2])
         this.prodLote([obj2]).subscribe(q => {
           console.log(q);
-          caracEnviadas++;
-          if (caracEnviadas == cada.length) {
-            this.confirmDialog("Produto e Características enviadas para produção com sucesso!", ['OK']);
-          }
+          // caracEnviadas++;
+          // if (caracEnviadas == cada.length) {
+          //   this.confirmDialog("Produto e Características enviadas para produção com sucesso!", ['OK']);
+          // }
         });
-        // this.prodParcialOp(loteItem, 'env')
+        this.prodParcialOp(loteItem, 'env')
         //Envia para o proteus
       }));
 
@@ -471,20 +471,20 @@ export class funcsService {
       tipo: 'P',
     };
 
-    // this.prodOP(objEnv).subscribe(x => {
-    //   alert(x.Sucesso.substring(2, 60))
-    //   if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
-    //     // alert(x.Sucesso.substring(2, 60))
-    //     this.execProd('spcp_produz_op', objAponta);
-    //     console.log(x.Sucesso)
-    //     if (cOrig == 'pcp') {
-    //       alert(x.Sucesso.substring(2, 60))
-    //       // window.location.reload();
-    //     }
-    //   } else {
-    //     console.log(x.Sucesso)
-    //   }
-    // });
+    this.prodOP(objEnv).subscribe(x => {
+      alert(x.Sucesso.substring(2, 60))
+      if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+        // alert(x.Sucesso.substring(2, 60))
+        this.execProd('spcp_produz_op', objAponta);
+        console.log(x.Sucesso)
+        if (cOrig == 'pcp') {
+          alert(x.Sucesso.substring(2, 60))
+          // window.location.reload();
+        }
+      } else {
+        console.log(x.Sucesso)
+      }
+    });
   };
 
 }
