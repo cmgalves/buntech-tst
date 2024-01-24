@@ -50,6 +50,7 @@ import { ProdutoAndamentoDetalheComponent } from 'app/atualizar/movimentos/quali
 import { EstruturaComponent } from 'app/atualizar/relatorios/estrutura/estrutura.component';
 import { GrupoRecursoComponent } from 'app/atualizar/cadastros/grupoRecurso/grupoRecurso.component';
 import { LoteAgrupaComponent } from 'app/atualizar/movimentos/qualidade/loteAgrupa/loteAgrupa.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { LoteAgrupaComponent } from 'app/atualizar/movimentos/qualidade/loteAgru
     LoteAdiantaComponent,
     LoteAprovaComponent,
     LoteAnalisaComponent,
-    LoteAgrupaComponent
+    LoteAgrupaComponent,
+    ConfirmDialogComponent
   ]
 })
 

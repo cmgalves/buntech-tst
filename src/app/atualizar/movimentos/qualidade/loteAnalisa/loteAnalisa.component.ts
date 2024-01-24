@@ -340,10 +340,10 @@ export class LoteAnalisaComponent implements OnInit {
       filial: this.filial,
       loteAprov: 'APROVADO'
     }
-    this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
+   this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
       this.fj.enviarLoteProteus(q[0]);
       this.fj.prodParcialOp(q[0], 'env')
-    });
+   });
   }
 
 }

@@ -368,9 +368,10 @@ export class funcsService {
 
   enviarLoteProteus(loteItem, reclassifica = false) {
     let nVai = 0
+    console.log(loteItem.dtime);
     const dataValidade = new Date(loteItem.dtime); //pega a data de fabricação e soma um ano 
     dataValidade.setFullYear(dataValidade.getFullYear() + 1); // para data de validade
-    console.log(loteItem);
+    var caracEnviadas = 0;
     //verifica se o lote está aprovado
     if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
       const obj = {
@@ -390,7 +391,7 @@ export class funcsService {
           "cLote": loteItem.lote,
           "cAnalise": loteItem.analise,
           "nQuantidade": loteItem.qtdeLote,
-          "cCaracteristica": item.codCarac,
+          "cCaracteristica": item.descCarac,
           "cResultado": item.result.toString(),
           "dValidade": dataValidade.toLocaleDateString('en-GB'),
           "dFabricacao": new Date(loteItem.dtime).toLocaleDateString('en-GB'),
@@ -402,8 +403,10 @@ export class funcsService {
         // console.log([obj2])
         this.prodLote([obj2]).subscribe(q => {
           console.log(q);
-
-          // 
+          caracEnviadas++;
+          if (caracEnviadas == cada.length) {
+            this.confirmDialog("Produto e Características enviadas para produção com sucesso!", ['OK']);
+          }
         });
         // this.prodParcialOp(loteItem, 'env')
         //Envia para o proteus
@@ -413,9 +416,9 @@ export class funcsService {
   }
 
 
-  confirmDialog(confirmText: string): Observable<boolean> {
+  confirmDialog(confirmText: string, botoes=['SIM', 'NÃO']): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { text: confirmText },
+      data: { text: confirmText, botoes: botoes},
     })
 
     return dialogRef.afterClosed();
@@ -441,7 +444,7 @@ export class funcsService {
       cArm = '01'
     } else if (aOp.loteAprov == 'REPROVADO') {
       cArm = '97'
-    }else{
+    } else {
       cArm = '44'
     }
     const objEnv = {
