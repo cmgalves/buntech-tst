@@ -368,9 +368,6 @@ export class funcsService {
 
   enviarLoteProteus(loteItem, reclassifica = false) {
     let nVai = 0
-    console.log(loteItem.dtime);
-    const dataValidade = new Date(loteItem.dtime); //pega a data de fabricação e soma um ano 
-    dataValidade.setFullYear(dataValidade.getFullYear() + 1); // para data de validade
     var caracEnviadas = 0;
     //verifica se o lote está aprovado
     if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
@@ -393,32 +390,28 @@ export class funcsService {
           "nQuantidade": loteItem.qtdeLote,
           "cCaracteristica": item.descCarac,
           "cResultado": item.result.toString(),
-          "dValidade": dataValidade.toLocaleDateString('en-GB'),
-          "dFabricacao": new Date(loteItem.dtime).toLocaleDateString('en-GB'),
+          "dValidade": this.converterParaDDMMYY(loteItem.dtime, 1),
+          "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
           "cValMin": item.iteMin.toString(),
           "cValMax": item.iteMax.toString(),
           "cStatus": loteItem.loteAprov,
           "cImprime": item.imprimeLaudo
         };
-         console.log([obj2])
         this.prodLote([obj2]).subscribe(q => {
-          console.log(q);
-          // caracEnviadas++;
-          // if (caracEnviadas == cada.length) {
-          //   this.confirmDialog("Produto e Características enviadas para produção com sucesso!", ['OK']);
-          // }
+          caracEnviadas++;
+          if (caracEnviadas == cada.length) {
+            this.prodParcialOp(loteItem, 'env')
+          }
         });
-        this.prodParcialOp(loteItem, 'env')
-        //Envia para o proteus
       }));
 
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }
 
 
-  confirmDialog(confirmText: string, botoes=['SIM', 'NÃO']): Observable<boolean> {
+  confirmDialog(confirmText: string, botoes = ['SIM', 'NÃO']): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { text: confirmText, botoes: botoes},
+      data: { text: confirmText, botoes: botoes },
     })
 
     return dialogRef.afterClosed();
@@ -486,5 +479,18 @@ export class funcsService {
       }
     });
   };
+
+  converterParaDDMMYY(dataString, plus=0) {
+    // Divide a string da data nos componentes dia, mês e ano
+    var partes = dataString.split('/');
+    
+    // Obtém os componentes da data
+    var dia = partes[0];
+    var mes = partes[1];
+    var ano = parseInt(partes[2].slice(-2)) + plus; // Pega os dois últimos dígitos do ano
+
+    // Retorna a data formatada
+    return dia + '/' + mes + '/' + ano;
+}
 
 }

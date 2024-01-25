@@ -62,6 +62,7 @@ export class LoteAgrupaComponent implements OnInit {
     'qtdeTotal',
     'saldoAnalisar',
     'qtdeAprovada',
+    'qtdeReprovado',
     'qtdeReclassifica',
     'situacao',
     'manutencao'];
@@ -93,6 +94,7 @@ export class LoteAgrupaComponent implements OnInit {
           'qtdeTotal': xy.qtde,
           'saldoAnalisar': xy.saldoAnalisar,
           'qtdeAprovada': xy.qtdeAprovado,
+          'qtdeReprovado': xy.qtdeReprovado,
           'qtdeReclassifica': xy.qtdeReclassifica,
           'situacao': xy.situacao
         });

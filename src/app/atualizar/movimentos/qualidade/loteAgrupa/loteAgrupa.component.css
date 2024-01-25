@@ -66,14 +66,14 @@ table {
 }
 
 .Aberto {
-    background: white;
+    background: silver;
 }
 
 .Andamento {
-    background: rgb(154, 205, 237);
+    background: rgb(255, 137, 0)
 }
 
-.Fechado {
+.Concluido {
     background: rgb(65, 176, 245);
 }
 

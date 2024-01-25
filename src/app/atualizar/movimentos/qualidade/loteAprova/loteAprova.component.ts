@@ -261,7 +261,7 @@ export class LoteAprovaComponent implements OnInit {
     }
 
     if (nivAprov != '') {
-      txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma Rejeição'
+      txtAprov = tipo === 'A' ? 'Confirma Aprovação?' : 'Confirma reprovação'
 
       const obj = {
         produto: this.produto,
