@@ -1,15 +1,42 @@
 -- spcp_cria_lote_11
 
-update PCP..oppcfLote set regTipo = 'S' where produto = 'PAN00775' and regTipo = 'T'
+--update PCP..oppcfLote set regTipo = 'S' where produto = 'PAN00775' and regTipo = 'T'
 
 
+select 
+	filial, op, produto, regTipo, lote, qtde, qtdeLote, analise, qtdeAnalise, qtdeAnalise, qtdeQuebraAnalise, * 
+--delete
+--delete PCP..oppcfLote where op = '' 
+from 
+--update PCP..oppcfLote set regTipo = 'S' from
+--update PCP..oppcfLote set regTipo = 'x' from
+	PCP..oppcfLote 
+where 
+	1 = 1 
+	--and op = '04761401001'
+	and produto = 'PAN00779'
+	--and id_num = 54
+	--and regTipo <> 'S'
+	--and regTipo = 'W'
+	--and regTipo = 'T'
+	--and regTipo not in ('x')
+	--and regTipo in ('x')
+	--and regTipo not in ('x', 'T', 'W')
+	--and regTipo = 'A'
+--order by 2 desc
 
-
-select qtdeQuebraAnalise, * from PCP..oppcfLote where produto = 'PAN00775'
-
+-- spcp_cria_lote_11
 
 
 /*
+truncate table PCP..oppcf
+truncate table PCP..oppcfLote
+truncate table PCP..oppcfLoteHora
+truncate table PCP..oppcfLoteAnalise
+truncate table PCP..oppcfLoteEmpenho
+
+select * from PCP..qualEspecCab where cabProduto = 'PAN00779'
+
 
 if @qtdeLote > 0 
 				begin
