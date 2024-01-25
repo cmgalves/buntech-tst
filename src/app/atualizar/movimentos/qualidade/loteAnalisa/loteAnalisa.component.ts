@@ -218,7 +218,7 @@ export class LoteAnalisaComponent implements OnInit {
     const max = xcRow.iteMax == 0 ? Number.MAX_VALUE : xcRow.iteMax;
     var nbm = 0;
     let dtAtual = new Date();
-
+    vNum = vNum.replace(',', '.');
     if (isNaN(parseFloat(vNum))) /*Checa se o valor inserido é numérico*/ {
       return alert('Por favor, digite um valor numérico');
     } else {
