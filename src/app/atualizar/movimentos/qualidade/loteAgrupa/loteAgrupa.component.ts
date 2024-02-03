@@ -51,7 +51,6 @@ export class LoteAgrupaComponent implements OnInit {
   arrOpdocumento887: any = [];
   arrOpdocumento888: any = [];
   arrOpdocumentoTab: any = [];
-  arrFilial: any = ['101', '107', '117', '402', '108', '206'];
 
 
   opdocumentos: Observable<any>;
@@ -107,49 +106,7 @@ export class LoteAgrupaComponent implements OnInit {
   }
 
 
-  // busca as OPs nas tabelas do PCF para montar a tela inicial das OPs resumo
-  buscaOpdocumentos() {
-    this.arrOpAnd = JSON.parse(localStorage.getItem('opAndamento'));
-    const obj = {
-      'filial': this.xcFilial,
-      'perfil': this.xcPerfil
-    };
-    let conta = 0
-
-    this.arrOpdocumento = this.fj.buscaPrt('opAndamentoResumo', obj);
-
-    this.arrOpdocumento.subscribe(x => {
-      x.forEach(xy => {
-        if (this.opFilRepet === 'filop' || this.opFilRepet.indexOf(xy.filial + xy.op) < 0) {
-          this.opFilRepet += '|' + xy.filial + xy.op
-          const filOP = this.arrOpAnd.filter(x => (x.filial === xy.filial && x.op === xy.op));
-          if (filOP.length > 0) {
-            let sitDesc = filOP[0].final !== '' ? 'Integrada' : xy.situDesc
-            // this.opConta++
-            this.arrOpdocumentoTab.push({
-              'SEQ': this.opConta++,
-              'FILIAL': xy.filial,
-              'OP': xy.op,
-              'CODPROD': filOP[0].produto,
-              'SITUACAO': sitDesc,
-            })
-            this.arrOpPcf.push({
-              'FILIAL': xy.filial,
-              'OP': xy.op,
-              'APT': xy.dia,
-            })
-          }
-        }
-
-        localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
-        this.dataSource = new MatTableDataSource(this.arrOpdocumentoTab)
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        // this.applyFilter()
-      });
-    });
-  }
-
+  
 
   // aplicar o filtro ao digitar na tela dos itens
   applyFilter(event: Event) {

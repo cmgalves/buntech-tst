@@ -3,6 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 ALTER procedure [dbo].[spcp_cria_lote_12]
 	@id_num int,
 	@fil varchar(3),
@@ -52,7 +53,7 @@ declare opProd cursor for
 		(select 
 			filial, op, produto, lote, 
 			sum(qtdeLote) totLote, max(qtdeQuebra) quebra,
-			max(qtdeQuebra) - sum(qtdeLote) saldo
+			isnull(max(qtdeQuebraAnalise) - sum(qtdeAnalise), 0) saldo
 		from 
 			PCP..oppcfLote
 		where
@@ -67,7 +68,11 @@ declare opProd cursor for
 		and a.produto = b.produto
 		and a.lote = b.lote 
 	where
-		qtdeAnalise < qtdeQuebraAnalise
+		1 = 1
+		and a.filial = @fil
+		and a.op = @op
+		and a.produto = @prod
+		and qtdeAnalise < qtdeQuebraAnalise
     
 open opProd
 fetch next from opProd   
@@ -76,16 +81,24 @@ into @idOrig, @filial, @produto, @lote, @loteAprov, @qtdeLote, @qtdeQuebra, @ana
 --spcp_cria_lote_11
 while @@FETCH_STATUS = 0
 	begin
-        if @qtdeReg > @saldo
-            begin 
-			    update PCP..oppcfLote set qtde = qtde + @saldo, qtdeLote = qtdeLote + @saldo, qtdeAnalise = qtdeAnalise + @saldo, qtdeImp = 5, regTipo = 'A' where id_num = @idOrig
+        if @loteAprov <> 'ABERTO'
+			begin
 				set @qtdeReg = @qtdeReg - @saldo
-            end
-       else
-            begin 
-			    update PCP..oppcfLote set qtde = qtde + @qtdeReg, qtdeLote = qtdeLote + @qtdeReg, qtdeAnalise = qtdeAnalise + @qtdeReg, qtdeImp = 5, regTipo = 'B' where id_num = @idOrig
-				set @qtdeReg = 0
-            end
+			end
+		else 
+			begin 
+				if @qtdeReg > @saldo
+					begin
+						update PCP..oppcfLote set qtde = qtde + @saldo, qtdeLote = qtdeLote + @saldo, qtdeAnalise = qtdeAnalise + @saldo, qtdeImp = 5, regTipo = 'A' where id_num = @idOrig
+						set @qtdeReg = @qtdeReg - @saldo
+						set @saldo = 0
+					end
+				else
+					begin 
+						update PCP..oppcfLote set qtde = qtde + @qtdeReg, qtdeLote = qtdeLote + @qtdeReg, qtdeAnalise = qtdeAnalise + @qtdeReg, qtdeImp = 5, regTipo = 'B' where id_num = @idOrig
+						set @qtdeReg = 0
+					end
+		end
 
 		fetch next from opProd   
 		into @idOrig, @filial, @produto, @lote, @loteAprov, @qtdeLote, @qtdeQuebra, @analise, @qtdeAnalise, @qtdeQuebraAnalise, @regTipo, @saldo
@@ -94,14 +107,11 @@ while @@FETCH_STATUS = 0
 
 if @qtdeReg > 0
     begin
-
+		print @qtdeReg
 	    set @loteFilial = (isnull((select max(lote) from oppcfLote where filial = @fil and op = @op and produto = @prod and lote <> '000000000'), '000000000'))
 		set @analise = 'A01'
         set @saldoLote = @quebraLote
         
-        -- print 'loteFilial'
-        -- print @loteFilial
-
         if @loteFilial > '000000000'
             begin 
                 set @qtdeLote = (select sum(qtdeLote) from oppcfLote where filial = @fil and op = @op and produto = @prod and lote = @loteFilial)
@@ -112,31 +122,30 @@ if @qtdeReg > 0
                     end
                 else
                     begin
+                        set @loteEspec = (isnull((select loteAtual from PCP..qualEspecCab where cabProduto = @prod and situacao = 'Concluida'), '000000000'))
+                        set @loteProduto = (isnull((select max(lote) from oppcfLote where produto = @prod and lote <> '000000000'), '000000000'))
                         set @loteProx = right('000000000' + convert(varchar(9), cast(case when @loteEspec >= @loteProduto then @loteEspec else @loteProduto end as int) + 1), 9)
                         set @saldoLote = @quebraLote
                     end
             end
         else
             begin 
-                print 'loteasas'
                 set @loteEspec = (isnull((select loteAtual from PCP..qualEspecCab where cabProduto = @prod and situacao = 'Concluida'), '000000000'))
                 set @loteProduto = (isnull((select max(lote) from oppcfLote where produto = @prod and lote <> '000000000'), '000000000'))
                 set @loteProx = right('000000000' + convert(varchar(9), cast(case when @loteEspec >= @loteProduto then @loteEspec else @loteProduto end as int) + 1), 9)
             end
         while @qtdeReg > 0
             begin 
-                print @id_num
-                print 'lote'
-                print @loteProx
                 if @saldoLote >= @quebraAnalise
                     begin 
                         if @qtdeReg > @quebraAnalise
                             begin 
                                 insert PCP..oppcfLote (filial, produto, op, idEv, qtde,           qtdeLote,       qtdeAnalise,    dtime, dtcria, situacao, codRecurso, lote,      origem, stsLote, analise,  loteAprov, qtdeQuebra, qtdeQuebraAnalise, regTipo, recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, loteEnv, qtdeProd)
                                                 select filial, produto, op, idEv, @quebraAnalise, @quebraAnalise, @quebraAnalise, dtime, dtcria, situacao, codRecurso, @loteProx, origem, stsLote, @analise, 'ABERTO',  qtdeQuebra, qtdeQuebraAnalise, 'C',     recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, '', 0 from PCP..oppcfLote where id_num = @id_num
-                                    
+						                                    
                                 set @qtdeReg = @qtdeReg - @quebraAnalise
                                 set @saldoLote = @saldoLote - @quebraAnalise
+                                exec spcp_cria_lote_carac @fil, @prod, @loteProx, @analise
                             end
                         else
                             begin 
@@ -144,37 +153,46 @@ if @qtdeReg > 0
                                                 select filial, produto, op, idEv, @qtdeReg, @qtdeReg, @qtdeReg,    dtime, dtcria, situacao, codRecurso, @loteProx, origem, stsLote, @analise, 'ABERTO',  qtdeQuebra, qtdeQuebraAnalise, 'D',     recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, '', 0 from PCP..oppcfLote where id_num = @id_num
                                 set @saldoLote = @saldoLote - @qtdeReg
                                 set @qtdeReg = 0
+                                exec spcp_cria_lote_carac @fil, @prod, @loteProx, @analise
                             end
                     end
                 else
                     begin 
                         if @qtdeReg > @saldoLote
                             begin 
-                                insert PCP..oppcfLote (filial, produto, op, idEv, qtde,           qtdeLote,       qtdeAnalise,    dtime, dtcria, situacao, codRecurso, lote,      origem, stsLote, analise,  loteAprov, qtdeQuebra, qtdeQuebraAnalise, regTipo, recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, loteEnv, qtdeProd)
-                                                select filial, produto, op, idEv, @saldoLote, @saldoLote, @saldoLote, dtime, dtcria, situacao, codRecurso, @loteProx, origem, stsLote, @analise, 'ABERTO',  qtdeQuebra, qtdeQuebraAnalise, 'C',     recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, '', 0 from PCP..oppcfLote where id_num = @id_num
-                                    
+                                insert PCP..oppcfLote (filial, produto, op, idEv, qtde,       qtdeLote,   qtdeAnalise, dtime, dtcria, situacao, codRecurso, lote,      origem, stsLote, analise,  loteAprov, qtdeQuebra, qtdeQuebraAnalise, regTipo, recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, loteEnv, qtdeProd)
+                                                select filial, produto, op, idEv, @saldoLote, @saldoLote, @saldoLote,  dtime, dtcria, situacao, codRecurso, @loteProx, origem, stsLote, @analise, 'ABERTO',  qtdeQuebra, qtdeQuebraAnalise, 'E',     recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, '', 0 from PCP..oppcfLote where id_num = @id_num
                                 set @qtdeReg = @qtdeReg - @saldoLote
                                 set @saldoLote = 0
+                                exec spcp_cria_lote_carac @fil, @prod, @loteProx, @analise
                             end
                         else
                             begin 
                                 insert PCP..oppcfLote (filial, produto, op, idEv, qtde,     qtdeLote, qtdeAnalise, dtime, dtcria, situacao, codRecurso, lote,      origem, stsLote, analise,  loteAprov, qtdeQuebra, qtdeQuebraAnalise, regTipo, recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, loteEnv, qtdeProd)
-                                                select filial, produto, op, idEv, @qtdeReg, @qtdeReg, @qtdeReg,    dtime, dtcria, situacao, codRecurso, @loteProx, origem, stsLote, @analise, 'ABERTO',  qtdeQuebra, qtdeQuebraAnalise, 'D',     recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, '', 0 from PCP..oppcfLote where id_num = @id_num
+                                                select filial, produto, op, idEv, @qtdeReg, @qtdeReg, @qtdeReg,    dtime, dtcria, situacao, codRecurso, @loteProx, origem, stsLote, @analise, 'ABERTO',  qtdeQuebra, qtdeQuebraAnalise, 'F',     recurso, codOpera, segundos, qtdeImp, intervaloLote, dtAprov, dtProd, dtVenc, quebra, usrAprovn1, usrAprovn2, usrAprovn3, dtAprovn1, dtAprovn2, dtAprovn3, intervalo, dataAprovacao, tipoAprova1, tipoAprova2, tipoAprova3, justificativa1, justificativa2, justificativa3, '', 0 from PCP..oppcfLote where id_num = @id_num
                                 set @saldoLote = @saldoLote - @qtdeReg
                                 set @qtdeReg = 0
+                                exec spcp_cria_lote_carac @fil, @prod, @loteProx, @analise
                             end
                     end
                 if @saldoLote <= 0
                     begin 
+						print @saldoLote
                         set @saldoLote = @quebraLote
                         set @loteProx = right('000000000' + convert(varchar(9), cast(@loteProx as int) + 1), 9)
-				        set @analise = 'A01'
+				        set @analise = 'A00'
                     end
                 set @analise = 'A' + right('00' + convert(varchar(2), cast(right((@analise), 2) as int) + 1), 2)
             end
-            update PCP..oppcfLote set regTipo = 'T' where id_num = @id_num
+			print 'update'
+			
+			update PCP..oppcfLote set regTipo = 'T' where id_num = @id_num
     end
-
+else 
+	begin 
+		print 'hhhh'
+		print @qtdeReg
+	end
 close opProd
 deallocate opProd
 
@@ -209,7 +227,6 @@ if @qtdeLote > 0
                                 set @saldoAnalise = 0
                             end
                     end
-                print @loteProx
                 set @loteProx = right('000000000' + convert(varchar(9), cast(@loteProx as int) + 1), 9)
 				set @analise = 'A01'
                 while @qtdeReg > 0
@@ -244,12 +261,6 @@ if @qtdeLote > 0
 
 
                 
-                print @saldoAnalise
-                print @loteProx
-                print @analise
-                print @qtdeAnalise
-                print @saldoLote
-                print @qtdeReg
             end
         else
             begin 
@@ -275,12 +286,6 @@ if @qtdeLote > 0
                     end
                 
                
-                print @saldoAnalise
-                print @loteProx
-                print @analise
-                print @qtdeAnalise
-                print @saldoLote
-                print @qtdeReg
             end
 
 
@@ -336,8 +341,6 @@ else
 
 -- 	begin
 -- 	    set @qtdeLote = (isnull((select sum(qtdeLote) from oppcfLote where filial = @fil and produto = @prod and op = @op and regTipo not in ('S', 'T')), 0))
---         print @qtdeLote
---         print @id_num
 --         if @qtdeLote = 0
 --             begin 
 -- 			    set @loteEspec = (isnull((select loteAtual from PCP..qualEspecCab where cabProduto = @prod and situacao = 'Concluida'), '000000000'))
@@ -381,7 +384,6 @@ else
 --             begin 
 
 --                 set @qtdeReg = @qtdes
---                 print @qtdeReg
 
 --                 set @loteProx = (select max(lote) from PCP..oppcfLote where filial = @fil and produto = @prod and op = @op and lote <> '000000000' having sum(qtde) < @quebraLote)
 --                 set @analise = (select max(analise) from PCP..oppcfLote where filial = @fil and produto = @prod and op = @op and lote <> '000000000' having sum(qtde) < @quebraLote)
@@ -409,7 +411,6 @@ else
 --                             end
 --                         else
 --                             begin 
---                             print 's'
 --                                 update PCP..oppcfLote set qtde = qtde + @qtdeReg, qtdeLote = qtdeLote + @qtdeReg, qtdeAnalise = qtdeAnalise + @qtdeReg  where filial = @fil and produto = @prod and op = @op and lote = @loteProx and analise = @analise
 --                                 set @qtdeReg = 0
 --                             end
