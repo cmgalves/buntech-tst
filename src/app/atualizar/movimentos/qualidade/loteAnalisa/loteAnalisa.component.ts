@@ -82,9 +82,27 @@ export class LoteAnalisaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buscaLoteDetalhes();
+    this.criarLoteCaracteristica();
   }
 
+
+
+  // busca a relação de produtos com as loteções
+  criarLoteCaracteristica() {
+    const obj = {
+      'fil': this.aProd.filial,
+      'prod': this.aProd.produto,
+      'lote': this.aProd.lote,
+      'analise': this.aProd.analise
+    };
+
+    this.fj.buscaPrt('criarLoteCaracteristica', obj).subscribe(x => {
+      console.log(x[0].mensagem)
+      this.buscaLoteDetalhes();
+
+    }); //vw_pcp_relacao_lote_analisa
+
+  }
   // busca a relação de produtos com as loteções
   buscaLoteDetalhes() {
     let ord = 0;
@@ -340,10 +358,10 @@ export class LoteAnalisaComponent implements OnInit {
       filial: this.filial,
       loteAprov: 'APROVADO'
     }
-   this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
+    this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
       this.fj.enviarLoteProteus(q[0]);
       this.fj.prodParcialOp(q[0], 'env')
-   });
+    });
   }
 
 }

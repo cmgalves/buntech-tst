@@ -98,15 +98,12 @@ export class LoteAgrupaComponent implements OnInit {
           'situacao': xy.situacao
         });
       });
-      console.log(this.arrLoteAgrupa);
       this.dataSource = new MatTableDataSource(this.arrLoteAgrupa)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-
-  
 
   // aplicar o filtro ao digitar na tela dos itens
   applyFilter(event: Event) {

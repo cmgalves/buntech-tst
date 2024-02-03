@@ -33,7 +33,6 @@ export class LoteRegComponent implements OnInit {
   arrProd = JSON.parse(localStorage.getItem('loteReg'));
   arrBusca: any = [];
   arrDados: any = [];
-  arrCarac: any = [];
   filLoteReg: string = '';
   cFil: string = '';
   filterLoteReg: any = ['TODOS', 'ABERTO', 'ANDAMENTO', 'APROVADO', 'REPROVADO', 'SEGREGADO', 'REAVALIAÇÃO'];
@@ -75,7 +74,6 @@ export class LoteRegComponent implements OnInit {
       'lote': this.arrProd.lote
     }); //vw_pcp_relacao_lote_registro
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -100,7 +98,6 @@ export class LoteRegComponent implements OnInit {
           'justificativa3': xy.justificativa3,
           'qtdeLote': xy.qtdeLote,
           'situacao': xy.situacao,
-          'analiseStatus': xy.analiseStatus,
           'alcadaProd': xy.alcadaProd,
           'podeAprovar': xy.podeAprovar == "true",
           'dtime': xy.dtime,
