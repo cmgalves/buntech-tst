@@ -83,7 +83,7 @@ export class LoteRegComponent implements OnInit {
           'descricao': xy.descricao,
           'lote': xy.lote,
           'analise': xy.analise,
-          'loteAprov': xy.loteAprov.replace(' ', ''),
+          'loteAprov': this.checaLoteAprov(xy.loteAprov.replace(' ', '')),
           'dtAprovn1': xy.dtAprovn1,
           'dtAprovn2': xy.dtAprovn2,
           'dtAprovn3': xy.dtAprovn3,
@@ -108,6 +108,12 @@ export class LoteRegComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  checaLoteAprov(str) {
+    if (!str.includes('-'))
+      return str.replace(' ', '');
+    return str.split('-')[0].replace(' ', '');
   }
 
   exportExcel(fileName, sheetName) {
@@ -224,7 +230,7 @@ export class LoteRegComponent implements OnInit {
     return data.split('-').reverse().join('/');
   }
 
-  voltaLote(){
+  voltaLote() {
     this.router.navigate(['loteAgrupa']);
   }
 

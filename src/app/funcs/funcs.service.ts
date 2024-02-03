@@ -370,6 +370,7 @@ export class funcsService {
     let nVai = 0
     var caracEnviadas = 0;
     //verifica se o lote está aprovado
+    console.log(loteItem.tipoAprova1)
     if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
       const obj = {
         'filial': loteItem.filial,
@@ -394,18 +395,34 @@ export class funcsService {
           "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
           "cValMin": item.iteMin.toString(),
           "cValMax": item.iteMax.toString(),
-          "cStatus": loteItem.loteAprov,
+          "cStatus": this.formataStatus(loteItem.loteAprov),
           "cImprime": item.imprimeLaudo
         };
+        let enviado = true;
         this.prodLote([obj2]).subscribe(q => {
+          console.log(q);
+          if(q.status === false || q.ok === false){
+            enviado = false;
+          }
           caracEnviadas++;
           if (caracEnviadas == cada.length) {
-            this.prodParcialOp(loteItem, 'env')
+            this.prodParcialOp(loteItem, 'env');
+            loteItem.loteAprov = (enviado?"ENVIADO - ":"NAO ENVIADO - ") + loteItem.loteAprov;
+            loteItem.tipoAprovn1 = loteItem.tipoAprova1;
+            loteItem.tipoAprovn2 = loteItem.tipoAprova2;
+            loteItem.tipoAprovn3 = loteItem.tipoAprova3;
+            this.buscaPrt('aprovalote', loteItem).subscribe(f => console.log(f));
           }
         });
       }));
 
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
+  }
+
+  formataStatus(str){
+    if (!str.includes('-'))
+      return str.replace(' ', '');
+    return str.split('-')[1].replace(' ', '');
   }
 
 
