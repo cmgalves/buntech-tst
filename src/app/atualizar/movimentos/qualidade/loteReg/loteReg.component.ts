@@ -243,7 +243,7 @@ export class LoteRegComponent implements OnInit {
 
   horarioEstaNoIntervalo(row): boolean {
     if(row.intervaloInicial == undefined || row.intervaloFinal == undefined)
-      return true;
+      return false;
 
     const agora = new Date(); // Obtém o horário atual
     const intervaloInicial = new Date(row.intervaloInicial);
