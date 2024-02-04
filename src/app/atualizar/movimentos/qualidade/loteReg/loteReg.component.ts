@@ -242,10 +242,13 @@ export class LoteRegComponent implements OnInit {
   }
 
   horarioEstaNoIntervalo(row): boolean {
+
+    if(row.intervaloInicial == undefined || row.intervaloFinal == undefined)
+      return true;
+
     const agora = new Date(); // Obtém o horário atual
     const intervaloInicial = new Date(row.intervaloInicial);
     const intervaloFinal = new Date(row.intervaloFinal);
-    console.log(intervaloInicial, intervaloFinal, agora);
 
     // Extrai apenas as horas e minutos do horário atual
     const horaAtual = agora.getHours();
@@ -256,13 +259,11 @@ export class LoteRegComponent implements OnInit {
     const minutoInicial = intervaloInicial.getMinutes();
     const horaFinal = intervaloFinal.getHours();
     const minutoFinal = intervaloFinal.getMinutes();
-    console.log(horaInicial, horaFinal, horaAtual)
 
     // Converte as horas e minutos para minutos totais para facilitar a comparação
     const minutosAtual = horaAtual * 60 + minutoAtual;
     const minutosInicial = horaInicial * 60 + minutoInicial;
     const minutosFinal = horaFinal * 60 + minutoFinal;
-    console.log(minutosInicial, minutosFinal, minutosAtual)
     // Verifica se o horário atual está entre o intervalo inicial e final
     return minutosAtual >= minutosInicial && minutosAtual <= minutosFinal;
 }
