@@ -209,7 +209,7 @@ export class LoteRegComponent implements OnInit {
 
 
   analisaLote(xcRow) {
-    if (!this.horarioEstaNoIntervalo(xcRow))
+    if (this.horarioEstaNoIntervalo(xcRow))
       return this.fj.confirmDialog("INTERVALO AINDA NÃO FINALIZADO", ['OK']);
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote && x.analise === xcRow.analise))[0];
     localStorage.removeItem('loteAnalisa');
@@ -217,7 +217,7 @@ export class LoteRegComponent implements OnInit {
     this.router.navigate(['loteAnalisa']);
   }
   aprovaLote(xcRow) {
-    if (!this.horarioEstaNoIntervalo(xcRow))
+    if (this.horarioEstaNoIntervalo(xcRow))
       return this.fj.confirmDialog("INTERVALO AINDA NÃO FINALIZADO", ['OK']);
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote && x.analise === xcRow.analise))[0];
     localStorage.removeItem('loteAprv');
@@ -242,7 +242,6 @@ export class LoteRegComponent implements OnInit {
   }
 
   horarioEstaNoIntervalo(row): boolean {
-
     if(row.intervaloInicial == undefined || row.intervaloFinal == undefined)
       return true;
 
