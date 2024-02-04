@@ -74,6 +74,7 @@ export class LoteRegComponent implements OnInit {
       'lote': this.arrProd.lote
     }); //vw_pcp_relacao_lote_registro
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({
@@ -101,7 +102,9 @@ export class LoteRegComponent implements OnInit {
           'alcadaProd': xy.alcadaProd,
           'podeAprovar': xy.podeAprovar == "true",
           'dtime': xy.dtime,
-          'op': xy.op
+          'op': xy.op,
+          'intervaloInicial': xy.intervaloInicial,
+          'intervaloFinal': xy.intervaloFinal,
         });
       });
       this.dataSource = new MatTableDataSource(this.arrDados)
@@ -206,12 +209,16 @@ export class LoteRegComponent implements OnInit {
 
 
   analisaLote(xcRow) {
+    if (!this.horarioEstaNoIntervalo(xcRow))
+      return this.fj.confirmDialog("INTERVALO AINDA NÃO FINALIZADO", ['OK']);
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote && x.analise === xcRow.analise))[0];
     localStorage.removeItem('loteAnalisa');
     localStorage.setItem('loteAnalisa', JSON.stringify(_aProd));
     this.router.navigate(['loteAnalisa']);
   }
   aprovaLote(xcRow) {
+    if (!this.horarioEstaNoIntervalo(xcRow))
+      return this.fj.confirmDialog("INTERVALO AINDA NÃO FINALIZADO", ['OK']);
     const _aProd = this.arrDados.filter(x => (x.produto === xcRow.produto && x.lote === xcRow.lote && x.analise === xcRow.analise))[0];
     localStorage.removeItem('loteAprv');
     localStorage.setItem('loteAprv', JSON.stringify(_aProd));
@@ -233,5 +240,31 @@ export class LoteRegComponent implements OnInit {
   voltaLote() {
     this.router.navigate(['loteAgrupa']);
   }
+
+  horarioEstaNoIntervalo(row): boolean {
+    const agora = new Date(); // Obtém o horário atual
+    const intervaloInicial = new Date(row.intervaloInicial);
+    const intervaloFinal = new Date(row.intervaloFinal);
+    console.log(intervaloInicial, intervaloFinal, agora);
+
+    // Extrai apenas as horas e minutos do horário atual
+    const horaAtual = agora.getHours();
+    const minutoAtual = agora.getMinutes();
+
+    // Extrai apenas as horas e minutos dos intervalos inicial e final
+    const horaInicial = intervaloInicial.getHours();
+    const minutoInicial = intervaloInicial.getMinutes();
+    const horaFinal = intervaloFinal.getHours();
+    const minutoFinal = intervaloFinal.getMinutes();
+    console.log(horaInicial, horaFinal, horaAtual)
+
+    // Converte as horas e minutos para minutos totais para facilitar a comparação
+    const minutosAtual = horaAtual * 60 + minutoAtual;
+    const minutosInicial = horaInicial * 60 + minutoInicial;
+    const minutosFinal = horaFinal * 60 + minutoFinal;
+    console.log(minutosInicial, minutosFinal, minutosAtual)
+    // Verifica se o horário atual está entre o intervalo inicial e final
+    return minutosAtual >= minutosInicial && minutosAtual <= minutosFinal;
+}
 
 }
