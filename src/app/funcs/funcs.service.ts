@@ -399,8 +399,9 @@ export class funcsService {
           "cImprime": item.imprimeLaudo
         };
         let enviado = true;
+        //console.log(obj2);
         this.prodLote([obj2]).subscribe(q => {
-          console.log(q);
+          //console.log(q);
           if(q.status === false || q.ok === false){
             enviado = false;
           }
@@ -500,8 +501,8 @@ export class funcsService {
   converterParaDDMMYY(dataString, plus=0) {
     // Divide a string da data nos componentes dia, mês e ano
     var partes = dataString.split('/');
-    
-    // Obtém os componentes da data
+    console.log(partes);
+     // Obtém os componentes da data
     var dia = partes[0];
     var mes = partes[1];
     var ano = parseInt(partes[2].slice(-2)) + plus; // Pega os dois últimos dígitos do ano
