@@ -360,7 +360,6 @@ export class LoteAnalisaComponent implements OnInit {
     }
     this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
       this.fj.enviarLoteProteus(q[0]);
-      this.fj.prodParcialOp(q[0], 'env')
     });
   }
 

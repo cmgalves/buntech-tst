@@ -370,7 +370,6 @@ export class funcsService {
     let nVai = 0
     var caracEnviadas = 0;
     //verifica se o lote está aprovado
-    console.log(loteItem.tipoAprova1)
     if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
       const obj = {
         'filial': loteItem.filial,
@@ -401,7 +400,6 @@ export class funcsService {
         let enviado = true;
         //console.log(obj2);
         this.prodLote([obj2]).subscribe(q => {
-          //console.log(q);
           if(q.status === false || q.ok === false){
             enviado = false;
           }
@@ -412,7 +410,7 @@ export class funcsService {
             loteItem.tipoAprovn1 = loteItem.tipoAprova1;
             loteItem.tipoAprovn2 = loteItem.tipoAprova2;
             loteItem.tipoAprovn3 = loteItem.tipoAprova3;
-            this.buscaPrt('aprovalote', loteItem).subscribe(f => console.log(f));
+            this.buscaPrt('aprovalote', loteItem).subscribe(f => f);
           }
         });
       }));
@@ -501,7 +499,6 @@ export class funcsService {
   converterParaDDMMYY(dataString, plus=0) {
     // Divide a string da data nos componentes dia, mês e ano
     var partes = dataString.split('/');
-    console.log(partes);
      // Obtém os componentes da data
     var dia = partes[0];
     var mes = partes[1];
