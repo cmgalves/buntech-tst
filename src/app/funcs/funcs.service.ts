@@ -375,9 +375,13 @@ export class funcsService {
         'filial': loteItem.filial,
         'produto': loteItem.produto,
         'lote': loteItem.lote,
-        'analise': loteItem.analise
+        'analise': loteItem.analise,
+        'op': loteItem.op,
+        'statusEnvio': 'NÃO ENVIADO'
       };
+      console.log('enviando')
       const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
+      this.buscaPrt('alteraStatusEnvio', obj);
 
       arrItens.subscribe(cada => cada.forEach(item => {
         //percorre todos os dados do loteAnalise
@@ -400,25 +404,25 @@ export class funcsService {
         let enviado = true;
         //console.log(obj2);
         this.prodLote([obj2]).subscribe(q => {
-          if(q.status === false || q.ok === false){
+          if (q.status === false || q.ok === false) {
             enviado = false;
           }
           caracEnviadas++;
           if (caracEnviadas == cada.length) {
             this.prodParcialOp(loteItem, 'env');
-            loteItem.loteAprov = (enviado?"ENVIADO - ":"NAO ENVIADO - ") + loteItem.loteAprov;
-            loteItem.tipoAprovn1 = loteItem.tipoAprova1;
-            loteItem.tipoAprovn2 = loteItem.tipoAprova2;
-            loteItem.tipoAprovn3 = loteItem.tipoAprova3;
-            this.buscaPrt('aprovalote', loteItem).subscribe(f => f);
+            obj.statusEnvio = enviado ? 'ENVIADO' : 'NÃO ENVIADO'
+            this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => console.log('alteraStatus', f));
           }
+        }, error => {
+          obj.statusEnvio = 'NÃO ENVIADO'
+          this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
         });
       }));
 
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }
 
-  formataStatus(str){
+  formataStatus(str) {
     if (!str.includes('-'))
       return str.replace(' ', '');
     return str.split('-')[1].replace(' ', '');
@@ -496,16 +500,16 @@ export class funcsService {
     });
   };
 
-  converterParaDDMMYY(dataString, plus=0) {
+  converterParaDDMMYY(dataString, plus = 0) {
     // Divide a string da data nos componentes dia, mês e ano
     var partes = dataString.split('/');
-     // Obtém os componentes da data
+    // Obtém os componentes da data
     var dia = partes[0];
     var mes = partes[1];
     var ano = parseInt(partes[2].slice(-2)) + plus; // Pega os dois últimos dígitos do ano
 
     // Retorna a data formatada
     return dia + '/' + mes + '/' + ano;
-}
+  }
 
 }

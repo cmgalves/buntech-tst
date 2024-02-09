@@ -69,7 +69,7 @@
                                 </ng-container>
                                 <ng-container matColumnDef="loteAprov">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Status Análise </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.loteAprov}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.loteAprov}}{{row.statusEnvio!=null?' - ' + row.statusEnvio:''}}</td>
                                 </ng-container>
                                 <ng-container matColumnDef="dt1">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprov N1 </th>

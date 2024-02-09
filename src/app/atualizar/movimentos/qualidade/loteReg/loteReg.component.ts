@@ -105,6 +105,7 @@ export class LoteRegComponent implements OnInit {
           'op': xy.op,
           'intervaloInicial': xy.intervaloInicial,
           'intervaloFinal': xy.intervaloFinal,
+          'statusEnvio': xy.statusEnvio,
         });
       });
       this.dataSource = new MatTableDataSource(this.arrDados)
