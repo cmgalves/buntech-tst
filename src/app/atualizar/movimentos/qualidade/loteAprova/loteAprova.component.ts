@@ -468,7 +468,13 @@ export class LoteAprovaComponent implements OnInit {
   }
 
   reclassifica() {
+    console.log(this.justificativa)
+    if (this.justificativa == "") {
+      return alert("Justificativa é obrigatória");
+    }
+
     const lote = this.aProd;
+    this.aProd.justificativa3 = this.justificativa;
     lote.loteAprov = "RECLASSIFICA";
 
     // this.fj.enviarProdParcial(lote, true);

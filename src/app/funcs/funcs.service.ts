@@ -396,13 +396,14 @@ export class funcsService {
           "cResultado": item.result.toString(),
           "dValidade": this.converterParaDDMMYY(loteItem.dtime, 1),
           "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
+          "cJustificativa": loteItem.justificativa3,
           "cValMin": item.iteMin.toString(),
           "cValMax": item.iteMax.toString(),
           "cStatus": this.formataStatus(loteItem.loteAprov),
           "cImprime": item.imprimeLaudo
         };
         let enviado = true;
-        console.log(obj2);
+        //console.log(obj2);
         this.prodLote([obj2]).subscribe(q => {
           if (q.status === false || q.ok === false) {
             enviado = false;
