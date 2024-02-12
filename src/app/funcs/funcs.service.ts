@@ -402,7 +402,7 @@ export class funcsService {
           "cImprime": item.imprimeLaudo
         };
         let enviado = true;
-        //console.log(obj2);
+        console.log(obj2);
         this.prodLote([obj2]).subscribe(q => {
           if (q.status === false || q.ok === false) {
             enviado = false;

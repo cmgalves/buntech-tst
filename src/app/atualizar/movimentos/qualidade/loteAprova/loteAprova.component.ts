@@ -154,7 +154,6 @@ export class LoteAprovaComponent implements OnInit {
             'op': xy.op
           })
           if (ord === 1) {
-            console.log(this.aProd)
             this.filial = xy.filial
             this.produto = xy.produto
             this.lote = xy.lote
@@ -201,8 +200,6 @@ export class LoteAprovaComponent implements OnInit {
     const nivel = this.aProd.loteAprov == 'SEGREGADO' ? 'N1' : (this.aProd.loteAprov == 'REAVALIACAON2'
       && this.nivel.includes('N2') ? 'N2' : this.nivel.includes('N3') ? 'N3' : '');
 
-    console.log(nivel);
-
     var rejeitaTodos = false;
     var aprovaTodos = false;
     var aprovaN3 = false;
@@ -213,7 +210,6 @@ export class LoteAprovaComponent implements OnInit {
     if (!this.nivel.includes('N2')) aprovaN2 = true;
 
     if (this.justificativa == "") {
-      // console.log(this.justificativa)
       return alert("Justificativa é obrigatória");
     } // Checa se tem justificativa
     if (!(this.fj.acessoUsuario(this.aUsr, nivel)))
@@ -254,8 +250,7 @@ export class LoteAprovaComponent implements OnInit {
       justificativa3 = this.justificativa;
     }
 
-    if (tipoAprovn1 == 'A' && tipoAprovn2 == 'A' && tipoAprovn3 == 'A')
-    {
+    if (tipoAprovn1 == 'A' && tipoAprovn2 == 'A' && tipoAprovn3 == 'A') {
       loteAprov = 'APROVADO'; //Se todos aprovarem, muda para aprovado
       aprovaTodos = true;
     }
@@ -287,10 +282,13 @@ export class LoteAprovaComponent implements OnInit {
       this.fj.confirmDialog(txtAprov).subscribe(q => {
         if (q) {
           this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
-            if (rejeitaTodos || aprovaTodos)
+            if (aprovaTodos)
+              this.fj.buscaPrt('alteraValorAprovacao', obj).subscribe(f => {
+                this.fj.enviarLoteProteus(f[0]);
+              });
+            if (rejeitaTodos)
               this.fj.enviarLoteProteus(q[0]);
-
-              this.router.navigate(['loteReg']);
+            this.router.navigate(['loteReg']);
           });
           this.nivelAprovado(2);
         }
@@ -491,7 +489,6 @@ export class LoteAprovaComponent implements OnInit {
     }
 
     this.fj.buscaPrt('reclassificaNovaOp', obj).subscribe(q => {
-      console.log(q);
       if (q[0].analise != undefined) {
         obj.analiseNova = q[0].analise;
         this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => this.router.navigate(['loteReg']));
