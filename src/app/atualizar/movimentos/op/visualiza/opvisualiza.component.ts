@@ -97,8 +97,6 @@ export class OpvisualizaComponent implements OnInit {
 
   }
 
-
-
   buscaOpvisualiza() { //View_Portal_OP
     let xcFilial = this.aOp.filial;
     let xcOp = this.aOp.op;
