@@ -238,9 +238,13 @@ export class LoteAnalisaComponent implements OnInit {
     let dtAtual = new Date();
     vNum = vNum.replace(',', '.');
     if (isNaN(parseFloat(vNum))) /*Checa se o valor inserido é numérico*/ {
-      return alert('Por favor, digite um valor numérico');
+      if (xcRow.max == 0 && xcRow.min == 0) {
+        vResultxt = vNum.toString();
+        if(vNum == 'S') sit = 'APROVADO';
+        if(vNum == 'N') sit = 'REPROVADO';
+      } else
+        return alert('Por favor, digite um valor numérico');
     } else {
-
       nbm = parseFloat(vNum);
       if (xcRow.iteMin > 0 || max > 0) //Checa se o intervalo existe
         if (nbm < xcRow.iteMin || nbm > max) //Checa se o valor está no intervalo
