@@ -42,6 +42,8 @@ export class OpajustaComponent implements OnInit {
   a01: any = [];
   a02: any = [];
   a03: any = [];
+  arrOp: any = [];
+  arrOpEmpenho: any = [];
   arrOpajusta: any = [];
   arrOpajustaTab: any = [];
   arrEstrutura: any = [];
@@ -81,7 +83,7 @@ export class OpajustaComponent implements OnInit {
   editQtd: any = 0;
 
   opajustas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'edicao'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'sitDesc', 'edicao'];
   // displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'situaca', 'edicao'];
   dataSource: MatTableDataSource<opAjusta>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -97,7 +99,8 @@ export class OpajustaComponent implements OnInit {
   ngOnInit(): void {
     this.mostraInc = false
     if (('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
-      this.buscaOpajusta();
+      this.buscaOp();
+      this.buscaOpEmpenho();
       // this.buscaOpsAndamentoProtheus();
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
@@ -110,8 +113,39 @@ export class OpajustaComponent implements OnInit {
 
   }
 
+  // Busca OP com os dados agrupados - vw_pcp_relacao_lote_op_empenho
+  buscaOp(){
+    let xcFilial = this.aOp.filial;
+    let xcOp = this.aOp.op;
+    const obj = {
+      filial: xcFilial,
+      op: xcOp,
+    };
+
+    this.fj.buscaPrt('pcpRelacaoOp', obj).subscribe(x =>{
+      x.forEach(y =>{
+       
+        if (x === 1) {
+          this.opFilial = this.aOp.filial;
+          this.opCodigo = this.aOp.op;
+          this.opProduto = this.aOp.produto;
+          this.opDescricao = this.aOp.descricao;
+          this.opQtdePcf = this.fg.formatarNumero(this.aOp.qtdeLote);
+          this.opQtdeEnv = this.fg.formatarNumero(this.aOp.qtdeEnv);
+          this.opQtdeSaldo = this.fg.formatarNumero(this.aOp.qtdeSaldo);
+          this.opQtdeProd = this.fg.formatarNumero(this.aOp.qtdeProd);
+          this.opSaldoProd = this.fg.formatarNumero(this.aOp.saldoProd);
+          this.opEmissao = xy.emissao;
+          this.opFinal = xy.vencimento;
+        }
+      })
+    })
+
+  }
+
+
   // Busca todos os dados para ajustar as OPs - vw_pcp_relacao_lote_op_empenho
-  buscaOpajusta() {
+  buscaOpEmpenho() {
     let x = 0;
     let xcFilial = this.aOp.filial;
     let xcOp = this.aOp.op;
@@ -130,7 +164,6 @@ export class OpajustaComponent implements OnInit {
           descEmp: xy.descEmp,
           unidade: xy.unidade,
           emissao: xy.emissao,
-          vencimento: xy.vencimento,
           qtdeEmp: xy.qtdeEmp,
           qtdeEmpCalc: xy.qtdeEmpCalc,
           qtdeInformada: xy.qtdeEmpCalc,
@@ -138,6 +171,7 @@ export class OpajustaComponent implements OnInit {
           saldo: xy.saldo,
           tipo: xy.tipo,
           situacao: xy.situacao,
+          sitDesc: xy.sitDesc,
         })
         if (x === 1) {
           this.opFilial = this.aOp.filial;

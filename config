@@ -1,0 +1,15 @@
+Host 195.35.18.227
+  HostName 195.35.18.227
+  User root
+
+Host 10.3.0.48
+  HostName 10.3.0.48
+  User calves
+
+Host 217.196.61.49
+  HostName 217.196.61.49
+  User root
+
+Host 10.3.0.49
+  HostName 10.3.0.49
+  User qualidade
