@@ -39,6 +39,7 @@ export class RevisaComponent implements OnInit {
   especAlcada: string = '';
   especAnalise: string = '';
   especSequencia: string = '';
+  validadeMeses = 0;
   especQuebra: string = '';
   cabQtdeQuebra: string = '';
   qtdeAnalise: string = '';
@@ -66,6 +67,7 @@ export class RevisaComponent implements OnInit {
   novoCarMax: string = '';
   novoCarTxt: string = '';
   novoCarMeio: string = '';
+  arrLinhas;
   btnLaudo: string = 'remove_done';
   laddCarac: boolean = true
   lForm: boolean = false;
@@ -106,13 +108,23 @@ export class RevisaComponent implements OnInit {
   ngOnInit(): void {
     this.buscaRevisas();
     this.buscaCaracs();
+    this.buscaLinhas();
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
   }
 
-// busca os dados das especificaçãoes ativas para mostrar na tela PCP..View_Relacao_Espec
+
+  buscaLinhas() {
+    this.fj.buscaPrt('buscaLinhas', {}).subscribe(cada => {
+      console.log(cada);
+      this.arrLinhas = [...cada]
+    }
+    )
+  }
+
+  // busca os dados das especificaçãoes ativas para mostrar na tela PCP..View_Relacao_Espec
   buscaRevisas() {
     let seq = 0;
     let aProd: any = JSON.parse(localStorage.getItem('especProd'));
@@ -125,7 +137,7 @@ export class RevisaComponent implements OnInit {
       'cabProduto': this.cabProduto
     };
     this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj); //PCP..View_Relacao_Espec
-   
+
     this.arrDb.subscribe(cada => {
       console.log(cada);
       cada.forEach(xy => {
@@ -179,6 +191,7 @@ export class RevisaComponent implements OnInit {
           this.cabQtdeQuebra = xy.cabQtdeQuebra;
           this.qtdeAnalise = xy.qtdeAnalise;
           this.imprimeLaudo = xy.imprimeLaudo;
+          this.validadeMeses = xy.validadeMeses;
         }
       });
 
@@ -336,9 +349,10 @@ export class RevisaComponent implements OnInit {
       'cabQtdeQuebra': this.cabQtdeQuebra,
       'qtdeAnalise': this.qtdeAnalise,
       'imprimeLaudo': this.imprimeLaudo.substring(0, 1),
+      'validadeMeses': this.validadeMeses
     }
-    this.fj.execProd('incluiEspec', obj);
-    window.location.reload();
+    this.fj.buscaPrt('incluiEspec', obj).subscribe(q => console.log(q));
+    //window.location.reload();
   }
 
 
@@ -415,25 +429,25 @@ export class RevisaComponent implements OnInit {
         this.cabQtdeQuebra = '0'
         return true;
       };
-    }else if (tpQuebra == 'QTDE') {
+    } else if (tpQuebra == 'QTDE') {
       if (qtdeQuebra == 0) {
         alert('A quebra por QTDE está ZERO.');
         this.cabQtdeQuebra = '0'
         return true;
       };
-      if (qtdeQuebra < qAnalise ) {
+      if (qtdeQuebra < qAnalise) {
         alert('A quebra por Análise está maior que a por QTDE.');
         this.cabQtdeQuebra = '0'
         this.qtdeAnalise = '0'
         return true;
       };
-      if (qAnalise == 0 ) {
+      if (qAnalise == 0) {
         alert('A quebra por Análise está ZERO.');
         this.qtdeAnalise = '0'
         return true;
       };
 
-    }else{
+    } else {
       alert('Sem Quebra por Análise selecionada.');
       return true;
     }

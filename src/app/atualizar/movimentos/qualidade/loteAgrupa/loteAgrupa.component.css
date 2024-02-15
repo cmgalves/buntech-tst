@@ -70,11 +70,11 @@ table {
 }
 
 .Andamento {
-    background: rgb(255, 137, 0)
+    background: rgb(235, 190, 138)
 }
 
 .Concluido {
-    background: rgb(65, 176, 245);
+    background: rgb(118, 183, 223);
 }
 
 .errorAlert {

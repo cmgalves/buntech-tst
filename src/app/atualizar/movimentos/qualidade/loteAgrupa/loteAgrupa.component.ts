@@ -64,6 +64,7 @@ export class LoteAgrupaComponent implements OnInit {
     'qtdeReprovado',
     'qtdeReclassifica',
     'situacao',
+    'statusLote',
     'manutencao'];
   dataSource: MatTableDataSource<opDocumento>;
   dataExcel: MatTableDataSource<opDocumento>;
@@ -95,7 +96,8 @@ export class LoteAgrupaComponent implements OnInit {
           'qtdeAprovada': xy.qtdeAprovado,
           'qtdeReprovado': xy.qtdeReprovado,
           'qtdeReclassifica': xy.qtdeReclassifica,
-          'situacao': xy.situacao
+          'situacao': xy.situacao,
+          'statusLote': xy.statusLote
         });
       });
       this.dataSource = new MatTableDataSource(this.arrLoteAgrupa)
@@ -134,6 +136,16 @@ export class LoteAgrupaComponent implements OnInit {
 
   imprimeLote() {
     alert('Imprime Lote')
+  }
+
+  bloqueiaLote(row) {
+    const obj = {
+      filial: row.filial,
+      lote: row.lote,
+      produto: row.produto,
+    }
+
+    this.fj.buscaPrt('bloqueiaLote', obj).subscribe(q => location.reload())
   }
 
 }
