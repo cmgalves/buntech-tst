@@ -31,7 +31,7 @@ export class OpvisualizaComponent implements OnInit {
   arrOpvisualizaTab: any = [];
   arrOpAndA: any = [];
   arrOpAndB: any = [];
-  aOP = JSON.parse(localStorage.getItem('op'));
+  aOp = JSON.parse(localStorage.getItem('op'));
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   opFilial: string = '';
   opCodigo: string = '';
@@ -42,11 +42,10 @@ export class OpvisualizaComponent implements OnInit {
   opLote: string = '';
   opAnalise: string = '';
   opCodant: string = '';
-  opQtde: string = '';
-  opEnv: string = '';
-  opSaldo: string = '';
-  opEntregue: string = '';
   opQtdePcf: string = '';
+  opQtdeEnv: string = '';
+  opQtdeSaldo: string = '';
+  opEntregue: string = '';
   opQtdeProd: string = '';
   opSaldoProd: string = '';
   opRetrabalho: string = '';
@@ -65,12 +64,42 @@ export class OpvisualizaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buscaOpvisualiza();
+    this.buscaOp();
+  }
+
+  
+  // Busca OP com os dados agrupados - vw_pcp_relacao_lote_op_empenho
+  buscaOp(){
+    let xcFilial = this.aOp.filial;
+    let xcOp = this.aOp.op;
+    const obj = {
+      filial: xcFilial,
+      op: xcOp,
+    };
+
+    this.fj.buscaPrt('pcpRelacaoOp', obj).subscribe(x =>{
+      x.forEach(y =>{
+          this.opFilial = y.filial
+          this.opCodigo = y.op
+          this.opProduto = y.produto
+          this.opDescricao = y.descricao
+          this.opQtdePcf = y.qtdeLote
+          this.opQtdeEnv = y.qtdeEnv  
+          this.opQtdeSaldo = y.qtdeSaldo
+          this.opQtdeProd = y.qtdeProd
+          this.opSaldoProd = y.saldoProd
+          this.opEmissao = y.dtcria 
+          this.opHoras = this.fj.toHHMMSS(y.opSegundos)
+      })
+      this.buscaOpvisualiza();
+
+    })
+
   }
 
   buscaOpvisualiza() { //View_Portal_OP
-    let xcFilial = this.aOP.filial;
-    let xcOp = this.aOP.op;
+    let xcFilial = this.aOp.filial;
+    let xcOp = this.aOp.op;
     const obj = {
       filial: xcFilial,
       op: xcOp,
@@ -93,18 +122,7 @@ export class OpvisualizaComponent implements OnInit {
           situacao: xy.situacao,
         })
       });
-      this.opFilial = this.aOP.filial;
-      this.opCodigo = this.aOP.op;
-      this.opProduto = this.aOP.produto;
-      this.opDescricao = this.aOP.descricao;
-      this.opLote = this.aOP.lote;
-      this.opAnalise = this.aOP.analise;
-      this.opQtde = this.fg.formatarNumero(this.aOP.qtdeLote);
-      this.opEnv = this.fg.formatarNumero( this.aOP.qtdeEnv);
-      this.opSaldo = this.fg.formatarNumero( this.aOP.qtdeSaldo);
-      this.opQtdeProd = this.fg.formatarNumero( this.aOP.qtdeProd);
-      this.opSaldoProd = this.fg.formatarNumero( this.aOP.saldoProd);
-
+      
       this.dataSource = new MatTableDataSource(this.arrOpvisualizaTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

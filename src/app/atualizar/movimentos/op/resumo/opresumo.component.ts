@@ -163,7 +163,7 @@ export class OpresumoComponent implements OnInit {
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
     if (tp === 'a') {
-      if (!(("Baixada ").indexOf(aRow.situacao) > -1)) {
+      if (!(("Interrompida ").indexOf(aRow.situacao) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
           return true;
         }

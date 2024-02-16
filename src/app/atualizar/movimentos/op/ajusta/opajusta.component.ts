@@ -42,6 +42,8 @@ export class OpajustaComponent implements OnInit {
   a01: any = [];
   a02: any = [];
   a03: any = [];
+  arrOp: any = [];
+  arrOpEmpenho: any = [];
   arrOpajusta: any = [];
   arrOpajustaTab: any = [];
   arrEstrutura: any = [];
@@ -81,7 +83,7 @@ export class OpajustaComponent implements OnInit {
   editQtd: any = 0;
 
   opajustas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'edicao'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'sitDesc', 'edicao'];
   // displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'situaca', 'edicao'];
   dataSource: MatTableDataSource<opAjusta>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -97,8 +99,7 @@ export class OpajustaComponent implements OnInit {
   ngOnInit(): void {
     this.mostraInc = false
     if (('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
-      this.buscaOpajusta();
-      // this.buscaOpsAndamentoProtheus();
+      this.buscaOp();
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value))
@@ -110,8 +111,38 @@ export class OpajustaComponent implements OnInit {
 
   }
 
+  // Busca OP com os dados agrupados - vw_pcp_relacao_lote_op_empenho
+  buscaOp(){
+    let xcFilial = this.aOp.filial;
+    let xcOp = this.aOp.op;
+    const obj = {
+      filial: xcFilial,
+      op: xcOp,
+    };
+
+    this.fj.buscaPrt('pcpRelacaoOp', obj).subscribe(x =>{
+      x.forEach(y =>{
+          this.opFilial = y.filial
+          this.opCodigo = y.op
+          this.opProduto = y.produto
+          this.opDescricao = y.descricao
+          this.opQtdePcf = y.qtdeLote
+          this.opQtdeEnv = y.qtdeEnv  
+          this.opQtdeSaldo = y.qtdeSaldo
+          this.opQtdeProd = y.qtdeProd
+          this.opSaldoProd = y.saldoProd
+          this.opEmissao = y.dtcria 
+          this.opHoras = this.fj.toHHMMSS(y.opSegundos)
+      })
+      this.buscaOpEmpenho();
+
+    })
+
+  }
+
+
   // Busca todos os dados para ajustar as OPs - vw_pcp_relacao_lote_op_empenho
-  buscaOpajusta() {
+  buscaOpEmpenho() {
     let x = 0;
     let xcFilial = this.aOp.filial;
     let xcOp = this.aOp.op;
@@ -130,7 +161,6 @@ export class OpajustaComponent implements OnInit {
           descEmp: xy.descEmp,
           unidade: xy.unidade,
           emissao: xy.emissao,
-          vencimento: xy.vencimento,
           qtdeEmp: xy.qtdeEmp,
           qtdeEmpCalc: xy.qtdeEmpCalc,
           qtdeInformada: xy.qtdeEmpCalc,
@@ -138,20 +168,9 @@ export class OpajustaComponent implements OnInit {
           saldo: xy.saldo,
           tipo: xy.tipo,
           situacao: xy.situacao,
+          sitDesc: xy.sitDesc,
         })
-        if (x === 1) {
-          this.opFilial = this.aOp.filial;
-          this.opCodigo = this.aOp.op;
-          this.opProduto = this.aOp.produto;
-          this.opDescricao = this.aOp.descricao;
-          this.opQtdePcf = this.fg.formatarNumero(this.aOp.qtdeLote);
-          this.opQtdeEnv = this.fg.formatarNumero(this.aOp.qtdeEnv);
-          this.opQtdeSaldo = this.fg.formatarNumero(this.aOp.qtdeSaldo);
-          this.opQtdeProd = this.fg.formatarNumero(this.aOp.qtdeProd);
-          this.opSaldoProd = this.fg.formatarNumero(this.aOp.saldoProd);
-          this.opEmissao = xy.emissao;
-          this.opFinal = xy.vencimento;
-        }
+        
       });
 
       this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
@@ -354,131 +373,6 @@ export class OpajustaComponent implements OnInit {
   }
 
 
-
-  buscaOpsAndamentoProtheus() {
-    this.arrOpAndA = this.fj.buscaPrt('ordemProducaoAndamento', {});
-    this.arrOpAndA.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrOpAndB.push({
-          'filial': xy.FILIAL,
-          'op': xy.OP,
-          'emissao': xy.EMISSAO,
-          'qtde': xy.QTDE,
-          'entregue': xy.ENTREGUE,
-          'final': xy.FINAL,
-        })
-      });
-    });
-  }
-
-  buscaOpajustas() { //View_Portal_OP
-    let xcFilial = this.aOp.filial;
-    let xcOp = this.aOp.op;
-    const obj = {
-      filial: xcFilial,
-      op: xcOp,
-    };
-    this.arrOpajusta = [];
-    this.arrOpajusta = this.fj.buscaPrt('pcpRelacaoLoteOpEmpenho', obj); //vw_pcp_relacao_lote_op_empenho
-
-    this.arrOpajusta.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrOpajustaTab.push({
-          componente: xy.componente,
-          descEmp: xy.descEmp,
-          unidade: xy.unidade,
-          qtdeEmp: xy.qtdeEmp,
-          qtdeEmpCalc: xy.qtdeEmpCalc,
-          saldo: xy.saldo,
-          tipo: xy.tipo,
-          situacao: xy.situacao,
-        })
-      });
-      this.opFilial = this.aOp.filial;
-      this.opCodigo = this.aOp.op;
-      this.opProduto = this.aOp.produto;
-      this.opDescricao = this.aOp.descricao;
-      this.opQtde = this.aOp.qtdeLote
-
-      this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-
-  }
-  buscaOpajustasxx() {
-    let conta = 0
-    let secs = 0;
-    let retr = 0;
-    let grupo = '';
-    let oper = '00';
-    let xcFilial = this.aOp.FILIAL;
-    let xcOp = this.aOp.OP;
-    const obj = {
-      filial: xcFilial,
-      op: xcOp,
-    };
-
-    const filOP = this.arrOpAndB.filter(x => (x.filial === xcFilial && x.op === xcOp))[0];
-
-    this.arrOpajusta = this.fj.buscaPrt('opAndamento', obj);
-
-    this.arrOpajusta.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrOpajustaTab.push({
-          'COMPONENTE': xy.COMPONENTE,
-          'DESCRIC': xy.DESCRIC,
-          'UNIDADE': xy.UNIDADE,
-          'QTDEORI': xy.QTDEORI,
-          'QTDECALC': xy.QTDECAL,
-          'SALDO': xy.SALDO,
-          'SITUACA': xy.SITUDESC,
-          'OPERACAO': xy.OPERACAO,
-
-        })
-        if (conta === 0) {
-          conta++
-          this.opFilial = xy.FILIAL;
-          this.opCodigo = xy.OP;
-          this.opEmissao = filOP.emissao;
-          this.opFinal = filOP.final;
-          this.opProduto = xy.PRODUTO;
-          this.opDescricao = xy.DESCRICAO;
-          this.opQtde = filOP.qtde;
-          this.opEntregue = filOP.entregue;
-          this.aOp.forEach(ax => {
-            if (ax.OPERACAO >= oper) {
-              if (ax.GRUPO === '') {
-                this.opQtdePcf = ax.QTDEPCF
-              } else {
-                if (grupo === '') {
-                  this.opQtdePcf = ax.QTDEPCF
-                } else {
-                  if (grupo === ax.GRUPO) {
-                    this.opQtdePcf += ax.QTDEPCF
-                  } else {
-                    this.opQtdePcf = ax.QTDEPCF
-                  }
-                }
-              }
-              oper = ax.OPERACAO
-              grupo = ax.GRUPO
-            }
-            secs += ax.SEGUNDOS
-            retr = ax.RETRABALHO
-          });
-          this.opRetrabalho = String(retr)
-          let horas = this.fj.toHHMMSS(secs)
-          this.opHoras = horas.length === 2 ? '00:00:' + horas : horas.length === 5 ? '00:' + horas : horas //          ('00:00:00' + horas)
-          oper = '00'
-        }
-      });
-      this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-
-  }
 
   enableEditUser(e, i) {
     this.enableEditIndex = i;
