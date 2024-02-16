@@ -75,8 +75,8 @@
                         </div>
                         <div class="card-body table-responsive col-md-1">
                             <mat-form-field title="Validade em meses">
-                                <mat-label>Validade</mat-label>
-                                <input type="number" matInput [(ngModel)]="validadeMeses">
+                                <mat-label>Validade (Mês)</mat-label>
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" matInput [(ngModel)]="validadeMeses">
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-2">

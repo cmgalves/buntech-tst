@@ -77,7 +77,7 @@
                                         <button (click)="imprimeLote(row)" mat-raised-button type="button" matTooltip="Imprime Etiqueta" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">apps</i>
                                         </button>
-                                        <button (click)="bloqueiaLote(row)" mat-raised-button type="button" matTooltip="Bloquear Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="bloqueiaLote(row)" [disabled]="row.situacao == 'CONCLUIDO'" mat-raised-button type="button" matTooltip="Bloquear Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">block</i>
                                         </button>
                                     </td>

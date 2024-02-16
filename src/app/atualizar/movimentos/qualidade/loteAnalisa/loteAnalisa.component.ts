@@ -238,7 +238,7 @@ export class LoteAnalisaComponent implements OnInit {
     let dtAtual = new Date();
     vNum = vNum.replace(',', '.');
     if (isNaN(parseFloat(vNum))) /*Checa se o valor inserido é numérico*/ {
-      if (xcRow.max == 0 && xcRow.min == 0) {
+      if (xcRow.iteMax == 0 && xcRow.iteMin == 0) {
         vResultxt = vNum.toString();
         if(vNum == 'S') sit = 'APROVADO';
         if(vNum == 'N') sit = 'REPROVADO';
