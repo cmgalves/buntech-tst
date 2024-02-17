@@ -31,6 +31,8 @@ export class UsuarioComponent implements OnInit {
   arrEmpresaTab: any = [];
   valEmpresa: string = '';
   valPerfil: string = '';
+  arrLinhas: any = [];
+  valLinha: string = '';
   usuarioCodigo: string = '';
   usuarioEmpresas: string = '';
   usuarioNome: string = '';
@@ -71,11 +73,19 @@ export class UsuarioComponent implements OnInit {
     if (this.arrUserLogado.perfil === 'Administrador') {
       this.buscaEmpresas();
       this.buscaUsuarios();
+      this.buscaLinhas();
     } else {
       alert('Sem Acesso')
       this.router.navigate(['opResumo']);
     }
     this.altIncuser = 'i';
+  }
+
+  buscaLinhas(){
+    this.fj.buscaPrt('buscaLinhas', {}).subscribe(cada => {
+      console.log(cada);
+      this.arrLinhas = [...cada];
+    })
   }
 
   buscaEmpresas() {
@@ -163,13 +173,14 @@ export class UsuarioComponent implements OnInit {
         'perfil': this.valPerfil,
         'depto': this.usuarioDepto,
         'telefone': this.usuarioFone,
+        'linha': this.valLinha
       }
 
       if (this.usuarioNome === '' || this.usuarioEmail === '') {
         alert('Usuário ou Email em branco')
         return true
       } else {
-        this.fj.execProd('incluiAlteraUsuario', obj);
+        this.fj.buscaPrt('incluiAlteraUsuario', obj)//.subscribe(q => console.log(q));
 
         window.location.reload();
 

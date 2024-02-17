@@ -36,7 +36,7 @@ export class RevisaComponent implements OnInit {
   cabProduto: string = ''
   descrProd: string = '';
   cabRevisao: string = '';
-  especAlcada: string = '';
+  especLinha: string = '';
   especAnalise: string = '';
   especSequencia: string = '';
   validadeMeses = 0;
@@ -118,7 +118,6 @@ export class RevisaComponent implements OnInit {
 
   buscaLinhas() {
     this.fj.buscaPrt('buscaLinhas', {}).subscribe(cada => {
-      console.log(cada);
       this.arrLinhas = [...cada]
     }
     )
@@ -172,6 +171,7 @@ export class RevisaComponent implements OnInit {
           'cabQtdeQuebra': xy.cabQtdeQuebra,
           'qtdeAnalise': xy.qtdeAnalise,
           'imprimeLaudo': xy.imprimeLaudo,
+          'linha': xy.linha
         })
         if (seq === 1) {
           this.iteProduto = xy.iteProduto;
@@ -184,7 +184,7 @@ export class RevisaComponent implements OnInit {
           this.embalagem = xy.embalagem;
           this.qualObsRevisao = xy.qualObsRevisao;
           this.qualObsGeral = xy.qualObsGeral;
-          this.especAlcada = xy.especAlcada;
+          this.especLinha = xy.especAlcada;
           this.especAnalise = xy.especAnalise == 'S' ? 'SIM' : 'NAO';
           this.especSequencia = xy.especSequencia;
           this.especQuebra = xy.especQuebra;
@@ -192,6 +192,7 @@ export class RevisaComponent implements OnInit {
           this.qtdeAnalise = xy.qtdeAnalise;
           this.imprimeLaudo = xy.imprimeLaudo;
           this.validadeMeses = xy.validadeMeses;
+          this.especLinha = xy.linha;
         }
       });
 
@@ -341,7 +342,7 @@ export class RevisaComponent implements OnInit {
       'embalagem': this.embalagem,
       'feitoPor': this.arrUserLogado.codUser,
       'aprovPor': this.arrUserLogado.codUser,
-      'especAlcada': this.especAlcada,
+      'linha': this.especLinha,
       'especAnalise': this.especAnalise.substring(0, 1),
       'especSequencia': this.especSequencia,
       'especQuebra': this.especQuebra,

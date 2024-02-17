@@ -66,9 +66,9 @@
                         </div>
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
-                                <mat-select placeholder="Alçada" [(ngModel)]="especAlcada">
-                                    <mat-option *ngFor="let optAlcada of sEspecAlcada" [value]="optAlcada">
-                                        {{optAlcada}}
+                                <mat-select placeholder="Linha" [(ngModel)]="especLinha">
+                                    <mat-option *ngFor="let optLinha of arrLinhas" [value]="optLinha.id">
+                                        {{optLinha.linha}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
