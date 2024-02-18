@@ -253,12 +253,12 @@ export class OpajustaComponent implements OnInit {
     //   // if (this.opRetrabalho > 0) {
       //   this.calcRet();
       // }
-      if (this.calculaMod !== '0') {
-        // this.calcMod();
-      } else {
-        window.location.reload();
-      }
-    });
+    //   if (this.calculaMod !== '0') {
+    //     // this.calcMod();
+    //   } else {
+    //     window.location.reload();
+    //   }
+    // });
 
     // this.buscaProduto()
   }
