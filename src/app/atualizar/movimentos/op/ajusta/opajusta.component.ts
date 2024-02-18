@@ -67,6 +67,7 @@ export class OpajustaComponent implements OnInit {
   opQtdeEnv: string = '';
   opQtdeSaldo: string = '';
   opQtdeProd: string = '';
+  opQtdeProduz: string = '0';
   opSaldoProd: string = '';
   opRetrabalho: any = 0;
   opHoras: string = '';
@@ -199,23 +200,18 @@ export class OpajustaComponent implements OnInit {
     }
   }
 
+produzir(){
+  alert('em desenv')
+}
+
   // confirma o ajuste feito na op para enviar para o conferente
-  confirmar() {
+  confirmarEmpenho() {
     const objConf = {
-      'FILIAL': this.opFilial,
-      'OP': this.opCodigo,
-      'PRODUTO': 'this.opProduto',
-      'DESCPROD': 'this.opDescricao',
-      'CODANT': 'this.opCodant',
-      'COMPONENTE': 'xy.COMPONENTE',
-      'DESCCOMP': 'xy.DESCRIC',
-      'TIPO': 'tudo',
-      'SITUACA': 'A',
-      'UNIDADE': 'xy.UNIDADE',
-      'QTDEPCF': 0,
-      'QTDEINF': 0,
+      'filial': this.opFilial,
+      'op': this.opCodigo,
+      'produto': this.opProduto,
     }
-    this.fj.execProd('calcOP', objConf);
+    this.fj.execProd('spcp_confirma_qtde_informada', objConf);
     window.location.reload();
   }
 
@@ -223,12 +219,12 @@ export class OpajustaComponent implements OnInit {
   calculaOP() {
     const obj = {
       filial: this.opFilial,
-      produto: this.opCodigo,
-      opProduto: this.opProduto,
+      op: this.opCodigo,
+      produto: this.opProduto,
     };
     
-    this.fj.execProd('calcOP', obj);
-    
+    this.fj.execProd('spcp_calcula_op', obj);
+    window.location.reload();
     // this.fj.buscaPrt('opAndamento', obj).subscribe(cada => {
     //   cada.forEach(xy => {
     //     this.calculaMod = xy.XMOD
@@ -400,20 +396,12 @@ export class OpajustaComponent implements OnInit {
       return true;
     }
     const objInc = {
-      'FILIAL': this.opFilial,
-      'OP': this.opCodigo,
-      'PRODUTO': this.opProduto,
-      'DESCPROD': this.opDescricao,
-      'CODANT': this.opCodant,
-      'COMPONENTE': this.opItemNovo,
-      'DESCCOMP': this.opDescItemNovo,
-      'TIPO': Tipo,
-      'SITUACA': 'C',
-      'UNIDADE': this.opUnidadeItemNovo,
-      'QTDEPCF': this.opQtdePcf,
-      'QTDEINF': String(xcQtde),
+      'filial': this.opFilial,
+      'op': this.opCodigo,
+      'componente': this.opItemNovo,
+      'qtde': xcQtde,
     }
-    this.fj.execProd('calcOP', objInc);
+    this.fj.execProd('spcp_inclui_empenho', objInc);
     window.location.reload();
   }
 

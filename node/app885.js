@@ -521,6 +521,22 @@ rota.post('/calcOP', (req, res) => {
 })
 
 
+//Confirma os ajustes da OP
+rota.post('/spcp_confirma_qtde_informada', (req, res) => {
+
+    const xcSql = `
+        EXEC PCP..spcp_confirma_qtde_informada
+        '${req.body.filial}',
+        '${req.body.op}',
+        '${req.body.produto}'
+        `
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
+
+})
+
+
 //Cálculo da OP
 rota.post('/spcp_calcula_op', (req, res) => {
 
@@ -545,6 +561,22 @@ rota.post('/spcp_altera_qtde_informada', (req, res) => {
         '${req.body.filial}',
         '${req.body.op}',
         '${req.body.produto}',
+        '${req.body.componente}',
+        ${req.body.qtde}
+        `
+
+    console.log(xcSql)
+    execSQL(xcSql, res);
+
+})
+
+//Inclusão de novos itens de empenho para OP
+rota.post('/spcp_inclui_empenho', (req, res) => {
+
+    const xcSql = `
+        EXEC PCP..spcp_inclui_empenho
+        '${req.body.filial}',
+        '${req.body.op}',
         '${req.body.componente}',
         ${req.body.qtde}
         `
