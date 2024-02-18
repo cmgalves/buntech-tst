@@ -106,6 +106,7 @@ export class LoteRegComponent implements OnInit {
           'intervaloInicial': xy.intervaloInicial,
           'intervaloFinal': xy.intervaloFinal,
           'statusEnvio': xy.statusEnvio,
+          'linha': xy.linha
         });
       });
       this.dataSource = new MatTableDataSource(this.arrDados)
@@ -217,6 +218,7 @@ export class LoteRegComponent implements OnInit {
     localStorage.setItem('loteAnalisa', JSON.stringify(_aProd));
     this.router.navigate(['loteAnalisa']);
   }
+
   aprovaLote(xcRow) {
     if (this.horarioEstaNoIntervalo(xcRow))
       return this.fj.confirmDialog("INTERVALO AINDA NÃO FINALIZADO", ['OK']);

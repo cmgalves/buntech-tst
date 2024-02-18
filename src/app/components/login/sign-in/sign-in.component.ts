@@ -97,6 +97,7 @@ export class SignInComponent implements OnInit {
           'perfil': xy.perfil,
           'depto': xy.depto,
           'telefone': xy.telefone,
+          'linha': xy.linha
         })
 
       });

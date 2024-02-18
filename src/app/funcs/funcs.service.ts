@@ -394,7 +394,7 @@ export class funcsService {
           "nQuantidade": loteItem.qtdeLote,
           "cCaracteristica": item.descCarac,
           "cResultado": item.resultxt != "" ? item.resultxt : item.result.toString(),
-          "dValidade": this.converterParaDDMMYY(loteItem.dtime, 1),
+          "dValidade": this.converterParaDDMMYY(loteItem.dtime, item.validadeMeses),
           "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
           "cJustificativa": loteItem.justificativa3,
           "cValMin": item.iteMin.toString(),
@@ -506,11 +506,14 @@ export class funcsService {
     var partes = dataString.split('/');
     // Obtém os componentes da data
     var dia = partes[0];
-    var mes = partes[1];
-    var ano = parseInt(partes[2].slice(-2)) + plus; // Pega os dois últimos dígitos do ano
+    var mes = parseInt(partes[1]);
+    var ano = parseInt(partes[2]);
 
+    mes = plus!=0?(mes+plus)%12:0;
+    plus = plus!=0?Math.trunc(plus/12):0;
+    ano += plus
     // Retorna a data formatada
-    return dia + '/' + mes + '/' + ano;
+    return dia + '/' + mes.toString().padStart(2, '0') + '/' + ano.toString().slice(-2);
   }
 
 }

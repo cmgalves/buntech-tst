@@ -246,11 +246,12 @@ export class LoteAnalisaComponent implements OnInit {
         return alert('Por favor, digite um valor numérico');
     } else {
       nbm = parseFloat(vNum);
-      if (xcRow.iteMin > 0 || max > 0) //Checa se o intervalo existe
+      if (!(xcRow.iteMin == 0 && xcRow.iteMax == 0)) //Checa se o intervalo existe
         if (nbm < xcRow.iteMin || nbm > max) //Checa se o valor está no intervalo
           sit = 'REPROVADO';
         else
           sit = 'APROVADO';
+      else return alert("Valor inválido");
     }
     const obj = {
       'filial': this.filial,

@@ -48,10 +48,19 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-4">
+                        <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Acessos Empresa</mat-label>
                                 <input matInput [(ngModel)]="usuarioEmpresas" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-3">
+                            <mat-form-field>
+                                <mat-select placeholder="Selecione a Linha" [(ngModel)]="valLinha">
+                                    <mat-option *ngFor="let empDados of arrLinhas" [value]="empDados.id">
+                                        {{empDados.linha}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-3">
