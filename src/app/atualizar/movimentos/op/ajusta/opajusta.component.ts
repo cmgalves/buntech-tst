@@ -163,7 +163,7 @@ export class OpajustaComponent implements OnInit {
           emissao: xy.emissao,
           qtdeEmp: xy.qtdeEmp,
           qtdeEmpCalc: xy.qtdeEmpCalc,
-          qtdeInformada: xy.qtdeEmpCalc,
+          qtdeInformada: xy.qtdeInformada,
           qtdeConsumida: xy.qtdeConsumida,
           saldo: xy.saldo,
           tipo: xy.tipo,
@@ -218,6 +218,51 @@ export class OpajustaComponent implements OnInit {
     this.fj.execProd('calcOP', objConf);
     window.location.reload();
   }
+
+  // cálculo da op utilizando a nova quantidade produzida
+  calculaOP() {
+    const obj = {
+      filial: this.opFilial,
+      produto: this.opCodigo,
+      opProduto: this.opProduto,
+    };
+    
+    this.fj.execProd('calcOP', obj);
+    
+    // this.fj.buscaPrt('opAndamento', obj).subscribe(cada => {
+    //   cada.forEach(xy => {
+    //     this.calculaMod = xy.XMOD
+    //     if (xy.SITUACA === 'W' || xy.SITUACA === 'V' || xy.SITUACA === 'P') {
+    //       const objProc = {
+    //         'FILIAL': this.opFilial,
+    //         'OP': this.opCodigo,
+    //         'PRODUTO': this.opProduto,
+    //         'DESCPROD': this.opDescricao,
+    //         'CODANT': this.opCodant,
+    //         'COMPONENTE': xy.COMPONENTE,
+    //         'DESCCOMP': xy.DESCRIC,
+    //         'TIPO': xy.TIPO,
+    //         'SITUACA': 'C',
+    //         'UNIDADE': xy.UNIDADE,
+    //         'QTDEPCF': this.opQtdePcf,
+    //         'QTDEINF': 0,
+    //       }
+    //       this.fj.execProd('calcOP', objProc);
+    //     }
+    //   });
+    //   // if (this.opRetrabalho > 0) {
+      //   this.calcRet();
+      // }
+      if (this.calculaMod !== '0') {
+        // this.calcMod();
+      } else {
+        window.location.reload();
+      }
+    });
+
+    // this.buscaProduto()
+  }
+
 
   // cálculo da op utilizando a nova quantidade produzida
   calcOp() {
@@ -382,22 +427,15 @@ export class OpajustaComponent implements OnInit {
   // edita a quantidade do empenho da OP
   altQtde(xaRow) {
     let qdt = (<HTMLInputElement>(document.getElementById("editQtd"))).value.replace(',', '.')
-    this.arrOpajustaTab[this.enableEditIndex].QTDECALC = qdt
+    // this.arrOpajustaTab[this.enableEditIndex].QTDECALC = qdt
     const objAlt = {
-      'FILIAL': this.opFilial,
-      'OP': this.opCodigo,
-      'PRODUTO': this.opProduto,
-      'DESCPROD': this.opDescricao,
-      'CODANT': this.opCodant,
-      'COMPONENTE': xaRow.COMPONENTE,
-      'DESCCOMP': xaRow.DESCRIC,
-      'TIPO': 'M',
-      'SITUACA': 'K',
-      'UNIDADE': xaRow.UNIDADE,
-      'QTDEPCF': this.opQtdePcf,
-      'QTDEINF': parseFloat(qdt),
+      'filial': this.opFilial,
+      'op': this.opCodigo,
+      'produto': this.opProduto,
+      'componente': xaRow.componente,
+      'qtde': parseFloat(qdt),
     }
-    this.fj.execProd('calcOP', objAlt);
+    this.fj.execProd('spcp_altera_qtde_informada', objAlt);
 
     this.enableEdit = false;
     this.enableEditIndex = null;
