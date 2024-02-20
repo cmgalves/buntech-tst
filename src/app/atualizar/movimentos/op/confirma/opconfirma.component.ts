@@ -137,7 +137,7 @@ export class OpconfirmaComponent implements OnInit {
           this.opQtdePcf = this.fg.formatarNumero(xaOp.qtdeLote);
           this.opQtdeEnv =  this.fg.formatarNumero(xaOp.qtdeEnv);
           this.opQtdeSaldo =  this.fg.formatarNumero(xaOp.qtdeSaldo);
-          this.opEmissao = xy.emissao;
+          this.opEmissao = this.fj.converterParaDDMMYY(xy.emissao);
           this.opFinal = xy.vencimento;
         }
         });

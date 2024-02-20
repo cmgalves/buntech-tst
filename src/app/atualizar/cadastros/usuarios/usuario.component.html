@@ -41,7 +41,7 @@
                     <div class="row">
                         <div class="card-body table-responsive col-md-3">
                             <mat-form-field>
-                                <mat-select placeholder="Selecione as Empresas" [(ngModel)]="valEmpresa" (ngModelChange)="atuEmpresa();">
+                                <mat-select multiple placeholder="Selecione as Empresas" [(ngModel)]="valEmpresa">
                                     <mat-option *ngFor="let empDados of arrEmpresaTab" [value]="empDados.codFil">
                                         {{empDados.nomeFil}}
                                     </mat-option>
@@ -51,16 +51,22 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Acessos Empresa</mat-label>
-                                <input matInput [(ngModel)]="usuarioEmpresas" disabled>
+                                <input matInput [(ngModel)]="valEmpresa" disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-3">
                             <mat-form-field>
-                                <mat-select placeholder="Selecione a Linha" [(ngModel)]="valLinha">
+                                <mat-select placeholder="Selecione a Linha" [(ngModel)]="valLinha" multiple>
                                     <mat-option *ngFor="let empDados of arrLinhas" [value]="empDados.id">
                                         {{empDados.linha}}
                                     </mat-option>
                                 </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field>
+                                <mat-label>Acessos Linhas</mat-label>
+                                <input matInput [(ngModel)]="valLinha" disabled>
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-3">

@@ -88,7 +88,7 @@ export class OpvisualizaComponent implements OnInit {
           this.opQtdeSaldo = y.qtdeSaldo
           this.opQtdeProd = y.qtdeProd
           this.opSaldoProd = y.saldoProd
-          this.opEmissao = y.dtcria 
+          this.opEmissao = this.fj.converterParaDDMMYY(y.dtcria) 
           this.opHoras = this.fj.toHHMMSS(y.opSegundos)
       })
       this.buscaOpvisualiza();

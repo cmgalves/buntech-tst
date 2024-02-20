@@ -128,10 +128,10 @@ export class OpajustaComponent implements OnInit {
           this.opDescricao = y.descricao
           this.opQtdePcf = y.qtdeLote
           this.opQtdeEnv = y.qtdeEnv  
-          this.opQtdeSaldo = y.qtdeSaldo
+          this.opQtdeSaldo = this.fg.formatarNumero(y.qtdeSaldo);
           this.opQtdeProd = y.qtdeProd
-          this.opSaldoProd = y.saldoProd
-          this.opEmissao = y.dtcria 
+          this.opSaldoProd = this.fg.formatarNumero(y.saldoProd)
+          this.opEmissao = this.fj.converterParaDDMMYY(y.dtcria); 
           this.opHoras = this.fj.toHHMMSS(y.opSegundos)
       })
       this.buscaOpEmpenho();

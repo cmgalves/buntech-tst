@@ -29,7 +29,7 @@ export class UsuarioComponent implements OnInit {
   arrUsuarioTab: any = [];
   arrEmpresa: any = [];
   arrEmpresaTab: any = [];
-  valEmpresa: string = '';
+  valEmpresa: any = [];
   valPerfil: string = '';
   arrLinhas: any = [];
   valLinha: string = '';
@@ -166,7 +166,7 @@ export class UsuarioComponent implements OnInit {
     if (conta === 0) {
       let obj = {
         'codUser': this.usuarioCodigo == '' ? 0 : this.usuarioCodigo,
-        'empresa': this.usuarioEmpresas,
+        'empresa': this.valEmpresa.join(' - '),
         'nome': this.usuarioNome,
         'email': this.usuarioEmail,
         'senha': this.usuarioSenha,
@@ -180,9 +180,10 @@ export class UsuarioComponent implements OnInit {
         alert('Usuário ou Email em branco')
         return true
       } else {
-        this.fj.buscaPrt('incluiAlteraUsuario', obj)//.subscribe(q => console.log(q));
+        console.log(obj.empresa);
+        this.fj.buscaPrt('incluiAlteraUsuario', obj).subscribe(q => console.log(q));
 
-        window.location.reload();
+       // window.location.reload();
 
       }
     } else {
@@ -193,6 +194,8 @@ export class UsuarioComponent implements OnInit {
   editUser(xcObl) {
     this.usuarioCodigo = xcObl.codUser
     this.usuarioEmpresas = xcObl.empresa
+    this.valEmpresa = [...xcObl.empresa.split(' - ')];
+    console.log(this.valEmpresa);
     this.usuarioNome = xcObl.nome
     this.usuarioEmail = xcObl.email
     this.usuarioSenha = xcObl.senha

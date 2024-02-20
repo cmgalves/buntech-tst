@@ -509,7 +509,7 @@ export class funcsService {
     var mes = parseInt(partes[1]);
     var ano = parseInt(partes[2]);
 
-    mes = plus!=0?(mes+plus)%12:0;
+    mes = plus!=0?(mes+plus)%12:mes;
     plus = plus!=0?Math.trunc(plus/12):0;
     ano += plus
     // Retorna a data formatada
