@@ -57,18 +57,18 @@
                         <div class="card-body table-responsive col-md-3">
                             <mat-form-field>
                                 <mat-select placeholder="Selecione a Linha" [(ngModel)]="valLinha" multiple>
-                                    <mat-option *ngFor="let empDados of arrLinhas" [value]="empDados.id">
+                                    <mat-option *ngFor="let empDados of arrLinhas" [value]="empDados.linha">
                                         {{empDados.linha}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-2">
+                        <!-- <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Acessos Linhas</mat-label>
                                 <input matInput [(ngModel)]="valLinha" disabled>
                             </mat-form-field>
-                        </div>
+                        </div> -->
                         <div class="card-body table-responsive col-md-3">
                             <mat-form-field>
                                 <mat-select placeholder="Selecione o Perfil" [(ngModel)]="valPerfil">

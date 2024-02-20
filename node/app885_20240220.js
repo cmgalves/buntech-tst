@@ -446,19 +446,17 @@ rota.post('/incluiAlteraUsuario', (req, res) => {
     const perfil = req.body.perfil;
     const depto = req.body.depto;
     const telefone = req.body.telefone;
-    const linha = req.body.linha;
 
     xcSql += "EXEC "
     xcSql += "	PCP..sp_incluiAlteraUsuario "
     xcSql += "  " + codUser + ",  "
     xcSql += "  '" + empresa + "', "
-    xcSql += "  '" + nome + "', "
+    xcSql += "  " + nome + "', "
     xcSql += "  '" + email + "', "
     xcSql += "  '" + senha + "', "
     xcSql += "  '" + perfil + "', "
     xcSql += "  '" + depto + "', "
-    xcSql += "  '" + telefone + "', "
-    xcSql += "  '" + linha + "' "
+    xcSql += "  '" + telefone + "' "
 
 
     console.log(xcSql)
@@ -870,7 +868,7 @@ rota.post('/incluiEspec', (req, res) => {
     const feitoPor = req.body.feitoPor;
     const aprovPor = req.body.aprovPor;
     const cTipo = req.body.cTipo;
-    const linha = req.body.linha;
+    const especAlcada = req.body.especAlcada;
     const especAnalise = req.body.especAnalise;
     const especSequencia = req.body.especSequencia;
     const especQuebra = req.body.especQuebra;
@@ -894,7 +892,7 @@ rota.post('/incluiEspec', (req, res) => {
     xcSql += " '" + embalagem + "', "
     xcSql += " " + feitoPor + ", "
     xcSql += " " + aprovPor + ", "
-    xcSql += " '" + linha + "', "
+    xcSql += " '" + especAlcada + "', "
     xcSql += " '" + especAnalise + "', "
     xcSql += " '" + especSequencia + "', "
     xcSql += " '" + especQuebra + "', "

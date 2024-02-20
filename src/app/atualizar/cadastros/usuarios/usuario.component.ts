@@ -83,7 +83,7 @@ export class UsuarioComponent implements OnInit {
 
   buscaLinhas(){
     this.fj.buscaPrt('buscaLinhas', {}).subscribe(cada => {
-      console.log(cada);
+      // console.log(cada);
       this.arrLinhas = [...cada];
     })
   }
@@ -183,7 +183,7 @@ export class UsuarioComponent implements OnInit {
         console.log(obj.empresa);
         this.fj.buscaPrt('incluiAlteraUsuario', obj).subscribe(q => console.log(q));
 
-       // window.location.reload();
+       window.location.reload();
 
       }
     } else {

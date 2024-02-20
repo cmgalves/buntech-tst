@@ -164,14 +164,13 @@ export class RevisaComponent implements OnInit {
           'iteLaudo': xy.iteLaudo,
           'iteMeio': xy.iteMeio,
           'descCarac': xy.descCarac,
-          'especAlcada': xy.especAlcada,
           'especAnalise': xy.especAnalise,
           'especSequencia': xy.especSequencia,
           'especQuebra': xy.especQuebra,
           'cabQtdeQuebra': xy.cabQtdeQuebra,
           'qtdeAnalise': xy.qtdeAnalise,
           'imprimeLaudo': xy.imprimeLaudo,
-          'linha': xy.linha
+          'especLinha': xy.linha
         })
         if (seq === 1) {
           this.iteProduto = xy.iteProduto;
@@ -184,7 +183,7 @@ export class RevisaComponent implements OnInit {
           this.embalagem = xy.embalagem;
           this.qualObsRevisao = xy.qualObsRevisao;
           this.qualObsGeral = xy.qualObsGeral;
-          this.especLinha = xy.especAlcada;
+          this.especLinha = xy.linha;
           this.especAnalise = xy.especAnalise == 'S' ? 'SIM' : 'NAO';
           this.especSequencia = xy.especSequencia;
           this.especQuebra = xy.especQuebra;
@@ -192,7 +191,6 @@ export class RevisaComponent implements OnInit {
           this.qtdeAnalise = xy.qtdeAnalise;
           this.imprimeLaudo = xy.imprimeLaudo;
           this.validadeMeses = xy.validadeMeses;
-          this.especLinha = xy.linha;
         }
       });
 
@@ -353,7 +351,7 @@ export class RevisaComponent implements OnInit {
       'validadeMeses': this.validadeMeses
     }
     this.fj.buscaPrt('incluiEspec', obj).subscribe(q => console.log(q));
-    //window.location.reload();
+    window.location.reload();
   }
 
 
