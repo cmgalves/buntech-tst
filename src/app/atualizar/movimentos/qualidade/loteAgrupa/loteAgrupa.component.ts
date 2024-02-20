@@ -81,7 +81,7 @@ export class LoteAgrupaComponent implements OnInit {
     this.buscaLoteAgrupa();
   }
 
-  // busca os produtos no cadastro para utilizar os dados necessários
+  // busca os produtos no cadastro para utilizar os dados necessários PCP..vw_pcp_relacao_lote_agrupa
   buscaLoteAgrupa() {
     this.arrOpAndA = this.fj.buscaPrt('relacaoLoteAgrupa', {});
     this.arrOpAndA.subscribe(cada => {
