@@ -44,7 +44,7 @@ export class UsuarioComponent implements OnInit {
   optPerfil: string[] = ['Apontador', 'Conferente', 'Conferente-Apontador', 'Administrador', 'Qualidade N1', 'Qualidade N2', 'Qualidade N3'];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
   usuarios: Observable<any>;
-  displayedColumns: string[] = ['nome', 'email', 'empresa', 'perfil', 'telefone', 'depto', 'edicao'];
+  displayedColumns: string[] = ['nome', 'email', 'empresa', 'perfil', 'telefone', 'depto', 'linha', 'edicao'];
   dataSource: MatTableDataSource<cadUsuario>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -175,7 +175,7 @@ export class UsuarioComponent implements OnInit {
         'perfil': this.valPerfil,
         'depto': this.usuarioDepto,
         'telefone': this.usuarioFone,
-        'linha': this.valLinha.join(' - ')
+        'linha': this.linhaValor
       }
 
       if (this.usuarioNome === '' || this.usuarioEmail === '') {
@@ -191,12 +191,12 @@ export class UsuarioComponent implements OnInit {
   }
 
   editUser(xcObl) {
+    console.log(xcObl)
     this.usuarioCodigo = xcObl.codUser
     this.usuarioEmpresas = xcObl.empresa
     this.valEmpresa = xcObl.empresa ? [...xcObl.empresa.split(' - ')] : [];
     this.atualizaEmpresaValor();
-    this.valLinha = xcObl.linha != null ? [...xcObl.linha.split(' - ').map((item) =>
-      parseInt(item, 10))] : [];
+    this.valLinha = xcObl.linha != null ? [...xcObl.linha.split(' - ')] : [];
     this.atualizaLinhaValor();
     this.usuarioNome = xcObl.nome
     this.usuarioEmail = xcObl.email
@@ -219,14 +219,13 @@ export class UsuarioComponent implements OnInit {
   }
 
   atualizaLinhaValor() {
-    console.log(this.valLinha)
-    let array = this.arrLinhas.filter(q => this.valLinha.includes(q.id));
+    let array = this.arrLinhas.filter(q => this.valLinha.includes(q.linha));
     this.linhaValor = array.map(q => q.linha).join(' - ');
   }
 
   atualizaEmpresaValor() {
     let array = this.arrEmpresaTab.filter(q => this.valEmpresa.includes(q.codFil));
-    this.empresaValor = array.map(q => q.nomeFil).join(' - ');
+    this.empresaValor = array.map(q => q.codFil).join(' - ');
   }
 
 
