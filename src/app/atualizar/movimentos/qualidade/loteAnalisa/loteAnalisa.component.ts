@@ -364,7 +364,6 @@ export class LoteAnalisaComponent implements OnInit {
       loteAprov: 'APROVADO'
     }
     this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
-      console.log('enviando')
       this.fj.enviarLoteProteus(q[0]);
     });
   }

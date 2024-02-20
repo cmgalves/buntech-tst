@@ -61,7 +61,8 @@ export class SignInComponent implements OnInit {
           'perfil': xy.perfil,
           'depto': xy.depto,
           'telefone': xy.telefone,
-          'dataLogin': new Date()
+          'dataLogin': new Date(),
+          'linha': xy.linha
         })
       }
     });
