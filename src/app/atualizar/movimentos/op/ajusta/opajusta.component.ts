@@ -19,7 +19,7 @@ export interface opAjusta {
   ROTEIRO: string;
   OPERACAO: string;
 }
-
+ 
 @Component({
   selector: 'app-opajusta',
   templateUrl: './opajusta.component.html',
@@ -136,9 +136,7 @@ export class OpajustaComponent implements OnInit {
           this.opHoras = this.fj.toHHMMSS(y.opSegundos)
       })
       this.buscaOpEmpenho();
-
     })
-
   }
 
 
@@ -225,157 +223,9 @@ produzir(){
     
     this.fj.execProd('spcp_calcula_op', obj);
     window.location.reload();
-    // this.fj.buscaPrt('opAndamento', obj).subscribe(cada => {
-    //   cada.forEach(xy => {
-    //     this.calculaMod = xy.XMOD
-    //     if (xy.SITUACA === 'W' || xy.SITUACA === 'V' || xy.SITUACA === 'P') {
-    //       const objProc = {
-    //         'FILIAL': this.opFilial,
-    //         'OP': this.opCodigo,
-    //         'PRODUTO': this.opProduto,
-    //         'DESCPROD': this.opDescricao,
-    //         'CODANT': this.opCodant,
-    //         'COMPONENTE': xy.COMPONENTE,
-    //         'DESCCOMP': xy.DESCRIC,
-    //         'TIPO': xy.TIPO,
-    //         'SITUACA': 'C',
-    //         'UNIDADE': xy.UNIDADE,
-    //         'QTDEPCF': this.opQtdePcf,
-    //         'QTDEINF': 0,
-    //       }
-    //       this.fj.execProd('calcOP', objProc);
-    //     }
-    //   });
-    //   // if (this.opRetrabalho > 0) {
-      //   this.calcRet();
-      // }
-    //   if (this.calculaMod !== '0') {
-    //     // this.calcMod();
-    //   } else {
-    //     window.location.reload();
-    //   }
-    // });
-
-    // this.buscaProduto()
+    
   }
 
-
-  // cálculo da op utilizando a nova quantidade produzida
-  calcOp() {
-    const obj = {
-      filial: this.aOp.filial,
-      op: this.aOp.op,
-      tipo: 'tudo',
-    };
-    this.fj.buscaPrt('opAndamento', obj).subscribe(cada => {
-      cada.forEach(xy => {
-        this.calculaMod = xy.XMOD
-        if (xy.SITUACA === 'W' || xy.SITUACA === 'V' || xy.SITUACA === 'P') {
-          const objProc = {
-            'FILIAL': this.opFilial,
-            'OP': this.opCodigo,
-            'PRODUTO': this.opProduto,
-            'DESCPROD': this.opDescricao,
-            'CODANT': this.opCodant,
-            'COMPONENTE': xy.COMPONENTE,
-            'DESCCOMP': xy.DESCRIC,
-            'TIPO': xy.TIPO,
-            'SITUACA': 'C',
-            'UNIDADE': xy.UNIDADE,
-            'QTDEPCF': this.opQtdePcf,
-            'QTDEINF': 0,
-          }
-          this.fj.execProd('calcOP', objProc);
-        }
-      });
-      // if (this.opRetrabalho > 0) {
-      //   this.calcRet();
-      // }
-      if (this.calculaMod !== '0') {
-        // this.calcMod();
-      } else {
-        window.location.reload();
-      }
-    });
-
-    // this.buscaProduto()
-  }
-
-  // calcula o item de retrabalho na op
-  calcRet() {
-    const filProd = this.arrProd.filter(x => x.codigo == this.opProduto)[0];
-    if (filProd.retrabalho !== '') {
-      const filRet = this.arrProd.filter(x => x.codigo == filProd.retrabalho)[0]
-      const objRet = {
-        'FILIAL': this.opFilial,
-        'OP': this.opCodigo,
-        'PRODUTO': this.opProduto,
-        'DESCPROD': this.opDescricao,
-        'CODANT': this.opCodant,
-        'COMPONENTE': filRet.codigo,
-        'DESCCOMP': filRet.descricao,
-        'TIPO': 'R',
-        'SITUACA': 'C',
-        'UNIDADE': filRet.unidade,
-        'QTDEPCF': this.opQtdePcf,
-        'QTDEINF': this.opRetrabalho,
-      }
-      this.fj.execProd('calcOP', objRet);
-    } else {
-      alert('o produto: ' + filProd.codigo + ' não tem cadastro de Retrabalho')
-    }
-  }
-
-  // calcula a mão de obra e o ggf na OP
-  calcMod() {
-    let completaCusto = '';
-    // let idxMod = 0;
-    this.arrMod = [];
-    this.aOp.forEach(ax => {
-      const y = this.arrRecurso.filter(x => x.filial === ax.FILIAL && x.codigo === ax.RECURSO);
-
-      if (completaCusto.indexOf(y[0].custo) === -1) {
-        completaCusto += '--' + y[0].custo
-        this.arrMod.push({
-          "filial": ax.FILIAL,
-          "op": ax.OP,
-          "cc": y[0].custo,
-          "segundos": ax.SEGUNDOS
-        })
-
-      } else {
-        this.arrMod.forEach((kk, ik) => {
-          if (kk.cc === y[0].custo) {
-            this.arrMod[ik].segundos += ax.SEGUNDOS
-          }
-        });
-      }
-
-    });
-
-    this.arrMod.forEach(ay => {
-      const filProd = this.arrProd.filter(x => (x.codigo.substring(3, 10) == ay.cc && x.codigo.substring(0, 3) !== 'GAS') || (x.mdo.substring(3, 10) == ay.cc));
-      filProd.forEach(yy => {
-        const objMod = {
-          'FILIAL': this.opFilial,
-          'OP': this.opCodigo,
-          'PRODUTO': this.opProduto,
-          'DESCPROD': this.opDescricao,
-          'CODANT': this.opCodant,
-          'COMPONENTE': yy.codigo,
-          'DESCCOMP': yy.descricao,
-          'TIPO': 'M',
-          'SITUACA': 'C',
-          'UNIDADE': yy.unidade,
-          'QTDEPCF': this.opQtdePcf,
-          'QTDEINF': (ay.segundos / 3600),
-        }
-        this.fj.execProd('calcOP', objMod);
-      });
-
-    });
-    window.location.reload();
-  }
 
 
   mostraInclusao() {
@@ -415,7 +265,6 @@ produzir(){
   // edita a quantidade do empenho da OP
   altQtde(xaRow) {
     let qdt = (<HTMLInputElement>(document.getElementById("editQtd"))).value.replace(',', '.')
-    // this.arrOpajustaTab[this.enableEditIndex].QTDECALC = qdt
     const objAlt = {
       'filial': this.opFilial,
       'op': this.opCodigo,
