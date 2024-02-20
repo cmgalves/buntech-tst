@@ -32,7 +32,7 @@ export class UsuarioComponent implements OnInit {
   valEmpresa: any = [];
   valPerfil: string = '';
   arrLinhas: any = [];
-  valLinha: string = '';
+  valLinha: any = [];
   usuarioCodigo: string = '';
   usuarioEmpresas: string = '';
   usuarioNome: string = '';
@@ -48,6 +48,8 @@ export class UsuarioComponent implements OnInit {
   dataSource: MatTableDataSource<cadUsuario>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  linhaValor: string;
+  empresaValor: string;
 
 
   // Campina Grande - 888
@@ -81,9 +83,8 @@ export class UsuarioComponent implements OnInit {
     this.altIncuser = 'i';
   }
 
-  buscaLinhas(){
+  buscaLinhas() {
     this.fj.buscaPrt('buscaLinhas', {}).subscribe(cada => {
-      console.log(cada);
       this.arrLinhas = [...cada];
     })
   }
@@ -122,6 +123,7 @@ export class UsuarioComponent implements OnInit {
           'perfil': xy.perfil,
           'depto': xy.depto,
           'telefone': xy.telefone,
+          'linha': xy.linha
         })
 
       });
@@ -173,17 +175,14 @@ export class UsuarioComponent implements OnInit {
         'perfil': this.valPerfil,
         'depto': this.usuarioDepto,
         'telefone': this.usuarioFone,
-        'linha': this.valLinha
+        'linha': this.valLinha.join(' - ')
       }
 
       if (this.usuarioNome === '' || this.usuarioEmail === '') {
         alert('Usuário ou Email em branco')
         return true
       } else {
-        console.log(obj.empresa);
-        this.fj.buscaPrt('incluiAlteraUsuario', obj).subscribe(q => console.log(q));
-
-       // window.location.reload();
+        this.fj.buscaPrt('incluiAlteraUsuario', obj).subscribe(q => {window.location.reload()});
 
       }
     } else {
@@ -194,8 +193,11 @@ export class UsuarioComponent implements OnInit {
   editUser(xcObl) {
     this.usuarioCodigo = xcObl.codUser
     this.usuarioEmpresas = xcObl.empresa
-    this.valEmpresa = [...xcObl.empresa.split(' - ')];
-    console.log(this.valEmpresa);
+    this.valEmpresa = xcObl.empresa ? [...xcObl.empresa.split(' - ')] : [];
+    this.atualizaEmpresaValor();
+    this.valLinha = xcObl.linha != null ? [...xcObl.linha.split(' - ').map((item) =>
+      parseInt(item, 10))] : [];
+    this.atualizaLinhaValor();
     this.usuarioNome = xcObl.nome
     this.usuarioEmail = xcObl.email
     this.usuarioSenha = xcObl.senha
@@ -214,6 +216,17 @@ export class UsuarioComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  atualizaLinhaValor() {
+    console.log(this.valLinha)
+    let array = this.arrLinhas.filter(q => this.valLinha.includes(q.id));
+    this.linhaValor = array.map(q => q.linha).join(' - ');
+  }
+
+  atualizaEmpresaValor() {
+    let array = this.arrEmpresaTab.filter(q => this.valEmpresa.includes(q.codFil));
+    this.empresaValor = array.map(q => q.nomeFil).join(' - ');
   }
 
 

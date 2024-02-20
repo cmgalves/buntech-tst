@@ -379,7 +379,6 @@ export class funcsService {
         'op': loteItem.op,
         'statusEnvio': 'NÃO ENVIADO'
       };
-      console.log('enviando')
       const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
       this.buscaPrt('alteraStatusEnvio', obj);
 

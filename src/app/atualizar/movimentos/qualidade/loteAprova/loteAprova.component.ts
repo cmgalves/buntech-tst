@@ -197,7 +197,6 @@ export class LoteAprovaComponent implements OnInit {
     var justificativa3 = this.justificativa3;
     var loteAprov;
 
-    console.log(this.aProd)
     const nivel = this.aProd.loteAprov == 'SEGREGADO' ? 'N1' : (this.aProd.loteAprov == 'REAVALIACAON2'
       && this.nivel.includes('N2') ? 'N2' : this.nivel.includes('N3') ? 'N3' : '');
 
@@ -216,8 +215,7 @@ export class LoteAprovaComponent implements OnInit {
     if (!(this.fj.acessoUsuario(this.aUsr, nivel)))
       return alert("Você não tem a permissão necessária para aprovar esse item"); //Checa se o usuário tem o perfil
     //que coincide com a alcada do lote
-
-    if(this.aUsr.linha != this.aProd.linha)
+    if(!this.aUsr.linha.includes(this.aProd.linha) && this.aProd.linha != null)
       return alert("Você não pertence a mesma linha desse item");
 
     if (tipo != 'A') {
