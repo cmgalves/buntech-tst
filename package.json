@@ -60,7 +60,7 @@
         "nodemailer": "^6.9.4",
         "perfect-scrollbar": "1.1.0",
         "popper.js": "1.15.0",
-        "rxjs": "6.6.2",
+        "rxjs": "^7.0.0",
         "rxjs-compat": "6.5.2",
         "xlsx": "^0.16.9",
         "zone.js": "~0.11.4"

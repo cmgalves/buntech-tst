@@ -82,6 +82,21 @@ export class OpajustaComponent implements OnInit {
   enableEditIndex = null;
   editQtd: any = 0;
 
+  ltcrevisao: string = '';
+  ltclote: string = '';
+  ltcvalidade: string = '';
+  ltcquebra: string = '';
+  ltcnivel: string = '';
+  ltcqtLote: string = '';
+  ltcobs: string = '';
+
+  temLote = true;
+  opPcf = JSON.parse(localStorage.getItem('opPcf'));
+  opQtdeEntregue: string = '';
+  parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.aOp[0]?.SITUACAO) > -1;
+  objLote: any = [];
+  objTotal: any = [];
+
   opajustas: Observable<any>;
   displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'sitDesc', 'edicao'];
   // displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'situaca', 'edicao'];
@@ -112,8 +127,18 @@ export class OpajustaComponent implements OnInit {
   }
 
 
-// produção da OP de acordo com os status
-produzir() {
+  // produção da OP de acordo com os status
+  produzir() {
+    var parcial = false;
+    if (this.arrOpajustaTab.filter(q => q.situacao != 'Ajustada').length > 0) {
+      parcial = true;
+      if (this.opQtdeProduz >= this.opQtdePcf) {
+        if (confirm("Não é possível produzir a OP completamente, deseja continuar com um valor menor?"))
+          this.opQtdeProduz = (parseInt(this.opQtdePcf) - 0.1).toString();
+        else return;
+      }
+    }
+
     let temSaldo = true
     let confirmado = true
     let arrItens = []
@@ -121,14 +146,14 @@ produzir() {
 
     let cLoc: string = this.opFilial === '108' ? '99' : '01';
 
-  if (lib = 5) {
-    alert('em desenv')
-    
-  }else{
+    if (lib = 5) {
+      alert('em desenv')
 
-  }
+    } else {
 
-  this.arrOpajusta.forEach(xl => {
+    }
+
+    this.arrOpajusta.forEach(xl => {
       if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
         temSaldo = false
       }
@@ -147,6 +172,10 @@ produzir() {
       }
     });
 
+    const nQtdeLen = this.aOp.length - 1
+    const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
+    this.parcialAtivo = false;
+
     if (this.temLote) {
       if (confirmado) {
         if (temSaldo) {
@@ -162,8 +191,8 @@ produzir() {
             nC2QtdAjst: this.opQtdePcf,
             cTipoProd: 'T',
             nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000,
-            cOperacao: this.aOP[nQtdeLen].OPERACAO,
-            cRecurso: this.aOP[nQtdeLen].RECURSO,
+            cOperacao: this.aOp[nQtdeLen].OPERACAO,
+            cRecurso: this.aOp[nQtdeLen].RECURSO,
             dDataApt: datApt[0].APT,
             ItensD4: arrItens
           };
@@ -178,7 +207,7 @@ produzir() {
             'validade': this.ltcvalidade,
             'quebra': this.ltcquebra,
             'nivel': this.ltcnivel,
-            'qtde': this.opQtdeParcial,
+            'qtde': this.opQtdeProduz,
             'obs': this.ltcobs,
             'usuario': this.aUsr.codUser,
             'cTipo': 'T',
@@ -187,7 +216,7 @@ produzir() {
           this.objTotal = {
             filial: this.opFilial,
             op: this.opCodigo,
-            qtde: this.opQtdeParcial,
+            qtde: this.opQtdeProduz,
             tipo: 'T',
             usrProd: this.aUsr.codUser,
             fechamento: 'automatico',
@@ -201,7 +230,7 @@ produzir() {
               //   this.fj.execProd('manuLote', this.objLote);
               // }
             }
-            
+
             window.location.reload();
           });
         } else {
@@ -217,7 +246,7 @@ produzir() {
 
 
   // Busca OP com os dados agrupados - vw_pcp_relacao_lote_op_empenho
-  buscaOp(){
+  buscaOp() {
     let xcFilial = this.aOp.filial;
     let xcOp = this.aOp.op;
     const obj = {
@@ -225,19 +254,19 @@ produzir() {
       op: xcOp,
     };
 
-    this.fj.buscaPrt('pcpRelacaoOp', obj).subscribe(x =>{
-      x.forEach(y =>{
-          this.opFilial = y.filial
-          this.opCodigo = y.op
-          this.opProduto = y.produto
-          this.opDescricao = y.descricao
-          this.opQtdePcf = y.qtdeLote
-          this.opQtdeEnv = y.qtdeEnv  
-          this.opQtdeSaldo = this.fg.formatarNumero(y.qtdeSaldo);
-          this.opQtdeProd = y.qtdeProd
-          this.opSaldoProd = this.fg.formatarNumero(y.saldoProd)
-          this.opEmissao = this.fj.converterParaDDMMYY(y.dtcria); 
-          this.opHoras = this.fj.toHHMMSS(y.opSegundos)
+    this.fj.buscaPrt('pcpRelacaoOp', obj).subscribe(x => {
+      x.forEach(y => {
+        this.opFilial = y.filial
+        this.opCodigo = y.op
+        this.opProduto = y.produto
+        this.opDescricao = y.descricao
+        this.opQtdePcf = y.qtdeLote
+        this.opQtdeEnv = y.qtdeEnv
+        this.opQtdeSaldo = this.fg.formatarNumero(y.qtdeSaldo);
+        this.opQtdeProd = y.qtdeProd
+        this.opSaldoProd = this.fg.formatarNumero(y.saldoProd)
+        this.opEmissao = this.fj.converterParaDDMMYY(y.dtcria);
+        this.opHoras = this.fj.toHHMMSS(y.opSegundos)
       })
       this.buscaOpEmpenho();
     })
@@ -273,7 +302,7 @@ produzir() {
           situacao: xy.situacao,
           sitDesc: xy.sitDesc,
         })
-        
+
       });
 
       this.dataSource = new MatTableDataSource(this.arrOpajustaTab)
@@ -321,10 +350,10 @@ produzir() {
       op: this.opCodigo,
       produto: this.opProduto,
     };
-    
+
     this.fj.execProd('spcp_calcula_op', obj);
     window.location.reload();
-    
+
   }
 
 
