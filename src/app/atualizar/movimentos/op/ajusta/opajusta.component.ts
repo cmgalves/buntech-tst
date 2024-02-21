@@ -19,7 +19,6 @@ export interface opAjusta {
   ROTEIRO: string;
   OPERACAO: string;
 }
- 
 @Component({
   selector: 'app-opajusta',
   templateUrl: './opajusta.component.html',
@@ -112,6 +111,111 @@ export class OpajustaComponent implements OnInit {
 
   }
 
+
+// produção da OP de acordo com os status
+produzir() {
+    let temSaldo = true
+    let confirmado = true
+    let arrItens = []
+    let lib = 5;
+
+    let cLoc: string = this.opFilial === '108' ? '99' : '01';
+
+  if (lib = 5) {
+    alert('em desenv')
+    
+  }else{
+
+  }
+
+  this.arrOpajusta.forEach(xl => {
+      if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
+        temSaldo = false
+      }
+      if (xl.SITUACA !== 'confirmada') {
+        confirmado = false
+      }
+      if ((xl.QTDEORI == 0 && xl.QTDECALC > 0) || (xl.QTDEORI > 0 && xl.QTDECALC == 0) || (xl.QTDEORI != 0 && xl.QTDECALC != 0)) {
+        arrItens.push({
+          'cD4CodPrd': xl.COMPONENTE,
+          'cD4Local': cLoc,
+          'nD4QtdOri': xl.QTDEORI,
+          'nD4QtdAjst': xl.QTDECALC,
+          'cTpComp': xl.TIPO,
+          'cRoteiro': "01"
+        })
+      }
+    });
+
+    if (this.temLote) {
+      if (confirmado) {
+        if (temSaldo) {
+          const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
+
+          const obj = {
+            cFilialOp: this.opFilial,
+            cNumOp: this.opCodigo,
+            cC2Prod: this.opProduto,
+            cC2Local: cLoc,
+            cDocAjst: 'DOCTOTAL',
+            nC2QtdOri: this.opQtde,
+            nC2QtdAjst: this.opQtdePcf,
+            cTipoProd: 'T',
+            nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000,
+            cOperacao: this.aOP[nQtdeLen].OPERACAO,
+            cRecurso: this.aOP[nQtdeLen].RECURSO,
+            dDataApt: datApt[0].APT,
+            ItensD4: arrItens
+          };
+
+          this.objLote = {
+            'filial': this.opFilial,
+            'op': this.opCodigo,
+            'produto': this.opProduto,
+            'descricao': this.opDescricao,
+            'revisao': this.ltcrevisao,
+            'lote': this.ltclote,
+            'validade': this.ltcvalidade,
+            'quebra': this.ltcquebra,
+            'nivel': this.ltcnivel,
+            'qtde': this.opQtdeParcial,
+            'obs': this.ltcobs,
+            'usuario': this.aUsr.codUser,
+            'cTipo': 'T',
+          }
+
+          this.objTotal = {
+            filial: this.opFilial,
+            op: this.opCodigo,
+            qtde: this.opQtdeParcial,
+            tipo: 'T',
+            usrProd: this.aUsr.codUser,
+            fechamento: 'automatico',
+          };
+          const retProd = this.fj.prodOP(obj);
+          retProd.subscribe(x => {
+            alert(x.Sucesso.substring(2, 60))
+            if (x.Sucesso === "T/Documento confirmado e apontado com Sucesso!") {
+              this.fj.execProd('produzOP', this.objTotal)
+              // if (this.opFilial == '108') {
+              //   this.fj.execProd('manuLote', this.objLote);
+              // }
+            }
+            
+            window.location.reload();
+          });
+        } else {
+          alert('Itens com saldo insuficiente!')
+        }
+      } else {
+        alert('Itens sem ajuste pelo apontado!')
+      }
+      alert('Não existe Lote atribuído para este produto')
+    }
+  }
+
+
+
   // Busca OP com os dados agrupados - vw_pcp_relacao_lote_op_empenho
   buscaOp(){
     let xcFilial = this.aOp.filial;
@@ -198,9 +302,6 @@ export class OpajustaComponent implements OnInit {
     }
   }
 
-produzir(){
-  alert('em desenv')
-}
 
   // confirma o ajuste feito na op para enviar para o conferente
   confirmarEmpenho() {

@@ -52,7 +52,6 @@ export class OpresumoComponent implements OnInit {
   arrOpresumoTab: any = [];
   situacoes: any = [];
   arrFilial: any = ['101', '107', '117', '402', '108', '206']
-  // situacoes = ["Sem Status", "Produção", "Liberada", "Planejada", "Interrompida", "Baixada", "Encerrada", "Cancelada"];
   situacaoFiltro;
 
   opresumos: Observable<any>;
@@ -116,8 +115,6 @@ export class OpresumoComponent implements OnInit {
   }
 
 
-
-
   // visualização da OP
   visuOp(xcRow) {
     this.atuOP(xcRow.filial, xcRow.op, 'v')
@@ -163,7 +160,7 @@ export class OpresumoComponent implements OnInit {
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
     if (tp === 'a') {
-      if (!(("Interrompida ").indexOf(aRow.situacao) > -1)) {
+      if (!(("Interrompida Produção ").indexOf(aRow.situacao) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
           return true;
         }

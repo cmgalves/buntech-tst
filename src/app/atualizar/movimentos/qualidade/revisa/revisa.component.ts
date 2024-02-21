@@ -67,7 +67,7 @@ export class RevisaComponent implements OnInit {
   novoCarMax: string = '';
   novoCarTxt: string = '';
   novoCarMeio: string = '';
-  arrLinhas;
+  arrLinhas: any = [];
   btnLaudo: string = 'remove_done';
   laddCarac: boolean = true
   lForm: boolean = false;
@@ -138,7 +138,6 @@ export class RevisaComponent implements OnInit {
     this.arrDb = this.fj.buscaPrt('relacaoRevisaoEspec', obj); //PCP..View_Relacao_Espec
 
     this.arrDb.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         seq++
         this.arrRev.push({
@@ -318,6 +317,7 @@ export class RevisaComponent implements OnInit {
 
     if (this.validarHoras()) return
     if (this.validarTipos(cTipo)) return
+    if (this.validarAlcadas()) return
 
     if (cTipo === 'I') {
       if (this.cabRevisaoTemp == '') {
@@ -350,8 +350,10 @@ export class RevisaComponent implements OnInit {
       'imprimeLaudo': this.imprimeLaudo.substring(0, 1),
       'validadeMeses': this.validadeMeses
     }
-    this.fj.buscaPrt('incluiEspec', obj).subscribe(q => console.log(q));
-    window.location.reload();
+    this.fj.buscaPrt('incluiEspec', obj).subscribe(q => {
+      console.log(q[0].cRet)
+      window.location.reload();
+    });
   }
 
 
@@ -451,6 +453,29 @@ export class RevisaComponent implements OnInit {
       return true;
     }
     return false
+  }
+
+
+  // validar alçadas dos niveis dos produtos
+  validarAlcadas() {
+    const aLin = this.arrLinhas;
+    let bRet = true;
+
+    aLin.forEach(xy => {
+      if (this.especLinha == xy.linha) {
+        bRet = false
+      }
+    })
+    if (bRet) {
+      alert('Especificação sem Linha!');
+      return true;
+    }
+
+    if (this.validadeMeses <= 0) {
+      alert('Especificação sem prazo de validade!');
+      return true;
+    }
+
   }
 
   // validação dos tipos de cada alteração das especificações
