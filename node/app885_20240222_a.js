@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //acrescentando informacoes de cabecalho para suportar o CORS
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PATCH, DELETE");
@@ -389,7 +389,7 @@ rota.post('/cadUsuarios', (req, res) => {
 
     xcSql += "SELECT "
     xcSql += "	codigo, empresa, nome, senha,  "
-    xcSql += "	email, perfil, depto, telefone "
+    xcSql += "	email, perfil, depto, telefone, linha "
     xcSql += "FROM "
     xcSql += "	PCP..usuarios "
 
@@ -460,6 +460,8 @@ rota.post('/incluiAlteraUsuario', (req, res) => {
     xcSql += "  '" + telefone + "', "
     xcSql += "  '" + linha + "' "
 
+    xcSql += `\n SELECT 'sucesso' as msg`
+
 
     console.log(xcSql)
     execSQL(xcSql, res);
@@ -473,7 +475,7 @@ rota.post('/alteraSenhaUsuario', (req, res) => {
     const codUser = req.body.codUser;
     const senhaNew = req.body.senhaNew;
 
-    xcSql += "EXEC "
+xcSql += "EXEC "
     xcSql += "	PCP..sp_alteraSenhaUsuario "
     xcSql += "  " + codUser + ",  "
     xcSql += "  '" + senhaNew + "' "
@@ -838,7 +840,6 @@ rota.post('/incluiAlteraGrupoRecurso', (req, res) => {
     const recurso = req.body.recurso;
     const grupo = req.body.grupo;
     const ativo = req.body.ativo;
-    const tipo = req.body.tipo;
 
     xcSql += "EXEC "
     xcSql += "	PCP..sp_incluiAlteraGrupoRecurso "
@@ -846,8 +847,7 @@ rota.post('/incluiAlteraGrupoRecurso', (req, res) => {
     xcSql += "  '" + idGrupo + "', "
     xcSql += "  '" + recurso + "', "
     xcSql += "  '" + grupo + "', "
-    xcSql += "  '" + ativo + "', "
-    xcSql += "  '" + tipo + "'"
+    xcSql += "  '" + ativo + "'"
 
     console.log(xcSql)
     execSQL(xcSql, res);
@@ -1574,8 +1574,7 @@ rota.post('/confirmaAnalise', (req, res) => {
                     situacao = 'ANDAMENTO'   SELECT 'TUDO CERTO' as mensagem`, res);
         })
         .catch(e => res.json({
-            erro: e,
-            sql: sql
+            erro: e, sql: sql
         }));
 });
 
@@ -1617,7 +1616,6 @@ rota.post('/geraLoteInfo', (req, res) => {
 rota.post('/geraLote', (req, res) => {
     const MAX_RETRIES = 5;
     let tentativas = 0;
-
     function tentarExecutarOperacao() {
         global.conexao.request().query(`UPDATE PCP..oppcfLote SET lote = '${req.body.lote}', analise = '${req.body.analise}' WHERE id_num = ${req.body.id}`)
             .then((resultado) => {
@@ -1682,3 +1680,6 @@ rota.post('/alteraValorAprovacao', (req, res) => {
 rota.post('/buscaLinhas', (req, res) => {
     execSQL('SELECT * FROM PCP..linha', res);
 })
+
+
+

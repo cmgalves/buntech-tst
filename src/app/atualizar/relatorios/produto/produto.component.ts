@@ -69,10 +69,7 @@ export class ProdutoComponent implements OnInit {
           'ncm': xy.ncm,
           'situacao': xy.situacao,
         })
-
       });
-
-
       this.dataSource = new MatTableDataSource(this.arrProdutoTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

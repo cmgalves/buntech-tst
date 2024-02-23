@@ -28,13 +28,15 @@ export class GrupoRecursoComponent implements OnInit {
   recurso: string = '';
   grupo: string = '';
   ativo: string = '';
+  tipo: string = '';
   aAtivo: string[] = ['S', 'N'];
+  aTipo: string[] = ['Q', 'T', 'A'];
   lForm: boolean = false;
   lBtnInc: boolean = false;
   lBtnAlt: boolean = false;
 
   grupoRecursos: Observable<any>;
-  displayedColumns: string[] = ['idGrupo', 'recurso', 'grupo', 'ativo', 'edicao'];
+  displayedColumns: string[] = ['idGrupo', 'recurso', 'grupo', 'ativo', 'tipo', 'edicao'];
   dataSource: MatTableDataSource<cadGrupoRecurso>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -63,6 +65,7 @@ export class GrupoRecursoComponent implements OnInit {
           'recurso': xy.recurso,
           'grupo': xy.grupo,
           'ativo': xy.ativo,
+          'tipo': xy.tipo,
         })
       });
 
@@ -99,6 +102,7 @@ export class GrupoRecursoComponent implements OnInit {
       this.recurso = ''
       this.grupo = ''
       this.ativo = ''
+      this.tipo = ''
     }
 
     if (nOpt === 2) {
@@ -108,6 +112,7 @@ export class GrupoRecursoComponent implements OnInit {
         'recurso': this.recurso,
         'grupo': this.grupo,
         'ativo': this.ativo,
+        'tipo': this.tipo,
       }
       this.fj.execProd('incluiAlteraGrupoRecurso', obj);
       this.lForm = !this.lForm;
@@ -121,6 +126,7 @@ export class GrupoRecursoComponent implements OnInit {
         'recurso': this.recurso,
         'grupo': this.grupo,
         'ativo': this.ativo,
+        'tipo': this.tipo,
       }
       this.fj.execProd('incluiAlteraGrupoRecurso', obj);
       this.lForm = !this.lForm;
@@ -135,6 +141,7 @@ export class GrupoRecursoComponent implements OnInit {
       this.recurso = aLin.recurso
       this.grupo = aLin.grupo
       this.ativo = aLin.ativo
+      this.tipo = aLin.tipo
     }
   }
 }
