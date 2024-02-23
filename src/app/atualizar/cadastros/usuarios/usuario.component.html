@@ -104,10 +104,27 @@
                         <a>RELAÇÃO DE USUÁRIOS</a>
                     </div>
                     <div class="card-body table-responsive">
-                        <mat-form-field>
+                        <div class="row">
+                            <div class="card-body table-responsive col-md-5">
+                                <mat-form-field>
+                                    <mat-label>Filtro</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de Especificações" #input>
+                                </mat-form-field>
+                            </div>
+                            <div class="card-body table-responsive col-md-2">
+                                <mat-form-field>
+                                    <mat-select (selectionChange)="altFilter($event)" placeholder="Filtro Perfil">
+                                        <mat-option *ngFor="let optPerfil of aPerfil" [value]="optPerfil">
+                                            {{optPerfil}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- <mat-form-field>
                             <mat-label>Filtro</mat-label>
                             <input matInput (keyup)="applyFilter($event)" placeholder="filtrando usuário" #input>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort>

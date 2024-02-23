@@ -33,6 +33,8 @@ export class UsuarioComponent implements OnInit {
   valPerfil: string = '';
   arrLinhas: any = [];
   valLinha: any = [];
+  aPerfil: any = [];
+  cFilPerfil: string = '';
   usuarioCodigo: string = '';
   usuarioEmpresas: string = '';
   usuarioNome: string = '';
@@ -110,7 +112,9 @@ export class UsuarioComponent implements OnInit {
 
   buscaUsuarios() {
     const obj = {};
+    let cPerf = ''
     this.arrUsuario = this.fj.buscaPrt('cadUsuarios', obj);
+    this.aPerfil.push('Todos');
 
     this.arrUsuario.subscribe(cada => {
       cada.forEach(xy => {
@@ -125,7 +129,10 @@ export class UsuarioComponent implements OnInit {
           'telefone': xy.telefone,
           'linha': xy.linha
         })
-
+        if (cPerf.indexOf(xy.perfil) === -1) {
+          cPerf += xy.perfil
+          this.aPerfil.push(xy.perfil)
+        }
       });
       this.dataSource = new MatTableDataSource(this.arrUsuarioTab)
       this.dataSource.paginator = this.paginator;
@@ -182,7 +189,7 @@ export class UsuarioComponent implements OnInit {
         alert('Usuário ou Email em branco')
         return true
       } else {
-        this.fj.buscaPrt('incluiAlteraUsuario', obj).subscribe(q => {window.location.reload()});
+        this.fj.buscaPrt('incluiAlteraUsuario', obj).subscribe(q => { window.location.reload() });
 
       }
     } else {
@@ -215,6 +222,15 @@ export class UsuarioComponent implements OnInit {
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+
+  altFilter(dd) {
+    if (dd.value == 'Todos') {
+      this.dataSource = new MatTableDataSource(this.arrUsuarioTab)
+    } else {
+      let array = this.arrUsuarioTab.filter(q => dd.value === q.perfil);
+      this.dataSource = new MatTableDataSource(array)
     }
   }
 
