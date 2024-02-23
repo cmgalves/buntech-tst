@@ -130,7 +130,7 @@ export class OpajustaComponent implements OnInit {
   // produção da OP de acordo com os status
   produzir() {
     var parcial = false;
-    if (this.arrOpajustaTab.filter(q => q.situacao != 'Ajustada').length > 0) {
+    if (this.arrOpajustaTab.filter(q => q.sitDesc != 'Ajustada').length > 0) {
       parcial = true;
       if (this.opQtdeProduz >= this.opQtdePcf) {
         if (confirm("Não é possível produzir a OP completamente, deseja continuar com um valor menor?"))
@@ -139,6 +139,11 @@ export class OpajustaComponent implements OnInit {
       }
     }
 
+    if(parcial) this.produzirParcial();
+    else this.produzirTotal();
+  }
+
+  produzirParcial() {
     let temSaldo = true
     let confirmado = true
     let arrItens = []
@@ -243,7 +248,71 @@ export class OpajustaComponent implements OnInit {
     }
   }
 
+  produzirTotal() {
+    let temSaldo = true
+    let ajustado = true
+    let arrItens = []
+    const nQtdeLen = this.aOp.length - 1
+    this.arrOpajusta.forEach(xl => {
+      if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
+        temSaldo = false
+      }
+      if (xl.SITUACA !== 'Ajustada') {
+        ajustado = false
+      }
+      if ((xl.QTDEORI == 0 && xl.QTDECALC > 0) || (xl.QTDEORI > 0 && xl.QTDECALC == 0) || (xl.QTDEORI != 0 && xl.QTDECALC != 0)) {
+        arrItens.push({
+          'cD4CodPrd': xl.COMPONENTE,
+          'cD4Local': "01",
+          'nD4QtdOri': xl.QTDEORI,
+          'nD4QtdAjst': xl.QTDECALC,
+          'cTpComp': xl.TIPO,
+          'cRoteiro': "01"
+        })
+      }
+    });
 
+
+    if (ajustado) {
+      if (temSaldo) {
+        const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
+
+        const obj = {
+          cFilialOp: this.opFilial,
+          cNumOp: this.opCodigo,
+          cC2Prod: this.opProduto,
+          cC2Local: '01',
+          cDocAjst: 'DOCTOTAL',
+          nC2QtdOri: this.opQtde,
+          nC2QtdAjst: this.opQtdePcf,
+          cTipoProd: 'T',
+          nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeProduz)) * 10000) / 10000,
+          cOperacao: this.aOp[nQtdeLen].OPERACAO,
+          cRecurso: this.aOp[nQtdeLen].RECURSO,
+          dDataApt: datApt[0].APT,
+          ItensD4: arrItens
+        };
+        const retProdParcial = this.fj.prodOP(obj);
+        retProdParcial.subscribe(cada => {
+          alert(cada.Sucesso.substring(2, 60))
+          if (cada.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
+            const objTotal = {
+              filial: this.opFilial,
+              op: this.opCodigo,
+              qtde: this.opQtdeProduz,
+              tipo: 'T',
+            };
+            this.fj.execProd('produzOP', objTotal)
+          }
+          window.location.reload();
+        });
+      } else {
+        alert('Itens com saldo insuficiente!')
+      }
+    } else {
+      alert('Itens sem ajuste pelo apontado!')
+    }
+  }
 
   // Busca OP com os dados agrupados - vw_pcp_relacao_lote_op_empenho
   buscaOp() {
