@@ -144,9 +144,7 @@ export class OpajustaComponent implements OnInit {
   }
 
   produzirParcial() {
-    console.log('Aqui')
     const nQtdeLen = this.aOp.length - 1
-    console.log(this.aOp);
     const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
     this.parcialAtivo = false;
 
@@ -158,13 +156,13 @@ export class OpajustaComponent implements OnInit {
           cC2Prod: this.opProduto,
           cC2Local: '01',
           cDocAjst: 'DOCPARCI',
-          nC2QtdOri: this.opQtde,
-          nC2QtdAjst: this.opQtdePcf,
+          nC2QtdOri: this.opQtdePcf,
+          nC2QtdAjst: this.opQtdeProduz,
           cTipoProd: 'P',
           nQtdEntrg: this.opQtdeProduz,
-          cOperacao: this.aOp[nQtdeLen].OPERACAO,
-          cRecurso: this.aOp[nQtdeLen].RECURSO,
-          dDataApt: datApt[0].APT,
+          cOperacao: this.aOp.codOpera,
+          cRecurso: this.aOp.codRecurso,
+          dDataApt: this.aOp.dtime,
           ItensD4: []
         };
 
@@ -221,11 +219,11 @@ export class OpajustaComponent implements OnInit {
       }
       if ((xl.QTDEORI == 0 && xl.QTDECALC > 0) || (xl.QTDEORI > 0 && xl.QTDECALC == 0) || (xl.QTDEORI != 0 && xl.QTDECALC != 0)) {
         arrItens.push({
-          'cD4CodPrd': xl.COMPONENTE,
+          'cD4CodPrd': xl.componente,
           'cD4Local': "01",
-          'nD4QtdOri': xl.QTDEORI,
-          'nD4QtdAjst': xl.QTDECALC,
-          'cTpComp': xl.TIPO,
+          'nD4QtdOri': xl.qtdeEmp,
+          'nD4QtdAjst': xl.qtdeEmpCalc,
+          'cTpComp': xl.tipo,
           'cRoteiro': "01"
         })
       }
@@ -246,9 +244,9 @@ export class OpajustaComponent implements OnInit {
           nC2QtdAjst: this.opQtdePcf,
           cTipoProd: 'T',
           nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeProduz)) * 10000) / 10000,
-          cOperacao: this.aOp[nQtdeLen].OPERACAO,
-          cRecurso: this.aOp[nQtdeLen].RECURSO,
-          dDataApt: datApt[0].APT,
+          cOperacao: this.aOp.codOpera,
+          cRecurso: this.aOp.codRecurso,
+          dDataApt: this.aOp.dtime,
           ItensD4: arrItens
         };
         console.log(obj);
