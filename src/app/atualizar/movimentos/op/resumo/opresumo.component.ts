@@ -107,6 +107,7 @@ export class OpresumoComponent implements OnInit {
           this.situacoes.push(xy.situacao)
         }
       });
+      localStorage.setItem('opPcf', JSON.stringify(this.arrOpPcf));
       this.dataSource = new MatTableDataSource(this.arrOpresumoTab)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

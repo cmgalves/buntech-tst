@@ -139,113 +139,72 @@ export class OpajustaComponent implements OnInit {
       }
     }
 
-    if(parcial) this.produzirParcial();
+    if (parcial) this.produzirParcial();
     else this.produzirTotal();
   }
 
   produzirParcial() {
-    let temSaldo = true
-    let confirmado = true
-    let arrItens = []
-    let lib = 5;
-
-    let cLoc: string = this.opFilial === '108' ? '99' : '01';
-
-    if (lib = 5) {
-      alert('em desenv')
-
-    } else {
-
-    }
-
-    this.arrOpajusta.forEach(xl => {
-      if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
-        temSaldo = false
-      }
-      if (xl.SITUACA !== 'confirmada') {
-        confirmado = false
-      }
-      if ((xl.QTDEORI == 0 && xl.QTDECALC > 0) || (xl.QTDEORI > 0 && xl.QTDECALC == 0) || (xl.QTDEORI != 0 && xl.QTDECALC != 0)) {
-        arrItens.push({
-          'cD4CodPrd': xl.COMPONENTE,
-          'cD4Local': cLoc,
-          'nD4QtdOri': xl.QTDEORI,
-          'nD4QtdAjst': xl.QTDECALC,
-          'cTpComp': xl.TIPO,
-          'cRoteiro': "01"
-        })
-      }
-    });
-
+    console.log('Aqui')
     const nQtdeLen = this.aOp.length - 1
+    console.log(this.aOp);
     const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
     this.parcialAtivo = false;
 
-    if (this.temLote) {
-      if (confirmado) {
-        if (temSaldo) {
-          const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
+    if (parseFloat(this.opQtdeProduz) > 0) {
+      if (Math.round(parseFloat(this.opQtdePcf) * 10000) / 10000 > parseFloat(this.opQtdeProduz)) {
+        const obj = {
+          cFilialOp: this.opFilial,
+          cNumOp: this.opCodigo,
+          cC2Prod: this.opProduto,
+          cC2Local: '01',
+          cDocAjst: 'DOCPARCI',
+          nC2QtdOri: this.opQtde,
+          nC2QtdAjst: this.opQtdePcf,
+          cTipoProd: 'P',
+          nQtdEntrg: this.opQtdeProduz,
+          cOperacao: this.aOp[nQtdeLen].OPERACAO,
+          cRecurso: this.aOp[nQtdeLen].RECURSO,
+          dDataApt: datApt[0].APT,
+          ItensD4: []
+        };
 
-          const obj = {
-            cFilialOp: this.opFilial,
-            cNumOp: this.opCodigo,
-            cC2Prod: this.opProduto,
-            cC2Local: cLoc,
-            cDocAjst: 'DOCTOTAL',
-            nC2QtdOri: this.opQtde,
-            nC2QtdAjst: this.opQtdePcf,
-            cTipoProd: 'T',
-            nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000,
-            cOperacao: this.aOp[nQtdeLen].OPERACAO,
-            cRecurso: this.aOp[nQtdeLen].RECURSO,
-            dDataApt: datApt[0].APT,
-            ItensD4: arrItens
-          };
-
-          this.objLote = {
-            'filial': this.opFilial,
-            'op': this.opCodigo,
-            'produto': this.opProduto,
-            'descricao': this.opDescricao,
-            'revisao': this.ltcrevisao,
-            'lote': this.ltclote,
-            'validade': this.ltcvalidade,
-            'quebra': this.ltcquebra,
-            'nivel': this.ltcnivel,
-            'qtde': this.opQtdeProduz,
-            'obs': this.ltcobs,
-            'usuario': this.aUsr.codUser,
-            'cTipo': 'T',
+        console.log(obj)
+        const retProdParcial = this.fj.prodOP(obj);
+        retProdParcial.subscribe(cada => {
+          alert(cada.Sucesso.substring(2, 60))
+          if (cada.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+            const objParcial = {
+              filial: this.opFilial,
+              op: this.opCodigo,
+              qtde: this.opQtdeProduz,
+              tipo: 'P',
+            };
+            console.log(objParcial);
+            this.fj.execProd('produzOP', objParcial);
+            this.parcialAtivo = true;
           }
-
-          this.objTotal = {
-            filial: this.opFilial,
-            op: this.opCodigo,
-            qtde: this.opQtdeProduz,
-            tipo: 'T',
-            usrProd: this.aUsr.codUser,
-            fechamento: 'automatico',
-          };
-          const retProd = this.fj.prodOP(obj);
-          retProd.subscribe(x => {
-            alert(x.Sucesso.substring(2, 60))
-            if (x.Sucesso === "T/Documento confirmado e apontado com Sucesso!") {
-              this.fj.execProd('produzOP', this.objTotal)
-              // if (this.opFilial == '108') {
-              //   this.fj.execProd('manuLote', this.objLote);
-              // }
-            }
-
-            window.location.reload();
-          });
-        } else {
-          alert('Itens com saldo insuficiente!')
-        }
+          window.location.reload();
+        });
       } else {
-        alert('Itens sem ajuste pelo apontado!')
+        if (Math.round(parseFloat(this.opQtdePcf) * 10000) / 10000 == parseFloat(this.opQtdeProduz)) {
+          if (Math.round(parseFloat(this.opQtdePcf) * 10000) / 10000 > 0.1) {
+            this.opQtdeProduz = (parseFloat(this.opQtdePcf) - 0.1).toString();
+          }
+          alert('Não pode zerar a OP no apontamento Parcial!!!')
+          this.parcialAtivo = true;
+        } else {
+          alert('Quantidade maior que a produzida!!!')
+          this.opQtdeProduz = (Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000).toString();
+          this.parcialAtivo = true;
+        }
       }
-      alert('Não existe Lote atribuído para este produto')
+    } else {
+      alert('Quantidade igual a zero!!!');
+      this.parcialAtivo = true;
     }
+
+
+
   }
 
   produzirTotal() {
@@ -292,6 +251,7 @@ export class OpajustaComponent implements OnInit {
           dDataApt: datApt[0].APT,
           ItensD4: arrItens
         };
+        console.log(obj);
         const retProdParcial = this.fj.prodOP(obj);
         retProdParcial.subscribe(cada => {
           alert(cada.Sucesso.substring(2, 60))
@@ -302,6 +262,7 @@ export class OpajustaComponent implements OnInit {
               qtde: this.opQtdeProduz,
               tipo: 'T',
             };
+            console.log(objTotal);
             this.fj.execProd('produzOP', objTotal)
           }
           window.location.reload();
