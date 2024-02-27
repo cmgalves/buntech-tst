@@ -157,27 +157,26 @@ export class OpajustaComponent implements OnInit {
           cC2Local: '01',
           cDocAjst: 'DOCPARCI',
           nC2QtdOri: this.opQtdePcf,
-          nC2QtdAjst: this.opQtdeProduz,
+          nC2QtdAjst: parseFloat(this.opQtdeProduz),
           cTipoProd: 'P',
-          nQtdEntrg: this.opQtdeProduz,
+          nQtdEntrg: parseFloat(this.opSaldoProd),
           cOperacao: this.aOp.codOpera,
           cRecurso: this.aOp.codRecurso,
           dDataApt: this.aOp.dtime,
           ItensD4: []
         };
 
-        console.log(obj)
+        const objParcial = {
+          filial: this.opFilial,
+          op: this.opCodigo,
+          qtde: this.opQtdeProduz,
+          tipo: 'P',
+        };
+
         const retProdParcial = this.fj.prodOP(obj);
         retProdParcial.subscribe(cada => {
           alert(cada.Sucesso.substring(2, 60))
           if (cada.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
-            const objParcial = {
-              filial: this.opFilial,
-              op: this.opCodigo,
-              qtde: this.opQtdeProduz,
-              tipo: 'P',
-            };
-            console.log(objParcial);
             this.fj.execProd('produzOP', objParcial);
             this.parcialAtivo = true;
           }
@@ -209,12 +208,13 @@ export class OpajustaComponent implements OnInit {
     let temSaldo = true
     let ajustado = true
     let arrItens = []
-    const nQtdeLen = this.aOp.length - 1
-    this.arrOpajusta.forEach(xl => {
+    const nQtdeLen = this.aOp.length - 1;
+
+    this.arrOpajustaTab.forEach(xl => {
       if (('M3 | H | ').indexOf(xl.UNIDADE) === -1 && xl.SALDO < xl.QTDECALC && xl.TIPO !== 'R') {
         temSaldo = false
       }
-      if (xl.SITUACA !== 'Ajustada') {
+      if (xl.situacao !== 'A') {
         ajustado = false
       }
       if ((xl.QTDEORI == 0 && xl.QTDECALC > 0) || (xl.QTDEORI > 0 && xl.QTDECALC == 0) || (xl.QTDEORI != 0 && xl.QTDECALC != 0)) {
@@ -228,8 +228,6 @@ export class OpajustaComponent implements OnInit {
         })
       }
     });
-
-
     if (ajustado) {
       if (temSaldo) {
         const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
@@ -240,27 +238,30 @@ export class OpajustaComponent implements OnInit {
           cC2Prod: this.opProduto,
           cC2Local: '01',
           cDocAjst: 'DOCTOTAL',
-          nC2QtdOri: this.opQtde,
-          nC2QtdAjst: this.opQtdePcf,
+          nC2QtdOri: this.opQtdePcf,
+          nC2QtdAjst: parseFloat(this.opQtdeProduz),
           cTipoProd: 'T',
-          nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeProduz)) * 10000) / 10000,
+          nQtdEntrg: parseFloat(this.opSaldoProd),
           cOperacao: this.aOp.codOpera,
           cRecurso: this.aOp.codRecurso,
           dDataApt: this.aOp.dtime,
           ItensD4: arrItens
         };
-        console.log(obj);
+
+        const objTotal = {
+          filial: this.opFilial,
+          op: this.opCodigo,
+          qtde: parseFloat(this.opQtdeProduz),
+          tipo: 'T',
+        };
+
+        console.log(obj, objTotal);
+
         const retProdParcial = this.fj.prodOP(obj);
         retProdParcial.subscribe(cada => {
           alert(cada.Sucesso.substring(2, 60))
           if (cada.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
-            const objTotal = {
-              filial: this.opFilial,
-              op: this.opCodigo,
-              qtde: this.opQtdeProduz,
-              tipo: 'T',
-            };
-            console.log(objTotal);
+
             this.fj.execProd('produzOP', objTotal)
           }
           window.location.reload();

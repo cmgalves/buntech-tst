@@ -116,7 +116,7 @@ export class UsuarioComponent implements OnInit {
     this.arrUsuario = this.fj.buscaPrt('cadUsuarios', obj);
     this.aPerfil.push('Todos');
 
-    this.arrUsuario.subscribe(cada => {
+    this.arrUsuario.subscribe(cada => {console.log(cada)
       cada.forEach(xy => {
         this.arrUsuarioTab.push({
           'codUser': xy.codigo,
@@ -184,6 +184,8 @@ export class UsuarioComponent implements OnInit {
         'telefone': this.usuarioFone,
         'linha': this.linhaValor
       }
+
+      console.log(obj);
 
       if (this.usuarioNome === '' || this.usuarioEmail === '') {
         alert('Usuário ou Email em branco')

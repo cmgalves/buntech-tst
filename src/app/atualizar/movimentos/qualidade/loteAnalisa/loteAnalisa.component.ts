@@ -118,7 +118,7 @@ export class LoteAnalisaComponent implements OnInit {
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
-    this.arrBusca.subscribe(cada => {
+    this.arrBusca.subscribe(cada => {console.log(cada)
       // console.log(cada);
       cada.forEach(xy => {
         ord++
@@ -145,7 +145,8 @@ export class LoteAnalisaComponent implements OnInit {
             'iteMeio': xy.iteMeio,
             'situacao': xy.situacao.charAt(0).toUpperCase() + xy.situacao.slice(1).toLowerCase(),
             'result': xy.result,
-            'resultxt': xy.resultxt
+            'resultxt': xy.resultxt,
+            'nivel': xy.nivel
           })
           if (ord === 1) {
             this.filial = xy.filial

@@ -200,12 +200,14 @@ export class funcGeral {
       tipo: 'P',
     };
 
+    console.log(objEnv, objAponta);
+
     this.fj.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))
       if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
         this.fj.execProd('spcp_produz_op', objAponta);
       }
-      window.location.reload();
+      //window.location.reload();
     });
   };
 

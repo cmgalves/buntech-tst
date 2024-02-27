@@ -124,6 +124,7 @@ export class LoteAprovaComponent implements OnInit {
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
     this.arrBusca.subscribe(cada => {
+      console.log(cada);
       cada.forEach(xy => {
         ord++
         if (codCaracteristica.indexOf(xy.codCarac) < 0) {
@@ -151,7 +152,8 @@ export class LoteAprovaComponent implements OnInit {
             'situacao': xy.situacao.charAt(0).toUpperCase() + xy.situacao.slice(1).toLowerCase(),
             'result': xy.result,
             'resultxt': xy.resultxt,
-            'op': xy.op
+            'op': xy.op,
+            'nivel': xy.nivel
           })
           if (ord === 1) {
             this.filial = xy.filial
@@ -160,7 +162,7 @@ export class LoteAprovaComponent implements OnInit {
             this.analise = xy.analise
             this.descrProd = xy.descrProd
             this.revisao = xy.cabRevisao
-            this.nivel = xy.especAlcada
+            this.nivel = xy.nivel
             this.n1 = xy.dtAprovn1
             this.n2 = xy.dtAprovn2
             this.n3 = xy.dtAprovn3
@@ -204,9 +206,17 @@ export class LoteAprovaComponent implements OnInit {
     var aprovaTodos = false;
     var aprovaN3 = false;
     var aprovaN2 = false;
+    var aprovaN1 = false;
     const DataAtual = new Date().toISOString().split('T')[0]; //A data de hoje
 
-    if (!this.nivel.includes('N3')) aprovaN3 = true;
+    if (!this.nivel.includes('N1')) {
+      aprovaN1 = true;
+      if (this.aProd.loteAprov == 'SEGREGRADO') this.aProd.loteAprov = 'REAVALIACAON2';
+    }
+    if (!this.nivel.includes('N3')) {
+      aprovaN3 = true;
+      if (this.aProd.loteAprov == 'REAVALIACAON2') this.aProd.loteAprov = 'REAVALIACAON3';
+    }
     if (!this.nivel.includes('N2')) aprovaN2 = true;
 
     if (this.justificativa == "") {
@@ -215,7 +225,7 @@ export class LoteAprovaComponent implements OnInit {
     if (!(this.fj.acessoUsuario(this.aUsr, nivel)))
       return alert("Você não tem a permissão necessária para aprovar esse item"); //Checa se o usuário tem o perfil
     //que coincide com a alcada do lote
-    if(!this.aUsr.linha.includes(this.aProd.linha) && this.aProd.linha != null)
+    if (!this.aUsr.linha.includes(this.aProd.linha) && this.aProd.linha != null)
       return alert("Você não pertence a mesma linha desse item");
 
     if (tipo != 'A') {
@@ -223,7 +233,7 @@ export class LoteAprovaComponent implements OnInit {
       loteAprov = 'REPROVADO' //Altera o status do lote para reprovado
     }
 
-    if (this.aProd.loteAprov == 'SEGREGADO' || rejeitaTodos) { //Se a alcada conter N1 e for momento de
+    if (this.aProd.loteAprov == 'SEGREGADO' || rejeitaTodos || aprovaN1) { //Se a alcada conter N1 e for momento de
       usrAprovn1 = this.aUsr.codUser;                                       //de aprovar o N1 (lote Segregado)      
       dtAprovn1 = DataAtual;
       tipoAprovn1 = tipo;

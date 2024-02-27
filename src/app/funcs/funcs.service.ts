@@ -438,7 +438,7 @@ export class funcsService {
   }
 
   acessoUsuario(usuario, acesso) {
-    const perfil = usuario.perfil.replace("Qualidade ", "");
+    const perfil = usuario.perfil;
     if (usuario.perfil.includes('Administrador')) return true;
     return perfil.includes(acesso) || acesso.includes(perfil);
   }
@@ -483,7 +483,7 @@ export class funcsService {
       qtde: qtdeProd,
       tipo: 'P',
     };
-
+    console.log(objEnv, objAponta)
     this.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))
       if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
