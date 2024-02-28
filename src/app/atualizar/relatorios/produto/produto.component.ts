@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as XLSX from 'xlsx';
@@ -21,6 +22,9 @@ export interface cadProduto {
   selector: 'app-produto',
   templateUrl: './produto.component.html',
   styleUrls: ['./produto.component.css']
+})
+@Injectable({
+  providedIn: 'root'
 })
 
 export class ProdutoComponent implements OnInit {
