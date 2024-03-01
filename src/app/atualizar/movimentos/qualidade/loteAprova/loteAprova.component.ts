@@ -213,11 +213,11 @@ export class LoteAprovaComponent implements OnInit {
       aprovaN1 = true;
       if (this.aProd.loteAprov == 'SEGREGRADO') this.aProd.loteAprov = 'REAVALIACAON2';
     }
-    if (!this.nivel.includes('N3')) {
-      aprovaN3 = true;
+    if (!this.nivel.includes('N2')) {
+      aprovaN2 = true;
       if (this.aProd.loteAprov == 'REAVALIACAON2') this.aProd.loteAprov = 'REAVALIACAON3';
     }
-    if (!this.nivel.includes('N2')) aprovaN2 = true;
+    if (!this.nivel.includes('N3')) aprovaN3 = true;
 
     if (this.justificativa == "") {
       return alert("Justificativa é obrigatória");
@@ -241,16 +241,18 @@ export class LoteAprovaComponent implements OnInit {
       nivAprov = 'N1';
       justificativa1 = this.justificativa;
     }
-
+    console.log(this.aProd.loteAprov);
     if (this.aProd.loteAprov == 'REAVALIACAON2' || rejeitaTodos || aprovaN2) { //Se é possível aprovar
       usrAprovn2 = this.aUsr.codUser;                             //N2 ou se tudo será
       dtAprovn2 = DataAtual;                                      //reprovado
+      console.log('reavaliacaoN2')
       tipoAprovn2 = tipo;
       if (tipo == 'A')
         loteAprov = aprovaN3 ? 'REAVALIACAO' : 'REAVALIACAO N3'; //passa para o N3 reavaliar ou finaliza
       nivAprov = 'N2';
       justificativa2 = this.justificativa;
     }
+    console.log(loteAprov)
 
     if (this.aProd.loteAprov == 'REAVALIACAON3' || rejeitaTodos || aprovaN3) { //Se é possível aprovar
       usrAprovn3 = this.aUsr.codUser;                                         //N3 ou se tudo será
