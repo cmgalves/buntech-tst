@@ -1,5 +1,10 @@
-TRUNCATE TABLE oppcf
-TRUNCATE TABLE oppcfLote
-TRUNCATE TABLE oppcfLoteAnalise
-TRUNCATE TABLE oppcfLoteEmpenho
-truncate table oppcfLoteHora
+TRUNCATE TABLE PCP..oppcf
+TRUNCATE TABLE PCP..oppcf004
+TRUNCATE TABLE PCP..oppcf011
+TRUNCATE TABLE PCP..oppcf200
+TRUNCATE TABLE PCP..oppcftemp
+TRUNCATE TABLE PCP..oppcfFixo
+TRUNCATE TABLE PCP..oppcfLote
+TRUNCATE TABLE PCP..oppcfLoteAnalise
+TRUNCATE TABLE PCP..oppcfLoteEmpenho
+truncate table PCP..oppcfLoteHora
