@@ -302,7 +302,7 @@ export class LoteAprovaComponent implements OnInit {
               });
             if (rejeitaTodos)
               this.fj.enviarLoteProteus(q[0]);
-            this.router.navigate(['loteReg']);
+            //this.router.navigate(['loteReg']);
           });
           this.nivelAprovado(2);
         }
@@ -486,13 +486,35 @@ export class LoteAprovaComponent implements OnInit {
     if (this.justificativa == "") {
       return alert("Justificativa é obrigatória");
     }
-
     const lote = this.aProd;
     this.aProd.justificativa3 = this.justificativa;
     lote.loteAprov = "RECLASSIFICA";
 
-    // this.fj.enviarProdParcial(lote, true);
-    this.fj.enviarLoteProteus(lote, true);
+    const obj = {
+      produto: this.produto,
+      usrAprovn1: this.aUsr.codUser,
+      usrAprovn2: this.aUsr.codUser,
+      usrAprovn3: this.aUsr.codUser, //Cria um objeto com todas os campos que serão alterados
+      dtAprovn1: new Date().toISOString().split('T')[0],
+      dtAprovn2: new Date().toISOString().split('T')[0],
+      dtAprovn3: new Date().toISOString().split('T')[0],
+      tipoAprovn1: 'N',
+      tipoAprovn2: 'N',
+      tipoAprovn3: 'N',
+      justificativa1: this.justificativa,
+      justificativa2: this.justificativa,
+      justificativa3: this.justificativa,
+      lote: this.lote,
+      op: this.op,
+      analise: this.analise,
+      filial: this.filial,
+      loteAprov: "RECLASSIFICA",
+    }
+
+    this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
+      this.fj.enviarLoteProteus(q[0], true);
+      location.reload();
+    });
   }
 
   reclassificaMesmaOp() {

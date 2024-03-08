@@ -402,7 +402,6 @@ export class funcsService {
           "cImprime": item.imprimeLaudo
         };
         let enviado = true;
-        //console.log(obj2);
         this.prodLote([obj2]).subscribe(q => {
           if (q.status === false || q.ok === false) {
             enviado = false;
@@ -414,6 +413,7 @@ export class funcsService {
             this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => console.log('alteraStatus', f));
           }
         }, error => {
+          console.log(error);
           obj.statusEnvio = 'NÃO ENVIADO'
           this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
         });
@@ -449,6 +449,7 @@ export class funcsService {
   prodParcialOp(aOp, cOrig) {
     let cArm = ''
     let qtdeProd = 0
+    console.log(aOp);
     if (cOrig == 'pcp') {
       qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
     } else qtdeProd = aOp.qtde > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
@@ -483,7 +484,7 @@ export class funcsService {
       qtde: qtdeProd,
       tipo: 'P',
     };
-    console.log(objEnv, objAponta)
+    console.log(JSON.stringify(objEnv), objEnv);
     this.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))
       if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
@@ -497,6 +498,9 @@ export class funcsService {
       } else {
         console.log(x.Sucesso)
       }
+    }, error => {
+      console.log(error);
+      alert("Não foi possível enviar");
     });
   };
 
