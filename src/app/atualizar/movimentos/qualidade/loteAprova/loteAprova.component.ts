@@ -215,9 +215,12 @@ export class LoteAprovaComponent implements OnInit {
     }
     if (!this.nivel.includes('N3')) {
       aprovaN3 = true;
+
+    }
+    if (!this.nivel.includes('N2')) {
+      aprovaN2 = true;
       if (this.aProd.loteAprov == 'REAVALIACAON2') this.aProd.loteAprov = 'REAVALIACAON3';
     }
-    if (!this.nivel.includes('N2')) aprovaN2 = true;
 
     if (this.justificativa == "") {
       return alert("Justificativa é obrigatória");
