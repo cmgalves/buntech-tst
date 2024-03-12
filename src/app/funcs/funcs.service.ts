@@ -392,7 +392,7 @@ export class funcsService {
           "cAnalise": loteItem.analise,
           "nQuantidade": loteItem.qtdeLote,
           "cCaracteristica": item.descCarac,
-          "cResultado": item.resultxt != "" ? item.resultxt : item.result.toString(),
+          "cResultado": item.resultxt != "" ? item.parametro : item.result.toString(),
           "dValidade": this.converterParaDDMMYY(loteItem.dtime, item.validadeMeses),
           "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
           "cJustificativa": loteItem.justificativa3,

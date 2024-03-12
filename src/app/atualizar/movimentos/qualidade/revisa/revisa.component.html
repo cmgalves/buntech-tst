@@ -118,10 +118,16 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-select placeholder="Imprime Laudo" [value]="imprimeLaudo" [(ngModel)]="imprimeLaudo">
-                                    <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise">
-                                        {{optAnalise}}
+                                    <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise.value">
+                                        {{optAnalise.label}}
                                     </mat-option>
                                 </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="card-body table-responsive col-md-2">
+                            <mat-form-field title="Parâmetro">
+                                <mat-label>Parâmetro</mat-label>
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" matInput [(ngModel)]="parametro">
                             </mat-form-field>
                         </div>
                         <div class="card-body table-responsive col-md-12">
