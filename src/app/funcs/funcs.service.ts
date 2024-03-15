@@ -369,6 +369,7 @@ export class funcsService {
   enviarLoteProteus(loteItem, reclassifica = false) {
     let nVai = 0
     var caracEnviadas = 0;
+    let codCaracteristica = [];
     //verifica se o lote está aprovado
     if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
       const obj = {
@@ -381,46 +382,52 @@ export class funcsService {
       };
       const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
       this.buscaPrt('alteraStatusEnvio', obj);
-
-      console.log('uma vez');
-      arrItens.subscribe(cada => cada.forEach(item => {
-        //console.log(cada);
-        //percorre todos os dados do loteAnalise
-        const obj2 = { //cria objeto para enviar ao proteus
-          "cLFilial": loteItem.filial,
-          "cProduto": loteItem.produto,
-          "cOP": loteItem.op,
-          "cLote": loteItem.lote,
-          "cAnalise": loteItem.analise,
-          "nQuantidade": loteItem.qtdeLote,
-          "cCaracteristica": item.descCarac,
-          "cResultado": item.resultxt != "" ? item.parametro : item.result.toString(),
-          "dValidade": this.converterParaDDMMYY(loteItem.dtime, item.validadeMeses),
-          "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
-          "cJustificativa": loteItem.justificativa3,
-          "cValMin": item.iteMin.toString(),
-          "cValMax": item.iteMax.toString(),
-          "cStatus": this.formataStatus(loteItem.loteAprov),
-          "cImprime": item.imprimeLaudo
-        };
-        let enviado = true;
-        //console.log(obj2);
-        this.prodLote([obj2]).subscribe(q => {
-          if (q.status === false || q.ok === false) {
-            enviado = false;
+      const objs = [];
+      arrItens.subscribe(cada => {
+        cada.forEach((item, index) => {
+          if (codCaracteristica.indexOf(item.codCarac) < 0) {
+            codCaracteristica.push(item.codCarac);
+            //console.log(cada);
+            //percorre todos os dados do loteAnalise
+            objs.push({ //cria objeto para enviar ao proteus
+              "cLFilial": loteItem.filial,
+              "cProduto": loteItem.produto,
+              "cOP": loteItem.op,
+              "cLote": loteItem.lote,
+              "cAnalise": loteItem.analise,
+              "nQuantidade": loteItem.qtdeLote,
+              "cCaracteristica": item.descCarac,
+              "cResultado": item.resultxt != "" ? item.parametro : item.result.toString(),
+              "dValidade": this.converterParaDDMMYY(loteItem.dtime, item.validadeMeses),
+              "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
+              "cJustificativa": loteItem.justificativa3,
+              "cValMin": item.iteMin.toString(),
+              "cValMax": item.iteMax.toString(),
+              "cStatus": this.formataStatus(loteItem.loteAprov),
+              "cImprime": item.imprimeLaudo
+            });
           }
-          caracEnviadas++;
-          if (caracEnviadas == cada.length) {
-            this.prodParcialOp(loteItem, 'env');
-            obj.statusEnvio = enviado ? 'ENVIADO' : 'NÃO ENVIADO'
-            this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => console.log('alteraStatus', f));
-          }
-        }, error => {
-          console.log(error);
-          obj.statusEnvio = 'NÃO ENVIADO'
-          this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
         });
-      }));
+
+        let enviado = true;
+        objs.forEach((obj2, index) => {
+          this.prodLote([obj2]).subscribe(q => {
+            if (q.status === false || q.ok === false) {
+              enviado = false;
+            }
+            console.log('qtd enviada');
+            if (index == objs.length - 1) {
+              this.prodParcialOp(loteItem, 'env');
+              obj.statusEnvio = enviado ? 'ENVIADO' : 'NÃO ENVIADO'
+              this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => console.log('alteraStatus', f));
+            }
+          }, error => {
+            console.log(error);
+            obj.statusEnvio = 'NÃO ENVIADO'
+            this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
+          });
+        })
+      });
 
     } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
   }
@@ -486,7 +493,6 @@ export class funcsService {
       qtde: qtdeProd,
       tipo: 'P',
     };
-    console.log(JSON.stringify(objEnv), objEnv);
     this.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))
       if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
@@ -514,8 +520,8 @@ export class funcsService {
     var mes = parseInt(partes[1]);
     var ano = parseInt(partes[2]);
 
-    mes = plus!=0?(mes+plus)%12:mes;
-    plus = plus!=0?Math.trunc(plus/12):0;
+    mes = plus != 0 ? (mes + plus) % 12 : mes;
+    plus = plus != 0 ? Math.trunc(plus / 12) : 0;
     ano += plus
     // Retorna a data formatada
     return dia + '/' + mes.toString().padStart(2, '0') + '/' + ano.toString().slice(-2);

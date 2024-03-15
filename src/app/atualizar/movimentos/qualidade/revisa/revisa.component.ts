@@ -87,7 +87,7 @@ export class RevisaComponent implements OnInit {
   especSit: string[] = ['Andamento', 'Concluida', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
-  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'iteMax', 'iteMeio', 'iteLaudo', 'iteEdit'];
+  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin','parametro', 'iteMax', 'iteMeio', 'iteLaudo', 'iteEdit'];
   dataSource: MatTableDataSource<cadRevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -262,6 +262,7 @@ export class RevisaComponent implements OnInit {
         'iteMax': this.novoCarMax,
         'iteMeio': this.novoCarMeio,
         'iteLaudo': 'SIM',
+        'parametro': this.parametro,
         'iteTp': 'I'
       }
     }
@@ -269,7 +270,6 @@ export class RevisaComponent implements OnInit {
       let vMin = (<HTMLInputElement>(document.getElementById("idMin"))).value.replace(',', '.')
       let vMax = (<HTMLInputElement>(document.getElementById("idMax"))).value.replace(',', '.')
       let cMeio = (<HTMLInputElement>(document.getElementById("idMeio"))).value.replace(',', '.')
-      let ctxt = (<HTMLInputElement>(document.getElementById("idTxt"))).value
 
       obj = {
         'idEspecItens': aRow.idEspecItens,
@@ -280,6 +280,7 @@ export class RevisaComponent implements OnInit {
         'iteMax': vMax,
         'iteMeio': cMeio,
         'iteLaudo': aRow.iteCarac,
+        'parametro': this.parametro,
         'iteTp': 'A'
       }
     }
@@ -294,6 +295,7 @@ export class RevisaComponent implements OnInit {
         'iteMax': 0,
         'iteMeio': '',
         'iteLaudo': '',
+        'parametro': this.parametro,
         'iteTp': 'E'
       }
     }
@@ -308,6 +310,7 @@ export class RevisaComponent implements OnInit {
         'iteMax': aRow.iteCarac,
         'iteMeio': aRow.iteCarac,
         'iteLaudo': aRow.iteLaudo == 'SIM' ? 'NAO' : 'SIM',
+        'parametro': this.parametro,
         'iteTp': 'L'
       }
     }

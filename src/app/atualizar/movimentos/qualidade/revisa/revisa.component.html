@@ -124,12 +124,6 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="card-body table-responsive col-md-2">
-                            <mat-form-field title="Parâmetro">
-                                <mat-label>Parâmetro</mat-label>
-                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" matInput [(ngModel)]="parametro">
-                            </mat-form-field>
-                        </div>
                         <div class="card-body table-responsive col-md-12">
                             <mat-form-field>
                                 <mat-label>Histórico de Revisão</mat-label>
@@ -262,6 +256,13 @@
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.iteMin}}</p>
                                         <input ng-maxlength="20" type='text' value={{row.iteMin}} id="idMin" *ngIf='editInd==i'>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="parametro">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Parâmetro </th>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <p *ngIf='editInd!=i'>{{row.parametro}}</p>
+                                        <input ng-maxlength="20" type='text' [(ngModel)]="parametro"  *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMax">
