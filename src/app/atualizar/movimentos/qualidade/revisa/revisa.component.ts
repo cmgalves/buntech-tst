@@ -67,6 +67,7 @@ export class RevisaComponent implements OnInit {
   novoCarMax: string = '';
   novoCarTxt: string = '';
   novoCarMeio: string = '';
+  parametro: string = ''
   arrLinhas: any = [];
   btnLaudo: string = 'remove_done';
   laddCarac: boolean = true
@@ -77,7 +78,7 @@ export class RevisaComponent implements OnInit {
   imprimeLaudo: string = "NAO";
 
   sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
-  sEspecAnalise: string[] = ['SIM', 'NAO'];
+  sEspecAnalise: any[] = [{value:'S', label:'SIM'}, {value:'N', label:'NÃO'}];
   sEspecSequencia: string[] = ['1', '2', '3', '4', '6', '8', '12', '24'];
   sEspecQuebra: string[] = ['HORA', 'QTDE'];
 
@@ -169,7 +170,8 @@ export class RevisaComponent implements OnInit {
           'cabQtdeQuebra': xy.cabQtdeQuebra,
           'qtdeAnalise': xy.qtdeAnalise,
           'imprimeLaudo': xy.imprimeLaudo,
-          'especLinha': xy.linha
+          'especLinha': xy.linha,
+          'parametro': xy.parametro,
         })
         if (seq === 1) {
           this.iteProduto = xy.iteProduto;
@@ -190,6 +192,7 @@ export class RevisaComponent implements OnInit {
           this.qtdeAnalise = xy.qtdeAnalise;
           this.imprimeLaudo = xy.imprimeLaudo;
           this.validadeMeses = xy.validadeMeses;
+          this.parametro = xy.parametro;
         }
       });
 
@@ -348,11 +351,13 @@ export class RevisaComponent implements OnInit {
       'cabQtdeQuebra': this.cabQtdeQuebra,
       'qtdeAnalise': this.qtdeAnalise,
       'imprimeLaudo': this.imprimeLaudo.substring(0, 1),
-      'validadeMeses': this.validadeMeses
+      'validadeMeses': this.validadeMeses,
+      'parametro': this.parametro
     }
+    console.log(obj);
     this.fj.buscaPrt('incluiEspec', obj).subscribe(q => {
-      console.log(q[0].cRet)
-      window.location.reload();
+      console.log(q)
+      //window.location.reload();
     });
   }
 

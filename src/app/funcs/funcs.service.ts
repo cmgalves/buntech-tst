@@ -394,7 +394,7 @@ export class funcsService {
           "cAnalise": loteItem.analise,
           "nQuantidade": loteItem.qtdeLote,
           "cCaracteristica": item.descCarac,
-          "cResultado": item.resultxt != "" ? item.resultxt : item.result.toString(),
+          "cResultado": item.resultxt != "" ? item.parametro : item.result.toString(),
           "dValidade": this.converterParaDDMMYY(loteItem.dtime, item.validadeMeses),
           "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
           "cJustificativa": loteItem.justificativa3,
@@ -409,7 +409,6 @@ export class funcsService {
           if (q.status === false || q.ok === false) {
             enviado = false;
           }
-          console.log('qtd enviada')
           caracEnviadas++;
           if (caracEnviadas == cada.length) {
             this.prodParcialOp(loteItem, 'env');
@@ -417,6 +416,7 @@ export class funcsService {
             this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => console.log('alteraStatus', f));
           }
         }, error => {
+          console.log(error);
           obj.statusEnvio = 'NÃO ENVIADO'
           this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
         });
@@ -486,6 +486,7 @@ export class funcsService {
       qtde: qtdeProd,
       tipo: 'P',
     };
+    console.log(JSON.stringify(objEnv), objEnv);
     this.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))
       if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
@@ -499,6 +500,9 @@ export class funcsService {
       } else {
         console.log(x.Sucesso)
       }
+    }, error => {
+      console.log(error);
+      alert("Não foi possível enviar");
     });
   };
 
