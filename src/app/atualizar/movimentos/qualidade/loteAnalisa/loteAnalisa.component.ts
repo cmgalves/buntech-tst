@@ -162,66 +162,10 @@ export class LoteAnalisaComponent implements OnInit {
         this.qtdeTot = this.fg.formatarNumero(xy.qtde)
 
       })
-      this.dataSource = new MatTableDataSource(this.arrDados)
+      this.dataSource = new MatTableDataSource(this.arrDados);
+      console.log(this.arrDados);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
-  }
-
-  aprovaLote(tipo: string) {
-    let nivAprov = '';
-
-    const obj = {
-      'filial': this.filial,
-      'op': ' ',
-      'produto': this.produto,
-      'descrProd': this.descrProd,
-      'lote': this.lote,
-      'usrAprov': this.aUsr.codUser,
-      'usrPerfil': nivAprov,
-      'dtVenc': this.fg.btod(this.dtVenc),
-      'qtde': this.qtdeTot,
-      'revisao': this.revisao,
-      'codCarac': ' ',
-      'iteMin': 0,
-      'iteMax': 0,
-      'iteMeio': ' ',
-      'result': 0,
-      'resultxt': ' ',
-      'situacao': 'APROVADO',
-      'just': 'Aprovação automática pela análise',
-      'tipo': tipo,
-    }
-    this.fj.execProd('analisaAprovaLote', obj);
-    this.atuLoteAprov()
-  }
-
-  atuLoteAprov() {
-    this.arrBusca = {};
-    let aProt = [];
-    const obj = {
-      'filial': this.aProd.filial,
-      'produto': this.aProd.produto,
-      'lote': this.aProd.lote
-    }
-    this.arrBusca = this.fj.buscaPrt('relacaoLoteProtheus', obj);
-    this.arrBusca.subscribe(cada => {
-      cada.forEach(xy => {
-        const item = xy.itemin
-        aProt.push({ "cLFilial": xy.filial, "cProduto": xy.produto, "cArmazem": '01', "cOP": xy.op, "cLote": xy.lote, "nQuantidade": xy.qtdeProd, "dValidade": xy.dtVenc, "dFabricacao": xy.dtProd, "cCaracteristica": xy.descCarac, "cValMin": xy.itemin.toString(), "cValMax": xy.itemax.toString(), "cResultado": xy.obtido.toString(), "cStatus": xy.sitLote })
-      });
-      const retProdParcial = this.fj.prodLote(aProt);
-      retProdParcial.subscribe(ret => {
-        if (ret.status) {
-          if (confirm(ret.msg) == true) {
-            window.location.reload();
-          } else {
-            window.location.reload();
-          }
-        } else {
-          alert(ret.msg)
-        }
-      });
     });
   }
 
@@ -337,7 +281,7 @@ export class LoteAnalisaComponent implements OnInit {
           // console.log(q)
         });
         if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
-        this.router.navigate(['loteReg']);
+        //this.router.navigate(['loteReg']);
       }
     });
   }

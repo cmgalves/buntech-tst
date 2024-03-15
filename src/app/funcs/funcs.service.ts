@@ -382,7 +382,9 @@ export class funcsService {
       const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
       this.buscaPrt('alteraStatusEnvio', obj);
 
+      console.log('uma vez');
       arrItens.subscribe(cada => cada.forEach(item => {
+        //console.log(cada);
         //percorre todos os dados do loteAnalise
         const obj2 = { //cria objeto para enviar ao proteus
           "cLFilial": loteItem.filial,
@@ -407,6 +409,7 @@ export class funcsService {
           if (q.status === false || q.ok === false) {
             enviado = false;
           }
+          console.log('qtd enviada')
           caracEnviadas++;
           if (caracEnviadas == cada.length) {
             this.prodParcialOp(loteItem, 'env');
@@ -483,7 +486,6 @@ export class funcsService {
       qtde: qtdeProd,
       tipo: 'P',
     };
-    console.log(objEnv, objAponta)
     this.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))
       if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
