@@ -380,7 +380,7 @@ export class funcsService {
         'op': loteItem.op,
         'statusEnvio': 'NÃO ENVIADO'
       };
-      const arrItens = this.buscaPrt('relacaoLoteAnalisa', obj); //Busca os dados do loteAnalise
+      const arrItens = this.buscaPrt('itensLote', obj); //Busca os dados do loteAnalise
       this.buscaPrt('alteraStatusEnvio', obj);
       const objs = [];
       arrItens.subscribe(cada => {
@@ -388,7 +388,6 @@ export class funcsService {
           if (codCaracteristica.indexOf(item.codCarac) < 0) {
             codCaracteristica.push(item.codCarac);
             //percorre todos os dados do loteAnalise
-            console.log(item);
             objs.push({ //cria objeto para enviar ao proteus
               "cLFilial": loteItem.filial,
               "cProduto": loteItem.produto,
@@ -408,8 +407,6 @@ export class funcsService {
             });
           }
         });
-
-        console.log(objs);
 
         let enviado = true;
         objs.forEach((obj2, index) => {

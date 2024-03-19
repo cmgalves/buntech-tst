@@ -275,9 +275,7 @@ export class LoteAnalisaComponent implements OnInit {
     /* espera confirmação do usuário */
     this.fj.confirmDialog(confirmText).subscribe(q => {
       if (q) {
-        this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => {
-          // console.log(q)
-        });
+        this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => q);
         if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
         this.router.navigate(['loteReg']);
       }
