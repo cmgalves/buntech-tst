@@ -97,7 +97,6 @@ export class LoteAnalisaComponent implements OnInit {
     };
 
     this.fj.buscaPrt('criarLoteCaracteristica', obj).subscribe(x => {
-      console.log(x[0].mensagem)
       this.buscaLoteDetalhes();
 
     }); //vw_pcp_relacao_lote_analisa
@@ -118,8 +117,7 @@ export class LoteAnalisaComponent implements OnInit {
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
-    this.arrBusca.subscribe(cada => {console.log(cada)
-      // console.log(cada);
+    this.arrBusca.subscribe(cada => {
       cada.forEach(xy => {
         ord++
         if (codCaracteristica.indexOf(xy.codCarac) < 0) {
@@ -146,7 +144,8 @@ export class LoteAnalisaComponent implements OnInit {
             'situacao': xy.situacao.charAt(0).toUpperCase() + xy.situacao.slice(1).toLowerCase(),
             'result': xy.result,
             'resultxt': xy.resultxt,
-            'nivel': xy.nivel
+            'nivel': xy.nivel,
+            'parametro': xy.parametro
           })
           if (ord === 1) {
             this.filial = xy.filial
@@ -163,7 +162,6 @@ export class LoteAnalisaComponent implements OnInit {
 
       })
       this.dataSource = new MatTableDataSource(this.arrDados);
-      console.log(this.arrDados);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -281,7 +279,7 @@ export class LoteAnalisaComponent implements OnInit {
           // console.log(q)
         });
         if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
-        //this.router.navigate(['loteReg']);
+        this.router.navigate(['loteReg']);
       }
     });
   }

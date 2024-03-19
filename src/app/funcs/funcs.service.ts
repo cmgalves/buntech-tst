@@ -387,8 +387,8 @@ export class funcsService {
         cada.forEach((item, index) => {
           if (codCaracteristica.indexOf(item.codCarac) < 0) {
             codCaracteristica.push(item.codCarac);
-            //console.log(cada);
             //percorre todos os dados do loteAnalise
+            console.log(item);
             objs.push({ //cria objeto para enviar ao proteus
               "cLFilial": loteItem.filial,
               "cProduto": loteItem.produto,
@@ -397,7 +397,7 @@ export class funcsService {
               "cAnalise": loteItem.analise,
               "nQuantidade": loteItem.qtdeLote,
               "cCaracteristica": item.descCarac,
-              "cResultado": item.resultxt != "" ? item.parametro : item.result.toString(),
+              "cResultado": item.resultxt != "" ? ( item.parametro==null?item.resultxt:item.parametro ): item.result.toString(),
               "dValidade": this.converterParaDDMMYY(loteItem.dtime, item.validadeMeses),
               "dFabricacao": this.converterParaDDMMYY(loteItem.dtime),
               "cJustificativa": loteItem.justificativa3,
@@ -409,17 +409,18 @@ export class funcsService {
           }
         });
 
+        console.log(objs);
+
         let enviado = true;
         objs.forEach((obj2, index) => {
           this.prodLote([obj2]).subscribe(q => {
             if (q.status === false || q.ok === false) {
               enviado = false;
             }
-            console.log('qtd enviada');
             if (index == objs.length - 1) {
               this.prodParcialOp(loteItem, 'env');
               obj.statusEnvio = enviado ? 'ENVIADO' : 'NÃO ENVIADO'
-              this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => console.log('alteraStatus', f));
+              this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
             }
           }, error => {
             console.log(error);
