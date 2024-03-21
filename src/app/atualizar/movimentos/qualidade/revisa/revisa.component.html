@@ -82,8 +82,8 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-select placeholder="Análise Proc" [(ngModel)]="especAnalise" (selectionChange)="analiseProc($event, 'analise')">
-                                    <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise">
-                                        {{optAnalise}}
+                                    <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise.value">
+                                        {{optAnalise.label}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -262,7 +262,7 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Parâmetro </th>
                                     <td mat-cell *matCellDef="let row; let i = index">
                                         <p *ngIf='editInd!=i'>{{row.parametro}}</p>
-                                        <input ng-maxlength="20" type='text' [(ngModel)]="parametro"  *ngIf='editInd==i'>
+                                        <input ng-maxlength="20" type='text' [(ngModel)]="parametro" *ngIf='editInd==i'>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="iteMax">
