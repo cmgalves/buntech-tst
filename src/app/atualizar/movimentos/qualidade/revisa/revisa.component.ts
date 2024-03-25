@@ -212,13 +212,13 @@ export class RevisaComponent implements OnInit {
     let vlQtde = 0
 
     if (cTipo === 'analise') {
-      if (anTipo === 'SIM') {
+      if (anTipo === 'S') {
         this.especQuebra = 'HORA';
         this.especSequencia = '6'
         this.cabQtdeQuebra = '4'
         this.qtdeAnalise = '0'
       }
-      if (anTipo === 'NAO') {
+      if (anTipo === 'N') {
         this.especQuebra = 'QTDE';
         this.especSequencia = '0'
         this.cabQtdeQuebra = '0'
