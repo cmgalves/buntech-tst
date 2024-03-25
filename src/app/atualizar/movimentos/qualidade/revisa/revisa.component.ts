@@ -360,7 +360,7 @@ export class RevisaComponent implements OnInit {
     console.log(obj);
     this.fj.buscaPrt('incluiEspec', obj).subscribe(q => {
       console.log(q)
-      //window.location.reload();
+      window.location.reload();
     });
   }
 
