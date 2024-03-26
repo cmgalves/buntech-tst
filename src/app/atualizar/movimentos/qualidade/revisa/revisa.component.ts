@@ -78,7 +78,7 @@ export class RevisaComponent implements OnInit {
   imprimeLaudo: string = "NAO";
 
   sEspecAlcada: string[] = ['Sem alçada', 'N1', 'N1-N2', 'N1-N2-N3', 'N1-N3', 'N2-N3'];
-  sEspecAnalise: any[] = [{value:'S', label:'SIM'}, {value:'N', label:'NÃO'}];
+  sEspecAnalise: any[] = [{ value: 'S', label: 'SIM' }, { value: 'N', label: 'NÃO' }];
   sEspecSequencia: string[] = ['1', '2', '3', '4', '6', '8', '12', '24'];
   sEspecQuebra: string[] = ['HORA', 'QTDE'];
 
@@ -87,7 +87,7 @@ export class RevisaComponent implements OnInit {
   especSit: string[] = ['Andamento', 'Concluida', 'Encerrada'];
   especNum: string[] = ['ITES-PA-BV', 'ITES-PA-CG', 'ITES-PA-CG-GCL', 'ITES-PA-IN', 'ITES-PA-PL', 'ITES-PA-STP'];
 
-  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin','parametro', 'iteMax', 'iteMeio', 'iteLaudo', 'iteEdit'];
+  displayedColumns: string[] = ['idEspecItens', 'iteCarac', 'descCarac', 'iteMin', 'parametro', 'iteMax', 'iteMeio', 'iteLaudo', 'iteEdit'];
   dataSource: MatTableDataSource<cadRevisa>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -185,14 +185,13 @@ export class RevisaComponent implements OnInit {
           this.qualObsRevisao = xy.qualObsRevisao;
           this.qualObsGeral = xy.qualObsGeral;
           this.especLinha = xy.linha;
-          this.especAnalise = xy.especAnalise == 'S' ? 'SIM' : 'NAO';
+          this.especAnalise = xy.especAnalise;
           this.especSequencia = xy.especSequencia;
           this.especQuebra = xy.especQuebra;
           this.cabQtdeQuebra = xy.cabQtdeQuebra;
           this.qtdeAnalise = xy.qtdeAnalise;
           this.imprimeLaudo = xy.imprimeLaudo;
           this.validadeMeses = xy.validadeMeses;
-          this.parametro = xy.parametro;
         }
       });
 
@@ -251,6 +250,7 @@ export class RevisaComponent implements OnInit {
 
   especificar(xInc, aRow) {
     let obj = {}
+    
     if (xInc === 'I') {
 
       obj = {
@@ -270,6 +270,7 @@ export class RevisaComponent implements OnInit {
       let vMin = (<HTMLInputElement>(document.getElementById("idMin"))).value.replace(',', '.')
       let vMax = (<HTMLInputElement>(document.getElementById("idMax"))).value.replace(',', '.')
       let cMeio = (<HTMLInputElement>(document.getElementById("idMeio"))).value.replace(',', '.')
+      this.parametro = (<HTMLInputElement>(document.getElementById("parametro"))).value.replace(',', '.');
 
       obj = {
         'idEspecItens': aRow.idEspecItens,
@@ -360,7 +361,7 @@ export class RevisaComponent implements OnInit {
     console.log(obj);
     this.fj.buscaPrt('incluiEspec', obj).subscribe(q => {
       console.log(q)
-      window.location.reload();
+      this.router.navigate(['espec']);
     });
   }
 
