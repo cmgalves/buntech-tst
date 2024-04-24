@@ -123,7 +123,7 @@ export class LoteAprovaComponent implements OnInit {
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
-    this.arrBusca.subscribe(cada => {
+    this.arrBusca.subscribe(cada => {console.log(cada)
       console.log(cada);
       cada.forEach(xy => {
         ord++
