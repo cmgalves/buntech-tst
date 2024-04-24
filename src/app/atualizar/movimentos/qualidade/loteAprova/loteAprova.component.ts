@@ -305,6 +305,7 @@ export class LoteAprovaComponent implements OnInit {
             //this.router.navigate(['loteReg']);
           });
           this.nivelAprovado(2);
+          this.router.navigate(['loteReg']);
         }
       });
     } else alert("USUÁRIO NÃO TEM NÍVEL PARA APROVAÇÃO");

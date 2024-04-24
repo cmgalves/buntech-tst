@@ -52,7 +52,7 @@ export class OpvisualizaComponent implements OnInit {
   opHoras: string = '';
 
   opvisualizas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida'];
+  displayedColumns: string[] = ['codigo', 'descricao', 'custo', 'setor', 'calendario'];
   dataSource: MatTableDataSource<opVisualiza>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -105,23 +105,25 @@ export class OpvisualizaComponent implements OnInit {
       op: xcOp,
     };
     this.arrOpvisualiza = [];
-    this.arrOpvisualiza = this.fj.buscaPrt('pcpRelacaoLoteOpEmpenho', obj); //vw_pcp_relacao_lote_op_empenho
+    this.arrOpvisualiza = this.fj.buscaPrt('relacaoOpRec', obj); //vw_pcp_relacao_lote_op_empenho
 
     this.arrOpvisualiza.subscribe(cada => {
-      cada.forEach(xy => {
-        this.arrOpvisualizaTab.push({
-          componente: xy.componente,
-          descEmp: xy.descEmp,
-          unidade: xy.unidade,
-          qtdeEmp: xy.qtdeEmp,
-          qtdeEmpCalc: xy.qtdeEmpCalc === '0' ? 0 : xy.qtdeEmpCalc,
-          qtdeInformada: xy.qtdeInformada === '0' ? 0 : xy.qtdeInformada,
-          qtdeConsumida: xy.qtdeConsumida === '0' ? 0 : xy.qtdeConsumida,
-          saldo: xy.saldo,
-          tipo: xy.tipo,
-          situacao: xy.situacao,
-        })
-      });
+      console.log(cada);
+      this.arrOpvisualizaTab = [...cada];
+      // cada.forEach(xy => {
+        // this.arrOpvisualizaTab.push({
+        //   componente: xy.componente,
+        //   descEmp: xy.descEmp,
+        //   unidade: xy.unidade,
+        //   qtdeEmp: xy.qtdeEmp,
+        //   qtdeEmpCalc: xy.qtdeEmpCalc === '0' ? 0 : xy.qtdeEmpCalc,
+        //   qtdeInformada: xy.qtdeInformada === '0' ? 0 : xy.qtdeInformada,
+        //   qtdeConsumida: xy.qtdeConsumida === '0' ? 0 : xy.qtdeConsumida,
+        //   saldo: xy.saldo,
+        //   tipo: xy.tipo,
+        //   situacao: xy.situacao,
+        // });
+      // });
       
       this.dataSource = new MatTableDataSource(this.arrOpvisualizaTab)
       this.dataSource.paginator = this.paginator;

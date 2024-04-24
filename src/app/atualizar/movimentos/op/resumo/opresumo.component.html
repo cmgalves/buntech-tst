@@ -40,6 +40,10 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> OP </th>
                                     <td mat-cell *matCellDef="let row"> {{row.op}} </td>
                                 </ng-container>
+                                <ng-container matColumnDef="rec">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> REC </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.codRecurso}} </td>
+                                </ng-container>
                                 <ng-container matColumnDef="lote">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Lote </th>
                                     <td mat-cell *matCellDef="let row"> {{row.lote}} </td>
@@ -64,6 +68,10 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldo a Produzir </th>
                                     <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.saldoProd)}}</td>
                                 </ng-container>
+                                <ng-container matColumnDef="qtdeReprovado">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qtde Reprovada </th>
+                                    <td mat-cell *matCellDef="let row"> {{fg.formatarNumero(row.qtdeReprovado)}}</td>
+                                </ng-container>
                                 <ng-container matColumnDef="diabr">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Emissão OP</th>
                                     <td mat-cell *matCellDef="let row"> {{row.diabr}} </td>
@@ -78,10 +86,13 @@
                                         <button (click)="visuOp(row)" mat-raised-button type="button" matTooltip="Visualizar" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">visibility</i>
                                         </button>
-                                        <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a')" mat-raised-button type="button" matTooltip="Ajustar Empenho" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <!-- <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a') || row.situacao != 'Baixada'" mat-raised-button type="button" matTooltip="Ajustar Empenho" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons">build</i>
+                                        </button> -->
+                                        <button (click)="ajustaOp(row)" [disabled]="btnDisable(row, 'a') || row.situacao != 'Baixada'" mat-raised-button type="button" matTooltip="Ajustar Empenho" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">build</i>
                                         </button>
-                                        <button (click)="fj.prodParcialOp(row, 'pcp')" [disabled] mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="prodParcial(row)" [disabled]="row.qtdeEnv < row.qtdeLote" mat-raised-button type="button" matTooltip="Produzir" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">add</i>
                                         </button>
                                     </td>
@@ -94,7 +105,7 @@
                                 </tr>
                             </table>
 
-                            <mat-paginator [pageSizeOptions]="[25, 50, 150]"></mat-paginator>
+                            <mat-paginator [pageSizeOptions]="[10, 50, 150]"></mat-paginator>
                         </div>
                     </div>
                 </div>

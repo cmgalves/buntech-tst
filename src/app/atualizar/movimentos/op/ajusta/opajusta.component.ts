@@ -173,6 +173,7 @@ export class OpajustaComponent implements OnInit {
           tipo: 'P',
         };
 
+        console.log(obj)
         const retProdParcial = this.fj.prodOP(obj);
         retProdParcial.subscribe(cada => {
           alert(cada.Sucesso.substring(2, 60))
@@ -368,8 +369,10 @@ export class OpajustaComponent implements OnInit {
       'op': this.opCodigo,
       'produto': this.opProduto,
     }
-    this.fj.execProd('spcp_confirma_qtde_informada', objConf);
-    window.location.reload();
+    this.fj.buscaPrt('spcp_confirma_qtde_informada', objConf).subscribe(q => {
+      this.fj.confirmDialog('Empenho confirmado com sucesso', ['OK'])
+        .subscribe(t => window.location.reload());
+    });
   }
 
   // cálculo da op utilizando a nova quantidade produzida
@@ -380,8 +383,10 @@ export class OpajustaComponent implements OnInit {
       produto: this.opProduto,
     };
 
-    this.fj.execProd('spcp_calcula_op', obj);
-    window.location.reload();
+    this.fj.buscaPrt('spcp_calcula_op', obj).subscribe(q => {
+      this.fj.confirmDialog("Calculado com sucesso", ['OK']).subscribe(t => window.location.reload())
+    });
+
 
   }
 

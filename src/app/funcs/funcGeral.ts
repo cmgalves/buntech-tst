@@ -172,6 +172,7 @@ export class funcGeral {
 
   // efetua a produção parcial da op 
   prodParcialOp(aOp, cOrig) {
+    console.log(aOp, cOrig);
     let cArm = ''
     let qtdeProd = 0
 

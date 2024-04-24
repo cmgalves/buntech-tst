@@ -55,7 +55,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'lote', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'qtdeProd', 'saldoProd', 'diabr', 'situacao', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'rec', 'lote', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'qtdeProd', 'saldoProd', 'qtdeReprovado', 'diabr', 'situacao', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -96,6 +96,7 @@ export class OpresumoComponent implements OnInit {
           'qtdeLote': xy.qtdeLote,
           'qtdeProd': xy.qtdeProd,
           'saldoProd': xy.saldoProd,
+          'qtdeReprovado': xy.qtdeReprovado,
           'qtdeEnv': xy.qtdeEnv,
           'qtdeSaldo': xy.qtdeSaldo,
           'codSitu': xy.codSitu,
@@ -163,11 +164,11 @@ export class OpresumoComponent implements OnInit {
     if (tp === 'a') {
       if (!(("Interrompida Produção ").indexOf(aRow.situacao) > -1)) {
         if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
-          return true;
+          return false;
         }
       }
     }
-    return false
+    return true
   }
 
   // aplica o filtro na tabela de OPs
@@ -232,6 +233,12 @@ export class OpresumoComponent implements OnInit {
       localStorage.setItem('cadProd', JSON.stringify(this.arrProdB));
     });
   }
+
+  prodParcial(row) {
+    this.fj.prodParcialOp(row, 'pcp');
+  }
+
+
 
 
 }

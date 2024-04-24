@@ -470,6 +470,8 @@ export class funcsService {
     } else {
       cArm = '44'
     }
+
+    console.log(aOp);
     const objEnv = {
       cFilialOp: aOp.filial,
       cNumOp: aOp.op,
@@ -493,6 +495,7 @@ export class funcsService {
       qtde: qtdeProd,
       tipo: 'P',
     };
+    console.log(objEnv);
     this.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))
       if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {

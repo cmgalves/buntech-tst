@@ -82,8 +82,8 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-select placeholder="Análise Proc" [(ngModel)]="especAnalise" (selectionChange)="analiseProc($event, 'analise')">
-                                    <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise">
-                                        {{optAnalise}}
+                                    <mat-option *ngFor="let optAnalise of sEspecAnalise" [value]="optAnalise.value">
+                                        {{optAnalise.label}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
