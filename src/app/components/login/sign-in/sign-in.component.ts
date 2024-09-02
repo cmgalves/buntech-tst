@@ -66,7 +66,7 @@ export class SignInComponent implements OnInit {
         })
       }
     });
-    console.log(this.arrUsr);
+
     if (conta === 5) {
       alert('Senha ou Usuário Inválido')
     } else {

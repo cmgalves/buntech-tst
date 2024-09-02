@@ -97,7 +97,6 @@ export class OpconfirmaComponent implements OnInit {
       alert('Sem Acesso');
       this.router.navigate(['opResumo']);
     }
-    console.log(this.aOP);
   }
 
   buscaOpconfirma() {
@@ -141,8 +140,6 @@ export class OpconfirmaComponent implements OnInit {
           this.opFinal = xy.vencimento;
         }
         });
-
-        console.log(this.arrOpconfirmaTab)
 
       this.dataSource = new MatTableDataSource(this.arrOpconfirmaTab)
       this.dataSource.paginator = this.paginator;

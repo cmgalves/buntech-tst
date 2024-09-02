@@ -173,7 +173,6 @@ export class OpajustaComponent implements OnInit {
           tipo: 'P',
         };
 
-        console.log(obj)
         const retProdParcial = this.fj.prodOP(obj);
         retProdParcial.subscribe(cada => {
           alert(cada.Sucesso.substring(2, 60))
@@ -256,7 +255,6 @@ export class OpajustaComponent implements OnInit {
           tipo: 'T',
         };
 
-        console.log(obj, objTotal);
 
         const retProdParcial = this.fj.prodOP(obj);
         retProdParcial.subscribe(cada => {

@@ -110,7 +110,7 @@ export class CaracteristicaComponent implements OnInit {
         'codCarac': this.codCarac,
         'descCarac': this.descCarac,
       }
-      this.fj.buscaPrt('incluiAlteraCaracteristica', obj).subscribe(q => console.log(q));
+      this.fj.buscaPrt('incluiAlteraCaracteristica', obj).subscribe(q => q);
       this.lForm = !this.lForm;
       window.location.reload();
     }

@@ -73,8 +73,14 @@ export class LoteRegComponent implements OnInit {
       'produto': this.arrProd.produto,
       'lote': this.arrProd.lote
     }); //vw_pcp_relacao_lote_registro
+
+    this.fj.buscaPrt('itensLote', { 'filial': '101',
+    'produto': 'PAN00099',
+    'lote': '000000001',
+    'analise': 'A01',
+    'op': '00450501001',
+    'statusEnvio': 'NÃO ENVIADO'}).subscribe(q => q)
     this.arrBusca.subscribe(cada => {
-      console.log(cada);
       cada.forEach(xy => {
         ord++
         this.arrDados.push({

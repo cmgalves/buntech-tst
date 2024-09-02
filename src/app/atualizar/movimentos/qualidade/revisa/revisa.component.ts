@@ -358,9 +358,7 @@ export class RevisaComponent implements OnInit {
       'validadeMeses': this.validadeMeses,
       'parametro': this.parametro
     }
-    console.log(obj);
     this.fj.buscaPrt('incluiEspec', obj).subscribe(q => {
-      console.log(q)
       this.router.navigate(['espec']);
     });
   }

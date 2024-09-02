@@ -172,7 +172,6 @@ export class funcGeral {
 
   // efetua a produção parcial da op 
   prodParcialOp(aOp, cOrig) {
-    console.log(aOp, cOrig);
     let cArm = ''
     let qtdeProd = 0
 
@@ -200,8 +199,6 @@ export class funcGeral {
       qtde: qtdeProd,
       tipo: 'P',
     };
-
-    console.log(objEnv, objAponta);
 
     this.fj.prodOP(objEnv).subscribe(x => {
       alert(x.Sucesso.substring(2, 60))

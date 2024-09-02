@@ -123,8 +123,7 @@ export class LoteAprovaComponent implements OnInit {
     };
     this.arrBusca = this.fj.buscaPrt('relacaoLoteAnalisa', obj); //vw_pcp_relacao_lote_analisa
 
-    this.arrBusca.subscribe(cada => {console.log(cada)
-      console.log(cada);
+    this.arrBusca.subscribe(cada => {
       cada.forEach(xy => {
         ord++
         if (codCaracteristica.indexOf(xy.codCarac) < 0) {
@@ -241,18 +240,15 @@ export class LoteAprovaComponent implements OnInit {
       nivAprov = 'N1';
       justificativa1 = this.justificativa;
     }
-    console.log(this.aProd.loteAprov);
     if (this.aProd.loteAprov == 'REAVALIACAON2' || rejeitaTodos || aprovaN2) { //Se é possível aprovar
       usrAprovn2 = this.aUsr.codUser;                             //N2 ou se tudo será
       dtAprovn2 = DataAtual;                                      //reprovado
-      console.log('reavaliacaoN2')
       tipoAprovn2 = tipo;
       if (tipo == 'A')
         loteAprov = aprovaN3 ? 'REAVALIACAO' : 'REAVALIACAO N3'; //passa para o N3 reavaliar ou finaliza
       nivAprov = 'N2';
       justificativa2 = this.justificativa;
     }
-    console.log(loteAprov)
 
     if (this.aProd.loteAprov == 'REAVALIACAON3' || rejeitaTodos || aprovaN3) { //Se é possível aprovar
       usrAprovn3 = this.aUsr.codUser;                                         //N3 ou se tudo será
@@ -483,7 +479,6 @@ export class LoteAprovaComponent implements OnInit {
   }
 
   reclassifica() {
-    console.log(this.justificativa)
     if (this.justificativa == "") {
       return alert("Justificativa é obrigatória");
     }

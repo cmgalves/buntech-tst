@@ -78,7 +78,6 @@ export class LoteDetalheComponent implements OnInit {
   // busca a relação de produtos com as loteções
   buscaLoteDetalhes() {
     let ord = 0;
-    console.log(this.aProd);
     const obj = {
       'filial': this.aProd.filial,
       'produto': this.aProd.produto,
@@ -113,7 +112,6 @@ export class LoteDetalheComponent implements OnInit {
           'justificativa2': xy.justificativa2,
           'justificativa3': xy.justificativa3,
         });
-        console.log(xy);
         this.filial = xy.filial
         this.produto = xy.produto
         this.descricao = xy.descricao

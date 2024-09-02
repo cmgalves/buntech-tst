@@ -108,7 +108,6 @@ export class OpvisualizaComponent implements OnInit {
     this.arrOpvisualiza = this.fj.buscaPrt('relacaoOpRec', obj); //vw_pcp_relacao_lote_op_empenho
 
     this.arrOpvisualiza.subscribe(cada => {
-      console.log(cada);
       this.arrOpvisualizaTab = [...cada];
       // cada.forEach(xy => {
         // this.arrOpvisualizaTab.push({
