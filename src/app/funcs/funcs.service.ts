@@ -6,6 +6,7 @@ import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { funcGeral } from './funcGeral';
+import { map } from "rxjs/operators";
 
 
 
@@ -35,7 +36,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.post(url, obj)
-      .map((response: Response) => { return response.json() });
+      .pipe(map((response: Response) => { return response.json() }));
 
   }
 
@@ -46,7 +47,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.post(url, obj)
-      .map((response: Response) => response.json());
+      .pipe(map((response: Response) => response.json()));
 
   }
 
@@ -57,7 +58,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.post(url, obj)
-      .map((response: Response) => response.json());
+      .pipe(map((response: Response) => response.json()));
 
   }
 
@@ -68,7 +69,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.post(url, obj)
-      .map((response: Response) => response.json());
+      .pipe(map((response: Response) => response.json()));
 
   }
 
@@ -78,7 +79,7 @@ export class funcsService {
     url = `http://10.3.0.204:8095/REST/AJUST_EMP`
 
     return this._http.put(url, obj)
-      .map((response: Response) => response.json());
+      .pipe(map((response: Response) => response.json()));
 
   }
 
@@ -88,7 +89,7 @@ export class funcsService {
     url = `http://10.3.0.204:8095/rest/APILOTES/APILOTEESP`
 
     return this._http.post(url, obj)
-      .map((response: Response) => response.json());
+      .pipe(map((response: Response) => response.json()));
 
   }
 
@@ -99,7 +100,7 @@ export class funcsService {
     url = `http://${dstUrla}/${_url}`
 
     return this._http.get(url)
-      .map((response: Response) => response.json());
+      .pipe(map((response: Response) => response.json()));
 
   }
 
@@ -204,7 +205,7 @@ export class funcsService {
 
     url = `http://${dstUrla}/geraLoteInfo`;
     this._http.post(url, obj)
-      .map((response: Response) => response.json()).subscribe(tabelas => {
+      .pipe(map((response: Response) => response.json())).subscribe(tabelas => {
         url = `http://${dstUrla}/geraLote`;
         let oppcfLote = tabelas.oppcfLote;
         let especificaGeral = tabelas.especifica;
