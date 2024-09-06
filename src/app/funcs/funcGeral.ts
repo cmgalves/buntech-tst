@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
+import {map} from 'rxjs';
 import * as XLSX from 'xlsx';
 import { funcsService } from './funcs.service';
 

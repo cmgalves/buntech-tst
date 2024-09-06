@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location, PopStateEvent } from '@angular/common';
-import 'rxjs/add/operator/filter';
+import {filter} from 'rxjs';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as $ from "jquery";

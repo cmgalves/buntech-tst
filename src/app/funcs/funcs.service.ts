@@ -3,10 +3,9 @@ import { Http, Response } from '@angular/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'app/components/confirm-dialog/confirm-dialog.component';
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
-import 'rxjs/add/operator/map';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { funcGeral } from './funcGeral';
-import { map } from "rxjs/operators";
+import { map } from "rxjs";
 
 
 
