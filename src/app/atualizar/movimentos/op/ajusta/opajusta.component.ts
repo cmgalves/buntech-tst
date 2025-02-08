@@ -28,6 +28,8 @@ export interface opAjusta {
 export class OpajustaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
   aOp = JSON.parse(localStorage.getItem('op'));
+  // aRowOP = JSON.parse(localStorage.getItem('rowOp'));
+  // aDadosOP = JSON.parse(localStorage.getItem('lsDadosOP'))[0];
   arrRecurso = JSON.parse(localStorage.getItem('recurso'));
   arrProd = JSON.parse(localStorage.getItem('cadProd'));
 
@@ -63,11 +65,13 @@ export class OpajustaComponent implements OnInit {
   opQtde: string = '';
   opEntregue: string = '';
   opQtdePcf: string = '';
+  opQtdeRet: string = '';
   opQtdeEnv: string = '';
   opQtdeSaldo: string = '';
   opQtdeProd: string = '';
   opQtdeProduz: string = '0';
   opSaldoProd: string = '';
+  nSaldoProd: any = 0;
   opRetrabalho: any = 0;
   opHoras: string = '';
   // itens novos
@@ -98,7 +102,7 @@ export class OpajustaComponent implements OnInit {
   objTotal: any = [];
 
   opajustas: Observable<any>;
-  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'qtdeConsumida', 'sitDesc', 'edicao'];
+  displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'qtdeInformada', 'tipo', 'sitDesc', 'edicao'];
   // displayedColumns: string[] = ['componente', 'descEmp', 'unidade', 'qtdeEmp', 'qtdeEmpCalc', 'situaca', 'edicao'];
   dataSource: MatTableDataSource<opAjusta>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -114,6 +118,7 @@ export class OpajustaComponent implements OnInit {
   ngOnInit(): void {
     this.mostraInc = false
     if (('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
+
       this.buscaOp();
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
@@ -129,79 +134,12 @@ export class OpajustaComponent implements OnInit {
 
   // produção da OP de acordo com os status
   produzir() {
-    var parcial = false;
     if (this.arrOpajustaTab.filter(q => q.sitDesc != 'Ajustada').length > 0) {
-      parcial = true;
-      if (this.opQtdeProduz >= this.opQtdePcf) {
-        if (confirm("Não é possível produzir a OP completamente, deseja continuar com um valor menor?"))
-          this.opQtdeProduz = (parseInt(this.opQtdePcf) - 0.1).toString();
-        else return;
-      }
-    }
-
-    if (parcial) this.produzirParcial();
-    else this.produzirTotal();
-  }
-
-  produzirParcial() {
-    const nQtdeLen = this.aOp.length - 1
-    const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
-    this.parcialAtivo = false;
-
-    if (parseFloat(this.opQtdeProduz) > 0) {
-      if (Math.round(parseFloat(this.opQtdePcf) * 10000) / 10000 > parseFloat(this.opQtdeProduz)) {
-        const obj = {
-          cFilialOp: this.opFilial,
-          cNumOp: this.opCodigo,
-          cC2Prod: this.opProduto,
-          cC2Local: '01',
-          cDocAjst: 'DOCPARCI',
-          nC2QtdOri: this.opQtdePcf,
-          nC2QtdAjst: parseFloat(this.opQtdeProduz),
-          cTipoProd: 'P',
-          nQtdEntrg: parseFloat(this.opSaldoProd),
-          cOperacao: this.aOp.codOpera,
-          cRecurso: this.aOp.codRecurso,
-          dDataApt: this.aOp.dtime,
-          ItensD4: []
-        };
-
-        const objParcial = {
-          filial: this.opFilial,
-          op: this.opCodigo,
-          qtde: this.opQtdeProduz,
-          tipo: 'P',
-        };
-
-        const retProdParcial = this.fj.prodOP(obj);
-        retProdParcial.subscribe(cada => {
-          alert(cada.Sucesso.substring(2, 60))
-          if (cada.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
-            this.fj.execProd('produzOP', objParcial);
-            this.parcialAtivo = true;
-          }
-          window.location.reload();
-        });
-      } else {
-        if (Math.round(parseFloat(this.opQtdePcf) * 10000) / 10000 == parseFloat(this.opQtdeProduz)) {
-          if (Math.round(parseFloat(this.opQtdePcf) * 10000) / 10000 > 0.1) {
-            this.opQtdeProduz = (parseFloat(this.opQtdePcf) - 0.1).toString();
-          }
-          alert('Não pode zerar a OP no apontamento Parcial!!!')
-          this.parcialAtivo = true;
-        } else {
-          alert('Quantidade maior que a produzida!!!')
-          this.opQtdeProduz = (Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000).toString();
-          this.parcialAtivo = true;
-        }
-      }
+      alert('Empenho não Confirmado')
     } else {
-      alert('Quantidade igual a zero!!!');
-      this.parcialAtivo = true;
-    }
-
-
-
+      // alert('náo pronto')
+      this.produzirTotal()
+    };
   }
 
   produzirTotal() {
@@ -222,7 +160,7 @@ export class OpajustaComponent implements OnInit {
           'cD4CodPrd': xl.componente,
           'cD4Local': "01",
           'nD4QtdOri': xl.qtdeEmp,
-          'nD4QtdAjst': xl.qtdeEmpCalc,
+          'nD4QtdAjst': xl.qtdeInformada,
           'cTpComp': xl.tipo,
           'cRoteiro': "01"
         })
@@ -239,30 +177,18 @@ export class OpajustaComponent implements OnInit {
           cC2Local: '01',
           cDocAjst: 'DOCTOTAL',
           nC2QtdOri: this.opQtdePcf,
-          nC2QtdAjst: parseFloat(this.opQtdeProduz),
+          nC2QtdAjst: this.opQtdePcf,
           cTipoProd: 'T',
-          nQtdEntrg: parseFloat(this.opSaldoProd),
+          nQtdEntrg: this.nSaldoProd,
           cOperacao: this.aOp.codOpera,
           cRecurso: this.aOp.codRecurso,
           dDataApt: this.aOp.dtime,
           ItensD4: arrItens
         };
 
-        const objTotal = {
-          filial: this.opFilial,
-          op: this.opCodigo,
-          qtde: parseFloat(this.opQtdeProduz),
-          tipo: 'T',
-        };
-
-
         const retProdParcial = this.fj.prodOP(obj);
         retProdParcial.subscribe(cada => {
           alert(cada.Sucesso.substring(2, 60))
-          if (cada.Sucesso === "T/Documento ajustado e apontado com Sucesso!") {
-
-            this.fj.execProd('produzOP', objTotal)
-          }
           window.location.reload();
         });
       } else {
@@ -289,12 +215,14 @@ export class OpajustaComponent implements OnInit {
         this.opProduto = y.produto
         this.opDescricao = y.descricao
         this.opQtdePcf = y.qtdeLote
+        this.opQtdeRet = y.qtdeRet
         this.opQtdeEnv = y.qtdeEnv
         this.opQtdeSaldo = this.fg.formatarNumero(y.qtdeSaldo);
         this.opQtdeProd = y.qtdeProd
         this.opSaldoProd = this.fg.formatarNumero(y.saldoProd)
         this.opEmissao = this.fj.converterParaDDMMYY(y.dtcria);
-        this.opHoras = this.fj.toHHMMSS(y.opSegundos)
+        this.opHoras = this.fj.toHHMMSS(y.opSegundos);
+        this.nSaldoProd = y.nSaldoProd
       })
       this.buscaOpEmpenho();
     })
@@ -380,12 +308,15 @@ export class OpajustaComponent implements OnInit {
       op: this.opCodigo,
       produto: this.opProduto,
     };
+    const objRret = {
+      op: this.opFilial + this.opCodigo,
+    };
 
     this.fj.buscaPrt('spcp_calcula_op', obj).subscribe(q => {
-      this.fj.confirmDialog("Calculado com sucesso", ['OK']).subscribe(t => window.location.reload())
+      this.fj.confirmDialog("Calculado com sucesso", ['OK']).subscribe(t => {
+        window.location.reload();
+      })
     });
-
-
   }
 
 
@@ -397,11 +328,11 @@ export class OpajustaComponent implements OnInit {
   // inclusão de novos itens na OP
   incProd() {
     let xcQtde = parseFloat(this.opQtdeItemNovo)
-    let Tipo = 'N'
+    let tipo = 'N'
 
     if (xcQtde < 0) {
       xcQtde = xcQtde * -1
-      Tipo = 'R'
+      tipo = 'R'
     }
     if (this.opItemNovo === '' || this.opDescItemNovo === '' || this.opUnidadeItemNovo === '' || this.opQtdeItemNovo === '') {
       alert('Dados incompletos');
@@ -411,6 +342,7 @@ export class OpajustaComponent implements OnInit {
       'filial': this.opFilial,
       'op': this.opCodigo,
       'componente': this.opItemNovo,
+      'tipo': tipo,
       'qtde': xcQtde,
     }
     this.fj.execProd('spcp_inclui_empenho', objInc);

@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'app/components/confirm-dialog/confirm-dialog.component';
-import { Observable, Subscription, forkJoin, of } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
-import { funcGeral } from './funcGeral';
 import { map } from "rxjs";
 
 
@@ -366,12 +365,45 @@ export class funcsService {
   }
 
 
+  // aprovacaoAutomatica() {
+  //   let cTipo = 'A'
+
+  //   const obj = {
+  //     produto: this.produto,
+  //     usrAprovn1: this.arrUserLogado.codUser,
+  //     usrAprovn2: this.arrUserLogado.codUser,
+  //     usrAprovn3: this.arrUserLogado.codUser,
+  //     dtAprovn1: new Date().toISOString().split('T')[0],
+  //     dtAprovn2: new Date().toISOString().split('T')[0],
+  //     dtAprovn3: new Date().toISOString().split('T')[0],
+  //     justificativa1: "Aprovado automaticamente pela Análise das Características.",
+  //     justificativa2: "Aprovado automaticamente pela Análise das Características.",
+  //     justificativa3: "Aprovado automaticamente pela Análise das Características.",
+  //     tipoAprovn1: "A",
+  //     tipoAprovn2: "A",
+  //     tipoAprovn3: "A",
+  //     lote: this.lote,
+  //     op: this.op,
+  //     analise: this.analise,
+  //     filial: this.filial,
+  //     loteAprov: 'APROVADO'
+  //   }
+  //   this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
+  //     this.fj.prodParcialOp(q[0], 'env');
+  //     // this.fj.enviarLoteProteus(q[0]);
+  //   });
+  // }
+
   enviarLoteProteus(loteItem, reclassifica = false) {
     let nVai = 0
     var caracEnviadas = 0;
     let codCaracteristica = [];
+    let cRet = ''
+
     //verifica se o lote está aprovado
     if ((loteItem.tipoAprova1 != "" && loteItem.tipoAprova2 != "" && loteItem.tipoAprova3 != "") || reclassifica) {
+
+
       const obj = {
         'filial': loteItem.filial,
         'produto': loteItem.produto,
@@ -414,11 +446,11 @@ export class funcsService {
             if (q.status === false || q.ok === false) {
               enviado = false;
             }
-            if (index == objs.length - 1) {
-              this.prodParcialOp(loteItem, 'env');
-              obj.statusEnvio = enviado ? 'ENVIADO' : 'NÃO ENVIADO'
-              this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
-            }
+            // if (index == objs.length - 1) {
+            //   this.prodParcialOp(loteItem, 'env');
+            //   obj.statusEnvio = enviado ? 'ENVIADO' : 'NÃO ENVIADO'
+            //   this.buscaPrt('alteraStatusEnvio', obj).subscribe(f => f);
+            // }
           }, error => {
             console.log(error);
             obj.statusEnvio = 'NÃO ENVIADO'
@@ -427,7 +459,9 @@ export class funcsService {
         })
       });
 
-    } else alert("Lote ainda não aprovado"); //alerta que o lote não está aprovado
+    } else {
+      alert("Lote ainda não aprovado")
+    }
   }
 
   formataStatus(str) {
@@ -450,67 +484,6 @@ export class funcsService {
     if (usuario.perfil.includes('Administrador')) return true;
     return perfil.includes(acesso) || acesso.includes(perfil);
   }
-
-
-
-  // efetua a produção parcial da op 
-  prodParcialOp(aOp, cOrig) {
-    let cArm = ''
-    let qtdeProd = 0
-    if (cOrig == 'pcp') {
-      qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
-    } else qtdeProd = aOp.qtde > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
-
-    if (aOp.loteAprov == 'APROVADO') {
-      cArm = '01'
-    } else if (aOp.loteAprov == 'REPROVADO') {
-      cArm = '97'
-    } else {
-      cArm = '44'
-    }
-
-    console.log(aOp);
-    const objEnv = {
-      cFilialOp: aOp.filial,
-      cNumOp: aOp.op,
-      cC2Prod: aOp.produto,
-      cC2Local: cArm,
-      cDocAjst: 'DOCPARCI',
-      nC2QtdOri: 1, //aOp.qtdeLote,
-      nC2QtdAjst: aOp.qtdeLote,
-      cTipoProd: 'P',
-      nQtdEntrg: qtdeProd, // qtde utilizada para a produção
-      cOperacao: aOp.codOpera,
-      cRecurso: aOp.codRecurso,
-      dDataApt: aOp.dtime,
-      ItensD4: []
-    };
-
-    const objAponta = {
-      filial: aOp.filial,
-      op: aOp.op,
-      lote: aOp.lote,
-      qtde: qtdeProd,
-      tipo: 'P',
-    };
-    this.prodOP(objEnv).subscribe(x => {
-      alert(x.Sucesso.substring(2, 60))
-      if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
-        // alert(x.Sucesso.substring(2, 60))
-        this.execProd('spcp_produz_op', objAponta);
-        console.log(x.Sucesso)
-        if (cOrig == 'pcp') {
-          alert(x.Sucesso.substring(2, 60))
-          // window.location.reload();
-        }
-      } else {
-        console.log(x.Sucesso)
-      }
-    }, error => {
-      console.log(error);
-      alert("Não foi possível enviar");
-    });
-  };
 
   converterParaDDMMYY(dataString, plus = 0) {
     // Divide a string da data nos componentes dia, mês e ano

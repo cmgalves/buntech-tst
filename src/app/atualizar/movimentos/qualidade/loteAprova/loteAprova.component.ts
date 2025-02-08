@@ -292,21 +292,132 @@ export class LoteAprovaComponent implements OnInit {
       this.fj.confirmDialog(txtAprov).subscribe(q => {
         if (q) {
           this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
-            if (aprovaTodos)
+            if (aprovaTodos) {
               this.fj.buscaPrt('alteraValorAprovacao', obj).subscribe(f => {
-                this.fj.enviarLoteProteus(f[0]);
-              });
-            if (rejeitaTodos)
-              this.fj.enviarLoteProteus(q[0]);
-            //this.router.navigate(['loteReg']);
+                this.confirmaAjusteEmp(f[0]);
+              })
+            } else {
+              if (rejeitaTodos) {
+                this.fj.enviarLoteProteus(q[0])
+              };
+
+            }
           });
           this.nivelAprovado(2);
+          localStorage.removeItem('voltaLoteReg');
+          localStorage.setItem('voltaLoteReg', 'volta');
+
           this.router.navigate(['loteReg']);
         }
       });
-    } else alert("USUÁRIO NÃO TEM NÍVEL PARA APROVAÇÃO");
+    } else {
+      alert("USUÁRIO NÃO TEM NÍVEL PARA APROVAÇÃO")
+    };
   }
 
+
+  confirmaAjusteEmp(objEmp) {
+    this.fj.buscaPrt('pegaDados', objEmp).subscribe(q => {
+      this.prodParcialOp(q[0], 'env', objEmp);
+    });
+  }
+
+
+  // efetua a produção parcial da op 
+  prodParcialOp(aOp, cOrig, aObjeto) {
+    let cArm = ''
+    let qtdeProd = 0
+
+    if (cOrig == 'pcp') {
+      qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
+    } else qtdeProd = aOp.qtde > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
+
+    if (aOp.loteAprov == 'APROVADO') {
+      cArm = '01'
+    } else if (aOp.loteAprov == 'REPROVADO') {
+      cArm = '97'
+    } else {
+      cArm = '44'
+    }
+
+    console.log(aOp);
+    const objEnv = {
+      cFilialOp: aOp.filial,
+      cNumOp: aOp.op,
+      cC2Prod: aOp.produto,
+      cC2Local: cArm,
+      cDocAjst: 'DOCPARCI',
+      nC2QtdOri: 1, //aOp.qtdeLote,
+      nC2QtdAjst: aOp.qtdeLote,
+      cTipoProd: 'P',
+      nQtdEntrg: qtdeProd, // qtde utilizada para a produção
+      cOperacao: aOp.codOpera,
+      cRecurso: aOp.codRecurso,
+      dDataApt: aOp.dtime,
+      ItensD4: []
+    };
+
+    const objAponta = {
+      filial: aOp.filial,
+      op: aOp.op,
+      lote: aOp.lote,
+      qtde: qtdeProd,
+      tipo: 'P',
+    };
+    this.fj.prodOP(objEnv).subscribe(x => {
+      alert(x.Sucesso.substring(2, 60))
+      if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+        this.aprovacaoAutomatica(aObjeto)
+        // this.fj.execProd('spcp_produz_op', objAponta);
+
+        console.log(x.Sucesso)
+        localStorage.removeItem('voltaLoteReg');
+        localStorage.setItem('voltaLoteReg', 'vai');
+
+        this.router.navigate(['loteReg']);
+
+      } else {
+        console.log(x.Sucesso)
+        // alert(x.Sucesso.substring(2, 60))
+
+      }
+    }, error => {
+      console.log(error);
+      alert("Não foi possível enviar");
+    });
+  };
+
+
+  aprovacaoAutomatica(aObjeto) {
+    let cTipo = 'A'
+
+    const obj = {
+      produto: this.produto,
+      usrAprovn1: aObjeto.usrAprovn1,
+      usrAprovn2: aObjeto.usrAprovn2,
+      usrAprovn3: aObjeto.usrAprovn3,
+      dtAprovn1: new Date().toISOString().split('T')[0],
+      dtAprovn2: new Date().toISOString().split('T')[0],
+      dtAprovn3: new Date().toISOString().split('T')[0],
+      justificativa1: "Aprovado automaticamente pela Análise das Características.",
+      justificativa2: "Aprovado automaticamente pela Análise das Características.",
+      justificativa3: "Aprovado automaticamente pela Análise das Características.",
+      tipoAprovn1: "A",
+      tipoAprovn2: "A",
+      tipoAprovn3: "A",
+      lote: this.lote,
+      op: this.op,
+      analise: this.analise,
+      filial: this.filial,
+      loteAprov: 'APROVADO'
+    }
+    this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
+      this.fj.buscaPrt('pegaDados', aObjeto).subscribe(q => {
+        this.fj.enviarLoteProteus(q[0])
+        // this.prodParcialOp(q[0], 'env');
+      });
+    });
+  }
 
 
   confAprov() {
@@ -475,6 +586,8 @@ export class LoteAprovaComponent implements OnInit {
 
   // tecla para retorno de tela
   voltaLote() {
+    localStorage.removeItem('voltaLoteReg');
+    localStorage.setItem('voltaLoteReg', 'volta');
     this.router.navigate(['loteReg']);
   }
 
@@ -529,7 +642,11 @@ export class LoteAprovaComponent implements OnInit {
     this.fj.buscaPrt('reclassificaNovaOp', obj).subscribe(q => {
       if (q[0].analise != undefined) {
         obj.analiseNova = q[0].analise;
-        this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => this.router.navigate(['loteReg']));
+        this.fj.buscaPrt('zeraAnalise', obj).subscribe(q => {
+          localStorage.removeItem('voltaLoteReg');
+          localStorage.setItem('voltaLoteReg', 'volta');
+          this.router.navigate(['loteReg'])
+        });
       }
     });
   }

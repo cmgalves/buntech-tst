@@ -48,6 +48,8 @@ export class OpresumoComponent implements OnInit {
   aGrpA: any = [];
   aGrpB: any = [];
   aOpAndamentoResumo: any = [];
+  aDadosOP: any = [];
+  aDadosOPTab: any = [];
   aOpAnalitica: any = [];
   arrOpresumoTab: any = [];
   situacoes: any = [];
@@ -55,7 +57,7 @@ export class OpresumoComponent implements OnInit {
   situacaoFiltro;
 
   opresumos: Observable<any>;
-  displayedColumns: string[] = ['filial', 'op', 'rec', 'lote', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'qtdeProd', 'saldoProd', 'qtdeReprovado', 'diabr', 'situacao', 'edicao'];
+  displayedColumns: string[] = ['filial', 'op', 'rec', 'qtdeLote', 'qtdeEnv', 'qtdeSaldo', 'qtdeReprovado', 'diabr', 'situacao', 'filProd', 'edicao'];
   dataSource: MatTableDataSource<opResumo>;
   dataExcel: MatTableDataSource<opResumo>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -88,14 +90,11 @@ export class OpresumoComponent implements OnInit {
           'op': xy.op,
           'produto': xy.produto,
           'descricao': xy.descricao,
-          'lote': xy.lote,
           'dtcria': xy.dtcria,
           'dtime': xy.dtime,
           'diabr': xy.diabr,
           'loteAprov': xy.loteAprov,
           'qtdeLote': xy.qtdeLote,
-          'qtdeProd': xy.qtdeProd,
-          'saldoProd': xy.saldoProd,
           'qtdeReprovado': xy.qtdeReprovado,
           'qtdeEnv': xy.qtdeEnv,
           'qtdeSaldo': xy.qtdeSaldo,
@@ -103,6 +102,12 @@ export class OpresumoComponent implements OnInit {
           'situacao': xy.situacao,
           'codRecurso': xy.codRecurso,
           'codOpera': xy.codOpera,
+          'filProd': xy.filProd,
+        })
+        this.arrOpPcf.push({
+          'FILIAL': xy.filial,
+          'OP': xy.op,
+          'APT': xy.diabr,
         })
         if (!this.situacoes.includes(xy.situacao)) {
           this.situacoes.push(xy.situacao)
@@ -132,8 +137,10 @@ export class OpresumoComponent implements OnInit {
   }
 
   confirmaOp(xcRow) {
-    const filOP = this.arrOpresumoTab.filter(x => x.OP == xcRow.OP);
-    localStorage.setItem('op', JSON.stringify(filOP));
+    const filOP = this.arrOpresumoTab.filter(x => x.op == xcRow.op);
+    localStorage.removeItem('rowOp');
+
+    localStorage.setItem('rowOp', JSON.stringify(filOP));
     this.atuOP(xcRow.filial, xcRow.op, 'c')
     this.router.navigate(['opConfirma']);
   }
@@ -142,7 +149,7 @@ export class OpresumoComponent implements OnInit {
     let obj = {
       'filial': xcFil,
       'op': xcOp,
-      'tipo': xcTipo,
+      'tipo': xcTipo
     }
     this.fj.execProd('loteEmpenho', obj);  //PCP..spcp_lote_empenho
   }
@@ -159,17 +166,62 @@ export class OpresumoComponent implements OnInit {
   }
 
 
-  // habilita e desabilita os dados os botões na tela da OP
+  // habilita e desabilita os dados os botões na tela da OP para ajuste de empenho
   btnDisable(aRow, tp) {
     if (tp === 'a') {
-      if (!(("Interrompida Produção ").indexOf(aRow.situacao) > -1)) {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
+
+      if (aRow.situacao == 'Baixada') {
+        if (aRow.filProd == 'S') {
+          if (aRow.qtdeSaldo == 0) {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
           return false;
         }
+      } else {
+        return true
+      }
+
+      // if (!(("Interrompida Produção ").indexOf(aRow.situacao) > -1)) {
+      //   if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
+      //     return false; row.qtdeSaldo
+      //   }
+      // }
+      if (aRow.situacao != 'Baixada' && aRow.filProd == 'N') {
+        return false;
       }
     }
-    return true
+
+    // row.filProd == 'S' || row.qtdeSaldo > 0
+
+    // habilita e desabilita os dados os botões na tela da OP para produção de OP
+    if (tp === 'b') {
+      if (aRow.filProd == 'S') {
+        return true;
+      }
+      if (aRow.filProd == 'N') {
+        return false;
+      }
+    }
+    return true;
   }
+
+  // habilita e desabilita os dados os botões na tela da OP
+  // prodDisable(aRow, tp) {
+  //   [disabled]="row.qtdeEnv < row.qtdeLote"
+  //   row.filProd == 'S'
+
+  //   if (tp === 'a') {
+  //     if (!(("Interrompida Produção ").indexOf(aRow.situacao) > -1)) {
+  //       if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1)) {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true
+  // }
 
   // aplica o filtro na tabela de OPs
   applyFilter() {
@@ -234,11 +286,140 @@ export class OpresumoComponent implements OnInit {
     });
   }
 
-  prodParcial(row) {
-    this.fj.prodParcialOp(row, 'pcp');
+  // prodParcial(row) {
+  //   // const num = 2
+  //   // if (num == 2) {
+  //   //   this.confirmaOp()
+  //   // }
+  //   this.fj.prodParcialOp(row, 'pcp');
+  // }
+
+
+
+  buscatblOutInteg() {
+    let arrTab = []
+    let arr886 = this.fj.buscaPcfa('tblOutInteg', {});
+    let arr887 = this.fj.buscaPcfb('tblOutInteg', {});
+    let arr888 = this.fj.buscaPcfc('tblOutInteg', {});
+
+    if (arr888 != null) {
+      arr888.subscribe(cada => {
+        cada.forEach(xy => {
+          arrTab.push({
+            WOCode: xy.WOCode,
+            ResourceCode: xy.ResourceCode,
+            WODetCode: xy.WODetCode,
+            ProductCode: xy.ProductCode,
+            Integrated: xy.Integrated,
+            Qty: xy.Qty,
+            DtProduction: xy.DtProduction,
+            DtCreation: xy.DtCreation,
+            UserCode: xy.UserCode,
+            ReWorkCode: xy.ReWorkCode,
+          })
+        });
+        if (arr886 != null) {
+          arr886.subscribe(cada => {
+            cada.forEach(xy => {
+              arrTab.push({
+                WOCode: xy.WOCode,
+                ResourceCode: xy.ResourceCode,
+                WODetCode: xy.WODetCode,
+                ProductCode: xy.ProductCode,
+                Integrated: xy.Integrated,
+                Qty: xy.Qty,
+                DtProduction: xy.DtProduction,
+                DtCreation: xy.DtCreation,
+                UserCode: xy.UserCode,
+                ReWorkCode: xy.ReWorkCode,
+              })
+            });
+            if (arr887 != null) {
+              arr887.subscribe(cada => {
+                cada.forEach(xy => {
+                  arrTab.push({
+                    WOCode: xy.WOCode,
+                    ResourceCode: xy.ResourceCode,
+                    WODetCode: xy.WODetCode,
+                    ProductCode: xy.ProductCode,
+                    Integrated: xy.Integrated,
+                    Qty: xy.Qty,
+                    DtProduction: xy.DtProduction,
+                    DtCreation: xy.DtCreation,
+                    UserCode: xy.UserCode,
+                    ReWorkCode: xy.ReWorkCode,
+                  })
+                });
+                this.dataExcel = new MatTableDataSource(arrTab)
+                this.expExcel('tblOutInteg', 'ops')
+              });
+            }
+          });
+        } else {
+          if (arr887 != null) {
+            arr887.subscribe(cada => {
+              cada.forEach(xy => {
+                arrTab.push({
+                  WOCode: xy.WOCode,
+                  ResourceCode: xy.ResourceCode,
+                  WODetCode: xy.WODetCode,
+                  ProductCode: xy.ProductCode,
+                  Integrated: xy.Integrated,
+                  Qty: xy.Qty,
+                  DtProduction: xy.DtProduction,
+                  DtCreation: xy.DtCreation,
+                  UserCode: xy.UserCode,
+                  ReWorkCode: xy.ReWorkCode,
+                })
+              });
+              this.dataExcel = new MatTableDataSource(arrTab)
+              this.expExcel('tblOutInteg', 'ops')
+            });
+          }
+        }
+      });
+    } else {
+      if (arr886 != null) {
+        arr886.subscribe(cada => {
+          cada.forEach(xy => {
+            arrTab.push({
+              WOCode: xy.WOCode,
+              ResourceCode: xy.ResourceCode,
+              WODetCode: xy.WODetCode,
+              ProductCode: xy.ProductCode,
+              Integrated: xy.Integrated,
+              Qty: xy.Qty,
+              DtProduction: xy.DtProduction,
+              DtCreation: xy.DtCreation,
+              UserCode: xy.UserCode,
+              ReWorkCode: xy.ReWorkCode,
+            })
+          });
+        });
+      } else {
+        if (arr887 != null) {
+          arr887.subscribe(cada => {
+            cada.forEach(xy => {
+              arrTab.push({
+                WOCode: xy.WOCode,
+                ResourceCode: xy.ResourceCode,
+                WODetCode: xy.WODetCode,
+                ProductCode: xy.ProductCode,
+                Integrated: xy.Integrated,
+                Qty: xy.Qty,
+                DtProduction: xy.DtProduction,
+                DtCreation: xy.DtCreation,
+                UserCode: xy.UserCode,
+                ReWorkCode: xy.ReWorkCode,
+              })
+            });
+            this.dataExcel = new MatTableDataSource(arrTab)
+            this.expExcel('tblOutInteg', 'ops')
+          });
+        }
+      }
+    }
   }
-
-
 
 
 }

@@ -165,7 +165,7 @@ export class funcGeral {
   formatarNumero(numero) {
     return numero.toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 3
+      maximumFractionDigits: 4
     });
   }
 

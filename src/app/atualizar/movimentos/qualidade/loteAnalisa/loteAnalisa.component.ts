@@ -183,8 +183,8 @@ export class LoteAnalisaComponent implements OnInit {
     if (isNaN(parseFloat(vNum))) /*Checa se o valor inserido é numérico*/ {
       if (xcRow.iteMax == 0 && xcRow.iteMin == 0) {
         vResultxt = vNum.toString();
-        if(vNum == 'S') sit = 'APROVADO';
-        if(vNum == 'N') sit = 'REPROVADO';
+        if (vNum == 'S') sit = 'APROVADO';
+        if (vNum == 'N') sit = 'REPROVADO';
       } else
         return alert('Por favor, digite um valor numérico');
     } else {
@@ -265,25 +265,104 @@ export class LoteAnalisaComponent implements OnInit {
 
     //Gera objeto para confirmação
     const obj = {
+      lote: this.lote,
+      op: this.op,
+      analise: this.analise,
       filial: this.filial,
       produto: this.produto,
-      lote: this.lote,
-      analise: this.analise,
       loteAprov: situacaoAnalise,
       dataAprovacao: new Date().toISOString().split('T')[0]
     }
     /* espera confirmação do usuário */
     this.fj.confirmDialog(confirmText).subscribe(q => {
       if (q) {
-        this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => q);
-        if (situacaoAnalise == 'APROVADO') this.aprovacaoAutomatica();
-        this.router.navigate(['loteReg']);
+        if (situacaoAnalise == 'APROVADO') {
+          this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => {
+            this.fj.buscaPrt('pegaDados', obj).subscribe(q => {
+              this.prodParcialOp(q[0], 'env', obj);
+            });
+
+          });
+        }
+        if (situacaoAnalise == 'SEGREGADO') {
+          this.fj.buscaPrt('confirmaAnalise', obj).subscribe(q => {
+            alert('Lote Segregado pendente de Aprovação ou Reprovação');
+            this.router.navigate(['loteReg']);
+          });
+        }
       }
     });
   }
 
 
-  aprovacaoAutomatica() {
+
+  // efetua a produção parcial da op 
+  prodParcialOp(aOp, cOrig, aObjeto) {
+    let cArm = ''
+    let qtdeProd = 0
+
+    if (cOrig == 'pcp') {
+      qtdeProd = aOp.qtdeLote > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
+    } else qtdeProd = aOp.qtde > aOp.qtdeEnv ? aOp.saldoProd : aOp.saldoProd - 0.01
+
+    if (aOp.loteAprov == 'APROVADO') {
+      cArm = '01'
+    } else if (aOp.loteAprov == 'REPROVADO') {
+      cArm = '97'
+    } else {
+      cArm = '44'
+    }
+
+    console.log(aOp);
+    const objEnv = {
+      cFilialOp: aOp.filial,
+      cNumOp: aOp.op,
+      cC2Prod: aOp.produto,
+      cC2Local: cArm,
+      cDocAjst: 'DOCPARCI',
+      nC2QtdOri: 1, //aOp.qtdeLote,
+      nC2QtdAjst: aOp.qtdeLote,
+      cTipoProd: 'P',
+      nQtdEntrg: qtdeProd, // qtde utilizada para a produção
+      cOperacao: aOp.codOpera,
+      cRecurso: aOp.codRecurso,
+      dDataApt: aOp.dtime,
+      ItensD4: []
+    };
+
+    const objAponta = {
+      filial: aOp.filial,
+      op: aOp.op,
+      lote: aOp.lote,
+      qtde: qtdeProd,
+      tipo: 'P',
+    };
+    this.fj.prodOP(objEnv).subscribe(x => {
+      alert(x.Sucesso.substring(2, 60))
+      if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+        this.aprovacaoAutomatica(aObjeto)
+        // this.fj.execProd('spcp_produz_op', objAponta);
+
+        console.log(x.Sucesso)
+        this.router.navigate(['loteReg']);
+
+      } else {
+        console.log(x.Sucesso)
+        // alert(x.Sucesso.substring(2, 60))
+
+      }
+    }, error => {
+      console.log(error);
+      alert("Não foi possível enviar");
+    });
+  };
+
+
+
+
+  aprovacaoAutomatica(aObjeto) {
+    let cTipo = 'A'
+
     const obj = {
       produto: this.produto,
       usrAprovn1: this.arrUserLogado.codUser,
@@ -305,7 +384,10 @@ export class LoteAnalisaComponent implements OnInit {
       loteAprov: 'APROVADO'
     }
     this.fj.buscaPrt('aprovalote', obj).subscribe(q => {
-      this.fj.enviarLoteProteus(q[0]);
+      this.fj.buscaPrt('pegaDados', aObjeto).subscribe(q => {
+        this.fj.enviarLoteProteus(q[0]);
+        // this.prodParcialOp(q[0], 'env');
+      });
     });
   }
 

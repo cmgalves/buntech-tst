@@ -54,6 +54,12 @@ export class LoteRegComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const cRetPage = localStorage.getItem('voltaLoteReg');
+    if (cRetPage === 'volta') {
+      localStorage.removeItem('voltaLoteReg');
+      localStorage.setItem('voltaLoteReg', 'vai');
+      // window.location.reload();
+    }
 
     if (('Administrador, Qualidade N1, Qualidade N2, Qualidade N3').indexOf(this.arrUserLogado.perfil) >= 0) {
       this.buscaLoteRegs('TODOS');
@@ -69,17 +75,20 @@ export class LoteRegComponent implements OnInit {
     this.arrDados = [];
 
     this.arrBusca = this.fj.buscaPrt('relacaoLoteRegistro', {
-      'xcFil': xcFil, 'filial': this.arrProd.filial,
+      'xcFil': xcFil,
+      'filial': this.arrProd.filial,
       'produto': this.arrProd.produto,
       'lote': this.arrProd.lote
     }); //vw_pcp_relacao_lote_registro
 
-    this.fj.buscaPrt('itensLote', { 'filial': '101',
-    'produto': 'PAN00099',
-    'lote': '000000001',
-    'analise': 'A01',
-    'op': '00450501001',
-    'statusEnvio': 'NÃO ENVIADO'}).subscribe(q => q)
+    this.fj.buscaPrt('itensLote', {
+      'filial': '101',
+      'produto': 'PAN00099',
+      'lote': '000000001',
+      'analise': 'A01',
+      'op': '00450501001',
+      'statusEnvio': 'NÃO ENVIADO'
+    }).subscribe(q => q)
     this.arrBusca.subscribe(cada => {
       cada.forEach(xy => {
         ord++
@@ -166,28 +175,30 @@ export class LoteRegComponent implements OnInit {
 
   // habilita e desabilita os dados os botões na tela da OP
   btnDisable(aRow, tp) {
-    if (tp == 'aprova') {
-      if (aRow.loteAprov != 'analisado') {
+
+    // row.loteAprov != 'ABERTO' && row.loteAprov != 'ANDAMENTO' && row.loteAprov != 'APROVADO'
+
+    if (tp == 'a') {
+      if (aRow.loteAprov == 'ABERTO') {
+        return false
+      }
+    }
+    if (tp == 'a') {
+      if (aRow.loteAprov == 'ANDAMENTO') {
         return false
       }
     }
 
-    if (tp === 'a') {
-      if ((("Baixada ").indexOf(aRow.SITUACAO) > -1)) {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
-          return false;
+    if (tp == 'a') {
+      if (aRow.loteAprov == 'APROVADO') {
+        if (aRow.tipoAprova1 == 'A') {
+          return true
+        } else {
+          return false
         }
       }
     }
 
-    if (tp === 'c') {
-      if ((("Produção | Interrompida | Baixada ").indexOf(aRow.SITUACAO) > -1)) {
-        if ((('Administrador | Apontador | Conferente-Apontador').indexOf(this.arrUserLogado.perfil) > -1)) {
-          return false;
-        }
-      }
-    }
-    return false
   }
 
   detalheLote(xcRow) {
@@ -251,7 +262,7 @@ export class LoteRegComponent implements OnInit {
   }
 
   horarioEstaNoIntervalo(row): boolean {
-    if(row.intervaloInicial == undefined || row.intervaloFinal == undefined)
+    if (row.intervaloInicial == undefined || row.intervaloFinal == undefined)
       return false;
     const agora = new Date(); // Obtém o horário atual
     // Extrai apenas as horas e minutos do horário atual
@@ -270,6 +281,8 @@ export class LoteRegComponent implements OnInit {
     const minutosFinal = horaFinal * 60 + minutoFinal;
     // Verifica se o horário atual está entre o intervalo inicial e final
     return minutosAtual >= minutosInicial && minutosAtual <= minutosFinal;
-}
+  }
+
+
 
 }

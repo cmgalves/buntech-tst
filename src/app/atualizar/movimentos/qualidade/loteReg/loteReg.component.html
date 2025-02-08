@@ -90,7 +90,7 @@
                                         <button (click)="detalheLote(row)" mat-raised-button type="button" matTooltip="Detalhes do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons">explore</i>
                                         </button>
-                                        <button (click)="analisaLote(row)" [disabled]="row.loteAprov != 'ABERTO' && row.loteAprov != 'ANDAMENTO'" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                        <button (click)="analisaLote(row)" [disabled]="btnDisable(row, 'a')" mat-raised-button type="button" matTooltip="Análise do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                                             <i class="material-icons md-48">gps_fixed</i>
                                         </button>
                                         <button (click)="aprovaLote(row)" [disabled]="row.loteAprov != 'SEGREGADO' && !row.loteAprov.includes('REAVALIACAO')" mat-raised-button type="button" matTooltip="Aprova do Lote" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

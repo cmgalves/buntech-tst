@@ -27,9 +27,10 @@ export interface opConfirma {
 export class OpconfirmaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
-  aOP = JSON.parse(localStorage.getItem('op'));
+  aOP = JSON.parse(localStorage.getItem('rowOp'));
+  aDadosOP = JSON.parse(localStorage.getItem('lsDadosOP'))[0];
   opPcf = JSON.parse(localStorage.getItem('opPcf'));
-  parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.aOP[0].SITUACAO) > -1;
+  parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.aOP[0].situacao) > -1;
   arrOpAndA: any = [];
   arrOpAndB: any = [];
   a01: any = [];
@@ -45,6 +46,7 @@ export class OpconfirmaComponent implements OnInit {
   arrLote: any = [];
   arrLoteTab: any = [];
   temLote: boolean = true;
+  filProd: string = '';
   opFilial: string = '';
   opCodigo: string = '';
   opEmissao: string = '';
@@ -91,12 +93,36 @@ export class OpconfirmaComponent implements OnInit {
 
   ngOnInit(): void {
     if (('Administrador | Conferente | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
-      this.buscaOpconfirma();
+
+      this.dadosProtheusOP();
       // this.confirmaLote();
     } else {
       alert('Sem Acesso');
       this.router.navigate(['opResumo']);
     }
+  }
+
+  dadosProtheusOP() {
+    let aDOP = [];
+    let xaOp = this.aOP[0]
+    const obj = {
+      filial: xaOp.filial,
+      op: xaOp.op,
+    };
+
+    this.aDadosOP = this.fj.buscaPrt('qtdeProduzidaProtheus', obj); //vw_pcp_relacao_op_lote
+    this.aDadosOP.subscribe(cada => {
+      cada.forEach(xy => {
+        aDOP.push({
+          'filial': xy.C2_FILIAL,
+          'op': xy.C2_OP,
+          'qtdeOrig': xy.C2_QUANT,
+          'qtdeProd': xy.C2_QUJE,
+        })
+      });
+      this.aDadosOP = aDOP[0];
+      this.buscaOpconfirma();
+    });
   }
 
   buscaOpconfirma() {
@@ -133,13 +159,17 @@ export class OpconfirmaComponent implements OnInit {
           this.opCodigo = xaOp.op;
           this.opProduto = xaOp.produto;
           this.opDescricao = xaOp.descricao;
+          this.opMaxQtd = xaOp.qtdeLote;
           this.opQtdePcf = this.fg.formatarNumero(xaOp.qtdeLote);
-          this.opQtdeEnv =  this.fg.formatarNumero(xaOp.qtdeEnv);
-          this.opQtdeSaldo =  this.fg.formatarNumero(xaOp.qtdeSaldo);
+          this.opQtdeEnv = this.fg.formatarNumero(xaOp.qtdeEnv);
+          this.opQtdeSaldo = this.fg.formatarNumero(xaOp.qtdeSaldo);
           this.opEmissao = this.fj.converterParaDDMMYY(xy.emissao);
           this.opFinal = xy.vencimento;
+          this.filProd = xy.filProd;
+          this.opQtde = this.aDadosOP.qtdeOrig;
+          this.opQtdeEntregue = this.aDadosOP.qtdeProd;
         }
-        });
+      });
 
       this.dataSource = new MatTableDataSource(this.arrOpconfirmaTab)
       this.dataSource.paginator = this.paginator;
@@ -192,7 +222,7 @@ export class OpconfirmaComponent implements OnInit {
     });
   }
 
-  
+
 
   enableEditUser(e, i) {
     this.enableEditIndex = i;
@@ -233,86 +263,78 @@ export class OpconfirmaComponent implements OnInit {
     let cLoc: string = this.opFilial === '108' ? '99' : '01';
     const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
     this.parcialAtivo = false;
-    if (this.temLote) {
-      if (this.opQtdeParcial > 0) {
-        if (Math.round(this.opMaxQtd * 10000) / 10000 > this.opQtdeParcial) {
-          const obj = {
-            cFilialOp: this.opFilial,
-            cNumOp: this.opCodigo,
-            cC2Prod: this.opProduto,
-            cC2Local: cLoc,
-            cDocAjst: 'DOCPARCI',
-            nC2QtdOri: this.opQtde,
-            nC2QtdAjst: this.opQtdePcf,
-            cTipoProd: 'P',
-            nQtdEntrg: this.opQtdeParcial,
-            cOperacao: this.aOP[nQtdeLen].OPERACAO,
-            cRecurso: this.aOP[nQtdeLen].RECURSO,
-            dDataApt: datApt[0].APT,
-            ItensD4: []
-          };
+    if (this.opQtdeParcial > 0) {
+      if (Math.round(this.opMaxQtd * 10000) / 10000 > this.opQtdeParcial) {
+        const obj = {
+          cFilialOp: this.opFilial,
+          cNumOp: this.opCodigo,
+          cC2Prod: this.opProduto,
+          cC2Local: '01',
+          cDocAjst: 'DOCPARCI',
+          nC2QtdOri: 1,
+          nC2QtdAjst: this.opQtdePcf,
+          cTipoProd: 'P',
+          nQtdEntrg: this.opQtdeParcial,
+          cOperacao: this.aOP[nQtdeLen].codOpera,
+          cRecurso: this.aOP[nQtdeLen].codRecurso,
+          dDataApt: datApt[0].APT,
+          ItensD4: []
+        };
 
-          this.objParcial = {
-            filial: this.opFilial,
-            op: this.opCodigo,
-            qtde: this.opQtdeParcial,
-            tipo: 'P',
-            usrProd: this.aUsr.codUser,
-            fechamento: 'automatico',
-          };
+        this.objParcial = {
+          filial: this.opFilial,
+          op: this.opCodigo,
+          qtde: this.opQtdeParcial,
+          tipo: 'P',
+          usrProd: this.aUsr.codUser,
+          fechamento: 'automatico',
+        };
 
-          this.objLote = {
-            'filial': this.opFilial,
-            'op': this.opCodigo,
-            'produto': this.opProduto,
-            'descricao': this.opDescricao,
-            'revisao': this.ltcrevisao,
-            'lote': this.ltclote,
-            'validade': this.ltcvalidade,
-            'quebra': this.ltcquebra,
-            'nivel': this.ltcnivel,
-            'qtde': this.opQtdeParcial,
-            'obs': this.ltcobs,
-            'caracGeral': this.aUsr.codUser,
-            'cTipo': 'P',
-          }
-          const retProd = this.fj.prodOP(obj);
-          retProd.subscribe(x => {
-            alert(x.Sucesso.substring(2, 60))
-            if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
-              this.fj.execProd('produzOP', this.objParcial);
-              if (this.opFilial == '108') {
-                this.fj.execProd('manuLote', this.objLote);
-              }
-              this.parcialAtivo = true;
-            }
-
-            window.location.reload();
-          });
-        } else {
-          if (Math.round(this.opMaxQtd * 10000) / 10000 == this.opQtdeParcial) {
-            if (Math.round(this.opMaxQtd * 10000) / 10000 > 0.1) {
-              this.opQtdeParcial = this.opMaxQtd - 0.1;
-            }
-            alert('Não pode zerar a OP no apontamento Parcial!!!')
-            this.parcialAtivo = true;
-          } else {
-            alert('Quantidade maior que a produzida!!!')
-            this.opQtdeParcial = Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000;
-            this.parcialAtivo = true;
-          }
+        this.objLote = {
+          'filial': this.opFilial,
+          'op': this.opCodigo,
+          'produto': this.opProduto,
+          'descricao': this.opDescricao,
+          'revisao': this.ltcrevisao,
+          'lote': this.ltclote,
+          'validade': this.ltcvalidade,
+          'quebra': this.ltcquebra,
+          'nivel': this.ltcnivel,
+          'qtde': this.opQtdeParcial,
+          'obs': this.ltcobs,
+          'caracGeral': this.aUsr.codUser,
+          'cTipo': 'P',
         }
+        const retProd = this.fj.prodOP(obj);
+        retProd.subscribe(x => {
+          alert(x.Sucesso.substring(2, 60))
+          if (x.Sucesso === "T/Apontamento parcial efetuado com Sucesso!") {
+            this.fj.execProd('produzOP', this.objParcial);
+            if (this.opFilial == '108') {
+              this.fj.execProd('manuLote', this.objLote);
+            }
+            this.parcialAtivo = true;
+          }
+
+          window.location.reload();
+        });
       } else {
-        alert('Quantidade igual a zero!!!');
-        this.parcialAtivo = true;
+        if (Math.round(this.opMaxQtd * 10000) / 10000 == this.opQtdeParcial) {
+          if (Math.round(this.opMaxQtd * 10000) / 10000 > 0.1) {
+            this.opQtdeParcial = this.opMaxQtd - 0.1;
+          }
+          alert('Não pode zerar a OP no apontamento Parcial!!!')
+          this.parcialAtivo = true;
+        } else {
+          alert('Quantidade maior que a produzida!!!')
+          this.opQtdeParcial = Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000;
+          this.parcialAtivo = true;
+        }
       }
     } else {
-      alert('Não existe Lote atribuído para este produto')
-      window.location.reload();
+      alert('Quantidade igual a zero!!!');
+      this.parcialAtivo = true;
     }
-
-
-
   }
 
   prodTotalOp() {
@@ -349,7 +371,7 @@ export class OpconfirmaComponent implements OnInit {
             cFilialOp: this.opFilial,
             cNumOp: this.opCodigo,
             cC2Prod: this.opProduto,
-            cC2Local: cLoc,
+            cC2Local: '01',
             cDocAjst: 'DOCTOTAL',
             nC2QtdOri: this.opQtde,
             nC2QtdAjst: this.opQtdePcf,
@@ -394,7 +416,7 @@ export class OpconfirmaComponent implements OnInit {
               //   this.fj.execProd('manuLote', this.objLote);
               // }
             }
-            
+
             window.location.reload();
           });
         } else {
