@@ -21,7 +21,7 @@ export class funcsService {
 
   execPar(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.49:900'];
+    const dstUrla = ['10.3.0.92:900'];
     url = `http://${dstUrla}/${_url}`
     $.ajaxSetup({ async: false });
     $.post(url, obj);
@@ -29,7 +29,7 @@ export class funcsService {
 
   buscaPrt(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.49:885'];
+    const dstUrla = ['10.3.0.92:785'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -38,43 +38,44 @@ export class funcsService {
 
   }
 
-  buscaPcfa(_url, obj) {
-    let url = '';
-    const dstUrla = ['10.3.0.49:886'];
+  // buscaPcfa(_url, obj) {
+  //   let url = '';
+  //   const dstUrla = ['10.3.0.92:886'];
 
-    url = `http://${dstUrla}/${_url}`
+  //   url = `http://${dstUrla}/${_url}`
 
-    return this._http.post(url, obj)
-      .pipe(map((response: Response) => response.json()));
+  //   return this._http.post(url, obj)
+  //     .pipe(map((response: Response) => response.json()));
 
-  }
+  // }
 
-  buscaPcfb(_url, obj) {
-    let url = '';
-    const dstUrla = ['10.3.0.49:887'];
+  // buscaPcfb(_url, obj) {
+  //   let url = '';
+  //   const dstUrla = ['10.3.0.92:887'];
 
-    url = `http://${dstUrla}/${_url}`
+  //   url = `http://${dstUrla}/${_url}`
 
-    return this._http.post(url, obj)
-      .pipe(map((response: Response) => response.json()));
+  //   return this._http.post(url, obj)
+  //     .pipe(map((response: Response) => response.json()));
 
-  }
+  // }
 
-  buscaPcfc(_url, obj) {
-    let url = '';
-    const dstUrla = ['10.3.0.49:888'];
+  // buscaPcfc(_url, obj) {
+  //   let url = '';
+  //   const dstUrla = ['10.3.0.92:888'];
 
-    url = `http://${dstUrla}/${_url}`
+  //   url = `http://${dstUrla}/${_url}`
 
-    return this._http.post(url, obj)
-      .pipe(map((response: Response) => response.json()));
+  //   return this._http.post(url, obj)
+  //     .pipe(map((response: Response) => response.json()));
 
-  }
+  // }
 
   prodOP(obj) {
     let url = '';
 
-    url = `http://10.3.0.204:8095/REST/AJUST_EMP`
+    url = `http://10.3.0.206:8091/rest/AJUST_EMP`
+    // url = `http://10.3.0.92:8095/REST/AJUST_EMP`
 
     return this._http.put(url, obj)
       .pipe(map((response: Response) => response.json()));
@@ -84,7 +85,7 @@ export class funcsService {
   prodLote(obj) {
     let url = '';
 
-    url = `http://10.3.0.204:8095/rest/APILOTES/APILOTEESP`
+    url = `http://10.3.0.206:8091/rest/APILOTES/APILOTEESP`
 
     return this._http.post(url, obj)
       .pipe(map((response: Response) => response.json()));
@@ -93,7 +94,7 @@ export class funcsService {
 
   buscaPar(_url) {
     let url = '';
-    const dstUrla = ['10.3.0.49:900'];
+    const dstUrla = ['10.3.0.92:900'];
 
     url = `http://${dstUrla}/${_url}`
 
@@ -104,7 +105,7 @@ export class funcsService {
 
   execProd(_url, obj) {
     let url = '';
-    const dstUrla = ['10.3.0.49:885'];
+    const dstUrla = ['10.3.0.92:785'];
     url = `http://${dstUrla}/${_url}`
 
     $.ajaxSetup({ async: false });
@@ -196,7 +197,7 @@ export class funcsService {
 
   gerarLote(obj: any, funcao: Function) {
     let url = '';
-    const dstUrla = ['10.3.0.49:885'];
+    const dstUrla = ['10.3.0.92:785'];
     let novosLotes = [];
     let finish = true;
     const MAX_REQUISITIONS = 10;
@@ -341,7 +342,7 @@ export class funcsService {
   }
 
   atualizarLotes(novosLotes: any[], funcao: Function) {
-    const dstUrla = ['10.3.0.49:885'];
+    const dstUrla = ['10.3.0.92:785'];
 
     novosLotes.forEach(q => {
       this._http.post(`http://${dstUrla}/atualizaLote`, q).subscribe(q => funcao());

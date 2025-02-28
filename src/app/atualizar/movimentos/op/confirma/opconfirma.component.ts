@@ -28,9 +28,9 @@ export class OpconfirmaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
   arrUserLogado = JSON.parse(localStorage.getItem('user'))[0];
   aOP = JSON.parse(localStorage.getItem('rowOp'));
-  aDadosOP = JSON.parse(localStorage.getItem('lsDadosOP'))[0];
   opPcf = JSON.parse(localStorage.getItem('opPcf'));
   parcialAtivo: boolean = ('Interrompida | Produção').indexOf(this.aOP[0].situacao) > -1;
+  aDadosOP: any = [];
   arrOpAndA: any = [];
   arrOpAndB: any = [];
   a01: any = [];
@@ -58,7 +58,7 @@ export class OpconfirmaComponent implements OnInit {
   opCodant: string = '';
   opQtde: string = '';
   opEntregue: string = '';
-  opQtdeEntregue: string = '';
+  opQtdeEntregue: number = 0;
   opQtdePcf: string = '';
   opQtdeEnv: string = '';
   opQtdeSaldo: string = '';
@@ -93,7 +93,6 @@ export class OpconfirmaComponent implements OnInit {
 
   ngOnInit(): void {
     if (('Administrador | Conferente | Conferente-Apontador').indexOf(this.aUsr.perfil) > -1) {
-
       this.dadosProtheusOP();
       // this.confirmaLote();
     } else {
@@ -118,6 +117,7 @@ export class OpconfirmaComponent implements OnInit {
           'op': xy.C2_OP,
           'qtdeOrig': xy.C2_QUANT,
           'qtdeProd': xy.C2_QUJE,
+          'qtdeParc': xy.QTDEPARC,
         })
       });
       this.aDadosOP = aDOP[0];
@@ -168,6 +168,7 @@ export class OpconfirmaComponent implements OnInit {
           this.filProd = xy.filProd;
           this.opQtde = this.aDadosOP.qtdeOrig;
           this.opQtdeEntregue = this.aDadosOP.qtdeProd;
+          this.opQtdeParcial = this.aDadosOP.qtdeParc;
         }
       });
 
@@ -263,6 +264,13 @@ export class OpconfirmaComponent implements OnInit {
     let cLoc: string = this.opFilial === '108' ? '99' : '01';
     const datApt = this.opPcf.filter(x => (x.FILIAL === this.opFilial && x.OP === this.opCodigo));
     this.parcialAtivo = false;
+    
+    if (this.opQtdeParcial > this.opQtdeEntregue) {
+      alert('Quantidade a Produzir é maior que a quantidade disponível')
+      this.opQtdeParcial = 0
+      return
+    }
+    
     if (this.opQtdeParcial > 0) {
       if (Math.round(this.opMaxQtd * 10000) / 10000 > this.opQtdeParcial) {
         const obj = {
@@ -327,7 +335,7 @@ export class OpconfirmaComponent implements OnInit {
           this.parcialAtivo = true;
         } else {
           alert('Quantidade maior que a produzida!!!')
-          this.opQtdeParcial = Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000;
+          this.opQtdeParcial = Math.round((parseFloat(this.opQtdePcf) - this.opQtdeEntregue) * 10000) / 10000;
           this.parcialAtivo = true;
         }
       }
@@ -376,7 +384,7 @@ export class OpconfirmaComponent implements OnInit {
             nC2QtdOri: this.opQtde,
             nC2QtdAjst: this.opQtdePcf,
             cTipoProd: 'T',
-            nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - parseFloat(this.opQtdeEntregue)) * 10000) / 10000,
+            nQtdEntrg: Math.round((parseFloat(this.opQtdePcf) - this.opQtdeEntregue) * 10000) / 10000,
             cOperacao: this.aOP[nQtdeLen].OPERACAO,
             cRecurso: this.aOP[nQtdeLen].RECURSO,
             dDataApt: datApt[0].APT,
@@ -449,4 +457,9 @@ export class OpconfirmaComponent implements OnInit {
     XLSX.writeFile(workBook, fn);
   }
 
+
+  validValue() {
+    alert('dasdda')
+    return false;
+  }
 }

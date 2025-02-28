@@ -22,11 +22,10 @@
 .mat-header-row {
   display: table-row;
 }
-mat-paginator{width:97vw;} 
+
+mat-paginator{width:97%;} 
 
  
-
-
 .container-fluid {
     margin-top: 5px;
 }

@@ -118,7 +118,7 @@
                         <div class="card-body table-responsive col-md-2">
                             <mat-form-field>
                                 <mat-label>Quantidade Parcial</mat-label>
-                                <input matInput type="number" [(ngModel)]="opQtdeParcial">
+                                <input onblur="validValue()" matInput type="number" [(ngModel)]="opQtdeParcial">
                             </mat-form-field>
                         </div>
                     </div>

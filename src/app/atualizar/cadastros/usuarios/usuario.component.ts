@@ -64,7 +64,7 @@ export class UsuarioComponent implements OnInit {
 
 
   // Indaiatuba - 887
-  // Servidor de HML: 10.3.0.204
+  // Servidor de HML: 10.3.0.92
   // Filiais:206
 
 

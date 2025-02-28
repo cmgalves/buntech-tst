@@ -296,130 +296,130 @@ export class OpresumoComponent implements OnInit {
 
 
 
-  buscatblOutInteg() {
-    let arrTab = []
-    let arr886 = this.fj.buscaPcfa('tblOutInteg', {});
-    let arr887 = this.fj.buscaPcfb('tblOutInteg', {});
-    let arr888 = this.fj.buscaPcfc('tblOutInteg', {});
+  // buscatblOutInteg() {
+  //   let arrTab = []
+  //   // let arr886 = this.fj.buscaPcfa('tblOutInteg', {});
+  //   // let arr887 = this.fj.buscaPcfb('tblOutInteg', {});
+  //   // let arr888 = this.fj.buscaPcfc('tblOutInteg', {});
 
-    if (arr888 != null) {
-      arr888.subscribe(cada => {
-        cada.forEach(xy => {
-          arrTab.push({
-            WOCode: xy.WOCode,
-            ResourceCode: xy.ResourceCode,
-            WODetCode: xy.WODetCode,
-            ProductCode: xy.ProductCode,
-            Integrated: xy.Integrated,
-            Qty: xy.Qty,
-            DtProduction: xy.DtProduction,
-            DtCreation: xy.DtCreation,
-            UserCode: xy.UserCode,
-            ReWorkCode: xy.ReWorkCode,
-          })
-        });
-        if (arr886 != null) {
-          arr886.subscribe(cada => {
-            cada.forEach(xy => {
-              arrTab.push({
-                WOCode: xy.WOCode,
-                ResourceCode: xy.ResourceCode,
-                WODetCode: xy.WODetCode,
-                ProductCode: xy.ProductCode,
-                Integrated: xy.Integrated,
-                Qty: xy.Qty,
-                DtProduction: xy.DtProduction,
-                DtCreation: xy.DtCreation,
-                UserCode: xy.UserCode,
-                ReWorkCode: xy.ReWorkCode,
-              })
-            });
-            if (arr887 != null) {
-              arr887.subscribe(cada => {
-                cada.forEach(xy => {
-                  arrTab.push({
-                    WOCode: xy.WOCode,
-                    ResourceCode: xy.ResourceCode,
-                    WODetCode: xy.WODetCode,
-                    ProductCode: xy.ProductCode,
-                    Integrated: xy.Integrated,
-                    Qty: xy.Qty,
-                    DtProduction: xy.DtProduction,
-                    DtCreation: xy.DtCreation,
-                    UserCode: xy.UserCode,
-                    ReWorkCode: xy.ReWorkCode,
-                  })
-                });
-                this.dataExcel = new MatTableDataSource(arrTab)
-                this.expExcel('tblOutInteg', 'ops')
-              });
-            }
-          });
-        } else {
-          if (arr887 != null) {
-            arr887.subscribe(cada => {
-              cada.forEach(xy => {
-                arrTab.push({
-                  WOCode: xy.WOCode,
-                  ResourceCode: xy.ResourceCode,
-                  WODetCode: xy.WODetCode,
-                  ProductCode: xy.ProductCode,
-                  Integrated: xy.Integrated,
-                  Qty: xy.Qty,
-                  DtProduction: xy.DtProduction,
-                  DtCreation: xy.DtCreation,
-                  UserCode: xy.UserCode,
-                  ReWorkCode: xy.ReWorkCode,
-                })
-              });
-              this.dataExcel = new MatTableDataSource(arrTab)
-              this.expExcel('tblOutInteg', 'ops')
-            });
-          }
-        }
-      });
-    } else {
-      if (arr886 != null) {
-        arr886.subscribe(cada => {
-          cada.forEach(xy => {
-            arrTab.push({
-              WOCode: xy.WOCode,
-              ResourceCode: xy.ResourceCode,
-              WODetCode: xy.WODetCode,
-              ProductCode: xy.ProductCode,
-              Integrated: xy.Integrated,
-              Qty: xy.Qty,
-              DtProduction: xy.DtProduction,
-              DtCreation: xy.DtCreation,
-              UserCode: xy.UserCode,
-              ReWorkCode: xy.ReWorkCode,
-            })
-          });
-        });
-      } else {
-        if (arr887 != null) {
-          arr887.subscribe(cada => {
-            cada.forEach(xy => {
-              arrTab.push({
-                WOCode: xy.WOCode,
-                ResourceCode: xy.ResourceCode,
-                WODetCode: xy.WODetCode,
-                ProductCode: xy.ProductCode,
-                Integrated: xy.Integrated,
-                Qty: xy.Qty,
-                DtProduction: xy.DtProduction,
-                DtCreation: xy.DtCreation,
-                UserCode: xy.UserCode,
-                ReWorkCode: xy.ReWorkCode,
-              })
-            });
-            this.dataExcel = new MatTableDataSource(arrTab)
-            this.expExcel('tblOutInteg', 'ops')
-          });
-        }
-      }
-    }
-  }
+  //   if (arr888 != null) {
+  //     arr888.subscribe(cada => {
+  //       cada.forEach(xy => {
+  //         arrTab.push({
+  //           WOCode: xy.WOCode,
+  //           ResourceCode: xy.ResourceCode,
+  //           WODetCode: xy.WODetCode,
+  //           ProductCode: xy.ProductCode,
+  //           Integrated: xy.Integrated,
+  //           Qty: xy.Qty,
+  //           DtProduction: xy.DtProduction,
+  //           DtCreation: xy.DtCreation,
+  //           UserCode: xy.UserCode,
+  //           ReWorkCode: xy.ReWorkCode,
+  //         })
+  //       });
+  //       if (arr886 != null) {
+  //         arr886.subscribe(cada => {
+  //           cada.forEach(xy => {
+  //             arrTab.push({
+  //               WOCode: xy.WOCode,
+  //               ResourceCode: xy.ResourceCode,
+  //               WODetCode: xy.WODetCode,
+  //               ProductCode: xy.ProductCode,
+  //               Integrated: xy.Integrated,
+  //               Qty: xy.Qty,
+  //               DtProduction: xy.DtProduction,
+  //               DtCreation: xy.DtCreation,
+  //               UserCode: xy.UserCode,
+  //               ReWorkCode: xy.ReWorkCode,
+  //             })
+  //           });
+  //           if (arr887 != null) {
+  //             arr887.subscribe(cada => {
+  //               cada.forEach(xy => {
+  //                 arrTab.push({
+  //                   WOCode: xy.WOCode,
+  //                   ResourceCode: xy.ResourceCode,
+  //                   WODetCode: xy.WODetCode,
+  //                   ProductCode: xy.ProductCode,
+  //                   Integrated: xy.Integrated,
+  //                   Qty: xy.Qty,
+  //                   DtProduction: xy.DtProduction,
+  //                   DtCreation: xy.DtCreation,
+  //                   UserCode: xy.UserCode,
+  //                   ReWorkCode: xy.ReWorkCode,
+  //                 })
+  //               });
+  //               this.dataExcel = new MatTableDataSource(arrTab)
+  //               this.expExcel('tblOutInteg', 'ops')
+  //             });
+  //           }
+  //         });
+  //       } else {
+  //         if (arr887 != null) {
+  //           arr887.subscribe(cada => {
+  //             cada.forEach(xy => {
+  //               arrTab.push({
+  //                 WOCode: xy.WOCode,
+  //                 ResourceCode: xy.ResourceCode,
+  //                 WODetCode: xy.WODetCode,
+  //                 ProductCode: xy.ProductCode,
+  //                 Integrated: xy.Integrated,
+  //                 Qty: xy.Qty,
+  //                 DtProduction: xy.DtProduction,
+  //                 DtCreation: xy.DtCreation,
+  //                 UserCode: xy.UserCode,
+  //                 ReWorkCode: xy.ReWorkCode,
+  //               })
+  //             });
+  //             this.dataExcel = new MatTableDataSource(arrTab)
+  //             this.expExcel('tblOutInteg', 'ops')
+  //           });
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     if (arr886 != null) {
+  //       arr886.subscribe(cada => {
+  //         cada.forEach(xy => {
+  //           arrTab.push({
+  //             WOCode: xy.WOCode,
+  //             ResourceCode: xy.ResourceCode,
+  //             WODetCode: xy.WODetCode,
+  //             ProductCode: xy.ProductCode,
+  //             Integrated: xy.Integrated,
+  //             Qty: xy.Qty,
+  //             DtProduction: xy.DtProduction,
+  //             DtCreation: xy.DtCreation,
+  //             UserCode: xy.UserCode,
+  //             ReWorkCode: xy.ReWorkCode,
+  //           })
+  //         });
+  //       });
+  //     } else {
+  //       if (arr887 != null) {
+  //         arr887.subscribe(cada => {
+  //           cada.forEach(xy => {
+  //             arrTab.push({
+  //               WOCode: xy.WOCode,
+  //               ResourceCode: xy.ResourceCode,
+  //               WODetCode: xy.WODetCode,
+  //               ProductCode: xy.ProductCode,
+  //               Integrated: xy.Integrated,
+  //               Qty: xy.Qty,
+  //               DtProduction: xy.DtProduction,
+  //               DtCreation: xy.DtCreation,
+  //               UserCode: xy.UserCode,
+  //               ReWorkCode: xy.ReWorkCode,
+  //             })
+  //           });
+  //           this.dataExcel = new MatTableDataSource(arrTab)
+  //           this.expExcel('tblOutInteg', 'ops')
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 
 
 }

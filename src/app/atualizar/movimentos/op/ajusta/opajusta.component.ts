@@ -29,7 +29,6 @@ export class OpajustaComponent implements OnInit {
   aUsr = JSON.parse(localStorage.getItem('user'))[0];
   aOp = JSON.parse(localStorage.getItem('op'));
   // aRowOP = JSON.parse(localStorage.getItem('rowOp'));
-  // aDadosOP = JSON.parse(localStorage.getItem('lsDadosOP'))[0];
   arrRecurso = JSON.parse(localStorage.getItem('recurso'));
   arrProd = JSON.parse(localStorage.getItem('cadProd'));
 
