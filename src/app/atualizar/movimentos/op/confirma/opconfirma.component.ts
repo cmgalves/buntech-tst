@@ -127,6 +127,7 @@ export class OpconfirmaComponent implements OnInit {
 
   buscaOpconfirma() {
     let x = 0;
+    let xQtdeParc = 0;
     let xaOp = this.aOP[0]
     let xcFilial = xaOp.filial;
     let xcOp = xaOp.op;
@@ -155,6 +156,7 @@ export class OpconfirmaComponent implements OnInit {
           situacao: xy.situacao,
         })
         if (x === 1) {
+          xQtdeParc = Math.round((xaOp.qtdeLote - this.aDadosOP.qtdeProd) * 10000) / 10000;
           this.opFilial = xaOp.filial;
           this.opCodigo = xaOp.op;
           this.opProduto = xaOp.produto;
@@ -168,7 +170,7 @@ export class OpconfirmaComponent implements OnInit {
           this.filProd = xy.filProd;
           this.opQtde = this.aDadosOP.qtdeOrig;
           this.opQtdeEntregue = this.aDadosOP.qtdeProd;
-          this.opQtdeParcial = this.aDadosOP.qtdeParc;
+          this.opQtdeParcial = xQtdeParc;
         }
       });
 
